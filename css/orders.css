@@ -1,0 +1,15 @@
+/* General */
+.clear { clear: both; height: 0; line-height: 0; }
+tbody tr:last-child { border: none; }
+
+/* Tabs */
+.title ul { display: inline-block; width: 500px; height: 25px; position: relative; margin: 9px 0 0 0 !important; float: right; }
+.title ul li { float: right; }
+.title ul li a { border-radius: 5px 5px 0 0; padding: 6px 10px; }
+.title ul li.ui-tabs-selected a { border: 1px solid #ccc; border-bottom: none; }
+
+/* Form */
+fieldset { padding: 0; margin: 0; border: none; }
+ul.width-half { width: 50% !important; display: block; float: left; }
+input[type=text] { width: 300px; }
+#price_sub, #price_ship, #price_total { min-width: 70px !important; width: 70px !important; }

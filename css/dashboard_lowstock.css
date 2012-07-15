@@ -1,0 +1,5 @@
+ul.width-half { display: block; float: left; width: 50%; }
+ul.width-half li { display: block; width: 100%; position: relative; line-height: 22px; }
+ul.width-half li strong { display: inline-block; padding-bottom: 10px; }
+ul.width-half li span { position: absolute; right: 10px; }
+br.clear { clear: both; height: 0; line-height: 0; }
