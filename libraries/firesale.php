@@ -65,8 +65,9 @@ class Firesale
 						// Keep the module title and desc the same
 						if( !isset($name) && !isset($desc) )
 						{
-							$name = $module_info['name'][CURRENT_LANGUAGE];
-							$desc = $module_info['description'][CURRENT_LANGUAGE];
+							
+							$name = isset($module_info['name'][CURRENT_LANGUAGE]) ? $module_info['name'][CURRENT_LANGUAGE] : $module_info['name']['en'];
+							$desc = isset($module_info['description'][CURRENT_LANGUAGE]) ? $module_info['description'][CURRENT_LANGUAGE] : $module_info['description']['en'];
 						}
 						
 						$info['name'][CURRENT_LANGUAGE] = $name;
