@@ -21,7 +21,7 @@ class Module_Firesale_shipping extends Module {
 				'en' => 'FireSALE Shipping'
 			),
 			'description' => array(
-				'en' => 'A lightweight eCommerce platform for PyroCMS.'
+				'en' => 'The lightweight eCommerce platform for PyroCMS.'
 			),
 			'frontend'		=> FALSE,
 			'backend'		=> FALSE,

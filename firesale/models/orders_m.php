@@ -97,19 +97,15 @@ class Orders_m extends MY_Model
 
 		// Build user list
 		$users = $this->db->select('user_id, display_name')->group_by('user_id')->get('profiles')->result_array();
-
-		$list  = '<select name="created_by" id="created_by">' . "\n" . 
-				 '<option value=""' . ( $id == NULL ? ' selected="selected"' : '' ) . '>-----</option>' . "\n";
+		$list  = array('0' => lang('firesale:label_user_order'));
 
 		foreach( $users AS $user )
 		{
-			$list .= '<option value="' . $user['user_id'] . '"' . ( $id != NULL && $id == $user['user_id'] ? ' selected="selected"' : '' ) . '>' . $user['display_name'] . ' ( #' . $user['user_id'] . " )</option>\n";
+			$list[$user['user_id']] = $user['display_name'] . ' ( #' . $user['user_id'] . ' )';
 		}
 
-		$list .= "</select>\n";
-
 		// Assign it to the array
-		$array['input'] = $list;
+		$array['input'] = form_dropdown('created_by', $list, $id);
 
 		// Return
 		return $array;

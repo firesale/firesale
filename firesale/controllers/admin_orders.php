@@ -21,8 +21,11 @@ class Admin_orders extends Admin_Controller
 
 		// Add metadata
 		$this->template->append_css('module::orders.css')
-					   ->append_js('module::orders.js');
-
+					   ->append_js('module::orders.js')
+					   ->append_metadata('<script type="text/javascript">' .
+										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
+										 "\n  var tax_rate = " . $this->settings->get('firesale_tax') . ";" .
+										 "\n</script>");
 	}
 
 	public function index($type = NULL, $query = NULL, $start = 0)
@@ -56,7 +59,14 @@ class Admin_orders extends Admin_Controller
 		// Assign variables
 		$this->data->orders     = $orders['entries'];
 		$this->data->pagination = $orders['pagination'];
+
+		// Assign filtering
+		$users = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
+		$prods = $this->products_m->build_dropdown();
+		$this->data->filter_users = $users['input'];
+		$this->data->filter_prods = form_dropdown('product', $prods, ( $type == 'product' ? $query : NULL ));
 		
+		// Build template
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:orders'))
 					   ->build('admin/orders/index', $this->data);
 	}

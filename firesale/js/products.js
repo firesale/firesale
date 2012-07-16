@@ -72,7 +72,7 @@ $(function(){
 	function tax_link(price, before)
 	{
 		var tmp = before.clone();before.parent().parent().remove();
-		tmp.prependTo(price.parent()).after(' <button type="button" class="link linked">Link</button> ');
+		tmp.prependTo(price.parent()).after(' <button type="button" class="link linked">Link</button> <span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
 		price.change(function() {
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
