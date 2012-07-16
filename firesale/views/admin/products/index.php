@@ -56,7 +56,7 @@
 						<td class="item-title"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
 						<td class="item-category"><?php echo $product['category']['title']; ?></td>
 						<td class="item-stock"><?php echo $product['stock']; ?></td>
-						<td>&pound;<span class="item-price"><?php echo $product['price']; ?></span></td>
+						<td><?php echo $this->settings->get('currency'); ?><span class="item-price"><?php echo $product['price']; ?></span></td>
 						<td class="actions">
 							<a href="#" class="button quickedit">Quick Edit</a> 
 							<a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="button edit">Edit</a> 

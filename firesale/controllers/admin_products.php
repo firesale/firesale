@@ -23,7 +23,11 @@ class Admin_products extends Admin_Controller
 
 		// Add metadata
 		$this->template->append_css('module::products.css')
-					   ->append_js('module::products.js');
+					   ->append_js('module::products.js')
+					   ->append_metadata('<script type="text/javascript">' .
+										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
+										 "\n  var tax_rate = " . $this->settings->get('firesale_tax') . ";" .
+										 "\n</script>");
 	
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_products', 'firesale_products');
