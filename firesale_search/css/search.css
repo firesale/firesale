@@ -1,0 +1,9 @@
+.clear { clear: both; height: 0; line-height: 0; }
+#search input { margin-right: 6px; }
+#search select { margin: 8px 6px 0 0 !important; }
+#search button { margin-top: 6px; }
+div.pagination { margin: 40px 0; }
+section.post div.pagination:last-child { margin-bottom: 0; }
+div.pagination ul { padding: 0; }
+div.pagination ul li { display: inline-block; list-style: none; padding: 2px 5px; border: 1px solid #ccc; margin-right: 4px; border-radius: 2px; }
+#results { margin: 40px 0 10px 0; }

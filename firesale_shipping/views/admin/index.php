@@ -1,0 +1,57 @@
+
+	<h1><?php echo lang('firesale:shipping:title'); ?></h1>
+
+	<section class="title">
+		<h4><?php echo lang('firesale:sections:shipping'); ?></h4>
+	</section>
+	
+	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
+	
+		<section class="item">
+<?php if( empty($options) ): ?>
+			<div class="no_data"><?php echo lang('firesale:shipping:none'); ?></div>
+		</section>
+<?php else: ?>
+
+			<table>		    
+				<thead>
+					<tr>
+						<th><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
+						<th><?php echo lang('firesale:label_title'); ?></th>
+						<th><?php echo lang('firesale:label_company'); ?></th>
+						<th><?php echo lang('firesale:label_price'); ?></th>
+						<th><?php echo lang('firesale:label_price_min_max'); ?></th>
+						<th><?php echo lang('firesale:label_weight_min_max'); ?></th>
+						<th style="width: 120px"></th>
+					</tr>
+				</thead>
+				<tbody>
+<?php foreach( $options AS $option ): ?>
+					<tr>
+						<td><input type="checkbox" name="action_to[]" value="<?php echo $option['id']; ?>"  /></td>
+						<td><?php echo $option['title']; ?></td>
+						<td><?php echo $option['company']; ?></td>
+						<td><?php echo $this->settings->get('currency') . $option['price']; ?></td>
+						<td><?php echo $this->settings->get('currency') . $option['price_min']; ?> to <?php echo $this->settings->get('currency') . $option['price_max']; ?></td>
+						<td><?php echo $option['weight_min']; ?>kg to <?php echo $option['weight_max']; ?>kg</td>
+						<td>
+							<a class="button small" href="<?php echo site_url('admin/firesale_shipping/edit/'.$option['id']); ?>">Edit</a>
+							<a class="button small confirm" href="<?php echo site_url('admin/firesale_shipping/delete/'.$option['id']); ?>">Delete</a>
+						</td>
+					</tr>
+<?php endforeach; ?>
+				</tbody>
+			</table>
+
+		</section>
+	
+		<div class="buttons">
+			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
+		</div>
+<?php endif; ?>
+		
+	<?php echo form_close(); ?>
+
+<?php if( isset($pagination) ): ?>
+	<?php echo $pagination; ?>
+<?php endif; ?>

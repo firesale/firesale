@@ -1,0 +1,165 @@
+<?php defined('BASEPATH') or exit('No direct script access allowed');
+
+class Module_Firesale_shipping extends Module {
+	
+	public $version = '0.7.1';
+	public $language_file = 'firesale_shipping/firesale';
+	
+	public function __construct()
+	{
+		parent::__construct();
+		
+		// Load in the FireSALE library
+		$this->load->library('firesale/firesale');
+	}
+
+	public function information()
+	{
+
+		$info = array(
+			'name' => array(
+				'en' => 'FireSALE Shipping'
+			),
+			'description' => array(
+				'en' => 'A lightweight eCommerce platform for PyroCMS.'
+			),
+			'frontend'		=> FALSE,
+			'backend'		=> FALSE,
+			'firesale_core'	=> FALSE,
+			'role'			=> 'shipping',
+			'menu'	   		=> 'FireSALE',
+			'author'   		=> 'Jamie Holdroyd',
+			'sections' 		=> array(
+				'shipping' 	=> array(
+					'name'		=> 'firesale:sections:shipping',
+					'uri'		=> 'admin/firesale_shipping',
+					'shortcuts' => array(
+						array(
+						    'name' 	=> 'firesale:shortcuts:band_create',
+						    'uri'	=> 'admin/firesale_shipping/create',
+						    'class' => 'add'
+						)
+				    )
+				)
+			)
+		);
+		
+		return $info;
+	}
+	
+	public function install()
+	{
+		
+		// Load required items
+		$this->load->driver('Streams');
+		$this->lang->load($this->language_file);
+		
+		#####################
+		## APPEND PRODUCTS ##
+		#####################
+		
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array_merge($template, array('name' => 'firesale:label_weight_kg', 'slug' => 'shipping_weight', 'type' => 'text', 'extra' => array('max_length' => 10, 'data-tab' => 'shipping')));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_height_cm', 'slug' => 'shipping_height', 'type' => 'text', 'extra' => array('max_length' => 10, 'data-tab' => 'shipping')));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_width_cm', 'slug' => 'shipping_width', 'type' => 'text', 'extra' => array('max_length' => 10, 'data-tab' => 'shipping')));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_depth_cm', 'slug' => 'shipping_depth', 'type' => 'text', 'extra' => array('max_length' => 10, 'data-tab' => 'shipping')));
+		
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
+		
+		####################
+		## SHIPPING BANDS ##
+		####################
+		
+		// Create stream
+		if( !$this->streams->streams->add_stream(lang('firesale:sections:shipping'), 'firesale_shipping', 'firesale_shipping', NULL, NULL) ) return FALSE;
+	
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_shipping', 'assign' => 'firesale_shipping', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array_merge($template, array('name' => 'firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'), 'unique' => TRUE));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_company', 'slug' => 'company', 'type' => 'text', 'extra' => array('max_length' => 255)));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0)));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10)));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_price_min', 'slug' => 'price_min', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_price_max', 'slug' => 'price_max', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_weight_min', 'slug' => 'weight_min', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_weight_max', 'slug' => 'weight_max', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
+		$fields[] = array_merge($template, array('name' => 'firesale:label_description', 'slug' => 'description', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple', 'data-tab' => 'general')));
+
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
+
+		###################
+		## MODIFY ORDERS ##
+		###################
+
+		// Remove current shipping field
+		/*$this->streams->fields->delete_field('shipping', 'firesale_orders');
+
+		// Get stream data
+		$shipping = end($this->streams->streams->get_streams('firesale_shipping'));
+
+		// Build field
+		$field = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'name' => lang('firesale:label_shipping'), 'slug' => 'shipping', 'type' => 'relationship', 'extra' => array('choose_stream' => $shipping->id), 'title_column' => FALSE,  'required' => FALSE, 'unique' => FALSE);
+
+		// Add field to stream
+		$this->streams->fields->add_field($fields);*/
+
+		// Return
+		return TRUE;
+	}
+
+	public function uninstall()
+	{
+	
+		// Load required items
+		$this->load->driver('Streams');
+
+		// Remove Product additions
+		$this->streams->fields->delete_field('shipping_weight', 'firesale_products');
+		$this->streams->fields->delete_field('shipping_height', 'firesale_products');
+		$this->streams->fields->delete_field('shipping_width', 'firesale_products');
+		$this->streams->fields->delete_field('shipping_depth', 'firesale_products');
+		
+		// Remove streams
+		$this->streams->utilities->remove_namespace('firesale_shipping');
+
+		####################
+		## REBUILD ORDERS ##
+		####################
+
+		// Remove current shipping field
+		/*$this->streams->fields->delete_field('shipping', 'firesale_orders');
+
+		// Build field
+		$field = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'name' => lang('firesale:label_shipping'), 'slug' => 'shipping', 'type' => 'integer', 'title_column' => FALSE,  'required' => FALSE, 'unique' => FALSE);
+
+		// Add field to stream
+		$this->streams->fields->add_field($field);*/
+
+		// Return
+		return TRUE;
+	}
+
+	public function upgrade($old_version)
+	{
+
+		return TRUE;
+	}
+
+	public function help()
+	{
+
+		return "Some Help Stuff";
+	}
+
+	public function info()
+	{
+		return $this->firesale->info($this->information(), $this->language_file);
+	}
+
+}

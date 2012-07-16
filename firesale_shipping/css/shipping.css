@@ -1,0 +1,2 @@
+fieldset { padding: 0; border: none; }
+#price, #price_min, #price_max, #weight_min, #weight_max { min-width: 60px !important; width: 60px; }
