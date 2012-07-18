@@ -53,7 +53,7 @@ $(function(){
 	// Tax link
 	tax_link($('#rrp'), $('#rrp_tax'));
 	tax_link($('#price'), $('#price_tax'));
-	$('#rrp, #rrp_tax, #price, #price_tax').focus().change().blur();
+	$('#rrp, #rrp_tax, #price, #price_tax');
 
 	// Image reordering
 	$('#dropbox').sortable({
@@ -72,7 +72,7 @@ $(function(){
 	function tax_link(price, before)
 	{
 		var tmp = before.clone();before.parent().parent().remove();
-		tmp.prependTo(price.parent()).after(' <button type="button" class="link linked">Link</button> <span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
+		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="link linked">Link</button>&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
 		price.change(function() {
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
