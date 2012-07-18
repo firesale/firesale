@@ -9,6 +9,7 @@ class Front_orders extends Public_Controller
 		
 		// Load models, lang, libraries, etc.
 		$this->load->model('orders_m');
+		$this->load->model('products_m');
 
 	}
 	
