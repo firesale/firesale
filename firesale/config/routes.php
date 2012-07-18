@@ -4,6 +4,7 @@
 $route['firesale/admin/categories(/:any)?'] 		 		  = 'admin_categories$1';
 $route['firesale/admin/products(?:/([0-9]+))?(?:/([0-9]+))?'] = 'admin_products/index/$1/$2';
 $route['firesale/admin/products(/:any)?'] 					  = 'admin_products$1';
+$route['firesale/admin/orders/ajax_add_product(/:any)?']	  			  = 'admin_orders/ajax_add_product$1';
 $route['firesale/admin/orders/edit(/:any)?']	  			  = 'admin_orders/edit$1';
 $route['firesale/admin/orders/create']	  			  		  = 'admin_orders/create';
 $route['firesale/admin/orders/status']	  			  		  = 'admin_orders/status';

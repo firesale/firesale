@@ -39,20 +39,6 @@ class Orders_m extends MY_Model
 		return FALSE;
 	}
 
-	public function edit_order_items($items)
-	{
-
-		
-
-	}
-
-	public function add_order_items($items)
-	{
-
-		
-
-	}
-
 	public function check_quantity($products, $qty)
 	{
 
@@ -211,11 +197,17 @@ class Orders_m extends MY_Model
 		$this->db->from('firesale_orders_items')
 				 ->where("order_id", $order_id)
 				 ->where("product_id", $product['id']);
+
+		// Stock?
+		if( isset($product['stock']) AND $qty > $product['stock'] )
+		{
+			$qty = $product['stock'];
+		}
 					
 		if( $this->db->count_all_results() == 0 )
 		{
 
-			$this->db->insert('firesale_orders_items', array(
+			$data = array(
 				'created'		=> date("Y-m-d H:i:s"),
 				'ordering_count'=> 0,
 				'order_id'		=> $order_id,
@@ -224,14 +216,23 @@ class Orders_m extends MY_Model
 				'name'			=> $product['name'],
 				'price'			=> $product['price'],
 				'qty'			=> $qty
-		 	));
+		 	);
+
+		 	if( $this->db->insert('firesale_orders_items', $data) )
+			{
+				return TRUE;
+			}
 
 		}
 		else
 		{
-			$this->db->update('firesale_orders_items', array('qty' => $qty), array('order_id' => $order_id, 'product_id' => $product['id']));
+			if( $this->db->update('firesale_orders_items', array('qty' => $qty), array('order_id' => $order_id, 'product_id' => $product['id'])) )
+			{
+				return TRUE;
+			}
 		}
 
+		return FALSE;
 	}
 
 	public function update_order_cost($order_id, $update = TRUE)

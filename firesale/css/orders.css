@@ -15,3 +15,9 @@ ul.width-half { width: 50% !important; display: block; float: left; }
 input[type=text] { width: 300px; }
 #price_sub, #price_ship, #price_total { min-width: 70px !important; width: 70px !important; }
 #products input { width: 60px; min-width: 60px; }
+
+/* Create */
+.items { line-height: 32px; margin: 0 0 -10px 0; height: 32px; padding: 20px 0 0 0; }
+.items > * { float: left; }
+.items input { margin: -3px 10px 0;}
+.items button { margin: -1px 0 0; }

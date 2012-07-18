@@ -90,8 +90,7 @@ class Admin_orders extends Admin_Controller
 			// Check for products
 			if( isset($input['item']) AND !empty($input['item']) )
 			{
-				$func = ( $id == NULL ? 'add' : 'edit' ) . '_product_items';
-				$this->orders_m->$func($input['item']);
+				// TODO: Update/Delete products on update
 			}
 		
 		}
@@ -116,6 +115,7 @@ class Admin_orders extends Admin_Controller
 		{
 			$products = $this->orders_m->order_products($id);
 			$this->data->products = $products['products'];
+			$this->data->prod_drop = $this->products_m->build_dropdown();
 		}		
 
 		// Add users as first general field
@@ -201,6 +201,31 @@ class Admin_orders extends Admin_Controller
 
 		// Redirect
 		redirect('/admin/firesale/orders');
+	}
+
+	public function ajax_add_product($order, $id, $qty)
+	{
+		if( $this->input->is_ajax_request() )
+		{
+			// Get & format product
+			$product         = (array)$this->products_m->get_product_by_id($id);
+			$product['name'] = $product['title'];
+
+			// Insert/Update item
+			if( $this->orders_m->insert_update_order_item($order, $product, $qty) )
+			{
+				// Return to the browser
+				$qty = ( $qty > $product['stock'] ? $product['stock'] : $qty );
+				$data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format(( $qty * $product['price']), 2));
+				echo json_encode($data);
+				exit();
+			}
+			else
+			{
+				echo 'false';
+				exit();
+			}
+		}
 	}
 	
 }

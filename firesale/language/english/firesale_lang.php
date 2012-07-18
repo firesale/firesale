@@ -132,6 +132,7 @@
 	$lang['firesale:orders:title_edit']	  	= 'Edit Order #%s';
 	$lang['firesale:orders:delete_success'] = 'Order deleted successfully';
 	$lang['firesale:orders:delete_error']	= 'Order was not deleted due to an issue';
+	$lang['firesale:orders:save_first']		= 'Please save the order before adding products';
 	
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';

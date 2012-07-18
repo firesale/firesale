@@ -52,20 +52,29 @@
           </thead>
           <tbody>
 <?php foreach( $products AS $product ): ?>
-	  	    <tr>
+	  	    <tr class="prod-<?php echo $product['id']; ?>">
               <td class="remove"><input type="checkbox" name="item[<?php echo $product['id']; ?>][remove]" value="1" /></td>
               <td class="image"><?php if( $product['image'] != FALSE ): ?><img src="/files/thumb/<?php echo $product['image']; ?>/100/100" alt="image" /><?php else: ?>n/a<?php endif; ?></td>
               <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
               <td class="model"><?php echo $product['code']; ?></td>
               <td><input type="text" name="item[<?php echo $product['id']; ?>][qty]" value="<?php echo $product['qty']; ?>" /></td>
-              <td><?php echo $this->settings->get('currency') . number_format($product['price'], 2); ?></td>
-              <td><?php echo $this->settings->get('currency') . number_format(( $product['price'] * $product['qty'] ), 2); ?></td>
+              <td class="price"><?php echo $this->settings->get('currency') . '<span>' . number_format($product['price'], 2) . '</span>'; ?></td>
+              <td class="total"><?php echo $this->settings->get('currency') . '<span>' . number_format(( $product['price'] * $product['qty'] ), 2) . '</span>'; ?></td>
             </tr>
 <?php endforeach; ?>
           </tbody>
         </table>
+<?php elseif( isset($id) ): ?>
+        <div class="no_data"><?php echo lang('firesale:prod_none'); ?></div>
 <?php else: ?>
-			<div class="no_data"><?php echo lang('firesale:prod_none'); ?></div>
+			 <div class="no_data"><?php echo lang('firesale:orders:save_first'); ?></div>
+<?php endif; ?>
+<?php if( isset($id) ): ?>
+        <div class="items">
+          <?php echo form_dropdown('add_product', $prod_drop, 0, 'id="add_product"'); ?>
+          <input type="text" name="add_qty" id="add_qty" value="1" />
+          <button type="submit" class="btn blue"><span>Add Product</span></button>
+        </div>
 <?php endif; ?>
             <br class="clear" />
 		  </fieldset>

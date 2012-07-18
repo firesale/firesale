@@ -216,34 +216,53 @@ class Admin_products extends Admin_Controller
 	public function ajax_quick_edit()
 	{
 		
-		$update = $this->products_m->update_product($this->input->post(), true);
+		if( $this->input->is_ajax_request() )
+		{
+
+			$update = $this->products_m->update_product($this->input->post(), true);
 	
-		if( isset($update) && $update == TRUE )
-		{
-			$this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
-			echo 'ok';
-		}
-		else
-		{
-			echo lang('firesale:prod_edit_error');
+			if( isset($update) && $update == TRUE )
+			{
+				$this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
+				echo 'ok';
+			}
+			else
+			{
+				echo lang('firesale:prod_edit_error');
+			}
+
 		}
 
+	}
+
+	public function ajax_product($id)
+	{
+		if( $this->input->is_ajax_request() )
+		{
+			echo json_encode($this->products_m->get_product_by_id($id));
+			exit();
+		}
 	}
 
 	public function ajax_order_images()
 	{
 
-		$order = $this->input->post('order');
-
-		if( strlen($order) > 0 )
+		if( $this->input->is_ajax_request() )
 		{
-			$order = explode(',', $order);
-			for( $i = 0; $i < count($order); $i++ )
+
+			$order = $this->input->post('order');
+
+			if( strlen($order) > 0 )
 			{
-				$this->db->where('id', $order[$i])->update('files', array('sort' => $i));
+				$order = explode(',', $order);
+				for( $i = 0; $i < count($order); $i++ )
+				{
+					$this->db->where('id', $order[$i])->update('files', array('sort' => $i));
+				}
+				echo 'ok';
+				exit();
 			}
-			echo 'ok';
-			exit();
+
 		}
 
 		echo 'error';
