@@ -25,6 +25,34 @@ class Orders_m extends MY_Model
 		return array('count' => $total, 'products' => $items);
 	}
 
+	public function delete_order($id)
+	{
+
+		if( $this->db->where('id', $id)->delete('firesale_orders') )
+		{
+			if( $this->db->where('order_id', $id)->delete('firesale_orders_items') )
+			{
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	public function edit_order_items($items)
+	{
+
+		
+
+	}
+
+	public function add_order_items($items)
+	{
+
+		
+
+	}
+
 	public function check_quantity($products, $qty)
 	{
 

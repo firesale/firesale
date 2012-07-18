@@ -46,6 +46,7 @@
 						<td><?php echo $this->settings->get('currency') . $order['price_ship']; ?></td>
 						<td class="actions">
 							<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>">Edit</a>
+							<a class="button small confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>">Delete</a>
 						</td>
 					</tr>
 <?php endforeach; ?>
@@ -67,6 +68,10 @@
 		
 			<button class="btn orange" value="dispatched" name="btnAction" type="submit" disabled="">
 				<span>Mark as Dispatched</span>
+			</button>
+
+			<button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
+				<span>Delete Products</span>
 			</button>
 		</div>
 

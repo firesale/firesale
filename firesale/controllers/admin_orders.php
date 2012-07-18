@@ -86,6 +86,13 @@ class Admin_orders extends Admin_Controller
 						'success_message'	=> lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
 						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
+
+			// Check for products
+			if( isset($input['item']) AND !empty($input['item']) )
+			{
+				$func = ( $id == NULL ? 'add' : 'edit' ) . '_product_items';
+				$this->orders_m->$func($input['item']);
+			}
 		
 		}
 		else
@@ -137,6 +144,27 @@ class Admin_orders extends Admin_Controller
 
 	}
 
+	public function delete($id = NULL)
+	{
+
+		// Delete
+		if( $this->orders_m->delete_order($id) )
+		{
+			$this->session->set_flashdata('success', lang('firesale:orders:delete_success'));
+		}
+		else
+		{
+			$this->session->set_flashdata('error', lang('firesale:orders:delete_error'));
+		}
+
+		// Redirect?
+		if( !$this->input->post('btnAction') )
+		{
+			redirect('/admin/firesale/orders');
+		}
+
+	}
+
 	public function status()
 	{
 
@@ -159,7 +187,14 @@ class Admin_orders extends Admin_Controller
 
 			foreach( $input['action_to'] AS $order )
 			{
-				$this->db->where('id', $order)->update('firesale_orders', array('status' => $status));
+				if( $input['btnAction'] == 'delete' )
+				{
+					$this->delete($order);
+				}
+				else
+				{
+					$this->db->where('id', $order)->update('firesale_orders', array('status' => $status));
+				}
 			}
 
 		}

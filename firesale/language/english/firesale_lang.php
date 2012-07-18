@@ -130,6 +130,8 @@
 	$lang['firesale:orders:view_order']		= 'View Order #%s';
 	$lang['firesale:orders:title_create'] 	= 'Create Order';
 	$lang['firesale:orders:title_edit']	  	= 'Edit Order #%s';
+	$lang['firesale:orders:delete_success'] = 'Order deleted successfully';
+	$lang['firesale:orders:delete_error']	= 'Order was not deleted due to an issue';
 	
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';

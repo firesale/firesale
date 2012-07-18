@@ -1,6 +1,7 @@
 /* General */
 .clear { clear: both; height: 0; line-height: 0; }
 tbody tr:last-child { border: none; }
+.actions { width: 115px; }
 
 /* Tabs */
 .title ul { display: inline-block; width: 500px; height: 25px; position: relative; margin: 9px 0 0 0 !important; float: right; }
@@ -13,3 +14,4 @@ fieldset { padding: 0; margin: 0; border: none; }
 ul.width-half { width: 50% !important; display: block; float: left; }
 input[type=text] { width: 300px; }
 #price_sub, #price_ship, #price_total { min-width: 70px !important; width: 70px !important; }
+#products input { width: 60px; min-width: 60px; }
