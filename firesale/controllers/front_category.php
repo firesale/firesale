@@ -19,7 +19,7 @@ class Front_category extends Public_Controller {
 
 	}
 	
-	public function index($category, $start = 0)
+	public function index($category, $start = 0, $extra = NULL)
 	{
 	
 		// Get cookie data
@@ -45,6 +45,14 @@ class Front_category extends Public_Controller {
 			else
 			{
 				$where   = "category = '{$category['id']}' AND status = 1";
+			}
+
+			// Check start
+			if( !is_int($start) AND substr($start, 0, 4) == 'sale' )
+			{
+				$sale   = $start;
+				$start  = $extra;
+				$where .= ' AND `price` < `rrp`';
 			}
 
 			// Set query paramaters
@@ -81,8 +89,11 @@ class Front_category extends Public_Controller {
 			$this->data->ordering = get_order();
 
 			// Assign pagination
-			$this->data->pagination = create_pagination('/category/' . $category['slug'], $this->categories_m->total_products($category), $this->perpage, 3);
-			$this->data->pagination['shown'] = count($products);
+			if( !empty($products) )
+			{
+				$this->data->pagination = create_pagination('/category/' . $category['slug'] . ( isset($sale) ? '/' . $sale : '' ),  $this->categories_m->total_products($category), $this->perpage, ( isset($sale) ? 4 : 3 ));
+				$this->data->pagination['shown'] = count($products);
+			}
 
 			// Breadcrumbs
 			$cat_tree = $this->products_m->get_cat_path($this->data->products[0]['category']['id'], true);
