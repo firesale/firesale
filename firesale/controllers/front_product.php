@@ -69,7 +69,7 @@ class Front_product extends Public_Controller {
 			$this->data->product['description'] = str_replace('[BR]', '<br /><br />', $this->data->product['description']);
 
 			// Fire events
-			Events::trigger('product_viewed', $product->id);
+			Events::trigger('product_viewed', array('id' => $this->data->product['id']));
 		
 			// Build Page
 			$this->template->set_breadcrumb($this->data->product['title'], '/product/' . $this->data->product['slug'])
