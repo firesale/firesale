@@ -86,13 +86,16 @@
 	$lang['firesale:label_stock_order']	= 'More stock ordered';
 	$lang['firesale:label_stock_ended']	= 'Discontinued';
 
+	$lang['firesale:label_order']		= 'Order';
 	$lang['firesale:label_gateway']		= 'Payment Method';
 	$lang['firesale:label_shipping']	= 'Shipping Method';
+	$lang['firesale:label_quantity']	= 'Quantity';
 	$lang['firesale:label_price_total'] = 'Total Price';
 	$lang['firesale:label_price_ship']	= 'Shipping Cost';
 	$lang['firesale:label_price_sub']	= 'Sub-total';
 	$lang['firesale:label_ship_to']		= 'Shipped to';
 	$lang['firesale:label_date']		= 'Date';
+	$lang['firesale:label_product']		= 'Product';
 	$lang['firesale:label_products']	= 'Products';
 	$lang['firesale:label_company']		= 'Company Name';
 	$lang['firesale:label_firstname']	= 'First Name';

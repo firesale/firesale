@@ -24,7 +24,7 @@
             <ul<?php echo ( $title != 'general' ? ' class="width-half"' : '' ); ?>>
 <?php foreach( $section AS $field ): ?>
               <li>
-                <label for="<?php echo $field['input_slug']; ?>"><?php echo $field['input_title']; ?> <?php echo $field['required']; ?>:</label>
+                <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
                 <?php echo $field['input']; ?>
               </li>
 <?php endforeach; ?>

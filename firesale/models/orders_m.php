@@ -97,7 +97,7 @@ class Orders_m extends MY_Model
 
 		// Variables
 		$array = array(
-					'input_title'  => lang('firesale:label_user_order'),
+					'input_title'  => 'lang:firesale:label_user_order',
 					'input_slug'   => 'created_by',
 					'instructions' => '',
 					'value'		   => $id,

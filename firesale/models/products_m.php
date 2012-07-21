@@ -138,10 +138,11 @@ class Products_m extends MY_Model {
 		// Variables
 		$id   = $input['action_to'][0];
 		$data = array(
-					'code'	=> $input['id'],
-					'title'	=> $input['title'],
-					'stock'	=> $input['stock'],
-					'price'	=> $input['price']
+					'code'	   => $input['id'],
+					'title'	   => $input['title'],
+					'stock'	   => $input['stock'],
+					'category' => $input['parent'],
+					'price'	   => $input['price']
 				);
 		
 		// Update stock status
