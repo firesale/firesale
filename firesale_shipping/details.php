@@ -60,7 +60,7 @@ class Module_Firesale_shipping extends Module {
 		
 		// Add fields
 		$fields   = array();
-		$template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => FALSE, 'unique' => FALSE);
 		$fields[] = array_merge($template, array('name' => 'firesale:label_weight_kg', 'slug' => 'shipping_weight', 'type' => 'text', 'extra' => array('max_length' => 10, 'data-tab' => 'shipping')));
 		$fields[] = array_merge($template, array('name' => 'firesale:label_height_cm', 'slug' => 'shipping_height', 'type' => 'text', 'extra' => array('max_length' => 10, 'data-tab' => 'shipping')));
 		$fields[] = array_merge($template, array('name' => 'firesale:label_width_cm', 'slug' => 'shipping_width', 'type' => 'text', 'extra' => array('max_length' => 10, 'data-tab' => 'shipping')));

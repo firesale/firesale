@@ -42,7 +42,9 @@ class Front_category extends Public_Controller {
 				$cat_ids = $this->categories_m->get_children($category['id']);
 				$where   = "`category` IN (" . implode(',', $cat_ids) . ") AND `status` = '1'";
 			}
-			else
+
+			// Default
+			if( !isset($where) )
 			{
 				$where   = "category = '{$category['id']}' AND status = 1";
 			}
