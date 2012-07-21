@@ -35,18 +35,17 @@ class Front_category extends Public_Controller {
 			
 			// Variables
 			$products = array();
+			$children = $this->categories_m->get_children($category['id']);
 
-			// Check for parent
-			if( $category['parent'] == 0 )
+			// Check for children
+			if( !empty($children) )
 			{
-				$cat_ids = $this->categories_m->get_children($category['id']);
-				$where   = "`category` IN (" . implode(',', $cat_ids) . ") AND `status` = '1'";
+				$children[] = $category['id'];
+				$where      = "`category` IN (" . implode(',', $children) . ") AND `status` = '1'";
 			}
-
-			// Default
-			if( !isset($where) )
+			else
 			{
-				$where   = "category = '{$category['id']}' AND status = 1";
+				$where = "category = '{$category['id']}' AND status = 1";
 			}
 
 			// Check start
@@ -67,7 +66,7 @@ class Front_category extends Public_Controller {
 						'order_by'	=> $this->data->order['by'],
 						'sort'		=> $this->data->order['dir']
 					   );
-			
+
 			// Get product
 			$entry = $this->streams->entries->get_entries($params);
 			

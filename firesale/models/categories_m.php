@@ -31,12 +31,13 @@ class Categories_m extends MY_Model {
     public function total_products($category)
     {
 
-    	$query = $this->db->select('id');
+    	$query    = $this->db->select('id');
+		$children = $this->get_children($category['id']);
 
-    	if( $category['parent'] == 0 )
+    	if( !empty($children) )
 		{
-			$cat_ids = $this->get_children($category['id']);
-			$query->where_in('category', $cat_ids);
+			$children[] = $category['id'];
+			$query->where_in('category', $children);
 		}
 		else
 		{
