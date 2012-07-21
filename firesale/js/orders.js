@@ -45,11 +45,7 @@ $(function() {
 								'</tr>'
 							);
 						}
-						var t = 0;
-						$('table.cart tbody tr').each(function() { t += parseFloat($(this).find('td.total span').text()); });
-						$('input[name=price_total]').val(( t + parseFloat($('input[name=price_ship]').val()) ).toFixed(2));
-						$('input[name=price_sub]').val(( t * (( 100 - tax_rate ) / 100 )).toFixed(2));
-
+						caclulatePrice();
 					}
 					else
 					{
@@ -65,9 +61,32 @@ $(function() {
 		});
 	});
 
+	// Mark for deletion or change qty?
+	$('table.cart tbody input').change(function() {
+		if( $(this).is('[type=text]') )
+		{
+			var p = parseFloat($(this).parents('tr').find('td.price span').text());
+			$(this).parents('tr').find('td.total span').text(( parseInt($(this).val()) * p ).toFixed(2));
+		}
+		calculatePrice();
+	});
+
 });
 
 function notif(level, msg)
 {
 	pyro.add_notification($('<div class="alert ' + level + '">'+msg+'</div>'));
+}
+
+function calculatePrice()
+{
+	var t = 0;
+	$('table.cart tbody tr').each(function() {
+		if( !$(this).find('td input[type=checkbox]').is(':checked') )
+		{
+			t += parseFloat($(this).find('td.total span').text());
+		}
+	});
+	$('input[name=price_total]').val(( t + parseFloat($('input[name=price_ship]').val()) ).toFixed(2));
+	$('input[name=price_sub]').val(( t * (( 100 - tax_rate ) / 100 )).toFixed(2));
 }

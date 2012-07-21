@@ -84,15 +84,34 @@ class Admin_orders extends Admin_Controller
 			$extra 	= array(
 						'return' 			=> '/admin/firesale/orders/edit/-id-',
 						'success_message'	=> lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+						'error_message'		=> lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
 
 			// Check for products
 			if( isset($input['item']) AND !empty($input['item']) )
 			{
-				// TODO: Update/Delete products on update
+
+				// Loop order items
+				foreach( $input['item'] AS $product => $item )
+				{
+					// Remove product?
+					if( $id != NULL AND isset($item['remove']) AND $item['remove'] == 1 )
+					{
+						$this->orders_m->remove_order_item($id, $product);
+					}
+					// Update quantity
+					elseif( $id != NULL )
+					{
+						// Get product
+						$product = (array)$this->products_m->get_product_by_id($product);
+
+						// Update/add product
+						$this->orders_m->insert_update_order_item($id, $product, $item['qty']);
+					}
+				}
+
 			}
-		
+
 		}
 		else
 		{
@@ -207,13 +226,15 @@ class Admin_orders extends Admin_Controller
 	{
 		if( $this->input->is_ajax_request() )
 		{
-			// Get & format product
-			$product         = (array)$this->products_m->get_product_by_id($id);
-			$product['name'] = $product['title'];
+			// Get product
+			$product = (array)$this->products_m->get_product_by_id($id);
 
 			// Insert/Update item
 			if( $this->orders_m->insert_update_order_item($order, $product, $qty) )
 			{
+				// Update price
+				$this->orders_m->update_order_cost($order, TRUE, FALSE);
+
 				// Return to the browser
 				$qty = ( $qty > $product['stock'] ? $product['stock'] : $qty );
 				$data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format(( $qty * $product['price']), 2));

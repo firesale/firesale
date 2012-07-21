@@ -213,7 +213,7 @@ class Orders_m extends MY_Model
 				'order_id'		=> $order_id,
 				'product_id'	=> $product['id'],
 				'code'			=> $product['code'],
-				'name'			=> $product['name'],
+				'name'			=> ( isset($product['title']) ? $product['title'] : $product['name'] ),
 				'price'			=> $product['price'],
 				'qty'			=> $qty
 		 	);
@@ -235,17 +235,29 @@ class Orders_m extends MY_Model
 		return FALSE;
 	}
 
-	public function update_order_cost($order_id, $update = TRUE)
+	public function update_order_cost($order_id, $update = TRUE, $cart = TRUE)
 	{
 
 		// Variables
 		$total = 0;
 		$tax   = $this->settings->get('firesale_tax');
 
-		// Run through them
-		foreach( $this->cart->contents() AS $item )
+		// Run through cart items
+		if( $cart == TRUE )
 		{
-			$total += ( $item['qty'] * $item['price'] );
+			foreach( $this->cart->contents() AS $item )
+			{
+				$total += ( $item['qty'] * $item['price'] );
+			}
+		}
+		// Otherwise use DB entries
+		else
+		{
+			$products = $this->db->where('order_id', $order_id)->get('firesale_orders_items')->result_array();
+			foreach( $products AS $product )
+			{
+				$total += ( $product['qty'] * $product['price'] );
+			}
 		}
 
 		// Format
@@ -253,9 +265,12 @@ class Orders_m extends MY_Model
 		$sub   = round($total - ( ( $total / 100 ) * $tax ), 2);
 
 		// Update cart
-		$this->cart->total    = number_format($total, 2);
-		$this->cart->subtotal = number_format($sub, 2);
-		$this->cart->tax 	  = number_format(( $total - $sub), 2);
+		if( $cart == TRUE )
+		{
+			$this->cart->total    = number_format($total, 2);
+			$this->cart->subtotal = number_format($sub, 2);
+			$this->cart->tax 	  = number_format(( $total - $sub), 2);
+		}
 
 		// Update?
 		if( $update == TRUE )
