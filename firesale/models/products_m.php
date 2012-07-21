@@ -141,6 +141,7 @@ class Products_m extends MY_Model {
 					'code'	=> $input['id'],
 					'title'	=> $input['title'],
 					'stock'	=> $input['stock'],
+					'category'	=> $input['parent'],
 					'price'	=> $input['price']
 				);
 		
