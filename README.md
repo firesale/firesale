@@ -22,7 +22,7 @@ This beta is an opportunity for you and us to evaluate the current state of the 
 ### Theme
 The default views have not been completed and during the beta we've decided to provide the demo theme that has been shown in a number of screenshots during development so add-on and theme authors can see how certain elements are done and what variables are provided to the front-end. There are a large number of redundant if-module-installed queries that can be ignored, these were in place to simply stop having to rewrite parts of it as we played with extra add-ons. The theme was based on [Shoppica](http://www.shoppica.com/html) and is not intended to be used in a production environment. The theme is not yet finished and was never intended for release or use, as such cross-browser compatibility is patchy.
 
-You can find a copy to download via [this link](http://www.jholdroyd.co.uk/fs-theme.zip).
+You can find a copy to download via [this link](https://dl.dropbox.com/u/32596384/fs-theme.zip).
 
 ## Installation
 
