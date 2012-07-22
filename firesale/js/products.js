@@ -58,6 +58,7 @@ $(function(){
 	// Image reordering
 	$('#dropbox').sortable({
 		cursor: 'move',
+		cancel: 'span.message',
 		stop: function(event, ui) {
 			var o = '';
 			$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });

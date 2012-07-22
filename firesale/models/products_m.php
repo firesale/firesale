@@ -215,7 +215,7 @@ class Products_m extends MY_Model {
 	public function get_file_folder_by_slug($slug)
 	{
 
-		$result = $this->db->where("slug = '{$slug}'")->get('file_folders');
+		$result = $this->db->where('slug', $slug)->get('file_folders');
 
 		if( $result->num_rows() )
 		{

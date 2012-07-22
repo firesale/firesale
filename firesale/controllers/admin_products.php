@@ -190,10 +190,19 @@ class Admin_products extends Admin_Controller
 	{
 	
 		// Get product
-		$row  = $this->row_m->get_row($id, $this->stream, FALSE);
+		$row    = $this->row_m->get_row($id, $this->stream, FALSE);
+		$folder = $this->products_m->get_file_folder_by_slug($row->slug);
 
-		// Get folder
-		if( $folder = $this->products_m->get_file_folder_by_slug($row->slug) )
+		// Create folder?
+		if( !$folder )
+		{
+			$parent = $this->products_m->get_file_folder_by_slug('product-images');
+			$folder = Files::create_folder($parent->id, $row->title);
+			$folder = (object)$folder['data'];
+		}
+
+		// Check for folder
+		if( is_object($folder) )
 		{
 
 			// Upload it
