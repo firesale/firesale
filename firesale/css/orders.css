@@ -12,6 +12,7 @@ tbody tr:last-child { border: none; }
 /* Form */
 fieldset { padding: 0; margin: 0; border: none; }
 ul.width-half { width: 50% !important; display: block; float: left; }
+ul.width-half > li { min-height: 44px; }
 input[type=text] { width: 300px; }
 #price_sub, #price_ship, #price_total { min-width: 70px !important; width: 70px !important; }
 #products input { width: 60px; min-width: 60px; }

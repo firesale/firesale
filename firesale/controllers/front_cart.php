@@ -18,6 +18,7 @@ class Front_cart extends Public_Controller
 		// Load the required models
 		$this->load->driver('Streams');
 		$this->load->model('firesale/orders_m');
+		$this->load->model('firesale/address_m');
 		$this->load->model('firesale/products_m');
 		
 		// Get the stream
@@ -310,22 +311,32 @@ class Front_cart extends Public_Controller
 				}
 				
 				// Modify posted data
-				$input['created_by']	= ( isset($this->current_user->id) ? $this->current_user->id : NULL );
-				$input['status'] 		= '1'; // Unpaid
-				$input['price_sub'] 	= $this->cart->subtotal;
-				$input['price_ship']	= $shipping['price'];
-				$input['price_total'] 	= number_format(( $this->cart->total + $shipping['price'] ), 2);
-				$_POST 					= $input;
+				$input['shipping']	  = ( isset($input['shipping']) ? $input['shipping'] : 0 );
+				$input['created_by']  = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
+				$input['status'] 	  = '1'; // Unpaid
+				$input['price_sub']   = $this->cart->subtotal;
+				$input['price_ship']  = $shipping['price'];
+				$input['price_total'] = number_format(( $this->cart->total + $shipping['price'] ), 2);
+				$_POST 				  = $input;
 
 				// Generate validation
-				$fields = $this->streams_m->get_stream_fields($this->stream->id);
-				$rules  = $this->fields->set_rules($fields, 'new', $skip, TRUE,  NULL);
-				// TODO: Append validation rules to include gateway/shipping callbacks
+				$rules = $this->orders_m->build_validation($this->stream->id);
 				$this->form_validation->set_rules($rules);
 
 				// Run validation
 				if( $this->form_validation->run() === TRUE )
 				{
+
+					// Check for addresses
+					if( !isset($input['ship_to']) OR $input['ship_to'] == 'new' )
+					{
+						$input['ship_to'] = $this->address_m->add_address($input, 'ship');
+					}
+
+					if( !isset($input['bill_to']) OR $input['bill_to'] == 'new' )
+					{
+						$input['bill_to'] = $this->address_m->add_address($input, 'bill');
+					}
 
 					// Insert order
 					if( $id = $this->orders_m->insert_order($input) )
@@ -367,17 +378,20 @@ class Front_cart extends Public_Controller
 
 			}
 
-			// Get the stream fields
-			$fields = $this->fields->build_form($this->stream, 'new', $input, FALSE, FALSE, $skip, $extra);		
-
-			// Format fields
-			$data['fields'] = $this->orders_m->fields_to_tabs($fields);
+			// Get fields
+			$data['fields'] = $this->address_m->get_address_form();
 			
 			// Get available shipping methods
 			if( isset($this->firesale->roles['shipping']) )
 			{
 				$role = $this->firesale->roles['shipping'];
 				$data['shipping'] = $this->$role['model']->calculate_methods($this->cart->contents());
+			}
+
+			// Get available bliing and shipping options
+			if( isset($this->current_user->id) )
+		 	{
+				$data['addresses'] = $this->address_m->get_addresses($this->current_user->id);
 			}
 
 			// Build page
@@ -391,7 +405,17 @@ class Front_cart extends Public_Controller
 	  
 	}
 
-	public function _valid_gateway($value)
+	public function _validate_address($value)
+	{
+		return TRUE;
+	}
+
+	public function _validate_shipping($value)
+	{
+		return TRUE;
+	}
+
+	public function _validate_gateway($value)
 	{
 		$this->form_validation->set_message('_valid_gateway', 'The payment gateway you selected is not valid');
 		return $this->gateways->is_enabled($value);

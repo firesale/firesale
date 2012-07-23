@@ -43,7 +43,12 @@ Either via the Routes Add-on or directly into the config we suggest you put the 
 	$route['cart(:any)?']    		  = 'firesale/cart$1';
 	$route['users/orders/([0-9]+)']   = 'firesale/front_orders/view_order/$1';
 	$route['users/orders']   		  = 'firesale/front_orders/index';
+	$route['users/addresses(/:any)?'] = 'firesale/front_address$1';
 
 ## Feedback and issues
 
 If you find any issues or want to provide feedback we'd appreciate it if you used the GitHub issue tracker and we'll try to address them as soon as we can.
+
+# Contributors
+
+Thank you to everyone that has helped along the way, contributing not only code but time, ideas and coffee, without you this wouldn't have been possible.

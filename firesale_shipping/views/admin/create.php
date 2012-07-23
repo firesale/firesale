@@ -17,7 +17,7 @@
 
 <?php foreach( $fields AS $input ): ?>
 					<li class="<?php echo alternator('even', ''); ?>">
-						<label for="<?php echo $input['input_slug']; ?>"><?php echo lang($input['input_title']); ?> <?php echo $input['required']; ?></label>
+						<label for="<?php echo $input['input_slug']; ?>"><?php echo lang(substr($input['input_title'], 5)); ?> <?php echo $input['required']; ?></label>
 						<div class="input"><?php echo $input['input']; ?></div>
 					</li>
 

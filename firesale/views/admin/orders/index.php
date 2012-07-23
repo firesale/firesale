@@ -38,10 +38,10 @@
 					<tr>
 						<td><input type="checkbox" name="action_to[]" value="<?php echo $order['id']; ?>"  /></td>
 						<td><?php echo date('H:i:s d-m-Y', $order['created']); ?></td>
-						<td><?php echo $order['ship_firstname'] . ' ' . $order['ship_lastname']; ?></td>
+						<td><?php echo $order['ship_to']['firstname'] . ' ' . $order['ship_to']['lastname']; ?></td>
 						<td><?php echo $order['status']['value']; ?></td>
 						<td><?php echo $order['products']; ?></td>
-						<td><?php echo $order['ship_country']; ?></td>
+						<td><?php echo $order['ship_to']['country']; ?></td>
 						<td><?php echo $this->settings->get('currency') . $order['price_total']; ?></td>
 						<td><?php echo $this->settings->get('currency') . $order['price_ship']; ?></td>
 						<td class="actions">

@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module {
 	
-	public $version = '0.9.1';
+	public $version = '0.9.3';
 	public $language_file = 'firesale/firesale';
 	
 	public function __construct()
@@ -21,7 +21,7 @@ class Module_Firesale extends Module {
 				'en' => 'FireSALE'
 			),
 			'description' => array(
-				'en' => 'A lightweight eCommerce platform that\'s too legit to have a Website...or Twitter...or Facebook...'
+				'en' => 'The lightweight eCommerce platform for PyroCMS'
 			),
 			'frontend'		=> TRUE,
 			'backend'		=> TRUE,
@@ -232,6 +232,38 @@ class Module_Firesale extends Module {
 		// Install the core gateways
 		$this->gateways->install_core();
 
+		#####################
+		## ADDRESS HISTORY ##
+		#####################
+
+		// Create orders stream
+		if( !$this->streams->streams->add_stream(lang('firesale:sections:addresses'), 'firesale_addresses', 'firesale_addresses', NULL, NULL) ) return FALSE;
+
+		// Get stream data
+		$addresses = end($this->streams->streams->get_streams('firesale_addresses'));
+
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_addresses', 'assign' => 'firesale_addresses', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_company', 'slug' => 'company', 'extra' => array('max_length' => 255), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_firstname', 'slug' => 'firstname', 'extra' => array('max_length' => 100));
+		$fields[] = array('name' => 'lang:firesale:label_lastname', 'slug' => 'lastname', 'extra' => array('max_length' => 100));
+		$fields[] = array('name' => 'lang:firesale:label_email', 'slug' => 'email', 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_phone', 'slug' => 'phone', 'extra' => array('max_length' => 255), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_address1', 'slug' => 'address1', 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_address2', 'slug' => 'address2', 'extra' => array('max_length' => 255), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_city', 'slug' => 'city', 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_county', 'slug' => 'county', 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_postcode', 'slug' => 'postcode', 'extra' => array('max_length' => 40));
+		$fields[] = array('name' => 'lang:firesale:label_country', 'slug' => 'country', 'extra' => array('max_length' => 255));
+
+		// Combine
+		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
+		
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
+
 		############################
 		## ORDERS & ORDER HISTORY ##
 		############################
@@ -253,34 +285,15 @@ class Module_Firesale extends Module {
 		// Add fields
 		$fields   = array();
 		$template = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_ip', 'slug' => 'ip', 'type' => 'text', 'extra' => array('max_length' => 32), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_gateway', 'slug' => 'gateway', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $gateways->id), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_shipping', 'slug' => 'shipping', 'type' => 'integer', 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => $orderstatus, 'choice_type' => 'dropdown', 'default_value' => '1'));
 		$fields[] = array('name' => 'lang:firesale:label_price_sub', 'slug' => 'price_sub', 'extra' => array('max_length' => 10), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_price_ship', 'slug' => 'price_ship', 'extra' => array('max_length' => 10), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_price_total', 'slug' => 'price_total', 'extra' => array('max_length' => 10), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_company', 'slug' => 'ship_company', 'extra' => array('max_length' => 255), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_firstname', 'slug' => 'ship_firstname', 'extra' => array('max_length' => 100));
-		$fields[] = array('name' => 'lang:firesale:label_lastname', 'slug' => 'ship_lastname', 'extra' => array('max_length' => 100));
-		$fields[] = array('name' => 'lang:firesale:label_email', 'slug' => 'ship_email', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_phone', 'slug' => 'ship_phone', 'extra' => array('max_length' => 255), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_address1', 'slug' => 'ship_address1', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_address2', 'slug' => 'ship_address2', 'extra' => array('max_length' => 255), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_city', 'slug' => 'ship_city', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_county', 'slug' => 'ship_county', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_postcode', 'slug' => 'ship_postcode', 'extra' => array('max_length' => 40));
-		$fields[] = array('name' => 'lang:firesale:label_country', 'slug' => 'ship_country', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_company', 'slug' => 'bill_company', 'extra' => array('max_length' => 255), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_firstname', 'slug' => 'bill_firstname', 'extra' => array('max_length' => 100));
-		$fields[] = array('name' => 'lang:firesale:label_lastname', 'slug' => 'bill_lastname', 'extra' => array('max_length' => 100));
-		$fields[] = array('name' => 'lang:firesale:label_email', 'slug' => 'bill_email', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_phone', 'slug' => 'bill_phone', 'extra' => array('max_length' => 255), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_address1', 'slug' => 'bill_address1', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_address2', 'slug' => 'bill_address2', 'extra' => array('max_length' => 255), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_city', 'slug' => 'bill_city', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_county', 'slug' => 'bill_county', 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_postcode', 'slug' => 'bill_postcode', 'extra' => array('max_length' => 40));
-		$fields[] = array('name' => 'lang:firesale:label_country', 'slug' => 'bill_country', 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_ship_to', 'slug' => 'ship_to', 'type' => 'relationship', 'extra' => array('choose_stream' => $addresses->id), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_bill_to', 'slug' => 'bill_to', 'type' => 'relationship', 'extra' => array('choose_stream' => $addresses->id), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_shipping', 'slug' => 'shipping', 'type' => 'integer', 'required' => FALSE);
 	
 		// Combine
 		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
@@ -355,6 +368,7 @@ class Module_Firesale extends Module {
 		$this->streams->utilities->remove_namespace('firesale_categories');
 		$this->streams->utilities->remove_namespace('firesale_products');
 		$this->streams->utilities->remove_namespace('firesale_gateways');
+		$this->streams->utilities->remove_namespace('firesale_addresses');
 		$this->streams->utilities->remove_namespace('firesale_orders');
 		$this->streams->utilities->remove_namespace('firesale_orders_items');
 		

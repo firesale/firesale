@@ -11,9 +11,9 @@
 			<h4>&nbsp;</h4>
 			<ul>
               <li><a href="#products">Products</a></li>
-<?php foreach( $tabs AS $tab ): ?>
-              <li><a href="#<?php echo $tab; ?>"><?php echo lang('firesale:title:' . $tab); ?></a></li>
-<?php endforeach; ?>
+              <li><a href="#bill"><?php echo lang('firesale:title:bill'); ?></a></li>
+              <li><a href="#ship"><?php echo lang('firesale:title:ship'); ?></a></li>
+              <li><a href="#general"><?php echo lang('firesale:title:general'); ?></a></li>
 			</ul>
 		</section>
 

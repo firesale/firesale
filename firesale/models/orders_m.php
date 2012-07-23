@@ -59,37 +59,54 @@ class Orders_m extends MY_Model
 
 	}
 
-	public function fields_to_tabs($fields)
+	public function build_validation()
 	{
-	
+
 		// Variables
-		$ignore  = array('gateway', 'shipping', 'status', 'price_sub', 'price_ship', 'price_total');
-		$address = array('address1', 'address2', 'city', 'county', 'postcode', 'country');
-		$tabs    = array();
+		$rules  = array();
+		$input  = $this->input->post();
 
-		foreach( $fields AS $field )
+		// Get rules
+		$stream = $this->streams->streams->get_stream('firesale_addresses', 'firesale_addresses');
+		$fields = $this->streams_m->get_stream_fields($stream->id);
+		$_rules = $this->fields->set_rules($fields, 'new', array(), TRUE,  NULL);
+
+		// Build validation
+		foreach( $_rules AS $rule )
 		{
-		
-			if( in_array($field['input_slug'], $ignore) AND !strstr($_SERVER['REQUEST_URI'], 'admin/firesale/orders') )
-				continue;
-			
-			if( in_array($field['input_slug'], $ignore) )
+
+			// Shipping
+			if( !isset($input['ship_to']) )
 			{
-				$tab  = 'general';
-				$type = 'details';
-			}
-			else
-			{
-				$tab  = substr($field['input_slug'], 0, 4);
-				$type = ( in_array(str_replace($tab . '_', '', $field['input_slug']), $address) ? 'address' : 'details' );
+				$_rule   		= $rule;
+				$_rule['field'] = 'ship_' . $_rule['field'];
+				$rules[] 		= $_rule;
 			}
 
-			if( !array_key_exists($tab, $tabs) ) { $tabs[$tab] = array('details' => array(), 'address' => array()); }
-			$tabs[$tab][$type][] = $field;
-		
+			// Billing
+			if( !isset($input['bill_to']) )
+			{
+				$_rule   		= $rule;
+				$_rule['field'] = 'bill_' . $_rule['field'];
+				$rules[] 		= $_rule;
+			}
+
 		}
-		
-		return $tabs;	
+
+		// Set callbacks
+		$rules[] = array('field' => 'gateway', 'label' => 'lang:firesale:label_gateway', 'rules' => 'callback__validate_gateway');
+		$rules[] = array('field' => 'shipping', 'label' => 'lang:firesale:label_shipping', 'rules' => 'callback__validate_shipping');
+		if( isset($input['ship_to']) )
+		{
+			$rules[] = array('field' => 'ship_to', 'label' => 'lang:firesale:label_ship_to', 'rules' => 'callback__validate_address');
+		}
+		if( isset($input['bill_to']) )
+		{
+			$rules[] = array('field' => 'bill_to', 'label' => 'lang:firesale:label_bill_to', 'rules' => 'callback__validate_address');
+		}
+
+		// Return
+		return $rules;
 	}
 
 	public function user_field($id = NULL)
@@ -173,10 +190,22 @@ class Orders_m extends MY_Model
 	public function insert_order($input)
 	{
 
+		// Remove address input
+		$remove = array('bill_', 'ship_', 'btnAc');
+		$ignore = array('shipping', 'ship_to', 'bill_to');
+		foreach( $input AS $key => $val )
+		{
+			if( in_array(substr($key, 0, 5), $remove) AND !in_array($key, $ignore) )
+			{
+				unset($input[$key]);
+			}
+		}
+
 		// Append input
 		$input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
 		$input['price_ship']   	 = str_replace(',', '', $input['price_ship']);
 		$input['price_total']    = str_replace(',', '', $input['price_total']);
+		$input['ip']			 = $_SERVER['REMOTE_ADDR'];
 		$input['created'] 		 = date("Y-m-d H:i:s");
 		$input['ordering_count'] = 0;
 		unset($input['btnAction']);

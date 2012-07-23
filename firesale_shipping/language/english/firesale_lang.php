@@ -24,4 +24,3 @@
 	$lang['firesale:label_height_cm']	= 'Product Height (cm)';
 	$lang['firesale:label_width_cm']	= 'Product Width (cm)';
 	$lang['firesale:label_depth_cm']	= 'Product Depth (cm)';
-		

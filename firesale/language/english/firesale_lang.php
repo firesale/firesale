@@ -13,6 +13,7 @@
 	$lang['firesale:sections:categories'] 	= 'Categories';
 	$lang['firesale:sections:products'] 	= 'Products';
 	$lang['firesale:sections:orders'] 		= 'Orders';
+	$lang['firesale:sections:addresses'] 	= 'Addresses';
 	$lang['firesale:sections:orders_items']	= 'Order Items';
 	$lang['firesale:sections:gateways']		= 'Gateways';
 	$lang['firesale:sections:settings'] 	= 'Settings';
@@ -94,6 +95,7 @@
 	$lang['firesale:label_price_ship']	= 'Shipping Cost';
 	$lang['firesale:label_price_sub']	= 'Sub-total';
 	$lang['firesale:label_ship_to']		= 'Shipped to';
+	$lang['firesale:label_bill_to']		= 'Billed to';
 	$lang['firesale:label_date']		= 'Date';
 	$lang['firesale:label_product']		= 'Product';
 	$lang['firesale:label_products']	= 'Products';
@@ -110,6 +112,7 @@
 	$lang['firesale:label_country']		= 'Country';
 	$lang['firesale:label_details'] 	= 'My Billing and Shipping addresses are the same.';
 	$lang['firesale:label_user_order']	= 'User';
+	$lang['firesale:label_ip']			= 'IP Address';
 
 	$lang['firesale:label_nameaz']		= 'Name A - Z';
 	$lang['firesale:label_nameza']		= 'Name Z - A';
@@ -168,6 +171,9 @@
 	$lang['firesale:orders:status_processing']	= 'Processing';
 	$lang['firesale:orders:status_refunded']	= 'Refunded';
 	$lang['firesale:orders:status_cancelled']	= 'Cancelled';
+
+	// Addresses
+	$lang['firesale:addresses:title'] = 'My Addresses';
 
 	// Checkout (Shipping Method)
 	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';

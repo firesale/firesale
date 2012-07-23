@@ -79,6 +79,12 @@ class Front_orders extends Public_Controller
 			$order['price_ship']  = number_format($order['price_ship'], 2);
 			$order['price_total'] = number_format($order['price_total'], 2);
 
+			// Format products
+			foreach( $order['items'] AS $key => $item )
+			{
+				$order['items'][$key]['price'] = number_format($item['price'], 2);
+			}
+
 			// Build page
 			$this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
 						   ->set_breadcrumb('Home', '/home')

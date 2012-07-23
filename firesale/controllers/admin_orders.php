@@ -4,7 +4,6 @@ class Admin_orders extends Admin_Controller
 {
 
 	public $perpage = 30;
-	public $tabs    = array();
 	public $section = 'orders';
 
 	public function __construct()
@@ -15,6 +14,7 @@ class Admin_orders extends Admin_Controller
 		// Load the models
 		$this->load->model('orders_m');
 		$this->load->model('products_m');
+		$this->load->model('address_m');
 
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
@@ -112,6 +112,13 @@ class Admin_orders extends Admin_Controller
 
 			}
 
+			// Check for addresses
+			$ship = $this->address_m->update_address($input['ship_to'], $input, 'ship');
+			if( $ship != TRUE OR $input['ship_to'] != $input['bill_to'] )
+			{
+				$this->address_m->update_address($input['bill_to'], $input, 'bill');
+			}
+
 		}
 		else
 		{
@@ -126,8 +133,21 @@ class Admin_orders extends Admin_Controller
 		// Assign variables
 		if( $row !== NULL ) { $this->data = $row; }
 		$this->data->id		= $id;
-		$this->data->fields = $this->orders_m->fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs	= array_reverse(array_keys($this->data->fields));
+		$this->data->fields = array(
+								'general' => array('details' => $fields),
+								'ship'	  => $this->address_m->get_address_form('ship', ( $row != NULL ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->ship_to) : NULL )),
+								'bill'	  => $this->address_m->get_address_form('bill', ( $row != NULL ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->bill_to) : NULL ))
+							  );
+
+		// Add users as first general field
+		$users = $this->orders_m->user_field(( $row != NULL ? $row->created_by : NULL ));
+		array_unshift($this->data->fields['general']['details'], $users);
+
+		// Move/format ship_to and bill_to
+		$bill = end(array_splice($this->data->fields['general']['details'], 8, 1));
+		$ship = end(array_splice($this->data->fields['general']['details'], 7, 1));
+		array_unshift($this->data->fields['ship']['details'], $ship);
+		array_unshift($this->data->fields['bill']['details'], $bill);
 
 		// Get products
 		if( $id != NULL )
@@ -135,11 +155,7 @@ class Admin_orders extends Admin_Controller
 			$products = $this->orders_m->order_products($id);
 			$this->data->products = $products['products'];
 			$this->data->prod_drop = $this->products_m->build_dropdown();
-		}		
-
-		// Add users as first general field
-		$users = $this->orders_m->user_field(( $row != NULL ? $row->created_by : NULL ));
-		array_unshift($this->data->fields['general']['details'], $users);
+		}
 			
 		// Build the page
 		$this->template->title(lang('firesale:title') . ' ' . sprintf(lang('firesale:orders:title_' . ( $id == NULL ? 'create' : 'edit' )), $id))
