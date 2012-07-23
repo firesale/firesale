@@ -264,5 +264,19 @@ class Admin_orders extends Admin_Controller
 			}
 		}
 	}
+
+	public function ajax_get_address($user, $id)
+	{
+		/*if( $this->input->is_ajax_request() )
+		{*/
+			// Get Address
+			$address = $this->address_m->get_address($id, $user);
+			echo json_encode($address);
+			exit();
+		/*}
+
+		echo 'false';
+		exit();*/
+	}
 	
 }

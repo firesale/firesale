@@ -11,6 +11,24 @@ $(function() {
 
 	$('#price_sub, #price_ship, #price_total').before('<span>' + currency + '&nbsp;</span>');
 
+	// Change address
+	$('#ship_to, #bill_to').change(function() {
+		var pre = $(this).attr('id').replace('_to', '');
+		$.getJSON('/admin/firesale/orders/ajax_get_address/' + $('select[name=created_by]').val() + '/' + $(this).val(), function(data) {
+			if( data != 'false' )
+			{
+				for( var k in data )
+				{
+					$('#' + pre + '_' + k).val(data[k]);
+				}
+			}
+			else
+			{
+				alert('Error retrieving address');
+			}
+		});
+	});
+
 	// Add product
 	$('.items button').click(function(e) {
 		e.preventDefault();
