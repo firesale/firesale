@@ -2,7 +2,7 @@
 
 * Documentation: Coming Soon
 * License: MIT License, a copy of which is included with this package
-* Version: 0.9.1
+* Version: 0.9.3
 
 ## Team
 
