@@ -243,7 +243,7 @@ class Admin_orders extends Admin_Controller
 		if( $this->input->is_ajax_request() )
 		{
 			// Get product
-			$product = (array)$this->products_m->get_product_by_id($id);
+			$product = (array)$this->products_m->get_product($id);
 
 			// Insert/Update item
 			if( $this->orders_m->insert_update_order_item($order, $product, $qty) )
