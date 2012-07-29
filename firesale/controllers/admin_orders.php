@@ -13,6 +13,7 @@ class Admin_orders extends Admin_Controller
 		
 		// Load the models
 		$this->load->model('orders_m');
+		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->model('address_m');
 
@@ -47,7 +48,7 @@ class Admin_orders extends Admin_Controller
 			$params['where'] = $type . '=' . $query;
 		}
 		
-		// Get entries		products
+		// Get entries
 		$orders = $this->streams->entries->get_entries($params);
 
 		// Get product count
@@ -103,7 +104,7 @@ class Admin_orders extends Admin_Controller
 					elseif( $id != NULL )
 					{
 						// Get product
-						$product = (array)$this->products_m->get_product_by_id($product);
+						$product = (array)$this->products_m->get_product($product);
 
 						// Update/add product
 						$this->orders_m->insert_update_order_item($id, $product, $item['qty']);

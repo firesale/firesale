@@ -17,6 +17,7 @@ class Front_cart extends Public_Controller
 		
 		// Load the required models
 		$this->load->driver('Streams');
+		$this->load->model('firesale/cart_m');
 		$this->load->model('firesale/orders_m');
 		$this->load->model('firesale/address_m');
 		$this->load->model('firesale/categories_m');
@@ -97,7 +98,7 @@ class Front_cart extends Public_Controller
 
 					if( $product != FALSE )
 					{
-						$data[] = $this->orders_m->build_data($product, (int)$qtys[$key]);
+						$data[] = $this->cart_m->build_data($product, (int)$qtys[$key]);
 					}
 
 				}
@@ -112,7 +113,7 @@ class Front_cart extends Public_Controller
 
 			if( $product != FALSE )
 			{
-				$data[] = $this->orders_m->build_data($product, $qty);
+				$data[] = $this->cart_m->build_data($product, $qty);
 				$this->session->set_userdata('added', $product['id']);
 			}
 
@@ -122,12 +123,12 @@ class Front_cart extends Public_Controller
 		$this->cart->insert($data);
 
 		// Force available quanity
-		$this->orders_m->check_quantity($this->cart->contents(), $tmp);
+		$this->cart_m->check_quantity($this->cart->contents(), $tmp);
 
 		// Return for ajax or redirect
 		if( $this->input->is_ajax_request() )
 		{
-			echo $this->orders_m->ajax_response('ok');
+			echo $this->cart_m->ajax_response('ok');
 			exit();
 		}
 		else
@@ -233,7 +234,7 @@ class Front_cart extends Public_Controller
 			}
 			else if( $this->input->is_ajax_request() )
 			{
-				echo $this->orders_m->ajax_response('ok');
+				echo $this->cart_m->ajax_response('ok');
 				exit();
 			}
 			else
@@ -321,8 +322,12 @@ class Front_cart extends Public_Controller
 				$_POST 				  = $input;
 
 				// Generate validation
-				$rules = $this->orders_m->build_validation($this->stream->id);
+				$rules = $this->cart_m->build_validation();
 				$this->form_validation->set_rules($rules);
+
+				echo '<pre>';
+					print_r($rules);
+				echo '</pre>';
 
 				// Run validation
 				if( $this->form_validation->run() === TRUE )
@@ -506,7 +511,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// Sale made, run updates
-		$this->orders_m->sale_complete($order);
+		$this->cart_m->sale_complete($order);
 
 		// Clear cart
 		$this->cart->destroy();
