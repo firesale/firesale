@@ -57,7 +57,8 @@ class Search_m extends MY_Model {
 
 		$sql  = "SELECT p.*, c.`id` AS `cat_id`, c.`title` AS `cat_title`, MATCH(p.`title`, p.`description`) AGAINST('{$term}') AS `weight`
 				FROM `" . SITE_REF . "_firesale_products` AS p
-				INNER JOIN `" . SITE_REF . "_firesale_categories` AS c ON p.`category` = c.`id`
+				INNER JOIN `" . SITE_REF . "_firesale_products_firesale_categories` AS pc ON pc.`row_id` = p.`id`
+				INNER JOIN `" . SITE_REF . "_firesale_categories` AS c ON c.`id` = pc.`firesale_categories_id`
 				WHERE MATCH(p.`title`, p.`description`) AGAINST('{$term}')
 				AND p.`status` = 1";
 				
