@@ -89,6 +89,9 @@ class Admin_products extends Admin_Controller
 						'success_message'	=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
 						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
+
+			// Manually update categories
+			$this->products_m->update_categories($id, $this->stream->id, $input['category']);
 		
 		}
 		else
@@ -103,10 +106,9 @@ class Admin_products extends Admin_Controller
 
 		// Assign variables
 		if( $row !== NULL ) { $this->data = $row; }
-		$this->data->controller =& $this;
-		$this->data->id			=  $id;
-		$this->data->fields     =  $this->products_m->fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs		=  array_reverse(array_keys($this->data->fields));
+		$this->data->id		=  $id;
+		$this->data->fields =  $this->products_m->fields_to_tabs($fields, $this->tabs);
+		$this->data->tabs	=  array_reverse(array_keys($this->data->fields));
 		
 		// Get current images
 		if( $row != FALSE )

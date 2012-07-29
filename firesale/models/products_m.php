@@ -222,6 +222,25 @@ class Products_m extends MY_Model {
 		}
 	
 	}
+
+	public function update_categories($product_id, $stream_id, $categories)
+	{
+
+		// Drop current categories
+		$this->db->where('row_id', $product_id)->delete('firesale_products_firesale_categories');
+
+		// Get array of new categories
+		$categories = str_replace('category_', '', $categories);
+		$categories = explode(', ', $categories);
+
+		// Loop and insert
+		for( $i = 0; $i < count($categories); $i++ )
+		{
+			$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => $categories[$i]);
+			$this->db->insert('default_firesale_products_firesale_categories', $data);
+		}
+
+	}
 	
 	public function delete_product($id)
 	{
