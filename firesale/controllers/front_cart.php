@@ -19,6 +19,7 @@ class Front_cart extends Public_Controller
 		$this->load->driver('Streams');
 		$this->load->model('firesale/orders_m');
 		$this->load->model('firesale/address_m');
+		$this->load->model('firesale/categories_m');
 		$this->load->model('firesale/products_m');
 		
 		// Get the stream
@@ -91,8 +92,8 @@ class Front_cart extends Public_Controller
 				foreach( $this->input->post('prd_code', TRUE) as $key => $prd_code )
 				{
 					
-					$product = $this->products_m->get_product_by_id($prd_code);
-					$tmp[$product->id] = $product->stock;
+					$product = $this->products_m->get_product($prd_code);
+					$tmp[$product['id']] = $product['stock'];
 
 					if( $product != FALSE )
 					{
@@ -106,13 +107,13 @@ class Front_cart extends Public_Controller
 		else
 		{
 
-			$product = $this->products_m->get_product_by_id($prd_code);
-			$tmp[$product->id] = $product->stock;
+			$product = $this->products_m->get_product($prd_code);
+			$tmp[$product['id']] = $product['stock'];
 
 			if( $product != FALSE )
 			{
 				$data[] = $this->orders_m->build_data($product, $qty);
-				$this->session->set_userdata('added', $product->id);
+				$this->session->set_userdata('added', $product['id']);
 			}
 
 		}
@@ -184,13 +185,13 @@ class Front_cart extends Public_Controller
 					else
 					{
 
-						$product = $this->products_m->get_product_by_id($cart[$row_id]['id']);
+						$product = $this->products_m->get_product($cart[$row_id]['id']);
 
 						if( $product )
 						{
 	
 							// Set the new quantity, or the stock level if the quantity exceeds it.
-							$data['qty'] = $item['qty'] > $product->stock ? $product->stock : $item['qty'];
+							$data['qty'] = $item['qty'] > $product['stock'] ? $product['stock'] : $item['qty'];
 
 							// If this is a current order, update the table
 							if( $this->session->userdata('order_id') > 0 )
@@ -462,6 +463,7 @@ class Front_cart extends Public_Controller
 				// Format order
 				foreach( $order['items'] AS $key => $item )
 				{
+					$order['items'][$key]['price'] = number_format($item['price'], 2);
 					$order['items'][$key]['total'] = number_format(( $item['price'] * $item['qty']), 2);
 				}
 
@@ -537,11 +539,7 @@ class Front_cart extends Public_Controller
 	public function callback($gateway = NULL, $order_id = NULL)
 	{
 
-		if( $gateway == NULL or $order_id == NULL )
-		{
-			show_404();
-		}
-		elseif( $this->gateways->is_enabled($gateway) )
+		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND $order_id != NULL)
 		{
 
 			$this->merchant->load($gateway, $this->gateways->settings($gateway));
@@ -549,21 +547,13 @@ class Front_cart extends Public_Controller
 			
 			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
 			
-			if( !$processed )
+			$this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
+			
+			if ($response->status == 'authorized')
 			{
-				$this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
-				
-				if ($response->status == 'authorized')
-				{
-					$this->db->update('firesale_orders', array('status' => 'paid'), array('id' => $order_id));
-				}
-				
+				$this->db->update('firesale_orders', array('status' => 'paid'), array('id' => $order_id));
 			}
-	
-		}
-		else
-		{
-			show_404();
+				
 		}
 
 	}

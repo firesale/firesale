@@ -83,15 +83,15 @@ class Plugin_Firesale extends Plugin
 		foreach( $this->cart->contents() as $id => $item )
 		{
 		
-			$product = $this->products_m->get_product_by_id($item['id']);
+			$product = $this->products_m->get_product($item['id']);
 			
 			if( $product !== FALSE )
 			{
 			
 				$data->products[] = array(
 					'id'		=> $id,
-					'code' 		=> $product->code,
-					'slug'		=> $product->slug,
+					'code' 		=> $product['code'],
+					'slug'		=> $product['slug'],
 					'quantity'	=> $item['qty'],
 					'name'		=> $item['name']
 				);

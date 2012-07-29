@@ -222,12 +222,7 @@ class Gateways
 		
 		return NULL;
 	}
-	
-	public function update_setting($gateway, $setting)
-	{
-		
-	}
-	
+
 	public function install_core()
 	{
 		$this->_CI->lang->load('firesale/gateways');
@@ -257,19 +252,5 @@ class Gateways
 			return $query->row()->slug;
 		
 		return FALSE;
-	}
-	
-	// Has a view been added for this gateway or should we build the fields into a global view?
-	public function view($gateway, $return = FALSE)
-	{
-		if (file_exists(ADDONPATH.'themes'.$this->_CI->theme_m->_theme.'/views/gateways/'.$gateway.'.php')
-			OR file_exists(SHARED_ADDONPATH.'themes'.$this->_CI->theme_m->_theme.'/views/gateways/'.$gateway.'.php'))
-		{
-			$this->_CI->template->build('gateways/'.$gateway);
-		}
-		else
-		{
-			$this->_CI->template->build('gateways/global');
-		}
 	}
 }

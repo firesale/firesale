@@ -2,18 +2,73 @@
 
 class Categories_m extends MY_Model {
 
+	/**
+	 * Contains the current database table name
+	 *
+	 * @var string
+	 * @access public
+	 */
     public $_table = 'firesale_categories';
 	
+	/**
+	 * Loads the parent constructor and gets an
+	 * instance of CI.
+	 *
+	 * @return void
+	 * @access public
+	 */
 	function __construct()
     {
         parent::__construct();
     }
 
+	/**
+	 * Gets the category via id or slug via streams
+	 *
+	 * @param string $id_slug The Category ID or slug to query
+	 * @return array The requested Category if found, FALSE if not
+	 * @access public
+	 */
+	public function get_category($id_slug)
+	{
+
+		// Set params
+		$params	 = array(
+					'stream' 	=> 'firesale_categories',
+					'namespace'	=> 'firesale_categories',
+					'where'		=> ( ( 0 + $id_slug ) > 0 ? 'id = ' : 'slug = ' ) . "'{$id_slug}' AND status = 1",
+					'limit'		=> '1',
+					'order_by'	=> 'id',
+					'sort'		=> 'desc'
+				   );
+		
+		// Get entries		
+		$category = $this->streams->entries->get_entries($params);
+
+		// Check exists
+		if( $category['total'] > 0 )
+		{
+			return current($category['entries']);
+		}
+		
+		// Nothing?
+		return FALSE;
+	}
+
+    /**
+     * Gets the child categories of a given parent category
+     *
+     * @param string $parent The category ID to query
+     * @return array
+     * @access public
+     */
     public function get_children($parent)
     {
 
+    	// Run query
     	$query = $this->db->select('id')->where('parent', $parent)->get($this->_table);
 
+    	// Check results
     	if( $query->num_rows() )
     	{
     		$ids = array();
@@ -25,52 +80,111 @@ class Categories_m extends MY_Model {
     		return $ids;
     	}
 
+    	// Empty array for no children
     	return array();
     }
 
-    public function total_products($category)
+    /**
+     * Builds the product query for use in other functions
+     *
+     * @param integer $category The Category ID to query
+     * @return DB_Driver_Object
+     * @access public
+     */
+    public function _build_query($category)
     {
 
-    	$query    = $this->db->select('id');
-		$children = $this->get_children($category['id']);
+    	// Variables
+		$children = $this->get_children($category);
+    	$query    = $this->db->select('firesale_products.`id`', FALSE)
+    						 ->from('firesale_products_firesale_categories')
+    						 ->join('firesale_products', 'firesale_products.id = firesale_products_firesale_categories.row_id', 'inner')
+    						 ->join('firesale_categories', 'firesale_categories.id = firesale_products_firesale_categories.firesale_categories_id', 'inner')
+    						 ->where('firesale_products.status', 1)
+    						 ->group_by('firesale_products.id');
 
+    	// Has children?
     	if( !empty($children) )
 		{
-			$children[] = $category['id'];
-			$query->where_in('category', $children);
+			// Then get the count including child products
+			$children[] = $category;
+			$query->where_in('firesale_categories_id', $children);
 		}
 		else
 		{
-			$query->where('category', $category['id']);
+			// Otherwise just this categories
+			$query->where('firesale_categories_id', (int)$category);
 		}
 
-		$result = $query->where('status', '1')->get('firesale_products');
+		// Return object
+		return $query;
+    }
 
+    /**
+     * Counts the total number of products within a given category or sub-categories
+     *
+     * @param integer $category The Category ID to query
+     * @return integer
+     * @access public
+     */
+    public function total_products($category)
+    {
+
+    	// Get a query
+    	$query = $this->_build_query($category);
+
+		// Run the query
+		$result = $query->get();
+
+		// Return the resulting count
     	return $result->num_rows();
     }
-	
-	public function get_category_by_id($id)
-	{
-	
-		$cat = $this->db->where("id = '{$id}'")->get($this->_table)->result_array();
-		return $cat;
-	}
-	
-	public function get_category_by_slug($slug)
-	{
 
-		$query = $this->db->where("slug = '{$slug}'")->get($this->_table);
-		
-		if( $query->num_rows() )
+	/**
+	 * Deletes a Category (other than ID: 1) and adds it's
+	 * children categories to the default category before
+	 * removing the category from products that are in it.
+	 *
+	 * @param $id The Category ID to delete
+	 * @return boolean TRUE or FALSE on successful deletion
+	 * @access public
+	 */
+	public function delete($id)
+	{
+	
+		// Check if we're deleting Category 1
+		if( $cat_id != 1 )
 		{
-			$category = $query->result_array();
-			return $category[0];
+
+			// Was it deleted?
+			if( $this->db->delete('firesale_categories', array('id' => ( 0 + $id ))) )
+			{
+
+				// Add children to root category
+				$this->db->update('firesale_categories', array('parent' => 1), 'parent = ' . ( 0 + $id ));
+
+				// Add products to root category
+				$this->db->update('firesale_products_firesale_categories', array('parent' => 1));
+
+				// Return
+				return TRUE;
+			}
+
 		}
-		
+
 		return FALSE;
 	}
 
-	public function build_dropdown()
+	/**
+	 * Creates the required array of values for a dropdown
+	 * in the following format:
+	 *
+	 *   Category ID => Category Title
+	 *
+	 * @return array
+	 * @access public
+	 */
+	public function dropdown_values()
 	{
 	
 		$_cats = $this->db->select('id, slug, title')->order_by('title')->get($this->_table)->result_array();
@@ -84,6 +198,18 @@ class Categories_m extends MY_Model {
 		return $cats;
 	}
 	
+	/**
+	 * Creates the required array of values to generate
+	 * the tree shown on the categories management page.
+	 * The array key is the ID of the category and may 
+	 * feature an array called 'children' which has IDs
+	 * as values rather than keys.
+	 *
+	 * @param $params A valid params array for streams
+	 * that is passed into get_entries recursivly
+	 * @return array
+	 * @access public
+	 */
 	public function generate_streams_tree($params)
 	{
 	
@@ -121,20 +247,17 @@ class Categories_m extends MY_Model {
 		return $tree;
 	}
 	
-	public function delete($cat_id)
-	{
-	
-		if( $cat_id != 1 ) {
-			$this->db->update('firesale_categories', array('parent' => 1), 'parent = ' . ( 0 + $cat_id ));
-			return $this->db->delete('firesale_categories', array('id' => ( 0 + $cat_id )));
-		}
-		else
-		{
-			return FALSE;
-		}
-
-	}
-	
+	/**
+	 * Sets the children of a given category or array
+	 * of categories. Used by the order function in
+	 * the admin controller to define the parent/child
+	 * tree when categories are moved.
+	 *
+	 * @param array $cat An array of categories and children
+	 *					 to be set as children of the parent.
+	 * @return void
+	 * @access public
+	 */
 	public function set_children($cat)
 	{
 		if( isset($cat['children']) )

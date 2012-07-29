@@ -29,6 +29,40 @@ class Products_m extends MY_Model {
 	
 		return $products;	
 	}
+
+	public function get_category($product)
+	{
+
+		// Variables
+		$id = 0;
+
+		// Get refering category
+		$ref = $_SERVER['HTTP_REFERER'];
+		$ref = explode('/', $ref);
+
+		// Did we get referred?
+		if( count($product['category']) > 1 AND isset($ref[3]) AND $ref[3] == 'category' )
+		{
+			// Check the product categories
+			foreach( $product['category'] AS $category )
+			{
+				if( $category['id'] == $this->session->userdata('category') )
+				{
+					$id = $category['id'];
+					break;
+				}
+			}
+		}
+
+		// Nothing set?
+		if( $id == 0 )
+		{
+			$id = $product['category'][0]['id'];
+		}
+
+		// Return
+		return $id;
+	}
 	
 	public function get_cat_path($cat, $reverse = false, $cats = array())
 	{
@@ -95,41 +129,70 @@ class Products_m extends MY_Model {
 		return $data;	
 	}
 	
-	public function get_product_by_id($id)
+	public function get_product($id_slug)
 	{
-		// Is a product ID or product code being passed?
-		if (is_numeric($id))
+
+		// Set params
+		$params	 = array(
+					'stream' 	=> 'firesale_products',
+					'namespace'	=> 'firesale_products',
+					'where'		=> ( is_numeric($id_slug) ? 'id = ' : 'slug = ' ) . "'{$id_slug}' AND status = 1",
+					'limit'		=> '1',
+					'order_by'	=> 'id',
+					'sort'		=> 'desc'
+				   );
+		
+		// Get entries		
+		$product = $this->streams->entries->get_entries($params);
+
+		// Check exists
+		if( $product['total'] > 0 )
 		{
-			// An ID
-			$this->db->where('firesale_products.id', $id);
-		}
-		else
-		{
-			// Slug
-			$this->db->where('firesale_products.slug', $id);
+
+			// Get and format product data
+			$product 			 = current($product['entries']);
+			$product['category'] = $this->get_categories($product['id']);
+			$product['image']    = $this->get_single_image($product['id']);
+
+			// Return
+			return $product;
 		}
 		
-		$result = $this->db->select('firesale_products.*, firesale_categories.title AS `category_name`')
-						   ->join('firesale_categories', 'firesale_products.category = firesale_categories.id')
-						   ->order_by('id', 'asc')
-						   ->limit('1')
-						   ->get('firesale_products');
-		
-		if($result->num_rows())
+		// Nothing?
+		return FALSE;
+	}
+
+	public function get_categories($id)
+	{
+
+		// Build query
+		$query = $this->db->select('firesale_categories_id AS id')
+						  ->from('firesale_products_firesale_categories')
+						  ->where('row_id', $id);
+
+		// Run query
+		$results = $query->get();
+
+		// Check for categories
+		if( $results->num_rows() )
 		{
-			$product = $result->row();
+
+			// Get results
+			$results    = $results->result_array();
+			$categories = array();
+
+			// Get categories
+			foreach( $results AS $category )
+			{
+				$categories[] = $this->categories_m->get_category($category['id']);
+			}
+
+			// Return
+			return $categories;
 		}
-		else
-		{
-			return FALSE;
-		}
-		
-		$data 			= $product;
-		$data->cat_id 	= $product->category;
-		$data->category = $product->category_name;
-		$data->status	= ( $product->status == '1' ? lang('firesale:label_live') : lang('firesale:label_draft') );
-		
-		return $data;
+
+		// Nothing?
+		return array();
 	}
 	
 	public function update_product($input)
@@ -163,7 +226,7 @@ class Products_m extends MY_Model {
 	public function delete_product($id)
 	{
 	
-		$product = $this->get_product_by_id($id);
+		$product = $this->get_product($id);
 
 		if( $this->db->delete('firesale_products', array('id' => $id)) )
 		{

@@ -3,9 +3,39 @@
 class Admin_categories extends Admin_Controller
 {
 
-	public $tabs	= array();
+	/**
+	 * Contains the tab configuration for the
+	 * layout.
+	 *
+	 * @var array An array of key => array containing
+	 * 			  the none-default values that are moved to
+	 * 			  other tabs.
+	 * @access public
+	 */
+	public $tabs = array();
+
+	/**
+	 * Contains the stream data for the categories
+	 * stream for use during get_row and build_form.
+	 *
+	 * @var object
+	 * @access public
+	 */
 	public $stream  = NULL;
 
+	/**
+	 * Loads the parent constructor and gets an
+	 * instance of CI. Also loads in the language
+	 * files and required models to perform any 
+	 * required actions.
+	 *
+	 * Sets the $stream variable and assigns it
+	 * the values of the categories stream from
+	 * get_stream.
+	 *
+	 * @return void
+	 * @access public
+	 */
     public function __construct()
     {
         parent::__construct();
@@ -25,6 +55,16 @@ class Admin_categories extends Admin_Controller
 
     }
 
+    /**
+     * Builds the default view for the categories
+     * management page. Built using streams it also
+     * manages all insert/editing of the given
+     * category.
+     *
+     * @param integry $id (Optional) The ID of the category
+     *					  to be edited/updated.
+     * @access public
+     */
 	public function index($id = 0)
 	{
 	
@@ -65,7 +105,7 @@ class Admin_categories extends Admin_Controller
 
 		// Assign variables
 		$this->data->controller =& $this;
-		$this->data->cats       =  $this->categories_m->generate_streams_tree($params, 0);
+		$this->data->cats       =  $this->categories_m->generate_streams_tree($params);
 		$this->data->fields     =  $this->products_m->fields_to_tabs($fields, $this->tabs);
 		$this->data->tabs		=  array_reverse(array_keys($this->data->fields));
 	
@@ -74,24 +114,34 @@ class Admin_categories extends Admin_Controller
 					   ->build('admin/categories/index', $this->data);
 	}
 	
+	/**
+	 * Reorders the given categories into parent
+	 * and child relationships as well as into a
+	 * given order as defined in the ajax drag and
+	 * drop in the view. Accepts post data generated
+	 * by the javascript libraries on the front-end.
+	 *
+	 * @access public
+	 */
 	public function order()
 	{
 
+		// Variables
 		$order		= $this->input->post('order');
 		$data		= $this->input->post('data');
 		$root_cats	= isset($data['root_cats']) ? $data['root_cats'] : array();
 
 		if( is_array($order) )
 		{
-			//reset all parent > child relations
+			// Reset all parent > child relations
 			$this->categories_m->update_all(array('parent' => 0));
 
 			foreach( $order as $i => $cat )
 			{
-				//set the order of the root cats
+				// Set the order of the root cats
 				$this->categories_m->update_by('id', str_replace('cat_', '', $cat['id']), array('ordering_count' => $i));
 
-				//iterate through children and set their order and parent
+				// Iterate through children and set their order and parent
 				$this->categories_m->set_children($cat);
 			}
 	
@@ -99,6 +149,12 @@ class Admin_categories extends Admin_Controller
 	
 	}
 	
+	/**
+	 * Deletes the given Category
+	 * 
+	 * @param integer $id The Category ID to delete
+	 * @access public
+	 */
 	public function delete($id)
 	{
 	
@@ -117,18 +173,39 @@ class Admin_categories extends Admin_Controller
 	
 	}
 	
+	/**
+	 * Gets the category details and returns a JSON
+	 * array for use in the front-end view editing.
+	 *
+	 * @param integer $id The Category ID to retrieve
+	 * @return string A JSON Object containing the 
+	 *				  Category information.
+	 * @access public
+	 */
 	public function ajax_cat_details($id)
 	{
 
 		if( $this->input->is_ajax_request() )
 		{
-			$cat = $this->categories_m->get_category_by_id($id);
+			$cat = $this->categories_m->get_category($id);
 			echo json_encode($cat);
 			exit();
 		}
 	
 	}
 
+	/**
+	 * Builds the tree for display on the Category
+	 * management page. The string is an HTML list
+	 * structure with sub-lists for the children
+	 * categories.
+	 *
+	 * @param array $cat An array containing the current Category details.
+	 * @param string $tree (Optional) The current html structure that is being built recursivly.
+	 * @param boolean $first (Optional) A boolean to track the first element to echo the output.
+	 * @return string The html tree that is being built
+	 * @access public
+	 */
 	public function tree_builder($cat, $tree = '', $first = true)
 	{
 

@@ -2,8 +2,6 @@
 
 class Front_product extends Public_Controller {
 	
-    public $stream;
-	
 	public function __construct()
     {
 
@@ -12,6 +10,7 @@ class Front_product extends Public_Controller {
 		// Load libraries
 		$this->load->driver('Streams');
 		$this->lang->load('firesale');
+		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->model('streams_core/row_m');
 		$this->load->library('files/files');
@@ -21,27 +20,23 @@ class Front_product extends Public_Controller {
 	public function index($product)
 	{
 
-		// Set query paramaters
-		$params	 = array(
-					'stream' 	=> 'firesale_products',
-					'namespace'	=> 'firesale_products',
-					'where'		=> "slug = '{$product}' AND status = 1",
-					'limit'		=> '1',
-					'order-by'	=> 'id'
-				   );
+		// Get the product
+		$product = $this->products_m->get_product($product);
 		
-		// Get prodct
-		$entry = $this->streams->entries->get_entries($params);
-		
-		if( count($entry['entries']) == 1 )
+		// Check it exists
+		if( $product )
 		{
 		
 			// General information
-			$this->data->product = $entry['entries'][0];
-			$this->data->folder  = '/' . UPLOAD_PATH . 'products/' . $this->data->product['id'] . '/';
+			$this->data->product  = $product;
+			$this->data->category = $this->products_m->get_category($product);
+			$this->data->folder   = '/' . UPLOAD_PATH . 'products/' . $this->data->product['id'] . '/';
+
+			// Fire event
+			Events::trigger('product_viewed', array('id' => $product['id']));
 
 			// Images
-			$folder = $this->products_m->get_file_folder_by_slug($this->data->product['slug']);
+			$folder = $this->products_m->get_file_folder_by_slug($product['slug']);
 			$images = Files::folder_contents($folder->id);
 			$this->data->images = $images['data']['file'];
 
@@ -52,24 +47,13 @@ class Front_product extends Public_Controller {
 			}
 
 			// Breadcrumbs
-			$cat_tree = $this->products_m->get_cat_path($this->data->product['category']['id'], true);
+			$cat_tree = $this->products_m->get_cat_path($this->data->category, true);
 			$this->template->set_breadcrumb('Home', '/home');
 			foreach( $cat_tree as $key => $cat )
 			{
-
-				if( $key == 0 )
-				{
-					$this->data->parent = $cat['id'];
-				}
-
+				if( $key == 0 ) { $this->data->parent = $cat['id']; }
 				$this->template->set_breadcrumb($cat['title'], '/category/' . $cat['slug']);
 			}
-
-			// Temp
-			$this->data->product['description'] = str_replace('[BR]', '<br /><br />', $this->data->product['description']);
-
-			// Fire events
-			Events::trigger('product_viewed', array('id' => $this->data->product['id']));
 		
 			// Build Page
 			$this->template->set_breadcrumb($this->data->product['title'], '/product/' . $this->data->product['slug'])

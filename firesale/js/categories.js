@@ -22,30 +22,16 @@ $(function(){
 		$details_id.val(cat_id);
 		
 		$.getJSON(SITE_URL + 'admin/firesale/categories/ajax_cat_details/' + $details_id.val(), function(data) {
-			
-			data = data[0];
 
 			$('button.delete').remove();
 			$('.form_inputs').parent().parent().find('h4').text('Edit ' + data.title);
 			$('.form_inputs input[name=id]').val(data.id);
 			$('.form_inputs input[name=title]').val(data.title);
 			$('.form_inputs input[name=slug]').val(data.slug);
-			$('.form_inputs select[name=parent]').val(data.parent).trigger('liszt:updated');
-			$('.form_inputs select[name=status]').val(data.status).trigger('liszt:updated');
+			$('.form_inputs select[name=parent]').val(data.parent.id).trigger('liszt:updated');
+			$('.form_inputs select[name=status]').val(data.status.key).trigger('liszt:updated');
 			$('.form_inputs textarea[name=description]').val(data.description);
-			$('button[type=submit]').text('Edit category').after(( data.id != 1 ? ' <button name="btnAction" value="delete" class="btn red delete"><span>Delete</span></button>' : '' ));
-
-			$('button.delete').click(function() {
-		
-				var c = confirm('WARNING! You are about to delete ' + cat_title.toUpperCase() +"\n\n" +
-								'This cannot be reversed and all sub-categories will be moved to ' + $('#cat_1 div a').html().toUpperCase());
-		
-				if( c == true ) {
-					window.location = SITE_URL + 'admin/firesale/categories/delete/' + cat_id;
-				}
-	
-				return false;
-			});
+			$('button[type=submit]').text('Edit category').after(( data.id != 1 ? ' <button name="btnAction" value="delete" class="btn red confirm delete"><span>Delete</span></button>' : '' ));
 			
 		});
 		

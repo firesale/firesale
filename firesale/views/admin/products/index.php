@@ -19,7 +19,7 @@
 	</div>
 	
 <?php if( isset($pagination) ): ?>
-	<?php print_r($pagination); ?>
+	<?php echo $pagination['links']; ?>
 <?php endif; ?>
 
 	<section class="title">
@@ -77,5 +77,5 @@
 	<?php echo form_close(); ?>
 
 <?php if( isset($pagination) ): ?>
-	<?php echo $pagination; ?>
+	<?php echo $pagination['links']; ?>
 <?php endif; ?>

@@ -38,7 +38,7 @@ class Admin_products extends Admin_Controller
 	{
 
 		// Set query paramaters
-		$params	 = array(
+		$params	= array(
 					'stream' 	=> 'firesale_products',
 					'namespace'	=> 'firesale_products',
 					'limit'		=> $this->perpage,
@@ -54,13 +54,13 @@ class Admin_products extends Admin_Controller
 		}
 		
 		// Get entries		
-		$products  = $this->streams->entries->get_entries($params);
+		$products = $this->streams->entries->get_entries($params);
 	
 		// Assign variables
 		$this->data->products 	= $products['entries'];
-		$this->data->count		= $products['total'];
-		$this->data->pagination = $product['pagination'];
-		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->build_dropdown();
+		$this->data->count		= 808; // move to function soon
+		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( 0 + $category ) . '/', $this->data->count, $this->perpage, 5);
+		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
 		$this->data->category	= $category;
 
 		// Get initial product image
@@ -248,7 +248,7 @@ class Admin_products extends Admin_Controller
 	{
 		if( $this->input->is_ajax_request() )
 		{
-			echo json_encode($this->products_m->get_product_by_id($id));
+			echo json_encode($this->products_m->get_product($id));
 			exit();
 		}
 	}

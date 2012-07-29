@@ -174,14 +174,14 @@ class Orders_m extends MY_Model
 	{
 
 		$data = array(
-					'id'	=> $product->id,
-					'code'	=> $product->code,
-					'qty'	=> ( $qty > $product->stock ? $product->stock : $qty ),
-					'price'	=> $product->price,
-					'name'	=> $product->title,
-					'slug'	=> $product->slug,
-					'weight'=> ( isset($product->shipping_weight) ? $product->shipping_weight : '0.00' ),
-					'image'	=> $this->products_m->get_single_image($product->id)
+					'id'	=> $product['id'],
+					'code'	=> $product['code'],
+					'qty'	=> ( $qty > $product['stock'] ? $product['stock'] : $qty ),
+					'price'	=> $product['price'],
+					'name'	=> $product['title'],
+					'slug'	=> $product['slug'],
+					'weight'=> ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
+					'image'	=> $this->products_m->get_single_image($product['id'])
 				);
 
 		return $data;
@@ -343,7 +343,8 @@ class Orders_m extends MY_Model
 		$params	 = array(
 					'stream' 	=> 'firesale_orders',
 					'namespace'	=> 'firesale_orders',
-					'where'		=> "id = '{$id}'"
+					'where'		=> "id = '{$id}'",
+					'limit'		=> 1
 				   );
 		
 		// Get entries		
@@ -385,13 +386,13 @@ class Orders_m extends MY_Model
 
 		// Variables
 		$low	 = 10; // Move to settings
-		$product = $this->products_m->get_product_by_id($id);
+		$product = $this->products_m->get_product($id);
 
 		if( $product )
 		{
 
 			$data = array();
-			$data['stock']  = ( $product->stock - $stock );
+			$data['stock']  = ( $product['stock'] - $stock );
 
 			// Get status
 			if( $data['stock'] < 0 )
@@ -413,7 +414,7 @@ class Orders_m extends MY_Model
 			}
 
 			// Update table
-			$this->db->where("id = '{$product->id}'")->update('firesale_products', $data);
+			$this->db->where("id = '{$product['id']}'")->update('firesale_products', $data);
 			return TRUE;
 
 		}

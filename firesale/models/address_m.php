@@ -3,6 +3,13 @@
 class Address_m extends MY_Model
 {
 
+	/**
+	 * Gets all addresses for a given user
+	 *
+	 * @param integer $user The User ID to query
+	 * @return array An array containing the addresses
+	 * @access public
+	 */
 	public function get_addresses($user)
 	{
 
@@ -22,6 +29,14 @@ class Address_m extends MY_Model
 		return $addresses['entries'];
 	}
 
+	/**
+	 * Gets a single address by ID and optionally limited to a user
+	 *
+	 * @param integer $id The Address ID to query
+	 * @param integer $user (Optional) The User ID to query for
+	 * @return array Containing the address if found, otherwise FALSE
+	 * @access public
+	 */
 	public function get_address($id, $user = NULL)
 	{
 
@@ -48,6 +63,16 @@ class Address_m extends MY_Model
 		return FALSE;
 	}
 
+	/**
+	 * Stores an address of a given type (Shipping or Billing)
+	 * - the type does not limit to what it can be used for it
+	 * simply is used to determine which post inputs to use.
+	 *
+	 * @param array $input An array of post values
+	 * @param string $type Either bill or ship
+	 * @return integer The new or existing ID of the address
+	 * @access public
+	 */
 	public function add_address($input, $type)
 	{
 
@@ -90,6 +115,15 @@ class Address_m extends MY_Model
 
 	}
 
+	/**
+	 * Updates an existing address
+	 *
+	 * @param integer $id The ID of the Address to update
+	 * @param array $post Array of post values to use
+	 * @param string $type Either bill or ship to define the keys to use from $input
+	 * @return boolean TRUE or FALSE on successful update
+	 * @access public
+	 */
 	public function update_address($id, $input, $type)
 	{
 
@@ -130,6 +164,17 @@ class Address_m extends MY_Model
 		return FALSE;
 	}
 
+	/**
+	 * Build the form used on both the front and back-end to input addresses.
+	 * This also seperates them into tabs and sections of information and address
+	 * fields for use in layout.
+	 *
+	 * @param string $type Either bill or ship
+	 * @param string $mode Sets the mode (new or edit) for inserting or updating info
+	 * @param array $input The POST variables that are to be processed
+	 * @return array
+	 * @access public
+	 */
 	public function get_address_form($type = NULL, $mode = 'new', $input = NULL)
 	{
 	
@@ -152,6 +197,5 @@ class Address_m extends MY_Model
 		
 		return $tabs;	
 	}
-
 
 }

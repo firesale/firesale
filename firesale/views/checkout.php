@@ -1,107 +1,133 @@
-<?php echo form_open(); ?>
 
-<?php echo validation_errors(); ?>
+	<?php echo validation_errors(); ?>
 
-<h2><?php echo lang('firesale:checkout:title:bill_details'); ?></h2>
+    <?php echo form_open(''); ?>
+	  
+        <div id="checkout">
 
-<ul>
-	<li>
-		<label for="bill_company"><?php echo lang('firesale:checkout:form:bill_company'); ?></label>
-		<input name="bill_company" id="bill_company" value="<?php echo set_value('bill_company', isset($customer_info['bill_company']) ? $customer_info['bill_company'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_firstname"><?php echo lang('firesale:checkout:form:bill_firstname'); ?></label>
-		<input name="bill_firstname" id="bill_firstname" value="<?php echo set_value('bill_firstname', isset($customer_info['bill_firstname']) ? $customer_info['bill_firstname'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_lastname"><?php echo lang('firesale:checkout:form:bill_lastname'); ?></label>
-		<input name="bill_lastname" id="bill_lastname" value="<?php echo set_value('bill_lastname', isset($customer_info['bill_lastname']) ? $customer_info['bill_lastname'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_phone"><?php echo lang('firesale:checkout:form:bill_phone'); ?></label>
-		<input name="bill_phone" id="bill_phone" value="<?php echo set_value('bill_phone', isset($customer_info['bill_phone']) ? $customer_info['bill_phone'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_email"><?php echo lang('firesale:checkout:form:bill_email'); ?></label>
-		<input name="bill_email" id="bill_email" value="<?php echo set_value('bill_email', isset($customer_info['bill_email']) ? $customer_info['bill_email'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_address1"><?php echo lang('firesale:checkout:form:bill_address1'); ?></label>
-		<input name="bill_address1" id="bill_address1" value="<?php echo set_value('bill_address1', isset($customer_info['bill_address1']) ? $customer_info['bill_address1'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_address2"><?php echo lang('firesale:checkout:form:bill_address2'); ?></label>
-		<input name="bill_address2" id="bill_address2" value="<?php echo set_value('bill_address2', isset($customer_info['bill_address2']) ? $customer_info['bill_address2'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_city"><?php echo lang('firesale:checkout:form:bill_city'); ?></label>
-		<input name="bill_city" id="bill_city" value="<?php echo set_value('bill_city', isset($customer_info['bill_city']) ? $customer_info['bill_city'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_postcode"><?php echo lang('firesale:checkout:form:bill_postcode'); ?></label>
-		<input name="bill_postcode" id="bill_postcode" value="<?php echo set_value('bill_postcode', isset($customer_info['bill_postcode']) ? $customer_info['bill_postcode'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="bill_country"><?php echo lang('firesale:checkout:form:bill_country'); ?></label>
-		<input name="bill_country" id="bill_country" value="<?php echo set_value('bill_country', isset($customer_info['bill_country']) ? $customer_info['bill_country'] : NULL); ?>">
-	</li>
-</ul>
+          <h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:title:ship'); ?></a></h3>
+          <fieldset>
+<?php if( isset($addresses) && !empty($addresses) ): ?>
+<?php foreach( $addresses AS $key => $address): ?>
+            <label for="ship_to_<?php echo $address['id']; ?>" class="order small">
+              <header>
+                <h3><?php echo $address['title']; ?></h3>
+				<span class="right"><input name="ship_to" id="ship_to_<?php echo $address['id']; ?>" type="radio" value="<?php echo $address['id']; ?>"<?php echo ( $key == 0 ? ' selected="selected"' : '' ); ?> /></span>
+              </header>
+              <ul>
+                  <?php echo ( isset($address['firstname']) ? '<li>' . $address['firstname'] . ' ' . $address['lastname'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['address1']) ? '<li>' . $address['address1'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['address2']) ? '<li>' . $address['address2'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['city']) ? '<li>' . $address['city'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['county']) ? '<li>' . $address['county'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['postcode']) ? '<li>' . $address['postcode'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['country']) ? '<li>' . $address['country'] . '</li>' : '' ); ?>
+              </ul>
+            </label>
 
-<h2><?php echo lang('firesale:checkout:title:ship_details'); ?></h2>
+<?php endforeach; ?>
+            <br class="clear" />
+			<input name="ship_to" id="ship_to_new" type="radio" value="new" />
+			<label for="ship_to_new">New Address</label>
+			<br class="clear" />
+<?php endif; ?>
+<?php foreach( $fields AS $subtitle => $section ): ?>
+            <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
+              <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
+<?php foreach( $section AS $field ): ?>
+              <li>
+                <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
+                <?php echo str_replace(array('id="', 'name="'), array('id="ship_', 'name="ship_'), $field['input']); ?>
+              </li>
+<?php endforeach; ?>
+            </ul>
+<?php endforeach; ?>
+            <br class="clear" />
+            <a href="#billing" class="next btn"><span>Next</span></a>
+            <br class="clear" />
+          </fieldset>
 
-<ul>
-	<li>
-		<label for="ship_company"><?php echo lang('firesale:checkout:form:ship_company'); ?></label>
-		<input name="ship_company" id="ship_company" value="<?php echo set_value('ship_company', isset($customer_info['ship_company']) ? $customer_info['ship_company'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_firstname"><?php echo lang('firesale:checkout:form:ship_firstname'); ?></label>
-		<input name="ship_firstname" id="ship_firstname" value="<?php echo set_value('ship_firstname', isset($customer_info['ship_firstname']) ? $customer_info['ship_firstname'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_lastname"><?php echo lang('firesale:checkout:form:ship_lastname'); ?></label>
-		<input name="ship_lastname" id="ship_lastname" value="<?php echo set_value('ship_lastname', isset($customer_info['ship_lastname']) ? $customer_info['ship_lastname'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_phone"><?php echo lang('firesale:checkout:form:ship_phone'); ?></label>
-		<input name="ship_phone" id="ship_phone" value="<?php echo set_value('ship_phone', isset($customer_info['ship_phone']) ? $customer_info['ship_phone'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_email"><?php echo lang('firesale:checkout:form:ship_email'); ?></label>
-		<input name="ship_email" id="ship_email" value="<?php echo set_value('ship_email', isset($customer_info['ship_email']) ? $customer_info['ship_email'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_address1"><?php echo lang('firesale:checkout:form:ship_address1'); ?></label>
-		<input name="ship_address1" id="ship_address1" value="<?php echo set_value('ship_address1', isset($customer_info['ship_address1']) ? $customer_info['ship_address1'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_address2"><?php echo lang('firesale:checkout:form:ship_address2'); ?></label>
-		<input name="ship_address2" id="ship_address2" value="<?php echo set_value('ship_address2', isset($customer_info['ship_address2']) ? $customer_info['ship_address2'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_city"><?php echo lang('firesale:checkout:form:ship_city'); ?></label>
-		<input name="ship_city" id="ship_city" value="<?php echo set_value('ship_city', isset($customer_info['ship_city']) ? $customer_info['ship_city'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_postcode"><?php echo lang('firesale:checkout:form:ship_postcode'); ?></label>
-		<input name="ship_postcode" id="ship_postcode" value="<?php echo set_value('ship_postcode', isset($customer_info['ship_postcode']) ? $customer_info['ship_postcode'] : NULL); ?>">
-	</li>
-	<li>
-		<label for="ship_country"><?php echo lang('firesale:checkout:form:ship_country'); ?></label>
-		<input name="ship_country" id="ship_country" value="<?php echo set_value('ship_country', isset($customer_info['ship_country']) ? $customer_info['ship_country'] : NULL); ?>">
-	</li>
-</ul>
+          <h3 id="billing"><a href="#billing"><?php echo lang('firesale:title:bill'); ?></a></h3>
+          <fieldset>
+<?php if( isset($addresses) && !empty($addresses) ): ?>
+<?php foreach( $addresses AS $key => $address): ?>
+            <label for="bill_to_<?php echo $address['id']; ?>" class="order small">
+              <header>
+                <h3><?php echo $address['title']; ?></h3>
+				<span class="right"><input name="bill_to" id="bill_to_<?php echo $address['id']; ?>" type="radio" value="<?php echo $address['id']; ?>"<?php echo ( $key == 0 ? ' selected="selected"' : '' ); ?> /></span>
+              </header>
+              <ul>
+                  <?php echo ( isset($address['firstname']) ? '<li>' . $address['firstname'] . ' ' . $address['lastname'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['address1']) ? '<li>' . $address['address1'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['address2']) ? '<li>' . $address['address2'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['city']) ? '<li>' . $address['city'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['county']) ? '<li>' . $address['county'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['postcode']) ? '<li>' . $address['postcode'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['country']) ? '<li>' . $address['country'] . '</li>' : '' ); ?>
+              </ul>
+            </label>
 
-<h2><?php echo lang('firesale:checkout:title:payment_method'); ?></h2>
+<?php endforeach; ?>
+            <br class="clear" />
+			<input name="bill_to" id="bill_to_new" type="radio" value="new" />
+			<label for="bill_to_new">New Address</label>
+			<br class="clear" />
+<?php endif; ?>
+<?php foreach( $fields AS $subtitle => $section ): ?>
+            <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
+              <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
+<?php foreach( $section AS $field ): ?>
+              <li>
+                <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
+                <?php echo str_replace(array('id="', 'name="'), array('id="bill_', 'name="bill_'), $field['input']); ?>
+              </li>
+<?php endforeach; ?>
+            </ul>
+<?php endforeach; ?>
+            <br class="clear" />
+            <a href="#billing" class="prev btn"><span>Previous</span></a>
+            <a href="#shipping" class="next btn"><span>Next</span></a>
+            <br class="clear" />
+          </fieldset>
 
-<ul>
-	<li>
-		<?php foreach ($this->gateways->get_enabled() as $gateway_id => $gateway): ?>
-			<input type="radio" name="gateway" id="gateway" value="<?php echo $gateway_id; ?>" <?php echo set_radio('gateway', $gateway_id); ?>> <label for="gateway"><?php echo $gateway['name']; ?></label>
-		<?php endforeach; ?>
-	</li>
-</ul>
+<?php if( isset($shipping) ):?>
+          <h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:checkout:title:ship_method'); ?></a></h3>
+          <fieldset>
+            <p>Please select your preferred shipping method below before continuing</p>
+            <br />
+            <ul class="shipping">
+<?php foreach( $shipping AS $key => $option ): ?>
+              <li>
+                <input type="radio" name="shipping" id="shipping" value="<?php echo $option['id']; ?>" <?php echo ( $key == 0 ? 'checked="checked" ' : '' ); ?>/>
+                <label for="shipping"><strong><?php echo $option['title']; ?></strong> - {{ settings:currency }} <?php echo $option['price']; ?><br /><?php echo $option['description']; ?></label>
+              </li>
+<?php endforeach; ?>
+            </ul>
+            <br class="clear" />
+            <a href="#billing" class="prev btn"><span>Previous</span></a>
+            <a href="#payment" class="next btn"><span>Next</span></a>
+            <br class="clear" />
+          </fieldset>
 
-<?php echo form_submit(NULL, 'Submit & Pay'); ?>
+<?php endif; ?>
+          <h3 id="payment"><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>
+          <fieldset>
+            <p>Please select your preferred payment method below before continuing</p>
+            <br />
+            <ul>
+<?php foreach( $this->gateways->get_enabled() as $gateway_id => $gateway ): ?>
+              <li>
+                <label for="gateway_<?php echo $gateway_id; ?>"><strong><?php echo $gateway['name']; ?></strong></label>
+                <input type="radio" name="gateway" id="gateway_<?php echo $gateway_id; ?>" value="<?php echo $gateway_id; ?>" <?php echo set_radio('gateway', $gateway_id); ?> />
+              </li>
+<?php endforeach; ?>
+            </ul>
+            <br class="clear" />
+            <a href="#shipping" class="prev btn"><span>Previous</span></a>
+            <button type="submit" name="btnAction" value="pay" class="next btn"><span>Submit &amp; Pay</span></button>
+            <br class="clear" />
+          </fieldset>
 
-<?php echo form_close(); ?>
+        </div>          
+	  
+      <?php echo form_close(); ?>

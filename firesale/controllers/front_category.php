@@ -2,8 +2,25 @@
 
 class Front_category extends Public_Controller {
 	
+	/**
+	 * Contains the maximum number of products to show in the
+	 * front-end category view, also used for pagination.
+	 *
+	 * @var integer Number of products to show per-page
+	 * @access public
+	 */
     public $perpage = 15;
 	
+	/**
+	 * Loads the parent constructor and gets an
+	 * instance of CI. Also loads in the language
+	 * files and required models to perform any 
+	 * required actions.
+	 *
+	 *
+	 * @return void
+	 * @access public
+	 */
 	public function __construct()
     {
 
@@ -17,8 +34,26 @@ class Front_category extends Public_Controller {
 		$this->load->model('products_m');
 		$this->load->helper('firesale/general');
 
+		// Load css/js
+		$this->template->append_css('module::firesale.css')
+					   ->append_js('module::firesale.js');
+
 	}
-	
+
+	/**
+	 * Builds the initial Category view for the front-end
+	 * pages, including the specific category or sub-cats,
+	 * pagination and possibly only sale items with the format
+	 * of:
+	 *
+	 *   category/CATEGORY NAME/sale/[pagination]?
+	 *
+	 * @param string $category Category slug to query
+	 * @param string $start (Optional) Either the pagination page or sale
+	 * @param integer $extra (Optional) When sale is set as the second param, this is the pagination page
+	 * @return void
+	 * @access public
+	 */	
 	public function index($category, $start = 0, $extra = NULL)
 	{
 	
@@ -27,61 +62,42 @@ class Front_category extends Public_Controller {
 		$this->data->order  = get_order(( isset($_COOKIE['listing_order']) ? $_COOKIE['listing_order'] : 1 ));
 
 		// Get category details
-		$category = $this->categories_m->get_category_by_slug($category);
+		$category = $this->categories_m->get_category($category);
 
 		// Check category exists
 		if( $category != FALSE )
 		{
 			
-			// Variables
-			$products = array();
-			$children = $this->categories_m->get_children($category['id']);
+			// Query
+			$query = $this->categories_m->_build_query($category['id']);
 
-			// Check for children
-			if( !empty($children) )
-			{
-				$children[] = $category['id'];
-				$where      = "`category` IN (" . implode(',', $children) . ") AND `status` = '1'";
-			}
-			else
-			{
-				$where = "category = '{$category['id']}' AND status = 1";
-			}
-
-			// Check start
+			// Check start for sale section
 			if( !is_int($start) AND substr($start, 0, 4) == 'sale' )
 			{
-				$sale   = $start;
-				$start  = $extra;
-				$where .= ' AND `price` < `rrp`';
+
+				// Redefine vars
+				$sale  = $start;
+				$start = $extra;
+
+				// Add where
+				$query->where('firesale_products.rrp > firesale_products.price');
 			}
 
-			// Set query paramaters
-			$params	 = array(
-						'stream' 	=> 'firesale_products',
-						'namespace'	=> 'firesale_products',
-						'where'		=> $where,
-						'limit'		=> $this->perpage,
-						'offset'	=> $start,
-						'order_by'	=> $this->data->order['by'],
-						'sort'		=> $this->data->order['dir']
-					   );
+			// Add ordering
+			$query->order_by('firesale_products.' . $this->data->order['by'], $this->data->order['dir']);
 
-			// Get product
-			$entry = $this->streams->entries->get_entries($params);
-			
-			// Check for products
-			if( count($entry['entries']) > 0 )
+			// Add Limits
+			$query->limit($this->perpage, $start);
+
+			// Get products
+			$ids      = $query->get()->result_array();
+			$products = array();
+
+			foreach( $ids AS $id )
 			{
-				
-				// Loop entries
-				foreach( $entry['entries'] AS $product )
-				{
-					$product['image'] 		= $this->products_m->get_single_image($product['id']);
-					$product['description'] = strip_tags($product['description']);
-					$products[] 	  		= $product;
-				}
-				
+				$product    			= $this->products_m->get_product($id['id']);
+				$product['description'] = strip_tags($product['description']);
+				$products[] 			= $product;
 			}
 
 			// Assign data
@@ -92,12 +108,12 @@ class Front_category extends Public_Controller {
 			// Assign pagination
 			if( !empty($products) )
 			{
-				$this->data->pagination = create_pagination('/category/' . $category['slug'] . ( isset($sale) ? '/' . $sale : '' ),  $this->categories_m->total_products($category), $this->perpage, ( isset($sale) ? 4 : 3 ));
+				$this->data->pagination = create_pagination('/category/' . $category['slug'] . ( isset($sale) ? '/' . $sale : '' ),  $this->categories_m->total_products($category['id']), $this->perpage, ( isset($sale) ? 4 : 3 ));
 				$this->data->pagination['shown'] = count($products);
 			}
 
 			// Breadcrumbs
-			$cat_tree = $this->products_m->get_cat_path($this->data->products[0]['category']['id'], true);
+			$cat_tree = $this->products_m->get_cat_path($category['id'], true);
 			$this->template->set_breadcrumb('Home', '/home');
 			foreach( $cat_tree as $key => $cat )
 			{
@@ -105,7 +121,10 @@ class Front_category extends Public_Controller {
 			}
 
 			// Assign parent data
-			$this->data->parent = ( $category['parent'] > 0 ? $category['parent'] : $category['id'] );
+			$this->data->parent = ( isset($category['parent']['id']) && $category['parent']['id'] > 0 ? $category['parent']['id'] : $category['id'] );
+
+			// Set category in session
+			$this->session->set_userdata('category', $this->data->category['id']);
 
 			// Build Page
 			$this->template->title($this->data->category['title'])
@@ -120,12 +139,27 @@ class Front_category extends Public_Controller {
 
 	}
 
+	/**
+	 * Sets the listing style cookie with a possible value of grid or layout
+	 *
+	 * @param string $type The layout style to set in the cookie
+	 * @return void
+	 * @access public
+	 */
 	public function style($type)
 	{
 		setcookie('listing_style', $type, ( time() + ( 30 * 24 * 60 * 60 )));
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
+	/**
+	 * Sets the listing order cookie with a number of possible values as
+	 * defined in the get_order helper.
+	 *
+	 * @param integer $type The ID of the ordering method to use
+	 * @return void
+	 * @access public
+	 */
 	public function order($type)
 	{
 
