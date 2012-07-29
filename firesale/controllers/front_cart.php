@@ -325,10 +325,6 @@ class Front_cart extends Public_Controller
 				$rules = $this->cart_m->build_validation();
 				$this->form_validation->set_rules($rules);
 
-				echo '<pre>';
-					print_r($rules);
-				echo '</pre>';
-
 				// Run validation
 				if( $this->form_validation->run() === TRUE )
 				{
