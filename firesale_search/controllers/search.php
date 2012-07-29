@@ -52,7 +52,7 @@ class Search extends Public_Controller {
 			$this->search_m->update_terms($term);
 
 			// Check for category match first
-			if( $is_cat = $this->search_m->check_category($term) )
+			if( $category != 'all' AND $is_cat = $this->search_m->check_category($term) )
 			{
 				// Send there if we got exact match
 				redirect('/category/' . $is_cat);
@@ -113,7 +113,7 @@ class Search extends Public_Controller {
 						   ->title(sprintf(lang('firesale:sections:search' . ( $term != NUll ? '_results' : '' )), $term))
 						   ->build('search', $this->data);	
 		}
-	
+
     }
 
 }
