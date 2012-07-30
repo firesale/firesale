@@ -67,6 +67,9 @@ $(function(){
 			});
 		}
 	});
+
+	// Categories "fix"
+	$('#category_list_2 li').each(function() { if( $('#category').val().indexOf($(this).attr('id')) == -1 ) { $(this).remove(); }});
 	
 });
 	
