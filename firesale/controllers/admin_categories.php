@@ -82,7 +82,10 @@ class Admin_categories extends Admin_Controller
 						'error_message'		=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
 					  
-			if( $id != null ) { $input = (object)$input; }
+			if( $id != null ) {
+				$input = (object)$input;
+				$this->data->input = $input;
+			}
 		
 		}
 		else
@@ -107,7 +110,7 @@ class Admin_categories extends Admin_Controller
 		$this->data->controller =& $this;
 		$this->data->cats       =  $this->categories_m->generate_streams_tree($params);
 		$this->data->fields     =  $this->products_m->fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs		=  array_reverse(array_keys($this->data->fields));
+		$this->data->tabs	    =  array_reverse(array_keys($this->data->fields));
 	
 		// Build the page
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:categories'))

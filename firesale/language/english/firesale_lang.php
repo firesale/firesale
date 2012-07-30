@@ -40,6 +40,8 @@
 	$lang['firesale:cats_order']			= 'Order categories';
 	$lang['firesale:cats_draft_label']		= 'Draft';
 	$lang['firesale:cats_live_label']		= 'Live';
+	$lang['firesale:cats_edit']				= 'Edit Category';
+	$lang['firesale:cats_delete']			= 'Delete';
 	$lang['firesale:cats_add_success'] 		= '[PH] Category addition successful';
 	$lang['firesale:cats_add_error'] 		= '[PH] Category addition failed';
 	$lang['firesale:cats_delete_success'] 	= '[PH] Category delete successful';
