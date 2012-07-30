@@ -1,5 +1,4 @@
 .clear { clear:both; height: 0; line-height: 0; }
-div.legend { display: none !important; }
 .close { width: 28px; height: 28px; display: inline-block; margin: 4px -10px 0 0; float: right; overflow: hidden; text-indent: -1000px; }
 .close:hover { background: url('img/icon.close.png') no-repeat; }
 #content {width: 1300px !important; padding-left: 20px !important;}
@@ -9,14 +8,6 @@ div.legend { display: none !important; }
 .section_add { border:4px dashed rgba(100,100,100,0.2); margin: 15px 22px 0 0; width: 617px; min-height: 142px; border-radius: 6px; }
 .section_add section { background: url('img/additem.png') no-repeat 50% 50%; overflow: hidden; text-indent: -10000px; width: 100%; min-height: 162px; }
 .section_add section:hover { opacity: 0.6; cursor: pointer; }
-
-div.chart-pie { padding-bottom: 20px; background: url('img/pie.shadow.png') no-repeat 50% 100%; }
-div.chart-line { width: 480px !important; margin: 0 -50px; }
-#tooltip, #tooltipPie, .legendBG{ color: #fff; background: rgba(0,0,0,0.8); text-align:center; border-radius: 4px; cursor:pointer; font-size:11px; padding:4px; text-shadow:none; box-shadow: 0 0 3px #000; }
-#tooltip{margin-top:-5px}
-#tooltip b, #tooltipPie b{color:#000}
-#tooltipPie:hover{-moz-transform:scale(1.1) rotate(0deg); -webkit-transform:scale(1.1) rotate(0deg); -o-transform:scale(1.1) rotate(0deg); -ms-transform:scale(1.1) rotate(0deg); transform:scale(1.1) rotate(0deg)}
-.chart_title{text-align:center; padding:10px 10px 10px 10px; margin-bottom:10px; font-weight:700}
-.legend{}
-.legendLabel { padding: 0 8px 0 3px; }
-.chart_title span{text-transform:uppercase; padding:10px; display:inline-block; border:1px solid #ddd; -moz-box-shadow:1px 1px 2px #f5f5f5; -webkit-box-shadow:1px 1px 2px #f5f5f5; box-shadow:1px 1px 2px #f5f5f5; position:relative; padding:10px 20px; margin:0 0px 10px 0px; background-color:#f5f5f5;  -webkit-transition:background-color .2s ease-out;  -moz-transition:background-color .2s ease-out;  -o-transition:background-color .2s ease-out;  transition:background-color .2s ease-out}
+.legend table { width: auto !important; }
+.legend table tr { border-bottom: none !important; }
+.legend table td { padding: 3px !important; }

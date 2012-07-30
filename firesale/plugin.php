@@ -121,13 +121,30 @@ class Plugin_Firesale extends Plugin
 		{
 
 			// Variables
-			$data = array();
-			$data['products'] = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`title`, p.`slug`
-												  FROM `' . SITE_REF . '_firesale_orders_items` AS i
-												  INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
-												  GROUP BY i.`product_id`
-												  ORDER BY `count` DESC
-												  LIMIT 10')->result_array();
+			$data     = array('total_sales' => 0, 'total_count' => 0);
+			$sales    = array();
+			$count    = array();
+			$currency = $this->settings->get('currency');
+			$products = $this->db->query('SELECT SUM(`qty`) AS `count`, SUM(`qty` * `price`) AS `sales`, date_format(`created`, "%Y-%m") AS `month`
+										  FROM `' . SITE_REF . '_firesale_orders_items`
+										  GROUP BY `month`
+										  ORDER BY `month` ASC
+										  LIMIT 12')->result_array();
+
+			// Build JSON
+			foreach( $products AS $product )
+			{
+				$sales[] = array(strtotime($product['month']) . '000', round($product['sales'], 2));
+				$count[] = array(strtotime($product['month']) . '000', (int)$product['count']);
+				$data['total_sales'] += $product['sales'];
+				$data['total_count'] += $product['count'];
+			}
+			
+			// Assign data
+			$data['sales'] 		 = json_encode($sales);
+			$data['count'] 		 = json_encode($count);
+			$data['currency']	 = $currency;
+			$data['total_sales'] = $currency . number_format($data['total_sales'], 2);
 
 			// Return view
 			return $this->module_view('firesale', 'admin/dashboard/productsales', $data, true);

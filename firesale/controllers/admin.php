@@ -13,9 +13,6 @@ class Admin extends Admin_Controller
 		// Add metadata
 		$this->template->append_css('module::dashboard.css')
 					   ->append_js('module::flot.js')
-					   ->append_js('module::flot.pie.js')
-					   ->append_js('module::flot.resize.js')
-					   ->append_js('module::flot.graphtable.js')
 					   ->append_js('module::dashboard.js');
 
 	}

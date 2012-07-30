@@ -1,25 +1,15 @@
 
-<?php if( isset($products) && !empty($products) ): ?>
-  	<div class="chart-pie" style="height: 300px">
-		<table class="chart-pie" style="width: 100%;">
-			<thead>
-				<tr>
-					<th></th>
-<?php foreach( $products as $product ): ?>
-					<th><?php echo $product['title']; ?></th>
-<?php endforeach; ?>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td></td>
-<?php foreach( $products as $product ): ?>
-					<td><?php echo $product['count']; ?></td>
-<?php endforeach; ?>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+<?php if( isset($total_count) && $total_count > 0 ): ?>
+
+  	<div id="sales" style="width: 595px; height: 260px"></div>
+
+	<script type="text/javascript">
+		var currency = '<?php echo $currency; ?>';
+		var sales    = <?php echo $sales; ?>;
+		var count    = <?php echo $count; ?>;
+		buildGraph(sales, count, '#sales');
+	</script>
+
 <?php else: ?>
   <div class="no_data">No sales found</div>
 <?php endif; ?>

@@ -29,7 +29,7 @@
 	$lang['firesale:dash_categorytrack']	= 'Category Tracking';
 	
 	// Elements - Dashboard
-	$lang['firesale:elements:product_sales'] = 'Best Selling Products';
+	$lang['firesale:elements:product_sales'] = 'Product Sales';
 	$lang['firesale:elements:low_stock']	 = 'Low or Out of Stock Products';
 
 	// Categories
