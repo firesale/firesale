@@ -2,7 +2,20 @@
 
 class Products_m extends MY_Model {
 	
-	protected $_table = 'firesale_products';
+	/**
+	 * Contains the current database table name
+	 *
+	 * @var string
+	 * @access public
+	 */
+	public $_table = 'firesale_products';
+
+	/**
+	 * Contains an array of the possible stock status options
+	 *
+	 * @var array
+	 * @access public
+	 */
 	public $_stockstatus = array(
 							1 => 'firesale:label_stock_in',
 							2 => 'firesale:label_stock_low',
@@ -11,11 +24,30 @@ class Products_m extends MY_Model {
 							5 => 'firesale:label_stock_ended'
 						   );
 	
-    public function __construct()
+	/**
+	 * Loads the parent constructor and gets an
+	 * instance of CI.
+	 *
+	 * @return void
+	 * @access public
+	 */
+	function __construct()
     {
         parent::__construct();
     }
 	
+	/**
+	 * Builds an array of the require keys and values for a dropdown of products,
+	 * the array is built with the following structure:
+	 *
+	 *    Product ID => Product Title
+	 *
+	 * Note: this function doesn't actually build the dropdown, just the array...
+	 * misleading title huh?
+	 *
+	 * @return array An array in the above format, sorry still no dropdown
+	 * @access public
+	 */
 	public function build_dropdown()
 	{
 	
@@ -29,67 +61,17 @@ class Products_m extends MY_Model {
 	
 		return $products;	
 	}
-
-	public function get_category($product)
-	{
-
-		// Variables
-		$id = 0;
-
-		// Get refering category
-		$ref = $_SERVER['HTTP_REFERER'];
-		$ref = explode('/', $ref);
-
-		// Did we get referred?
-		if( count($product['category']) > 1 AND isset($ref[3]) AND $ref[3] == 'category' )
-		{
-			// Check the product categories
-			foreach( $product['category'] AS $category )
-			{
-				if( $category['id'] == $this->session->userdata('category') )
-				{
-					$id = $category['id'];
-					break;
-				}
-			}
-		}
-
-		// Nothing set?
-		if( $id == 0 )
-		{
-			$id = $product['category'][0]['id'];
-		}
-
-		// Return
-		return $id;
-	}
 	
-	public function get_cat_path($cat, $reverse = false, $cats = array())
-	{
-	
-		$result = $this->db->select('id, parent, slug, title')->where("id = '{$cat}'")->get('firesale_categories')->result_array();
-		$first  = ( count($cats) == 0 ? true : false );
-		
-		if( count($result) > 0 )
-		{
-		
-			$cats[] = $result[0];
-
-			if( $result[0]['parent'] != 0 )
-			{
-				$cats = $this->get_cat_path($result[0]['parent'], $reverse, $cats);
-			}
-			
-		}
-
-		if( $first == true AND $reverse == true )
-		{
-			$cats = array_reverse($cats);	
-		}
-		
-		return $cats;	
-	}
-	
+	/**
+	 * Splits Streams fileds into an array of tabs, specified fields in a tabs array
+	 * will be put into their designated positions with all others failling into a
+	 * default "general options" array.
+	 *
+	 * @param array $fields A Streams generated array of fields
+	 * @param array $tabs A guide containing the tab name and an array of field names
+	 * @return array
+	 * @access public
+	 */
 	public function fields_to_tabs($fields, $tabs)
 	{
 	
@@ -129,6 +111,15 @@ class Products_m extends MY_Model {
 		return $data;	
 	}
 	
+	/**
+	 * Using Streams and a number of other functions to gather categories and images
+	 * this function builds a complete Product array for use in a number of places
+	 * and pages for display.
+	 *
+	 * @param integer or string $id_slug The ID or Slug of a Product to query
+	 * @return array A complete product array or FALSE on nothing found
+	 * @access public
+	 */
 	public function get_product($id_slug)
 	{
 
@@ -161,40 +152,15 @@ class Products_m extends MY_Model {
 		// Nothing?
 		return FALSE;
 	}
-
-	public function get_categories($id)
-	{
-
-		// Build query
-		$query = $this->db->select('firesale_categories_id AS id')
-						  ->from('firesale_products_firesale_categories')
-						  ->where('row_id', $id);
-
-		// Run query
-		$results = $query->get();
-
-		// Check for categories
-		if( $results->num_rows() )
-		{
-
-			// Get results
-			$results    = $results->result_array();
-			$categories = array();
-
-			// Get categories
-			foreach( $results AS $category )
-			{
-				$categories[] = $this->categories_m->get_category($category['id']);
-			}
-
-			// Return
-			return $categories;
-		}
-
-		// Nothing?
-		return array();
-	}
 	
+	/**
+	 * Update the most basic elements of a product, used via the inline product
+	 * edit feature of the administration section of products.
+	 *
+	 * @param array $input An array of the POST vars
+	 * @return boolean TRUE or FALSE on success of failure
+	 * @access public
+	 */
 	public function update_product($input)
 	{
 	
@@ -221,27 +187,15 @@ class Products_m extends MY_Model {
 			return FALSE;
 		}
 	
-	}
-
-	public function update_categories($product_id, $stream_id, $categories)
-	{
-
-		// Drop current categories
-		$this->db->where('row_id', $product_id)->delete('firesale_products_firesale_categories');
-
-		// Get array of new categories
-		$categories = str_replace('category_', '', $categories);
-		$categories = explode(', ', $categories);
-
-		// Loop and insert
-		for( $i = 0; $i < count($categories); $i++ )
-		{
-			$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => $categories[$i]);
-			$this->db->insert('default_firesale_products_firesale_categories', $data);
-		}
-
-	}
+	}	
 	
+	/**
+	 * Deletes a product, the images and Files folder related to it.
+	 *
+	 * @param integer $id The Product ID to delete
+	 * @return boolean TRUE or FALSE on success of failure
+	 * @access public
+	 */
 	public function delete_product($id)
 	{
 	
@@ -274,7 +228,14 @@ class Products_m extends MY_Model {
 		}
 	
 	}
-	
+
+	/**
+	 * Deletes all products using the delete_product method, used during the
+	 * uninstall process to ensure all products and their images are deleted.
+	 *
+	 * @return boolean TRUE or FALSE depending on status
+	 * @access public
+	 */	
 	public function delete_all_products()
 	{
 	
@@ -293,7 +254,163 @@ class Products_m extends MY_Model {
 		
 		return FALSE;	
 	}
+
+	/**
+	 * Updates the mulitple categories for a Product.
+	 * Required at the moment since the Streams Multiple field type doesn't seem
+	 * to do this automatically at the moment.
+	 *
+	 * @param integer $product_id The Product ID to update
+	 * @param integer $stream_id The Stream ID of the products tables
+	 * @param string $categories The Categories to add to the product
+	 * @return void
+	 * @access public
+	 */
+	public function update_categories($product_id, $stream_id, $categories)
+	{
+
+		// Drop current categories
+		$this->db->where('row_id', $product_id)->delete('firesale_products_firesale_categories');
+
+		// Get array of new categories
+		$categories = str_replace('category_', '', $categories);
+		$categories = explode(', ', $categories);
+
+		// Loop and insert
+		for( $i = 0; $i < count($categories); $i++ )
+		{
+			$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => $categories[$i]);
+			$this->db->insert('default_firesale_products_firesale_categories', $data);
+		}
+
+	}
+
+	/**
+	 * Gets all of the Category information for a given Product ID.
+	 *
+	 * @param integer $id The Product ID to query
+	 * @return array
+	 * @access public
+	 */
+	public function get_categories($id)
+	{
+
+		// Build query
+		$query = $this->db->select('firesale_categories_id AS id')
+						  ->from('firesale_products_firesale_categories')
+						  ->where('row_id', $id);
+
+		// Run query
+		$results = $query->get();
+
+		// Check for categories
+		if( $results->num_rows() )
+		{
+
+			// Get results
+			$results    = $results->result_array();
+			$categories = array();
+
+			// Get categories
+			foreach( $results AS $category )
+			{
+				$categories[] = $this->categories_m->get_category($category['id']);
+			}
+
+			// Return
+			return $categories;
+		}
+
+		// Nothing?
+		return array();
+	}
+
+	/**
+	 * Gets the refering Category for a product where available, otherwise defaults
+	 * to the primary (first) category of the product. Primarily used on the product
+	 * details pages for breadcrumbs and display purposes.
+	 *
+	 * @param integer $product The Product ID to query
+	 * @return integer The ID of a Category
+	 * @access public
+	 */
+	public function get_category($product)
+	{
+
+		// Variables
+		$id = 0;
+
+		// Get refering category
+		$ref = $_SERVER['HTTP_REFERER'];
+		$ref = explode('/', $ref);
+
+		// Did we get referred?
+		if( count($product['category']) > 1 AND isset($ref[3]) AND $ref[3] == 'category' )
+		{
+			// Check the product categories
+			foreach( $product['category'] AS $category )
+			{
+				if( $category['id'] == $this->session->userdata('category') )
+				{
+					$id = $category['id'];
+					break;
+				}
+			}
+		}
+
+		// Nothing set?
+		if( $id == 0 )
+		{
+			$id = $product['category'][0]['id'];
+		}
+
+		// Return
+		return $id;
+	}
 	
+	/**
+	 * Builds a category path for a given category, used primarily for the building
+	 * of breadcrumbs on both the product and category pages.
+	 *
+	 * @param integer $cat The Primary category to query
+	 * @param boolean $reverse (Optional) Should the final result be reversed?
+	 * @param array $cats (Protected) Used by the function when being recursive
+	 * @return array
+	 * @access public
+	 */
+	public function get_cat_path($cat, $reverse = false, $cats = array())
+	{
+	
+		$result = $this->db->select('id, parent, slug, title')->where("id = '{$cat}'")->get('firesale_categories')->result_array();
+		$first  = ( count($cats) == 0 ? true : false );
+		
+		if( count($result) > 0 )
+		{
+		
+			$cats[] = $result[0];
+
+			if( $result[0]['parent'] != 0 )
+			{
+				$cats = $this->get_cat_path($result[0]['parent'], $reverse, $cats);
+			}
+			
+		}
+
+		if( $first == true AND $reverse == true )
+		{
+			$cats = array_reverse($cats);	
+		}
+		
+		return $cats;	
+	}
+
+	/**
+	 * Gets a Files folder object based on the Product/Name slug.
+	 *
+	 * @param string $slug The Slug to query
+	 * @return object or boolean FALSE on failure
+	 * @access public
+	 */
 	public function get_file_folder_by_slug($slug)
 	{
 
@@ -308,6 +425,13 @@ class Products_m extends MY_Model {
 		return FALSE;
 	}
 	
+	/**
+	 * Gets the first image ID available for a product to be used with Files.
+	 *
+	 * @param integer $product The Product ID to query
+	 * @return integer The image ID or FALSE on no image
+	 * @access public
+	 */
 	public function get_single_image($product)
 	{
 		$query = $this->db->select('files.id')
@@ -323,6 +447,16 @@ class Products_m extends MY_Model {
 		return FALSE;
 	}
 
+	/**
+	 * When uploading a new image for a product, based on the settings defined
+	 * in the admin section we can make the image square. This is a requirement
+	 * for many designs to keep things consistent and the same height/width
+	 * throughtout.
+	 *
+	 * @param array $status A status array from the files upload process
+	 * @return boolean TRUE or FALSE based on the status of the resize
+	 * @access public
+	 */
 	public function make_square($status)
 	{
 
