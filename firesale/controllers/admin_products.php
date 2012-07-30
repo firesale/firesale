@@ -91,7 +91,8 @@ class Admin_products extends Admin_Controller
 					  );
 
 			// Manually update categories
-			$this->products_m->update_categories($id, $this->stream->id, $input['category']);
+			if( $id !== NULL )
+				$this->products_m->update_categories($id, $this->stream->id, $input['category']);
 		
 		}
 		else
