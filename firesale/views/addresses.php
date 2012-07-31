@@ -11,7 +11,7 @@
             {{ if { helper:str_word_count string=city } > 0 }}<li>{{ city }}</li> {{ endif }}
             {{ if { helper:str_word_count string=county } > 0 }}<li>{{ county }}</li> {{ endif }}
             {{ if { helper:str_word_count string=postcode } > 0 }}<li>{{ postcode }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=country } > 0 }}<li>{{ country }}</li> {{ endif }}
+            <li>{{ country.name }}</li>
         </ul>
         <footer>
           <span>&nbsp;</span>
@@ -21,5 +21,5 @@
 
 {{ /addresses }}
       <br class="clear" />
-	  
-	  <a href="/users/addresses/create" class="btn"><span>Create new Address</span></a>
+    
+    <a href="/users/addresses/create" class="btn"><span>Create new Address</span></a>

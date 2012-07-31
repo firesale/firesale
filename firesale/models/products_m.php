@@ -200,7 +200,13 @@ class Products_m extends MY_Model {
 	public function count_products($type, $value)
 	{
 
-		$count = $this->db->select('id')->get('firesale_products')->num_rows();
+		$query = $this->db->select('id');
+		if( $type != 'na' AND $value != 'na' )
+		{
+			$query->where($type, $value);
+		}
+		$count = $query->get('firesale_products')->num_rows();
+
 		return $count;
 	}
 	

@@ -10,7 +10,7 @@
             {{ if { helper:str_word_count string=ship_to.city } > 0 }}<li>{{ ship_to.city }}</li> {{ endif }}
             {{ if { helper:str_word_count string=ship_to.county } > 0 }}<li>{{ ship_to.county }}</li> {{ endif }}
             {{ if { helper:str_word_count string=ship_to.postcode } > 0 }}<li>{{ ship_to.postcode }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=ship_to.country } > 0 }}<li>{{ ship_to.country }}</li> {{ endif }}
+            <li>{{ ship_to.country.name }}</li>
           </ul>
         </div>
 
@@ -23,13 +23,13 @@
             {{ if { helper:str_word_count string=bill_to.city } > 0 }}<li>{{ bill_to.city }}</li> {{ endif }}
             {{ if { helper:str_word_count string=bill_to.county } > 0 }}<li>{{ bill_to.county }}</li> {{ endif }}
             {{ if { helper:str_word_count string=bill_to.postcode } > 0 }}<li>{{ bill_to.postcode }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=bill_to.country } > 0 }}<li>{{ bill_to.country }}</li> {{ endif }}
+            <li>{{ bill_to.country.name }}</li>
           </ul>
         </div>
 
         <br class="clear" />
         <br />
-	  
+    
         <h2>Products</h2>
 
         <table class="standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">

@@ -10,7 +10,7 @@
 					<ul>
 						<li class="<?php echo alternator('even', ''); ?>">
 							<label for="filter"><?php echo lang('firesale:label_filtercat'); ?></label>
-							<div class="input"><?php echo form_dropdown('filter', $categories, set_value($category, NULL), 'id="filter"'); ?></div>
+							<div class="input"><?php echo form_dropdown('filter', $categories, set_value($category, NULL), 'id="filter-category" class="filter"'); ?></div>
 						</li>
 					</ul>
 				</fieldset>
@@ -19,7 +19,11 @@
 	</div>
 	
 <?php if( isset($pagination) ): ?>
-	<?php echo $pagination['links']; ?>
+	<div class="one_half">
+		<div id="shortcuts">
+			<?php echo $pagination['links']; ?>
+		</div>
+	</div>
 <?php endif; ?>
 
 	<section class="title">
@@ -69,13 +73,16 @@
 
 		</section>
 	
-		<div class="buttons">
+		<div class="buttons one_half">
 			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
 		</div>
+<?php if( isset($pagination) ): ?>
+		<div class="one_half">
+			<div id="shortcuts" class="bottom">
+				<?php echo $pagination['links']; ?>
+			</div>
+		</div>
+<?php endif; ?>
 <?php endif; ?>
 		
 	<?php echo form_close(); ?>
-
-<?php if( isset($pagination) ): ?>
-	<?php echo $pagination['links']; ?>
-<?php endif; ?>

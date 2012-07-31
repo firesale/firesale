@@ -257,7 +257,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_city', 'slug' => 'city', 'extra' => array('max_length' => 255));
 		$fields[] = array('name' => 'lang:firesale:label_county', 'slug' => 'county', 'extra' => array('max_length' => 255));
 		$fields[] = array('name' => 'lang:firesale:label_postcode', 'slug' => 'postcode', 'extra' => array('max_length' => 40));
-		$fields[] = array('name' => 'lang:firesale:label_country', 'slug' => 'country', 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_country', 'slug' => 'country', 'type' => 'country');
 
 		// Combine
 		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }

@@ -52,3 +52,8 @@ button.link.unlinked { background-position: -40px 0; }
 .mult_lists tbody { border: 1px solid #eee; }
 .mult_lists td { padding: 1px 0 0 0 !important; border-left: none !important; }
 .mult_lists ul { overflow-x: hidden; width: 260px; padding: 5px !important; }
+
+#content-body #shortcuts { right: auto !important; margin: 0; float: none; position: relative; top: auto !important; }
+#content-body #shortcuts.bottom { float: right; }
+#content-body #shortcuts div ul { border: none !important; }
+#content-body #shortcuts div ul li.active span { border: none !important; background: none !important; line-height: 24px !important; }

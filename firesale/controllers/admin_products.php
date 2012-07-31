@@ -34,7 +34,7 @@ class Admin_products extends Admin_Controller
 
 	}
 
-	public function index($type = NULL, $value = NULL, $start = 0)
+	public function index($type = 'na', $value = 'na', $start = 0)
 	{
 
 		// Set query paramaters
@@ -47,10 +47,14 @@ class Admin_products extends Admin_Controller
 					'sort'		=> 'desc'
 				   );
 		
-		// Get by category if set
-		if( $category > 0 )
+		// Get filter if set
+		if( $type != 'na' AND $value != 'na' )
 		{
-			$params['where'] = 'category=' . $category;
+			if( $type == 'category' )
+			{
+				$type = 'default_firesale_products_firesale_categories.row_id = firesale_products.id AND default_firesale_products_firesale_categories.firesale_categories_id';
+			}
+			$params['where'] = $type . ' = ' . $value;
 		}
 		
 		// Get entries		
@@ -58,8 +62,8 @@ class Admin_products extends Admin_Controller
 	
 		// Assign variables
 		$this->data->products 	= $products['entries'];
-		$this->data->count		= $this->products_m->count_products();
-		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( 0 + $category ) . '/', $this->data->count, $this->perpage, 5);
+		$this->data->count		= $this->products_m->count_products($type, $value);
+		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 4, 6);
 		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
 		$this->data->category	= $category;
 

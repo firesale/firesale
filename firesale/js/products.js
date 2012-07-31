@@ -1,7 +1,7 @@
 $(function(){
 
 	// Dashboard
-	$('#filter').change(function() { if( $(this).val() > 0 ) { window.location = '/admin/firesale/products/' + $(this).val(); } });
+	$('.filter').change(function() { if( $(this).val() > 0 ) { window.location = '/admin/firesale/products/' + $(this).attr('id').replace('filter-', '') + '/' + $(this).val(); } });
 	
 	$('.quickedit').click(function() {
 	
