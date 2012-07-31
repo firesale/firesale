@@ -88,6 +88,10 @@ class Admin_categories extends Admin_Controller
 			}
 		
 		}
+		else if( $this->input->post('btnAction') == 'delete' )
+		{
+			$this->delete($this->input->post('id'));
+		}
 		else
 		{
 			$input = FALSE;
@@ -173,7 +177,6 @@ class Admin_categories extends Admin_Controller
 		}
 		
 		redirect('admin/firesale/categories');
-	
 	}
 	
 	/**

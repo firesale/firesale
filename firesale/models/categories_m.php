@@ -153,7 +153,7 @@ class Categories_m extends MY_Model {
 	{
 	
 		// Check if we're deleting Category 1
-		if( $cat_id != 1 )
+		if( $id != 1 )
 		{
 
 			// Was it deleted?
@@ -164,7 +164,7 @@ class Categories_m extends MY_Model {
 				$this->db->update('firesale_categories', array('parent' => 1), 'parent = ' . ( 0 + $id ));
 
 				// Add products to root category
-				$this->db->update('firesale_products_firesale_categories', array('parent' => 1));
+				$this->db->update('firesale_products_firesale_categories', array('firesale_categories_id' => 1));
 
 				// Return
 				return TRUE;
