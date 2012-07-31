@@ -9,7 +9,8 @@ $route['firesale/admin/orders/ajax_get_address(/:any)?']	  = 'admin_orders/ajax_
 $route['firesale/admin/orders/edit(/:any)?']	  			  = 'admin_orders/edit$1';
 $route['firesale/admin/orders/create']	  			  		  = 'admin_orders/create';
 $route['firesale/admin/orders/status']	  			  		  = 'admin_orders/status';
-$route['firesale/admin/orders(/:any)?'] 					  = 'admin_orders/index$1';
+$route['firesale/admin/orders/delete(/:any)?'] 				  = 'admin_orders/delete$1';
+$route['firesale/admin/orders(/:any)?'] 				 	  = 'admin_orders/index$1';
 $route['firesale/admin/gateways(/:any)?'] 					  = 'admin_gateways$1';
 $route['firesale/admin'] 			 	  					  = 'firesale/admin/index';
 
