@@ -187,7 +187,22 @@ class Products_m extends MY_Model {
 			return FALSE;
 		}
 	
-	}	
+	}
+
+	/**
+	 * Gets a count of the products matching the current filtering options.
+	 *
+	 * @param string $type (Optional) The type of filter to apply
+	 * @param string $value (Optional) The value to filer by
+	 * @return integer
+	 * @access public
+	 */
+	public function count_products($type, $value)
+	{
+
+		$count = $this->db->select('id')->get('firesale_products')->num_rows();
+		return $count;
+	}
 	
 	/**
 	 * Deletes a product, the images and Files folder related to it.

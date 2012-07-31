@@ -34,7 +34,7 @@ class Admin_products extends Admin_Controller
 
 	}
 
-	public function index($category = 0, $start = 0)
+	public function index($type = NULL, $value = NULL, $start = 0)
 	{
 
 		// Set query paramaters
@@ -58,7 +58,7 @@ class Admin_products extends Admin_Controller
 	
 		// Assign variables
 		$this->data->products 	= $products['entries'];
-		$this->data->count		= 808; // move to function soon
+		$this->data->count		= $this->products_m->count_products();
 		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( 0 + $category ) . '/', $this->data->count, $this->perpage, 5);
 		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
 		$this->data->category	= $category;
