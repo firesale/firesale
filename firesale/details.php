@@ -114,6 +114,7 @@ class Module_Firesale extends Module {
 		// Load required items
 		$this->load->driver('Streams');
 		$this->load->language('firesale/firesale');
+		$this->load->model('firesale/categories_m');
 		$this->load->model('firesale/products_m');
 		$this->load->library('files/files');
 		
@@ -348,6 +349,7 @@ class Module_Firesale extends Module {
 	
 		// Load required items
 		$this->load->driver('Streams');
+		$this->load->model('firesale/categories_m');
 		$this->load->model('firesale/products_m');
 		$this->load->library('files/files');
 	
