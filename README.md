@@ -28,10 +28,11 @@ You can find a copy to download via [this link](https://dl.dropbox.com/u/3259638
 
 1. Clone yourself a copy of the FireSALE core
 2. Move everything to either your PyroCMS shared_addons or addons/default folder
-3. Install the core via the admin modules panel
-4. Install the other two modules by the same method
-5. Go into settings and choose your preferred options, we strongly advise you to select yes for routes
-6. Below you'll find a number of routes we suggest you install; a number of features will not work without them
+3. If you are using PyroCMS Community you need to install also the [Multiple Relationship](https://github.com/parse19/PyroStreams-Multiple-Relationships) field type
+4. Install the core via the admin modules panel
+5. Install the other two modules by the same method
+6. Go into settings and choose your preferred options, we strongly advise you to select yes for routes
+7. Below you'll find a number of routes we suggest you install; a number of features will not work without them
 
 ## Routes
 
