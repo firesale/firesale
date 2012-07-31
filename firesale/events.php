@@ -53,7 +53,6 @@ class Events_Firesale
 		{
 			foreach( $this->ci->firesale->events[$name] AS $event )
 			{
-				echo $name . '<br />';
 				$this->ci->load->model($event['model']);
 				$ref = end(explode('/', $event['model']));
 				$this->ci->$ref->$event['function']($data);
