@@ -96,7 +96,7 @@ class Front_cart extends Public_Controller
 					$product = $this->products_m->get_product($prd_code);
 					$tmp[$product['id']] = $product['stock'];
 
-					if( $product != FALSE )
+					if( $product != FALSE AND $qtys[$key] > 0 )
 					{
 						$data[] = $this->cart_m->build_data($product, (int)$qtys[$key]);
 					}
@@ -111,7 +111,7 @@ class Front_cart extends Public_Controller
 			$product = $this->products_m->get_product($prd_code);
 			$tmp[$product['id']] = $product['stock'];
 
-			if( $product != FALSE )
+			if( $product != FALSE AND $qty > 0 )
 			{
 				$data[] = $this->cart_m->build_data($product, $qty);
 				$this->session->set_userdata('added', $product['id']);
@@ -171,7 +171,7 @@ class Front_cart extends Public_Controller
 					$data['rowid'] = $row_id;
 					
 					// Has this item been marked for removal?
-					if( isset($item['remove']) OR $item['qty'] == 0 )
+					if( isset($item['remove']) OR $item['qty'] <= 0 )
 					{
 		
 						$data['qty'] = 0;
