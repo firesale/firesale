@@ -64,6 +64,54 @@ class Plugin_Firesale extends Plugin
 		// Return
 		return $this->categories($limit, $category, $order_by, $order_dir);
 	}
+	public function products()
+	{
+
+		// Variables
+		$limit	   = $this->attribute('limit', 10);
+		$where     = $this->attribute('where', NULL);
+		$order_by  = $this->attribute('order-by', 'id');
+		$order_dir = $this->attribute('order-dir', 'desc');
+
+		// Build query
+		$query = $this->db->select('id')
+						  ->from('firesale_products')
+						  ->order_by($order_by, $order_dir)
+						  ->limit($limit);
+
+		if( $where != NULL )
+		{
+			foreach( explode('|', $where) AS $where )
+			{
+				list($field, $val) = explode('=', $where);
+				$query->where(trim($field), trim($val));
+			}
+		}
+
+		// Run query
+		$results = $query->get();
+
+		// Check for results
+		if( $results->num_rows() )
+		{
+
+			// Get results
+			$results  = $results->result_array();
+			$products = array();
+
+			// Get products
+			foreach( $results AS $result )
+			{
+				$products[] = $this->products_m->get_product($result['id']);
+			}
+
+			// Return
+			return $products;
+		}
+
+		// Nothing?
+		return array();
+	}
 
 	public function cart()
 	{
@@ -77,6 +125,7 @@ class Plugin_Firesale extends Plugin
 		$data->sub 	 	= 0;
 		$data->tax 	 	= 0;
 		$data->total 	= 0;
+		$data->count 	= 0;
 		$data->products = array();
 		
 		// Loop products in cart
@@ -97,7 +146,7 @@ class Plugin_Firesale extends Plugin
 				);
 				
 				$data->total += $item['subtotal'];
-			
+				$data->count += $item['qty'];
 			}
 		
 		}
