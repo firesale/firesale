@@ -7,7 +7,7 @@ class Search extends Public_Controller {
     private $validation_rules = array();
 	
 	public $section = "search";
-	public $perpage = 20;
+	public $perpage = 15;
 
     public function __construct()
     {
@@ -19,6 +19,9 @@ class Search extends Public_Controller {
 		$this->load->model('firesale/products_m');
 		$this->load->model('search_m');
 		$this->load->helper('firesale/general');
+
+		// Get perpage option
+		$this->perpage = $this->settings->get('firesale_perpage');
 
     }
     

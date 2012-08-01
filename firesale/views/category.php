@@ -45,7 +45,7 @@
 	
         <section id="listing" class="{{ layout }}">
 
-{{ if products != false }}
+{{ if products }}
 {{ products }}
           <article>
 {{ if image == null }}

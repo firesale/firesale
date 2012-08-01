@@ -34,6 +34,9 @@ class Front_category extends Public_Controller {
 		$this->load->model('products_m');
 		$this->load->helper('firesale/general');
 
+		// Get perpage option
+		$this->perpage = $this->settings->get('firesale_perpage');
+
 		// Load css/js
 		$this->template->append_css('module::firesale.css')
 					   ->append_js('module::firesale.js');

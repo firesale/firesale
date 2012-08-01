@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module {
 	
-	public $version = '0.9.3';
+	public $version = '0.9.7';
 	public $language_file = 'firesale/firesale';
 	
 	public function __construct()
@@ -386,6 +386,10 @@ class Module_Firesale extends Module {
 	public function upgrade($old_version)
 	{
 
+		// Add settings
+		$this->settings('remove');
+		$this->settings('add');
+
 		return TRUE;
 	}
 
@@ -409,6 +413,20 @@ class Module_Firesale extends Module {
 			'description' 	=> 'The percentage of tax to be applied to the products',
 			'default'		=> '20',
 			'value'			=> '20',
+			'type' 			=> 'text',
+			'options'		=> '',
+			'is_required' 	=> 1,
+			'is_gui'		=> 1,
+			'module' 		=> 'firesale'
+		);
+
+		// Products Per Page
+		$settings[] = array(
+			'slug' 		  	=> 'firesale_perpage',
+			'title' 	  	=> 'Products per Page',
+			'description' 	=> 'The number of products to be displayed on category and search result pages',
+			'default'		=> '15',
+			'value'			=> '15',
 			'type' 			=> 'text',
 			'options'		=> '',
 			'is_required' 	=> 1,
