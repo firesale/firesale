@@ -43,7 +43,7 @@ class Front_product extends Public_Controller {
 			// Add key for easy limits, main, etc.
 			foreach( $this->data->images AS $key => $image )
 			{
-				$this->data->images[$key]->i = $key;
+				$this->data->images[$key]->position = $key;
 			}
 
 			// Breadcrumbs

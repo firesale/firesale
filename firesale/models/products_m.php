@@ -295,12 +295,12 @@ class Products_m extends MY_Model {
 
 		// Get array of new categories
 		$categories = str_replace('category_', '', $categories);
-		$categories = explode(', ', $categories);
+		$categories = explode(',', $categories);
 
 		// Loop and insert
 		for( $i = 0; $i < count($categories); $i++ )
 		{
-			$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => $categories[$i]);
+			$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => trim($categories[$i]));
 			$this->db->insert('default_firesale_products_firesale_categories', $data);
 		}
 

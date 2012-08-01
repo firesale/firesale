@@ -70,6 +70,7 @@ class Plugin_Firesale extends Plugin
 		// Return
 		return $this->categories($limit, $category, $order_by, $order_dir);
 	}
+
 	public function products()
 	{
 
