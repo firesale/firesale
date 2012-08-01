@@ -3,6 +3,12 @@
 class Plugin_Firesale extends Plugin
 {
 
+    public function __construct()
+    {
+		$this->load->model('categories_m');
+		$this->load->model('products_m');
+	}
+
 	public function module_installed()
 	{
 	
