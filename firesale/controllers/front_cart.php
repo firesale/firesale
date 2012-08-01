@@ -67,6 +67,14 @@ class Front_cart extends Public_Controller
 		$data['tax_percent'] = $this->cart->tax_percent;
 		$data['contents']    = $this->cart->contents();
 
+		// Add item id
+		$i = 1;
+		foreach( $data['contents'] AS $key => $product )
+		{
+			$data['contents'][$key]['no'] = $i;
+			$i++;
+		}
+
 		// Build Page
 		$this->template->set_breadcrumb('Home', '/home')
 					   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
@@ -230,7 +238,16 @@ class Front_cart extends Public_Controller
 			// Are we checking out or just updating?
 			if( $this->input->post('btnAction') == 'checkout' )
 			{
+
+				// Added so shipping can be a cart option
+				if( $shipping = $this->input->post('shipping') )
+				{
+					$this->session->set_userdata('shipping', $shipping);
+				}
+
+				// Send to checkout
 				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/checkout');
+
 			}
 			else if( $this->input->is_ajax_request() )
 			{
@@ -396,6 +413,12 @@ class Front_cart extends Public_Controller
 				$data['addresses'] = $this->address_m->get_addresses($this->current_user->id);
 			}
 
+			// Check for shipping option set in cart
+			if( $this->session->userdata('shipping') )
+			{
+				$data['shipping'] = $this->session->userdata('shipping');
+			}
+
 			// Build page
 			$this->template->set_breadcrumb('Home', '/home')
 						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
@@ -442,12 +465,17 @@ class Front_cart extends Public_Controller
 			if( $_SERVER['REQUEST_METHOD'] === 'POST' )
 			{
 
-				// Remove ID
-				$this->session->unset_userdata('order_id');
-
 				// Run payment
 				$process = $this->merchant->process($this->input->post(NULL, TRUE));
 				$status  = '_order_' . $process->status;
+
+				// Check status
+				if( $process->status == 'authorized' )
+				{
+					// Remove ID & Shipping option
+					$this->session->unset_userdata('order_id');
+					$this->session->unset_userdata('shipping');
+				}
 
 				// Run status function
 				$this->$status($order);
@@ -474,7 +502,7 @@ class Front_cart extends Public_Controller
 							   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
 							   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
 							   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-							   ->set('payment', $this->load->view('gateways/'.$gateway, $var, TRUE))
+							   ->set('payment', $this->load->view('gateways/' . $gateway, $var, TRUE))
 							   ->build('payment', $order);
 
 			}

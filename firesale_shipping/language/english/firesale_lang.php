@@ -12,6 +12,7 @@
 	$lang['firesale:shipping:none']		= 'No Shipping Options Found';
 
 	// Labels
+	$lang['firesale:label_free']		= 'FREE';
 	$lang['firesale:label_save']		= 'Save';
 	$lang['firesale:label_company']		= 'Shipping Carrier';
 	$lang['firesale:label_price_min']	= 'Price (Minimum)';

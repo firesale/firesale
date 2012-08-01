@@ -90,7 +90,7 @@
             <br class="clear" />
           </fieldset>
 
-<?php if( isset($shipping) ):?>
+<?php if( isset($shipping) && is_array($shipping) ): ?>
           <h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:checkout:title:ship_method'); ?></a></h3>
           <fieldset>
             <p>Please select your preferred shipping method below before continuing</p>
@@ -108,6 +108,9 @@
             <a href="#payment" class="next btn"><span>Next</span></a>
             <br class="clear" />
           </fieldset>
+
+<?php elseif( isset($shipping) && (0 + $shipping ) > 0 ): ?>
+          <input type="hidden" name="shipping" value="<?php echo $shipping; ?>" />
 
 <?php endif; ?>
           <h3 id="payment"><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>

@@ -36,7 +36,7 @@ class Shipping_m extends MY_Model
 					'stream' 	=> 'firesale_shipping',
 					'namespace'	=> 'firesale_shipping',
 					'order_by'	=> 'price',
-					'sort'		=> 'desc'
+					'sort'		=> 'asc'
 				   );
 
 		$options = $this->streams->entries->get_entries($params);

@@ -1,5 +1,5 @@
 <?php echo form_open(); ?>
-	<?php echo form_hidden('return_url', site_url('firesale/cart/callback/paypal/ORDER_ID')); ?>
+	<?php echo form_hidden('return_url', site_url('firesale/cart/payment')); ?>
 	<?php echo form_hidden('reference', 'Test Order'); ?>
 	<?php echo form_hidden('amount', $this->cart->total); ?>
 	<p>Payment processing is done on the AuthorizeNet website, so if you're happy with everything please click below to finalise your order!</p>
