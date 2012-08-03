@@ -129,7 +129,7 @@ class Admin_orders extends Admin_Controller
 		}
 	
 		// Get the stream fields
-		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
+		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? (object)$input : $row ), FALSE, FALSE, $skip, $extra);
 
 		// Assign variables
 		if( $row !== NULL ) { $this->data = $row; }
