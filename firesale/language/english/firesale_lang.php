@@ -33,7 +33,6 @@
 	$lang['firesale:elements:low_stock']	 = 'Low or Out of Stock Products';
 
 	// Categories
-	$lang['firesale:shortcuts:cat_create'] 	= 'Create Category';
 	$lang['firesale:cats_title']			= 'Manage Categories';
 	$lang['firesale:cats_none']				= 'No Categories Found';
 	$lang['firesale:cats_new']				= 'Add new category';
