@@ -25,12 +25,12 @@
 								<td><?php echo $gateway['desc']; ?></td>
 								<td class="actions">
 									<?php if ($gateway['enabled']): ?>
-										<a class="confirm button small" href="<?php echo site_url('admin/firesale/gateways/disable/'.$gateway['id']); ?>" title="Are you sure you want to disable this gateway? Doing so may make your store unable to take payments.">Disable</a>
+										<a class="confirm button small" href="<?php echo site_url('admin/firesale/gateways/disable/'.$gateway['id']); ?>" title="<?php echo lang('firesale:gateways:warning'); ?>"><?php echo lang('buttons.disable'); ?></a>
 									<?php else: ?>
-										<a class="button small" href="<?php echo site_url('admin/firesale/gateways/enable/'.$gateway['id']); ?>">Enable</a>
+										<a class="button small" href="<?php echo site_url('admin/firesale/gateways/enable/'.$gateway['id']); ?>"><?php echo lang('buttons.enable'); ?></a>
 									<?php endif; ?>
-									<a class="button small" href="<?php echo site_url('admin/firesale/gateways/edit/'.$gateway['slug']); ?>">Edit</a>
-									<a class="confirm button small" href="<?php echo site_url('admin/firesale/gateways/uninstall/'.$gateway['id']); ?>" title="All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall this gateway?">Uninstall</a>
+									<a class="button small" href="<?php echo site_url('admin/firesale/gateways/edit/'.$gateway['slug']); ?>"><?php echo lang('buttons.edit'); ?></a>
+									<a class="confirm button small" href="<?php echo site_url('admin/firesale/gateways/uninstall/'.$gateway['id']); ?>" title="<?php echo lang('firesale:gateways:warning'); ?>"><?php echo lang('buttons.uninstall'); ?></a>
 								</td>
 							</tr>
 						<?php endforeach; ?>
@@ -42,14 +42,14 @@
 	</section>
 	<div class="table_action_buttons">
 		<button class="btn red green" value="publish" name="btnAction" type="submit" disabled="">
-			<span>Enable</span>
+			<span><?php echo lang('buttons.enable'); ?></span>
 		</button>
 		
 		<button class="btn red orange" value="publish" name="btnAction" type="submit" disabled="">
-			<span>Disable</span>
+			<span><?php echo lang('buttons.disable'); ?></span>
 		</button>
 				
 		<button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
-			<span>Uninstall</span>
+			<span><?php echo lang('buttons.uninstall'); ?></span>
 		</button>
 	</div>

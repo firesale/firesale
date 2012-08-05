@@ -37,6 +37,6 @@
 		</section>
 
 		<button class="btn blue" value="install" name="btnAction" type="submit">
-			<span>Install</span>
+			<span><?php echo lang('buttons.install'); ?></span>
 		</button>
 	<?php echo form_close(); ?>

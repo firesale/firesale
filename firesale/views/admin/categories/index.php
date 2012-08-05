@@ -38,7 +38,6 @@
 		<h4><?php echo lang('firesale:cats_new'); ?></h4>
 <?php if( !empty($tabs) ): ?>
 		<ul>
-			<li><a href="#images">Images</a></li>
 <?php foreach( $tabs AS $tab ): ?>
 			<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><?php echo ucwords($tab); ?></a></li>
 <?php endforeach; ?>
@@ -65,9 +64,6 @@
 		</section>
 
 <?php endforeach; ?>
-		<section class="item form_inputs" id="images">
-          Coming Soon&#0153;
-        </section>
 
         <div class="buttons">
 <?php if( isset($input->id) ): ?>

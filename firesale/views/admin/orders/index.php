@@ -41,12 +41,12 @@
 						<td><?php echo $order['ship_to']['firstname'] . ' ' . $order['ship_to']['lastname']; ?></td>
 						<td><?php echo $order['status']['value']; ?></td>
 						<td><?php echo $order['products']; ?></td>
-						<td><?php echo $order['ship_to']['country']; ?></td>
+						<td><?php echo $order['ship_to']['country']['name']; ?></td>
 						<td><?php echo $this->settings->get('currency') . $order['price_total']; ?></td>
 						<td><?php echo $this->settings->get('currency') . $order['price_ship']; ?></td>
 						<td class="actions">
-							<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>">Edit</a>
-							<a class="button small confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>">Delete</a>
+							<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>
+							<a class="button small confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('buttons.delete'); ?></a>
 						</td>
 					</tr>
 <?php endforeach; ?>
@@ -59,19 +59,19 @@
 
 		<div class="table_action_buttons">
 			<button class="btn green" value="paid" name="btnAction" type="submit" disabled="">
-				<span>Mark as Paid</span>
+				<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_paid'); ?></span>
 			</button>
 		
 			<button class="btn red" value="unpaid" name="btnAction" type="submit" disabled="">
-				<span>Mark as Unpaid</span>
+				<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_unpaid'); ?></span>
 			</button>
 		
 			<button class="btn orange" value="dispatched" name="btnAction" type="submit" disabled="">
-				<span>Mark as Dispatched</span>
+				<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_dispatched'); ?></span>
 			</button>
 
 			<button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
-				<span>Delete Products</span>
+				<span><?php echo lang('firesale:orders:delete'); ?></span>
 			</button>
 		</div>
 

@@ -25,12 +25,16 @@
 	$lang['firesale:shortcuts:create_order']	= 'Create Order';
 
 	// Dashboard
-	$lang['firesale:dash_overview']			= 'Quick Overview';
-	$lang['firesale:dash_categorytrack']	= 'Category Tracking';
-	
-	// Elements - Dashboard
-	$lang['firesale:elements:product_sales'] = 'Product Sales';
-	$lang['firesale:elements:low_stock']	 = 'Low or Out of Stock Products';
+	$lang['firesale:dash_overview']			 	= 'Quick Overview';
+	$lang['firesale:dash_categorytrack']	 	= 'Category Tracking';
+	$lang['firesale:elements:product_sales'] 	= 'Product Sales';
+	$lang['firesale:elements:low_stock']	 	= 'Low or Out of Stock Products';
+	$lang['firesale:dashboard:no_sales']	 	= 'No sales found in the last 12 months';
+	$lang['firesale:dashboard:stock_low']	 	= '%s Products with low stock';
+	$lang['firesale:dashboard:stock_out']	 	= '%s Products with no stock';
+	$lang['firesale:dashboard:no_stock_low']	= 'No low stock products';
+	$lang['firesale:dashboard:no_stock_out']	= 'No out of stock products';
+	$lang['firesale:dashboard:view_more']		= 'View more...';
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Manage Categories';
@@ -41,10 +45,10 @@
 	$lang['firesale:cats_live_label']		= 'Live';
 	$lang['firesale:cats_edit']				= 'Edit Category';
 	$lang['firesale:cats_delete']			= 'Delete';
-	$lang['firesale:cats_add_success'] 		= '[PH] Category addition successful';
-	$lang['firesale:cats_add_error'] 		= '[PH] Category addition failed';
-	$lang['firesale:cats_delete_success'] 	= '[PH] Category delete successful';
-	$lang['firesale:cats_delete_error'] 	= '[PH] Category delete failed';
+	$lang['firesale:cats_add_success'] 		= 'New category was added successfully';
+	$lang['firesale:cats_add_error'] 		= 'There was a problem adding the new category';
+	$lang['firesale:cats_delete_success'] 	= 'Category was deleted successfully';
+	$lang['firesale:cats_delete_error'] 	= 'There was a problem deleting that category';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'No Products Found';
@@ -53,13 +57,12 @@
 	$lang['firesale:prod_title']			= 'Manage Products';
 	$lang['firesale:prod_title_create'] 	= 'Create New Product';
 	$lang['firesale:prod_title_edit'] 		= 'Edit Product';
-	$lang['firesale:prod_edit_success'] 	= '[PH] Product edit success';
-	$lang['firesale:prod_add_success'] 		= '[PH] Product addition success';
-	$lang['firesale:prod_add_error'] 		= '[PH] Product addition error';
-	$lang['firesale:prod_temp_error'] 		= '[PH] You cannot edit that product';
-	$lang['firesale:prod_delete_error'] 	= '[PH] Product delete failed';
-	$lang['firesale:prod_delete_success'] 	= '[PH] Product delete successful';
-	$lang['firesale:prod_not_found'] 		= '[PH] Product not found';
+	$lang['firesale:prod_edit_success'] 	= 'Product edited successfully';
+	$lang['firesale:prod_add_success'] 		= 'A new product was added successfully';
+	$lang['firesale:prod_add_error'] 		= 'There was a problem adding a new product';
+	$lang['firesale:prod_delete_error'] 	= 'There was a problem deleting that product';
+	$lang['firesale:prod_delete_success'] 	= 'Product deleted successfully';
+	$lang['firesale:prod_not_found'] 		= 'That product cannot be found';
 
 	// Labels
 	$lang['firesale:label_draft']		= 'Draft';
@@ -79,6 +82,7 @@
 	$lang['firesale:label_price']		= 'Current Price';
 	$lang['firesale:label_price_tax']	= 'Current Price (before tax)';
 	$lang['firesale:label_stock']		= 'Current Stock Level';
+	$lang['firesale:label_drop_images'] = 'Drop images here to upload';
 
 	$lang['firesale:label_stock_short']	= 'Stock Level';
 	$lang['firesale:label_stock_status']= 'Stock Status';
@@ -88,6 +92,9 @@
 	$lang['firesale:label_stock_order']	= 'More stock ordered';
 	$lang['firesale:label_stock_ended']	= 'Discontinued';
 
+	$lang['firesale:label_remove']		= 'Remove';
+	$lang['firesale:label_image']		= 'Image';
+	$lang['firesale:label_images']		= 'Images';
 	$lang['firesale:label_order']		= 'Order';
 	$lang['firesale:label_gateway']		= 'Payment Method';
 	$lang['firesale:label_shipping']	= 'Shipping Method';
@@ -111,7 +118,7 @@
 	$lang['firesale:label_postcode']	= 'Postcode';
 	$lang['firesale:label_county']		= 'County';
 	$lang['firesale:label_country']		= 'Country';
-	$lang['firesale:label_details'] 	= 'My Billing and Shipping addresses are the same.';
+	$lang['firesale:label_details'] 	= 'My Billing and Shipping addresses are the same';
 	$lang['firesale:label_user_order']	= 'User';
 	$lang['firesale:label_ip']			= 'IP Address';
 
@@ -131,41 +138,17 @@
 	$lang['firesale:label_time_days'] 	= '%s days ago.';
 
 	// Orders
-	$lang['firesale:orders:title']			= 'Orders';
-	$lang['firesale:orders:no_orders']		= 'There are currently no orders';
-	$lang['firesale:orders:my_orders']		= 'My Orders';
-	$lang['firesale:orders:view_order']		= 'View Order #%s';
-	$lang['firesale:orders:title_create'] 	= 'Create Order';
-	$lang['firesale:orders:title_edit']	  	= 'Edit Order #%s';
-	$lang['firesale:orders:delete_success'] = 'Order deleted successfully';
-	$lang['firesale:orders:delete_error']	= 'Order was not deleted due to an issue';
-	$lang['firesale:orders:save_first']		= 'Please save the order before adding products';
-	
-	// Gateways
-	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
-	$lang['firesale:gateways:install_title']			= 'Install a Gateway';
-	$lang['firesale:gateways:installed_title']			= 'Installed Gateways';
-	$lang['firesale:gateways:no_gateways']				= 'There are currently no payment gateways installed.';
-	$lang['firesale:gateways:no_uninstalled_gateways']	= 'All available gateways are currently installed.';
-	$lang['firesale:gateways:errors:invalid_bool']		= 'The %s field must be a boolean value.';
-	
-	// Gateway labels
-	$lang['firesale:gateways:labels:name']	= 'Name';
-	$lang['firesale:gateways:labels:desc']	= 'Description';
-
-	// Cart
-	$lang['firesale:cart:title']	= 'Shopping Cart';
-	$lang['firesale:cart:empty']	= 'There are currently no items in your cart';
-
-	// Checkout
-	$lang['firesale:checkout:title'] = 'Checkout';
-	$lang['firesale:checkout:error_callback'] = 'There seems to have been a problem with your order, please try again, possibly using another payment method.';
-
-	// Payments
-	$lang['firesale:payment:title'] 		= 'Confirm Details';
-	$lang['firesale:payment:title_success'] = 'Payment Complete';
-	
-	// Orders
+	$lang['firesale:orders:title']				= 'Orders';
+	$lang['firesale:orders:no_orders']			= 'There are currently no orders';
+	$lang['firesale:orders:my_orders']			= 'My Orders';
+	$lang['firesale:orders:view_order']			= 'View Order #%s';
+	$lang['firesale:orders:title_create'] 		= 'Create Order';
+	$lang['firesale:orders:title_edit']	  		= 'Edit Order #%s';
+	$lang['firesale:orders:delete_success'] 	= 'Order deleted successfully';
+	$lang['firesale:orders:delete_error']		= 'Order was not deleted due to an issue';
+	$lang['firesale:orders:save_first']			= 'Please save the order before adding products';
+	$lang['firesale:orders:delete']				= 'Delete Orders';
+	$lang['firesale:orders:mark_as']			= 'Mark as ';
 	$lang['firesale:orders:status_unpaid'] 		= 'Unpaid';
 	$lang['firesale:orders:status_paid'] 		= 'Paid';
 	$lang['firesale:orders:status_dispatched']	= 'Dispatched';
@@ -173,11 +156,26 @@
 	$lang['firesale:orders:status_refunded']	= 'Refunded';
 	$lang['firesale:orders:status_cancelled']	= 'Cancelled';
 
+	// Gateways
+	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
+	$lang['firesale:gateways:install_title']			= 'Install a Gateway';
+	$lang['firesale:gateways:installed_title']			= 'Installed Gateways';
+	$lang['firesale:gateways:no_gateways']				= 'There are currently no payment gateways installed.';
+	$lang['firesale:gateways:no_uninstalled_gateways']	= 'All available gateways are currently installed.';
+	$lang['firesale:gateways:errors:invalid_bool']		= 'The %s field must be a boolean value.';
+	$lang['firesale:gateways:warning'] 					= 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall this gateway?';
+	
+	// Checkout
+	$lang['firesale:gateways:labels:name']			= 'Name';
+	$lang['firesale:gateways:labels:desc']			= 'Description';
+	$lang['firesale:cart:title']					= 'Shopping Cart';
+	$lang['firesale:cart:empty']					= 'There are currently no items in your cart';
+	$lang['firesale:checkout:title'] 				= 'Checkout';
+	$lang['firesale:checkout:error_callback'] 		= 'There seems to have been a problem with your order, please try again, possibly using another payment method.';
+	$lang['firesale:payment:title'] 				= 'Confirm Details';
+	$lang['firesale:payment:title_success'] 		= 'Payment Complete';
+	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';
+	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
+
 	// Addresses
 	$lang['firesale:addresses:title'] = 'My Addresses';
-
-	// Checkout (Shipping Method)
-	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';
-	
-	// Checkout (Payment Method)
-	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';

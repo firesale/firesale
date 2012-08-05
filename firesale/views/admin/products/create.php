@@ -9,7 +9,7 @@
 			<h4>&nbsp;</h4>
 			<ul>
 <?php if( isset($id) && $id > 0 ): ?>
-				<li><a href="#images">Images</a></li>
+				<li><a href="#images"><?php echo lang('firesale:label_images'); ?></a></li>
 <?php endif; ?>
 <?php foreach( $tabs AS $tab ): ?>
 				<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><?php echo ucwords($tab); ?></a></li>
@@ -41,7 +41,7 @@
 		<section class="item" id="images">
 		
 			<div id="dropbox">
-			<?php echo ( count($images) > 0 ? '' : '	<span class="message">Drop images here to upload</span>' ); ?>
+			<?php echo ( count($images) > 0 ? '' : '	<span class="message">' . lang('firesale:label_drop_images') . '</span>' ); ?>
 			<?php foreach($images as $image): ?>
 		
 				<div class="preview" id="image-<?php echo $image->id; ?>">
