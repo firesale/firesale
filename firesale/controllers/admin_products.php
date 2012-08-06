@@ -37,41 +37,29 @@ class Admin_products extends Admin_Controller
 	public function index($type = 'na', $value = 'na', $start = 0)
 	{
 
-		// Set query paramaters
-		$params	= array(
-					'stream' 	=> 'firesale_products',
-					'namespace'	=> 'firesale_products',
-					'limit'		=> $this->perpage,
-					'offset'	=> $start,
-					'order_by'	=> 'id',
-					'sort'		=> 'desc'
-				   );
-		
 		// Get filter if set
 		if( $type != 'na' AND $value != 'na' )
 		{
-			if( $type == 'category' )
-			{
-				$type = 'default_firesale_products_firesale_categories.row_id = firesale_products.id AND default_firesale_products_firesale_categories.firesale_categories_id';
-			}
-			$params['where'] = $type . ' = ' . $value;
+			$filter   = array($type => $value);
+			$products = $this->products_m->get_products($filter, $start, $this->perpage);
+			$this->data->$type = $value;
 		}
-		
-		// Get entries		
-		$products = $this->streams->entries->get_entries($params);
-	
-		// Assign variables
-		$this->data->products 	= $products['entries'];
-		$this->data->count		= $this->products_m->count_products($type, $value);
-		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 4, 6);
-		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
-		$this->data->category	= $category;
-
-		// Get initial product image
-		foreach( $this->data->products AS $key => $product )
+		else
 		{
-			$this->data->products[$key]['image'] = $this->products_m->get_single_image($product['id']);
+			$products = $this->products_m->get_products(array(), $start, $this->perpage);
 		}
+
+		// Build product data
+		foreach( $products AS $key => $product )
+		{
+			$products[$key] = $this->products_m->get_product($product['id']);
+		}
+			
+		// Assign variables
+		$this->data->products 	= $products;
+		$this->data->count		= count($this->products_m->get_products(( isset($filter) ? $filter : array() ), 0, 0)) OR 0;
+		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
+		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
 
 		// Build the page
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))

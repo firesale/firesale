@@ -10,7 +10,7 @@
 		<section class="title">
 			<h4>&nbsp;</h4>
 			<ul>
-              <li><a href="#products">Products</a></li>
+              <li><a href="#products"><?php echo lang('firesale:sections:products'); ?></a></li>
               <li><a href="#bill"><?php echo lang('firesale:title:bill'); ?></a></li>
               <li><a href="#ship"><?php echo lang('firesale:title:ship'); ?></a></li>
               <li><a href="#general"><?php echo lang('firesale:title:general'); ?></a></li>
@@ -41,13 +41,13 @@
         <table class="cart">
           <thead>
             <tr>
-              <th class="remove">Remove</th>
-              <th class="image">Image</th>
-              <th class="name">Name</th>
-              <th class="model">Model</th>
-              <th>Quanity</th>
-              <th>Unit Price</th>
-              <th>Total</th>
+              <th class="remove"><?php echo lang('firesale:label_remove'); ?></th>
+              <th class="image"><?php echo lang('firesale:label_image'); ?></th>
+              <th class="name"><?php echo lang('firesale:label_title'); ?></th>
+              <th class="model"><?php echo lang('firesale:label_id'); ?></th>
+              <th><?php echo lang('firesale:label_quantity'); ?></th>
+              <th><?php echo lang('firesale:label_price_sub'); ?></th>
+              <th><?php echo lang('firesale:label_price_total'); ?></th>
             </tr>
           </thead>
           <tbody>

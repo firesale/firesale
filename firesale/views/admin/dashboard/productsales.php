@@ -1,7 +1,7 @@
 
 <?php if( isset($total_count) && $total_count > 0 ): ?>
 
-  	<div id="sales" style="width: 595px; height: 260px"></div>
+  	<div id="sales" style="width: 100%; height: 260px"></div>
 
 	<script type="text/javascript">
 		var currency = '<?php echo $currency; ?>';
@@ -11,5 +11,5 @@
 	</script>
 
 <?php else: ?>
-  <div class="no_data">No sales found</div>
+  <div class="no_data"><?php echo lang('firesale:dashboard:no_sales'); ?></div>
 <?php endif; ?>

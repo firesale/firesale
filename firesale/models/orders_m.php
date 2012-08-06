@@ -126,6 +126,12 @@ class Orders_m extends MY_Model
 			}
 		}
 
+		// Check shipping is set
+		if( !isset($input['shipping']) OR empty($input['shipping']) )
+		{
+			$input['shipping'] = 0;
+		}
+
 		// Append input
 		$input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
 		$input['price_ship']   	 = str_replace(',', '', $input['price_ship']);

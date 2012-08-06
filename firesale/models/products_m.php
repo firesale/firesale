@@ -152,6 +152,56 @@ class Products_m extends MY_Model {
 		// Nothing?
 		return FALSE;
 	}
+
+	/**
+	 * Gets a list of product IDs to match the current query paramaters.
+	 *
+	 * @param array $filter A series of fields and values to filter results on
+	 * @param integer $start (Optional)
+	 * @param integer $limit (Optional)
+	 * @return array An array of product IDs, FALSE on nothing found
+	 * @access public
+	 */
+	public function get_products($filter, $start = 0, $limit = 0)
+	{
+
+		// Build initial query
+		$query = $this->db->select($this->_table . '.id')
+						  ->from($this->_table)
+						  ->order_by('id', 'desc');
+		
+		// Add limits if set
+		if( $start > 0 OR $limit > 0 )
+		{
+			$query->limit($limit, $start);
+		}
+
+		// Add filtering
+		foreach( $filter AS $key => $value )
+		{
+			if( $key == 'category' )
+			{
+				$query->join('firesale_products_firesale_categories', 'firesale_products.id = firesale_products_firesale_categories.row_id', 'inner')
+					  ->where('firesale_categories_id', $value);
+			}
+			else
+			{
+				$query->where($key, $value);
+			}
+		}
+
+		// Run query
+		$results = $query->get();
+
+		// Check results
+		if( $results->num_rows() )
+		{
+			return $results->result_array();
+		}
+
+		// Nothing?
+		return FALSE;
+	}
 	
 	/**
 	 * Update the most basic elements of a product, used via the inline product
@@ -187,27 +237,6 @@ class Products_m extends MY_Model {
 			return FALSE;
 		}
 	
-	}
-
-	/**
-	 * Gets a count of the products matching the current filtering options.
-	 *
-	 * @param string $type (Optional) The type of filter to apply
-	 * @param string $value (Optional) The value to filer by
-	 * @return integer
-	 * @access public
-	 */
-	public function count_products($type, $value)
-	{
-
-		$query = $this->db->select('id');
-		if( $type != 'na' AND $value != 'na' )
-		{
-			$query->where($type, $value);
-		}
-		$count = $query->get('firesale_products')->num_rows();
-
-		return $count;
 	}
 	
 	/**

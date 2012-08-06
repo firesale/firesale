@@ -18,7 +18,7 @@
 						<tr>
 							<td><?php echo $gateway['name']; ?></td>
 							<td class="actions">
-								<a class="button small" href="<?php echo site_url('admin/firesale/gateways/install/'.$gateway['slug']); ?>">Install</a>
+								<a class="button small" href="<?php echo site_url('admin/firesale/gateways/install/'.$gateway['slug']); ?>"><?php echo lang('buttons.install'); ?></a>
 							</td>
 						</tr>
 					<?php endforeach; ?>
