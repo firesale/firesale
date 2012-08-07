@@ -515,7 +515,7 @@ class Front_cart extends Public_Controller
 		
 	}
 
-	public function _order_failed($order)
+	private function _order_failed($order)
 	{
 
 		$this->session->set_flashdata('error', 'There was an error processing the payment, perhaps a field is missing... Oh... This error message needs to be better ;)');
@@ -523,7 +523,7 @@ class Front_cart extends Public_Controller
 
 	}
 
-	public function _order_declined($order)
+	private function _order_declined($order)
 	{
 
 		$this->session->set_flashdata('error', 'DECLINED! << Great error page, huh?');
@@ -531,7 +531,7 @@ class Front_cart extends Public_Controller
 
 	}
 
-	public function _order_authorized($order)
+	private function _order_authorized($order)
 	{
 
 		// Sale made, run updates

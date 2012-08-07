@@ -90,8 +90,4 @@ $(function(){
 
 	function decimal(no) { return new Number(parseFloat(no)).toFixed(2); }
 	
-	function slugify_field(val, space)
-	{
-		val = val.replace(/ /g, space).toLowerCase();
-		return val;
-	}
+	function slugify_field(val, space) { pyro.generate_slug($('#title'), $('#slug'), '-'); }

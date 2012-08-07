@@ -95,7 +95,7 @@ class Merchant_paypal extends Merchant_driver
 			if (strpos("VERIFIED", $response['data']) !== FALSE)
 			{
 				// Valid IPN transaction.
-				return new Merchant_response('authorized', $memo, $_POST['txn_id'], (string)$_POST['mc_gross']);
+				return new Merchant_response('authorized', $memo, $_POST['txn_id'], (string)$_POST['mc_gross'], $_POST);
       		}
 			else
 			{

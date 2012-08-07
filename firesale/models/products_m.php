@@ -130,7 +130,7 @@ class Products_m extends MY_Model {
 					'where'		=> ( is_numeric($id_slug) ? 'id = ' : 'slug = ' ) . "'{$id_slug}' AND status = 1",
 					'limit'		=> '1',
 					'order_by'	=> 'id',
-					'sort'		=> 'desc'
+					'sort'		=> 'asc'
 				   );
 		
 		// Get entries		
