@@ -119,13 +119,17 @@ class Gateways
 		{
 			$this->_CI->db->where('id', $gateway);
 		}
-		else if( is_array($gateway))
+		elseif (is_array($gateway) AND isset($gateway['id']))
 		{
 			$this->_CI->db->where('id', $gateway['id']);
 		}
-		else
+		elseif (is_string($gateway))
 		{
 			$this->_CI->db->where('slug', $gateway);
+		}
+		else
+		{
+			return FALSE;
 		}
 		
 		$enabled = $this->_CI->db->get_where('firesale_gateways', array('enabled' => 1));
@@ -250,6 +254,16 @@ class Gateways
 		
 		if ($query->num_rows())
 			return $query->row()->slug;
+		
+		return FALSE;
+	}
+
+	public function id_from_slug($slug)
+	{
+		$query = $this->_CI->db->get_where('firesale_gateways', array('slug' => $slug));
+		
+		if ($query->num_rows())
+			return $query->row()->id;
 		
 		return FALSE;
 	}

@@ -266,22 +266,12 @@ class Merchant_response
 	public $amount;
 	public $error_field;
 
-	public function __construct($status, $message, $txn_id = null, $amount = null, $extra = NULL)
+	public function __construct($status, $message, $txn_id = null, $amount = null, $address = NULL)
 	{
 		$this->status = $status;
 		$this->message = $message;
 		$this->txn_id = $txn_id;
 		$this->amount = $amount;
-
-		if ($extra !== NULL AND ! empty($extra))
-		{
-			foreach ($extra as $key => $value)
-			{
-				if ( ! isset($this->$key))
-				{
-					$this->$key = $value;
-				}
-			}
-		}
+		$this->address = $address;
 	}
 }

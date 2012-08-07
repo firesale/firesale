@@ -245,6 +245,12 @@ class Front_cart extends Public_Controller
 					$this->session->set_userdata('shipping', $shipping);
 				}
 
+				if ($this->input->post('pay_via'))
+				{
+					$this->session->set_flashdata('pay_via', $this->input->post('pay_via'));
+					$this->session->set_flashdata('gateway_info', $this->input->post('payment'));
+				}
+
 				// Send to checkout
 				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/checkout');
 
@@ -345,7 +351,6 @@ class Front_cart extends Public_Controller
 				// Run validation
 				if( $this->form_validation->run() === TRUE )
 				{
-
 					// Check for addresses
 					if( !isset($input['ship_to']) OR $input['ship_to'] == 'new' )
 					{
@@ -380,6 +385,30 @@ class Front_cart extends Public_Controller
 				// Set error flashdata
 				// Let script continue to rebuild page
 
+			}
+			elseif ($this->session->flashdata('pay_via'))
+			{
+				$input = array(
+					'gateway'
+				);
+
+				// Insert order
+				if( $id = $this->orders_m->insert_order($input) )
+				{
+
+					// Now for each item in the order
+					foreach( $this->cart->contents() as $item )
+					{
+						$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
+					}
+					
+					// Set order id
+					$this->session->set_userdata('order_id', $id);
+
+					// Redirect to payment
+					redirect('/cart/payment');
+
+				}
 			}
 			else
 			{
@@ -564,7 +593,14 @@ class Front_cart extends Public_Controller
 					   ->build('payment_complete', $order);
 
 	}
-	
+
+	public function success()
+	{
+		$order = $this->orders_m->get_order_by_id($this->session->userdata('order_id'));
+
+		$this->cart_m->sale_complete($order);
+	}
+
 	public function callback($gateway = NULL, $order_id = NULL)
 	{
 
@@ -573,14 +609,21 @@ class Front_cart extends Public_Controller
 
 			$this->merchant->load($gateway, $this->gateways->settings($gateway));
 			$response = $this->merchant->process_return();
-			
-			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
-			
-			$this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
-			
-			if ($response->status == 'authorized')
+
+			if ( ! empty($response->txn_id))
 			{
-				$this->db->update('firesale_orders', array('status' => 'paid'), array('id' => $order_id));
+			
+				$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
+				
+				$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status, 'gateway' => $gateway));
+				
+				if ($response->status == 'authorized')
+				{
+					$order = $this->orders_m->get_order_by_id($this->session->userdata('order_id'));
+
+					$this->cart_m->sale_complete($order);
+				}
+
 			}
 				
 		}
