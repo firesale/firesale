@@ -136,8 +136,8 @@ class Admin_orders extends Admin_Controller
 		$this->data->id		= $id;
 		$this->data->fields = array(
 								'general' => array('details' => $fields),
-								'ship'	  => $this->address_m->get_address_form('ship', ( $row != NULL ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->ship_to) : NULL )),
-								'bill'	  => $this->address_m->get_address_form('bill', ( $row != NULL ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->bill_to) : NULL ))
+								'ship'	  => $this->address_m->get_address_form('ship', ( $row != NULL && $row->ship_to > 0 ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->ship_to) : NULL )),
+								'bill'	  => $this->address_m->get_address_form('bill', ( $row != NULL && $row->bill_to > 0 ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->bill_to) : NULL ))
 							  );
 
 		// Add users as first general field
