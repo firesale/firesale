@@ -245,14 +245,8 @@ class Front_cart extends Public_Controller
 					$this->session->set_userdata('shipping', $shipping);
 				}
 
-				if ($this->input->post('pay_via'))
-				{
-					$this->session->set_flashdata('pay_via', $this->input->post('pay_via'));
-					$this->session->set_flashdata('gateway_info', $this->input->post('payment'));
-				}
-
 				// Send to checkout
-				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/checkout');
+				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/paypal');
 
 			}
 			else if( $this->input->is_ajax_request() )
@@ -293,7 +287,7 @@ class Front_cart extends Public_Controller
 
 	}
 	
-	public function checkout()
+	private function checkout() // CH: Made private to prevent access for SLiM
 	{
 
 		// No checkout without items
@@ -386,10 +380,30 @@ class Front_cart extends Public_Controller
 				// Let script continue to rebuild page
 
 			}
-			elseif ($this->session->flashdata('pay_via'))
+			elseif ($gateway = $this->session->flashdata('pay_via'))
 			{
+				if (isset($this->firesale->roles['shipping']) AND $this->session->flashdata('shipping'))
+				{
+					$role = $this->firesale->roles['shipping'];
+					$shipping = $this->$role['model']->get_option_by_id($input['shipping']);
+				}
+				else
+				{
+					$shipping['price'] = '0.00';
+					$shipping['id'] = 0;
+				}
+
+				print_r($shipping);
+
 				$input = array(
-					'gateway'
+					'gateway'		=> $this->gateways->id_from_slug($gateway),
+					'status'		=> 1,
+					'price_sub'		=> $this->cart->subtotal,
+					'price_ship'	=> $shipping['price'],
+					'price_total'	=> number_format(($this->cart->total + $shipping['price']), 2),
+					'ship_to'		=> 0,
+					'bill_to'		=> 0,
+					'shipping'		=> $shipping['id']
 				);
 
 				// Insert order
@@ -406,8 +420,13 @@ class Front_cart extends Public_Controller
 					$this->session->set_userdata('order_id', $id);
 
 					// Redirect to payment
-					redirect('/cart/payment');
+					$gateway_info = $this->input->post('gateway_info');
 
+					foreach ($gateway_info as &$value)
+						$value = str_replace('-order_id-', $id, $value);
+
+
+					$process = $this->merchant->process($gateway_info);
 				}
 			}
 			else
@@ -474,8 +493,98 @@ class Front_cart extends Public_Controller
 		$this->form_validation->set_message('_valid_gateway', 'The payment gateway you selected is not valid');
 		return $this->gateways->is_enabled($value);
 	}
+
+	public function paypal()
+	{
+		// Variables
+		$posted = TRUE;
+		$shipping = $this->session->userdata('shipping');
+
+		$skip	= array('btnAction', 'bill_details_same');
+		$extra 	= array('return' => '/cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
+
+		// Shipping option
+		if( isset($this->firesale->roles['shipping']) AND isset($shipping) )
+		{
+			$role = $this->firesale->roles['shipping'];
+			$shipping = $this->$role['model']->get_option_by_id($shipping);
+		}
+		else
+		{
+			$shipping['price'] = '0.00';
+		}
+		
+		// Modify posted data
+
+		$input['shipping']	  = ( isset($shipping['id']) ? $shipping['id'] : 0 );
+		$input['created_by']  = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
+		$input['status'] 	  = '1'; // Unpaid
+		$input['price_sub']   = $this->cart->subtotal;
+		$input['price_ship']  = $shipping['price'];
+		$input['price_total'] = number_format(( $this->cart->total + $shipping['price'] ), 2);
+		$input['ship_to'] = 0;
+		$input['bill_to'] = 0;
+		$_POST 				  = $input;
+
+
+		// Generate validation
+		//$rules = $this->cart_m->build_validation();
+		//$this->form_validation->set_rules($rules);
+
+		// Run validation
+		//if( $this->form_validation->run() === TRUE )
+		//{
+			// Check for addresses
+		/*	if( !isset($input['ship_to']) OR $input['ship_to'] == 'new' )
+			{
+				$input['ship_to'] = $this->address_m->add_address($input, 'ship');
+			}
+
+			if( !isset($input['bill_to']) OR $input['bill_to'] == 'new' )
+			{
+				$input['bill_to'] = $this->address_m->add_address($input, 'bill');
+			}*/
+
+			// Insert order
+			if( $id = $this->orders_m->insert_order($input) )
+			{
+				// Now for each item in the order
+				foreach( $this->cart->contents() as $item )
+				{
+					$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
+				}
+				
+				// Set order id
+				$this->session->set_userdata('order_id', $id);
+
+				// Redirect to payment
+				if ($this->gateways->is_enabled('paypal_checkout'))
+				{
+					$this->merchant->load('paypal_checkout');
+
+					$this->merchant->initialize($this->gateways->settings('paypal_checkout'));
+
+					$paypal = array(
+						'return_url'	=> site_url('firesale/cart/success').'?action=success',
+						'cancel_url'	=> site_url('firesale/cart/cancel'),
+						'notify_url'	=> site_url('firesale/cart/callback/paypal_checkout/'.$id).'?action=ipn',
+						'reference'		=> 'Order #'.$id,
+						'currency_code'	=> 'GBP',
+						'amount'		=> $this->cart->total,
+						'items'			=> $this->cart->contents(),
+						'shipping'		=> $shipping
+					);
+
+					$process = $this->merchant->process($paypal);
+						
+				}
+
+			}
+
+		//}
+	}
 	
-	public function payment()
+	private function payment()
 	{
 
 		$order = $this->orders_m->get_order_by_id($this->session->userdata('order_id'));
@@ -570,7 +679,7 @@ class Front_cart extends Public_Controller
 		$this->cart->destroy();
 
 		// Fire events
-		Events::trigger('order_complete', $order);
+		//Events::trigger('order_complete', $order);
 
 		// Email (user)
 		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user')), 'array');
@@ -604,6 +713,8 @@ class Front_cart extends Public_Controller
 	public function callback($gateway = NULL, $order_id = NULL)
 	{
 
+		mail('chris.harvey@ne-web.com', 'PayPal', print_r($_POST, TRUE));
+
 		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND $order_id != NULL)
 		{
 
@@ -619,7 +730,10 @@ class Front_cart extends Public_Controller
 				
 				if ($response->status == 'authorized')
 				{
-					$order = $this->orders_m->get_order_by_id($this->session->userdata('order_id'));
+					// Add that user!!!
+					
+
+					$order = $this->orders_m->get_order_by_id($order_id);
 
 					$this->cart_m->sale_complete($order);
 				}
