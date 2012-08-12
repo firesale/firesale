@@ -103,7 +103,7 @@ class Module_Firesale_shipping extends Module {
 		$this->dbforge->modify_column('firesale_orders', array('shipping' => array('name' => 'tmp_shipping', 'type' => 'int(11)')));
 
 		// Get stream data
-		$shipping = end($this->streams->streams->get_streams('firesale_shipping'));
+		$shipping = end($this->streams->streams->get_streams('firesale_shipping', TRUE, 'firesale_shipping'));
 
 		// Build field
 		$field = array('namespace' 	  => 'firesale_orders',

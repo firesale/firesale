@@ -128,7 +128,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:categories'), 'firesale_categories', 'firesale_categories', NULL, NULL) ) return FALSE;
 		
 		// Get stream data
-		$categories = end($this->streams->streams->get_streams('firesale_categories'));
+		$categories = end($this->streams->streams->get_streams('firesale_categories', TRUE, 'firesale_categories'));
 	
 		// Add fields
 		$fields   = array();
@@ -164,7 +164,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:products'), 'firesale_products', 'firesale_products', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$products = end($this->streams->streams->get_streams('firesale_products'));
+		$products = end($this->streams->streams->get_streams('firesale_products', TRUE, 'firesale_products'));
 		
 		// Add fields
 		$fields   = array();
@@ -204,7 +204,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:gateways'), 'firesale_gateways', 'firesale_gateways', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$gateways = end($this->streams->streams->get_streams('firesale_gateways'));
+		$gateways = end($this->streams->streams->get_streams('firesale_gateways', TRUE, 'firesale_gateways'));
 
 		// Add fields
 		$fields   = array();
@@ -243,7 +243,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:addresses'), 'firesale_addresses', 'firesale_addresses', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$addresses = end($this->streams->streams->get_streams('firesale_addresses'));
+		$addresses = end($this->streams->streams->get_streams('firesale_addresses', TRUE, 'firesale_gateways'));
 
 		// Add fields
 		$fields   = array();
@@ -283,7 +283,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:orders'), 'firesale_orders', 'firesale_orders', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$orders = end($this->streams->streams->get_streams('firesale_orders'));
+		$orders = end($this->streams->streams->get_streams('firesale_orders', TRUE, 'firesale_orders'));
 		
 		// Add fields
 		$fields   = array();
@@ -362,7 +362,7 @@ class Module_Firesale extends Module {
 		$this->templates('remove');
 		
 		// Remove products
-		$this->products_m->delete_all_products();
+		// $this->products_m->delete_all_products();
 		
 		// Remove files folder
 		$folder = $this->products_m->get_file_folder_by_slug('product-images');
