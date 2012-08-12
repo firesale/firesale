@@ -45,7 +45,9 @@
 						<td><?php echo $this->settings->get('currency') . $order['price_total']; ?></td>
 						<td><?php echo $this->settings->get('currency') . $order['price_ship']; ?></td>
 						<td class="actions">
-							<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>
+							<?php if (group_has_role('firesale', 'edit_orders')): ?>
+								<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>
+							<?php endif; ?>
 							<a class="button small confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('buttons.delete'); ?></a>
 						</td>
 					</tr>

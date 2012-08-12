@@ -6,8 +6,10 @@ class Admin_gateways extends Admin_Controller
 	
 	public function __construct()
 	{
-
 		parent::__construct();
+		
+		// Does the user have access?
+		role_or_die('firesale', 'access_gateways');
 		
 		// Load the payments library
 		$this->load->library('gateways');
@@ -18,8 +20,7 @@ class Admin_gateways extends Admin_Controller
 	
 	// Show installed
 	public function index()
-	{
-
+	{		
 		$data['gateways'] = $this->gateways->get_installed();
 
 		// Build the page
@@ -30,7 +31,9 @@ class Admin_gateways extends Admin_Controller
 	// Show uninstalled
 	public function add()
 	{
-
+		// Does the user have access?
+		role_or_die('firesale', 'install_uninstall_gateways');
+		
 		$data['gateways'] = $this->gateways->get_uninstalled();
 
 		$this->template->build('admin/gateways/install', $data);
@@ -38,7 +41,9 @@ class Admin_gateways extends Admin_Controller
 
 	public function install($slug)
 	{
-
+		// Does the user have access?
+		role_or_die('firesale', 'install_uninstall_gateways');
+		
 		$fields = $this->gateways->get_setting_fields($slug);
 		$rules = array(
 			array(
@@ -59,7 +64,7 @@ class Admin_gateways extends Admin_Controller
 		$values['name'] = lang('firesale:gateways:'.$slug.':name');
 		$values['desc'] = lang('firesale:gateways:'.$slug.':desc');
 
-		if( is_array($fields) )
+		if (is_array($fields))
 		{
 			foreach ($fields as $field)
 			{
@@ -83,7 +88,7 @@ class Admin_gateways extends Admin_Controller
 			
 			$this->form_validation->set_rules($rules);
 			
-			if( $this->form_validation->run() )
+			if ($this->form_validation->run())
 			{
 				$data = array(
 					'slug'	=> $slug,
@@ -96,7 +101,7 @@ class Admin_gateways extends Admin_Controller
 				
 				$gateway_id = $this->db->insert_id();
 				
-				foreach( $additional_fields as $field )
+				foreach ($additional_fields as $field)
 				{
 					$this->db->insert('firesale_gateway_settings', array(
 						'id'	=> $gateway_id,
@@ -107,7 +112,7 @@ class Admin_gateways extends Admin_Controller
 				
 				
 				
-				if( $this->db->trans_status() !== FALSE )
+				if ($this->db->trans_status() !== FALSE)
 				{
 					$this->db->trans_commit();
 					$this->session->set_flashdata('success', set_value('name').' was successfully installed');
@@ -129,12 +134,11 @@ class Admin_gateways extends Admin_Controller
 		{
 			show_404();
 		}
-
 	}
 
 	public function _valid_bool($value)
 	{
-		if( $value == 1 OR $value == 0 )
+		if ($value == 1 OR $value == 0)
 			return TRUE;
 		
 		$this->form_validation->set_message('_valid_bool', lang('firesale:gateways:errors:invalid_bool'));
@@ -143,7 +147,7 @@ class Admin_gateways extends Admin_Controller
 	
 	public function enable($id)
 	{
-		if( $this->db->update('firesale_gateways', array('enabled' => 1), array('id' => (int)$id)) )
+		if ($this->db->update('firesale_gateways', array('enabled' => 1), array('id' => (int)$id)))
 		{
 			$this->session->set_flashdata('success', 'The gateway has been enabled');
 			redirect('admin/firesale/gateways');
@@ -157,7 +161,10 @@ class Admin_gateways extends Admin_Controller
 	
 	public function disable($id)
 	{
-		if( $this->db->update('firesale_gateways', array('enabled' => 0), array('id' => (int)$id)) )
+		// Does the user have access?
+		role_or_die('firesale', 'enable_disable_gateways');
+		
+		if ($this->db->update('firesale_gateways', array('enabled' => 0), array('id' => (int)$id)))
 		{
 			$this->session->set_flashdata('success', 'The gateway has been disabled');
 			redirect('admin/firesale/gateways');
@@ -171,11 +178,14 @@ class Admin_gateways extends Admin_Controller
 	
 	public function uninstall($id)
 	{
+		// Does the user have access?
+		role_or_die('firesale', 'install_uninstall_gateways');
+		
 		$this->db->trans_begin();
 		$this->db->delete('firesale_gateways', array('id' => (int)$id));
 		$this->db->delete('firesale_gateway_settings', array('id' => (int)$id));
 		
-		if( $this->db->trans_status() !== FALSE )
+		if ($this->db->trans_status() !== FALSE)
 		{
 			$this->db->trans_commit();
 			$this->session->set_flashdata('success', 'The gateway has been uninstalled');
@@ -191,9 +201,12 @@ class Admin_gateways extends Admin_Controller
 	
 	public function edit($slug)
 	{
+		// Does the user have access?
+		role_or_die('firesale', 'edit_gateways');
+		
 		$query = $this->db->get_where('firesale_gateways', array('slug' => $slug));
 		
-		if( $query->num_rows() )
+		if ($query->num_rows())
 		{
 			$values['name'] = $query->row()->name;
 			$values['desc'] = $query->row()->desc;
@@ -214,16 +227,16 @@ class Admin_gateways extends Admin_Controller
 				)
 			);
 	
-			if( is_array($fields) )
+			if (is_array($fields))
 			{
-				foreach( $fields as $field )
+				foreach ($fields as $field)
 				{
 					$values[$field['slug']] = $this->gateways->setting($slug, $field['slug']);
 					
 					$field_data['field'] = $field['slug'];
 					$field_data['label'] = $field['name'];
 					
-					if( $field['type'] == 'boolean' )
+					if ($field['type'] == 'boolean')
 					{
 						$field_data['rules'] = 'required|callback__valid_bool';
 						$field_data['type'] = 'boolean';
@@ -240,7 +253,7 @@ class Admin_gateways extends Admin_Controller
 				
 				$this->form_validation->set_rules($rules);
 				
-				if( $this->form_validation->run() )
+				if ($this->form_validation->run())
 				{
 					$data = array(
 						'name'	=> set_value('name'),
@@ -252,9 +265,9 @@ class Admin_gateways extends Admin_Controller
 					$this->db->trans_begin();
 					$this->db->update('firesale_gateways', $data, array('id' => $gateway_id));
 										
-					foreach( $additional_fields as $field )
+					foreach ($additional_fields as $field)
 					{
-						if( $this->db->get_where('firesale_gateway_settings', array('id' => $gateway_id, 'key' => $field['field']))->num_rows() )
+						if ($this->db->get_where('firesale_gateway_settings', array('id' => $gateway_id, 'key' => $field['field']))->num_rows())
 						{
 							$this->db->update('firesale_gateway_settings', array(
 								'value'	=> set_value($field['field'])
@@ -275,7 +288,7 @@ class Admin_gateways extends Admin_Controller
 					
 					
 					
-					if( $this->db->trans_status() !== FALSE )
+					if ($this->db->trans_status() !== FALSE)
 					{
 						$this->db->trans_commit();
 						$this->session->set_flashdata('success', set_value('name').' was successfully updated');

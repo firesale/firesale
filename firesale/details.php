@@ -30,6 +30,9 @@ class Module_Firesale extends Module {
 			'firesale_core'	=> TRUE,
 			'menu'	   => 'FireSALE',
 			'author'   => 'Jamie Holdroyd & Chris Harvey',
+			'roles' => array(
+				'edit_orders', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways'
+			),
 			'sections' => array(
 				'dashboard' => array(
 					'name'	=> 'firesale:sections:dashboard',
@@ -68,17 +71,6 @@ class Module_Firesale extends Module {
 						)
 				    )
 				),
-				'payments' => array(
-					'name' => 'firesale:sections:gateways',
-					'uri'  => 'admin/firesale/gateways',
-					'shortcuts' => array(
-						array(
-						    'name' 	=> 'firesale:shortcuts:install_gateway',
-						    'uri'	=> 'admin/firesale/gateways/add',
-						    'class' => 'add'
-						)
-				    )
-				),
 				'settings' => array(
 					'name' => 'firesale:sections:settings',
 					'uri'  => 'admin/settings#firesale'
@@ -107,6 +99,26 @@ class Module_Firesale extends Module {
 			)
 		);
 		
+		if (group_has_role('firesale', 'access_gateways'))
+		{
+			$info['sections']['payments'] = array(
+				'name' => 'firesale:sections:gateways',
+				'uri'  => 'admin/firesale/gateways',
+				'shortcuts' => array()
+			);
+		}
+		
+		if (group_has_role('firesale', 'install_uninstall_gateways') AND isset($info['sections']['payments']))
+		{
+			$info['sections']['payments']['shortcuts'] = array(
+				array(
+					'name' 	=> 'firesale:shortcuts:install_gateway',
+					'uri'	=> 'admin/firesale/gateways/add',
+					'class' => 'add'
+				)
+			);
+		}
+		
 		return $info;
 	}
 	
@@ -128,7 +140,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:categories'), 'firesale_categories', 'firesale_categories', NULL, NULL) ) return FALSE;
 		
 		// Get stream data
-		$categories = end($this->streams->streams->get_streams('firesale_categories', TRUE, 'firesale_categories'));
+		$categories = end($this->streams->streams->get_streams('firesale_categories'));
 	
 		// Add fields
 		$fields   = array();
@@ -164,7 +176,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:products'), 'firesale_products', 'firesale_products', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$products = end($this->streams->streams->get_streams('firesale_products', TRUE, 'firesale_products'));
+		$products = end($this->streams->streams->get_streams('firesale_products'));
 		
 		// Add fields
 		$fields   = array();
@@ -204,7 +216,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:gateways'), 'firesale_gateways', 'firesale_gateways', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$gateways = end($this->streams->streams->get_streams('firesale_gateways', TRUE, 'firesale_gateways'));
+		$gateways = end($this->streams->streams->get_streams('firesale_gateways'));
 
 		// Add fields
 		$fields   = array();
@@ -243,7 +255,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:addresses'), 'firesale_addresses', 'firesale_addresses', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$addresses = end($this->streams->streams->get_streams('firesale_addresses', TRUE, 'firesale_gateways'));
+		$addresses = end($this->streams->streams->get_streams('firesale_addresses'));
 
 		// Add fields
 		$fields   = array();
@@ -283,7 +295,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:orders'), 'firesale_orders', 'firesale_orders', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$orders = end($this->streams->streams->get_streams('firesale_orders', TRUE, 'firesale_orders'));
+		$orders = end($this->streams->streams->get_streams('firesale_orders'));
 		
 		// Add fields
 		$fields   = array();
@@ -362,7 +374,7 @@ class Module_Firesale extends Module {
 		$this->templates('remove');
 		
 		// Remove products
-		// $this->products_m->delete_all_products();
+		$this->products_m->delete_all_products();
 		
 		// Remove files folder
 		$folder = $this->products_m->get_file_folder_by_slug('product-images');

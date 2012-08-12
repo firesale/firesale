@@ -165,6 +165,8 @@ class Admin_orders extends Admin_Controller
 
 	public function edit($id)
 	{
+		// Does the user have access?
+		role_or_die('firesale', 'edit_orders');
 		
 		// Get row
 		if( $row = $this->row_m->get_row($id, $this->stream, FALSE) )
