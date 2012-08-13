@@ -8,36 +8,16 @@
 		<section class="title">
 			<h4>&nbsp;</h4>
 			<ul>
-<?php if( isset($id) && $id > 0 ): ?>
-				<li><a href="#images"><?php echo lang('firesale:label_images'); ?></a></li>
-<?php endif; ?>
 <?php foreach( $tabs AS $tab ): ?>
-				<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><?php echo ucwords($tab); ?></a></li>
+<?php if( ( substr($tab, 0, 1) == '_' && isset($id) && $id > 0 ) || substr($tab, 0, 1) != '_' ): ?>
+				<li><a href="#<?php echo strtolower(str_replace(array(' ', '_'), '', $tab)); ?>"><?php echo ucwords(str_replace('_', '', $tab)); ?></a></li>
+<?php endif; ?>
 <?php endforeach; ?>
 			</ul>
 		</section>
 		
 <?php foreach( $fields AS $slug => $field ): ?>
-		<section class="item form_inputs" id="<?php echo strtolower(str_replace(' ', '', $slug)); ?>">
-
-			<fieldset>
-				<ul>
-	
-<?php foreach( $field AS $input ): ?>
-					<li class="<?php echo alternator('even', ''); ?>">
-						<label for="<?php echo $input['input_slug']; ?>"><?php echo lang(substr($input['input_title'], 5)); ?> <?php echo $input['required']; ?></label>
-						<div class="input"><?php echo $input['input']; ?></div>
-					</li>
-
-<?php endforeach; ?>
-				</ul>
-			</fieldset>
-	
-		</section>
-
-<?php endforeach; ?>
-<?php if( isset($id) && $id > 0 ): ?>
-
+<?php if( $slug == '_images' && isset($id) && $id > 0 ): ?>
 		<section class="item" id="images">
 		
 			<div id="dropbox">
@@ -56,7 +36,35 @@
 			</div>
 		
 		</section>
+
+<?php elseif( substr($slug, 0, 1) == '_' && isset($id) && $id > 0 ): ?>
+		<section class="item form_inputs" id="<?php echo strtolower(str_replace(array(' ', '_'), '', $slug)); ?>">
+
+			<?php echo $field; ?>
+
+		</section>
+
+<?php else: ?>
+		<section class="item form_inputs" id="<?php echo strtolower(str_replace(' ', '', $slug)); ?>">
+
+			<fieldset>
+				<ul>
+	
+<?php foreach( $field AS $input ): ?>
+					<li class="<?php echo alternator('even', ''); ?>">
+						<label for="<?php echo $input['input_slug']; ?>"><?php echo lang(substr($input['input_title'], 5)); ?> <?php echo $input['required']; ?></label>
+						<div class="input"><?php echo $input['input']; ?></div>
+					</li>
+
+<?php endforeach; ?>
+				</ul>
+			</fieldset>
+	
+		</section>
+
 <?php endif; ?>
+<?php endforeach; ?>
+
 		<div class="buttons">
 			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
 		</div>

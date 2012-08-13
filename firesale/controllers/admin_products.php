@@ -3,10 +3,14 @@
 class Admin_products extends Admin_Controller
 {
 
-	public $tabs	= array('description' => array('description'), 'shipping options' => array('shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth'));
 	public $stream  = NULL;
 	public $perpage = 30;
 	public $section = 'products';
+	public $tabs	= array('description'      => array('description'),
+							'shipping options' => array('shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth'),
+							'_attributes'	   => '{{ firesale_attributes:form product=id }}',
+							'_images'		   => array());
+
 
 	public function __construct()
 	{
@@ -61,9 +65,15 @@ class Admin_products extends Admin_Controller
 		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
 		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
 
-		// Build the page
+		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
-					   ->build('admin/products/index', $this->data);
+					   ->set($this->data);
+
+		// Fire events
+		Events::trigger('page_build', $this->template);
+
+		// Build page
+		$this->template->build('admin/products/index');
 	}
 	
 	public function create($id = NULL, $row = NULL)
@@ -124,9 +134,17 @@ class Admin_products extends Admin_Controller
 					   ->append_js('module::upload.js')
 					   ->append_metadata($this->load->view('fragments/wysiwyg', NULL, TRUE));
 	
-		// Build the page
+		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:prod_title_' . ( $id == NULL ? 'create' : 'edit' )))
-					   ->build('admin/products/create', $this->data);
+					   ->set($this->data)
+					   ->enable_parser(true);
+
+		// Fire events
+		Events::trigger('page_build', $this->template);
+
+		// Build page
+		$this->template->build('admin/products/create');
+
 	}
 	
 	public function edit($id)

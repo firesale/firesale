@@ -75,11 +75,11 @@ class Address_m extends MY_Model
 	 */
 	public function add_address($input, $type)
 	{
-
 		unset($input['bill_details_same']);
 
 		// Variables
-		$items  = array('created_by' => ( isset($this->current_user->id) ? $this->current_user->id : 0));
+		$created_by = $this->current_user->id OR $input['created_by'] OR 0;
+		$items  = array('created_by' => $created_by);
 		$ignore = array('shipping', 'ship_to', 'bill_to');
 
 		// Get items

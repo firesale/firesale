@@ -72,11 +72,11 @@ class Products_m extends MY_Model {
 	 * @return array
 	 * @access public
 	 */
-	public function fields_to_tabs($fields, $tabs)
+	public function fields_to_tabs($fields, $tabs, $default = 'general options')
 	{
 	
 		// Variables
-		$data = array('general options' => array());
+		$data = array($default => array());
 
 		// Loop fields
 		foreach( $fields AS $field )
@@ -89,10 +89,15 @@ class Products_m extends MY_Model {
 			foreach( $tabs AS $tab => $slugs )
 			{
 			
+				// Add tab to array?
+				if( !array_key_exists($tab, $data) )
+				{
+					$data[$tab] = ( substr($tab, 0, 1) == '_' ? $slugs : array() );
+				}
+
 				// Assign to special tab
 				if( in_array($field['input_slug'], $slugs) )
 				{
-					if( !array_key_exists($tab, $data) ) { $data[$tab] = array(); }
 					$data[$tab][] = $field;
 					$found = TRUE;
 				}
@@ -102,7 +107,7 @@ class Products_m extends MY_Model {
 			// Default to general
 			if( $found == FALSE )
 			{
-				$data['general options'][] = $field;
+				$data[$default][] = $field;
 			}
 
 		}

@@ -70,11 +70,11 @@ class Firesale
 							$desc = isset($module_info['description'][CURRENT_LANGUAGE]) ? $module_info['description'][CURRENT_LANGUAGE] : $module_info['description']['en'];
 						}
 						
-						if( substr($this->_CI->uri->segment(2), 0, 8) == 'firesale' && !empty($_POST) )
+						/*if( substr($this->_CI->uri->segment(2), 0, 8) == 'firesale' && !empty($_POST) )
 						{
 							$info['name'][CURRENT_LANGUAGE]        = $name;
 							$info['description'][CURRENT_LANGUAGE] = $desc;
-						}	
+						}*/
 					}
 					
 					// Register roles
