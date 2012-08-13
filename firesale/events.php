@@ -6,14 +6,17 @@ class Events_Firesale
 	
 	public function __construct()
 	{
+
 		$this->ci =& get_instance();
 		
 		// register the events
 		Events::register('product_created', array($this, 'product_created'));
-		Events::register('product_delete', array($this, 'product_deleted'));
-		Events::register('product_viewed', array($this, 'product_viewed'));
-		Events::register('order_complete', array($this, 'order_complete'));
+		Events::register('product_updated', array($this, 'product_updated'));
+		Events::register('product_delete',  array($this, 'product_deleted'));
+		Events::register('product_viewed',  array($this, 'product_viewed'));
+		Events::register('order_complete',  array($this, 'order_complete'));
 		Events::register('cart_item_added', array($this, 'cart_item_added'));
+		Events::register('page_build',      array($this, 'page_build'));
 	
 	}
 	
@@ -22,7 +25,13 @@ class Events_Firesale
 		
 		$this->_run_firesale_events('product_created', $data);
 	}
-	
+
+	public function product_updated($data)
+	{
+		
+		$this->_run_firesale_events('product_updated', $data);
+	}
+		
 	public function product_deleted($data)
 	{
 		
@@ -45,6 +54,12 @@ class Events_Firesale
 	{
 		$this->_run_firesale_events('cart_item_added', $data);
 	}
+
+	public function page_build(&$template)
+	{
+		$this->_run_firesale_events('page_build', $template);
+	}
+
 	
 	public function _run_firesale_events($name, $data)
 	{

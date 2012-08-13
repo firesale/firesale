@@ -58,7 +58,13 @@ class Front_product extends Public_Controller {
 			// Build Page
 			$this->template->set_breadcrumb($this->data->product['title'], '/product/' . $this->data->product['slug'])
 						   ->title($this->data->product['title'])
-						   ->build('product', $this->data);
+						   ->set($this->data);
+
+			// Fire events
+			Events::trigger('page_build', $this->template);
+
+			// Build page
+			$this->template->build('product');
 	
 		}
 		else

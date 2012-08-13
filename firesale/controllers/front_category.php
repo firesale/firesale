@@ -131,7 +131,13 @@ class Front_category extends Public_Controller {
 
 			// Build Page
 			$this->template->title($this->data->category['title'])
-						   ->build('category', $this->data);
+						   ->set($this->data);
+
+			// Fire events
+			Events::trigger('page_build', $this->template);
+
+			// Build page
+			$this->template->build('category');
 
 		}
 		else

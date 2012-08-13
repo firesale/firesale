@@ -83,8 +83,16 @@ class Admin_products extends Admin_Controller
 					  );
 
 			// Manually update categories
+			// Multiple tends not to do it for us
 			if( $id !== NULL )
 				$this->products_m->update_categories($id, $this->stream->id, $input['category']);
+
+			// Added to seperate if since above will be removed for 2.2
+			if( $id !== NULL )
+			{
+				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
+				Events::trigger('product_updated', $data);
+			}
 		
 		}
 		else

@@ -155,6 +155,7 @@
 	$lang['firesale:orders:status_processing']	= 'Processing';
 	$lang['firesale:orders:status_refunded']	= 'Refunded';
 	$lang['firesale:orders:status_cancelled']	= 'Cancelled';
+	$lang['firesale:orders:logged_in']			= 'You must be logged in to view your order history.';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';

@@ -52,13 +52,20 @@ class Front_orders extends Public_Controller
 			$this->template->title(lang('firesale:orders:my_orders'))
 						   ->set_breadcrumb('Home', '/home')
 						   ->set_breadcrumb(lang('firesale:orders:my_orders'), '/users/orders')
-						   ->build('orders', $this->data);
+						   ->set($this->data);
+
+			// Fire events
+			Events::trigger('page_build', $this->template);
+
+			// Build page
+			$this->template->build('orders');
 		
 		}
 		else
 		{
-			// Must be logged in, etc etc.
-			// Redirect to login/register
+			// Must be logged in
+			$this->set_flashdata('error', lang('firesale:orders:logged_in'));
+			redirect('/users/login');
 		}
 	
 	}
@@ -90,7 +97,13 @@ class Front_orders extends Public_Controller
 						   ->set_breadcrumb('Home', '/home')
 						   ->set_breadcrumb(lang('firesale:orders:my_orders'), '/users/orders')
 						   ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), '/users/orders/' . $id)
-						   ->build('payment_complete', $order);
+						   ->set($order);
+
+			// Fire events
+			Events::trigger('page_build', $this->template);
+
+			// Build page
+			$this->template->build('payment_complete');
 
 		}
 		else

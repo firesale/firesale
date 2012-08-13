@@ -40,11 +40,17 @@ class Front_address extends Public_Controller
 		$this->data->addresses  = $addresses['entries'];
 		$this->data->pagination = $addresses['pagination'];
 		
-		// Build page
+		// Add page content
 		$this->template->title(lang('firesale:addresses:title'))
 					   ->set_breadcrumb('Home', '/home')
 					   ->set_breadcrumb(lang('firesale:addresses:title'), '/users/addresses')
-					   ->build('addresses', $this->data);
+					   ->set($this->data);
+
+		// Fire events
+		Events::trigger('page_build', $this->template);
+
+		// Build page
+		$this->template->build('addresses');
 
 	}
 
@@ -65,11 +71,17 @@ class Front_address extends Public_Controller
 		$this->data->fields = $this->fields->build_form($this->data->stream, 'new', $this->input->post(), FALSE, FALSE, $skip, $extra);
 		$this->data->fields[0]['required'] = '<span>*</span>';
 		
-		// Build page
+		// Add page content
 		$this->template->title(lang('firesale:addresses:title'))
 					   ->set_breadcrumb('Home', '/home')
 					   ->set_breadcrumb(lang('firesale:addresses:title'), '/users/addresses')
-					   ->build('address_create', $this->data);
+					   ->set($this->data);
+
+		// Fire events
+		Events::trigger('page_build', $this->template);
+
+		// Build page
+		$this->template->build('address_create');
 
 	}
 
