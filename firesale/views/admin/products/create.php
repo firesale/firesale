@@ -19,7 +19,6 @@
 <?php foreach( $fields AS $slug => $field ): ?>
 <?php if( $slug == '_images' && isset($id) && $id > 0 ): ?>
 		<section class="item" id="images">
-		
 			<div id="dropbox">
 			<?php echo ( count($images) > 0 ? '' : '	<span class="message">' . lang('firesale:label_drop_images') . '</span>' ); ?>
 			<?php foreach($images as $image): ?>
@@ -44,7 +43,7 @@
 
 		</section>
 
-<?php else: ?>
+<?php elseif( substr($slug, 0, 1) != '_' ): ?>
 		<section class="item form_inputs" id="<?php echo strtolower(str_replace(' ', '', $slug)); ?>">
 
 			<fieldset>

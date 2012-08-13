@@ -92,7 +92,7 @@ class Module_Firesale extends Module {
 						'title'		=> 'firesale:elements:low_stock',
 						'function'	=> 'low_stock',
 						'assets'	=> array(
-								array('type' => 'css', 'file' => 'dashboard_lowstock.css')
+							array('type' => 'css', 'file' => 'dashboard_lowstock.css')
 						)
 					)
 				)
