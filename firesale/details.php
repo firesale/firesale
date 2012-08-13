@@ -13,7 +13,7 @@ class Module_Firesale extends Module {
 		$this->load->library('firesale/firesale');
 	}
 
-	public function info()
+	public function information()
 	{
 
 		$info = array(
@@ -119,7 +119,7 @@ class Module_Firesale extends Module {
 			);
 		}
 		
-		return $this->firesale->info($info, $this->language_file);
+		return $info;
 	}
 	
 	public function install()
@@ -515,6 +515,11 @@ class Module_Firesale extends Module {
 			$this->db->where_in('slug', $templates)->delete('email_templates');
 		}
 
+	}
+
+	public function info()
+	{
+		return $this->firesale->info($this->information(), $this->language_file);
 	}
 
 }
