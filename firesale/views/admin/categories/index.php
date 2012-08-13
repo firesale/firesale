@@ -17,7 +17,7 @@
 				
 					<?php if(isset($cat['children'])): ?>
 						<ul>
-							<?php $controller->tree_builder($cat); ?>
+							<?php $controller->categories_m->tree_builder($cat); ?>
 						</ul>
 					</li>
 				

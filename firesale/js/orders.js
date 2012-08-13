@@ -24,7 +24,7 @@ $(function() {
 			}
 			else
 			{
-				alert('Error retrieving address');
+				notif('error', 'Error retrieving address');
 			}
 		});
 	});

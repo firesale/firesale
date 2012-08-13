@@ -2,6 +2,7 @@
 #product_search fieldset { padding: 0; border: none; }
 #product_search label { width: 230px; display: inline-block; text-align: right; }
 #product_search div.input { width: 270px; display: inline-block; }
+.chzn-container .chzn-single span, .chzn-container li { color: #666; font-weight: normal; }
 
 tbody tr:last-child { border: none; }
 tfoot th { border: none; border-top: 2px solid rgb(221, 221, 221); }
@@ -57,3 +58,5 @@ button.link.unlinked { background-position: -40px 0; }
 #content-body #shortcuts.bottom { float: right; }
 #content-body #shortcuts div ul { border: none !important; }
 #content-body #shortcuts div ul li.active span { border: none !important; background: none !important; line-height: 24px !important; }
+
+.loading { min-height: 22px; background: url('img/loading.gif') no-repeat 50% 50% !important; }
