@@ -26,14 +26,14 @@ class Plugin_Firesale extends Plugin
 		return FALSE;	
 	}
 
-	public function categories($limit = 6, $category = 0, $order_by = 'children', $order_dir = 'desc')
+	public function categories()
 	{
 	
 		// Variables
-		$limit	   	   = $this->attribute('limit', $limit);
-		$category  	   = $this->attribute('category', $category);
-		$order_by  	   = $this->attribute('order-by', $order_by);
-		$order_dir 	   = $this->attribute('order-dir', $order_dir);
+		$limit	   	   = $this->attribute('limit', 6);
+		$category  	   = $this->attribute('category', 0);
+		$order_by  	   = $this->attribute('order-by', 'children');
+		$order_dir 	   = $this->attribute('order-dir', 'desc');
 		
 		// SQL Query
 		$sql = "SELECT c.`id`, c.`title`, c.`slug`, ( SELECT COUNT(`id`) FROM `" . SITE_REF . "_firesale_categories` WHERE `parent` = c.`id` ) AS `children`
@@ -61,14 +61,8 @@ class Plugin_Firesale extends Plugin
 	public function sub_categories()
 	{
 	
-		// Variables
-		$limit	   	   = $this->attribute('limit', 6);
-		$category  	   = $this->attribute('category', 0);
-		$order_by  	   = $this->attribute('order-by', 'children');
-		$order_dir 	   = $this->attribute('order-dir', 'desc');
-	
 		// Return
-		return $this->categories($limit, $category, $order_by, $order_dir);
+		return $this->categories();
 	}
 
 	public function products()

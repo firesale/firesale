@@ -38,8 +38,8 @@ class Front_category extends Public_Controller {
 		$this->perpage = $this->settings->get('firesale_perpage');
 
 		// Load css/js
-		$this->template->append_css('module::firesale.css')
-					   ->append_js('module::firesale.js');
+		/*$this->template->append_css('module::firesale.css')
+					   ->append_js('module::firesale.js');*/
 
 	}
 

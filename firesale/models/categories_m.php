@@ -36,11 +36,17 @@ class Categories_m extends MY_Model {
 		$params	 = array(
 					'stream' 	=> 'firesale_categories',
 					'namespace'	=> 'firesale_categories',
-					'where'		=> ( ( 0 + $id_slug ) > 0 ? 'id = ' : 'slug = ' ) . "'{$id_slug}' AND status = 1",
+					'where'		=> ( ( 0 + $id_slug ) > 0 ? 'id = ' : 'slug = ' ) . "'{$id_slug}'",
 					'limit'		=> '1',
 					'order_by'	=> 'id',
 					'sort'		=> 'desc'
 				   );
+
+		// Add to params if required
+		if( $this->uri->segment('1') != 'admin' )
+		{
+			$params['where'] .= ' AND status = 1';
+		}
 		
 		// Get entries		
 		$category = $this->streams->entries->get_entries($params);
@@ -271,7 +277,7 @@ class Categories_m extends MY_Model {
 
 				$tree .= '<li id="cat_' . $cat['id'] . '">' . "\n";
 				$tree .= '  <div>' . "\n";
-				$tree .= '    <a href="#" rel="' . $cat['id'] . '">' . $cat['title'] . ( isset($cat['children']) ? ' &raquo;' : '' ) . '</a>' . "\n";
+				$tree .= '    <a href="{{ url:base }}category/' . $cat['slug'] . '" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
 				$tree .= '  </div>' . "\n";
 
 				if( isset($cat['children']) )
