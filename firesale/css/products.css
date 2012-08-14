@@ -16,10 +16,10 @@ tfoot th { border: none; border-top: 2px solid rgb(221, 221, 221); }
 #product_table .item-img { width: 40px !important; }
 #product_table img { width: 32px; height: 32px; float: left; display: block; background: url('img/none.jpg') no-repeat; overflow: hidden; text-indent: -1000px; }
 
-.title ul { display: inline-block; width: 500px; height: 25px; position: relative; margin: 9px 0 0 0 !important; float: right; }
+.title ul { display: inline-block; width: 100%; height: 28px; position: relative; margin: 9px 0 0 0 !important; float: right; }
 .title ul li { float: right; }
-.title ul li a { border-radius: 5px 5px 0 0; padding: 6px 10px; }
-.title ul li.ui-tabs-selected a { border: 1px solid #ccc; border-bottom: none; }
+.title ul li a { border-radius: 5px 5px 0 0; padding: 6px 10px; text-shadow: 0 0 1px rgba(255,255,255,0.7); }
+.title ul li.ui-tabs-selected a { border: 1px solid #ccc; border-bottom: 2px solid #fff; text-shadow: none; }
 
 #dropbox{position:relative;min-height:290px;padding: 4px 4px 44px 4px;border-radius: 15px; }
 #dropbox.dragging{ background:rgba(100,100,100,0.05); border:4px dashed rgba(100,100,100,0.2); padding: 0 0 40px 0; }

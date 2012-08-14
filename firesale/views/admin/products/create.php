@@ -6,7 +6,6 @@
 		<input type="hidden" name="id" id="id" value="<?php echo $id; ?>" />
 
 		<section class="title">
-			<h4>&nbsp;</h4>
 			<ul>
 <?php foreach( $tabs AS $tab ): ?>
 <?php if( ( substr($tab, 0, 1) == '_' && isset($id) && $id > 0 ) || substr($tab, 0, 1) != '_' ): ?>

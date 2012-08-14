@@ -9,7 +9,7 @@ class Admin_products extends Admin_Controller
 	public $tabs	= array('description'      => array('description'),
 							'shipping options' => array('shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth'),
 							'metadata'		   => array('meta_title', 'meta_description', 'meta_keywords'),
-							// '_attributes'	   => '{{ firesale_attributes:form product=id }}',
+							'_attributes'	   => '{{ firesale_attributes:form product=id }}',
 							'_images'		   => array());
 
 
