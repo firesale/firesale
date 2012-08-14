@@ -173,7 +173,8 @@ class Products_m extends MY_Model {
 		// Build initial query
 		$query = $this->db->select($this->_table . '.id')
 						  ->from($this->_table)
-						  ->order_by('id', 'desc');
+						  ->order_by('id', 'desc')
+						  ->group_by('id');
 		
 		// Add limits if set
 		if( $start > 0 OR $limit > 0 )
