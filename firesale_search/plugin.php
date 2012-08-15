@@ -10,6 +10,7 @@ class Plugin_Firesale_Search extends Plugin
 	public function search_terms()
 	{
 	
+		// $results = $this->db->get
 		return 'Coming Soon&#153;';
 	}
 

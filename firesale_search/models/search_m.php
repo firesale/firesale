@@ -3,6 +3,7 @@
 class Search_m extends MY_Model {
 
 	public $selected = FALSE;
+	public $fired    = FALSE;
 
     function __construct()
     {
@@ -104,6 +105,10 @@ class Search_m extends MY_Model {
 	public function update_terms($term)
 	{
 	
+		// Sales tracking via search
+		$this->session->set_userdata(array('term' => $term));
+
+		// Update database terms
 		$query = $this->db->select('id, count')->where("LOWER(`term`) = '{$term}'")->get('firesale_search');
 		if( $query->num_rows() )
 		{
@@ -112,9 +117,33 @@ class Search_m extends MY_Model {
 		}
 		else
 		{
-			$this->db->insert('firesale_search', array('term' => strtolower($term), 'count' => 1));
+			$this->db->insert('firesale_search', array('term' => strtolower($term), 'count' => 1, 'sales' => 0));
 		}
 	
+	}
+
+	public function order_complete($data)
+	{
+
+		// Check for session data
+		if( $term = $this->session->userdata('term') AND !$this->fired )
+		{
+
+			// Get search term
+			$term   = strtolower(trim($term));
+			$query  = $this->db->select('id, sales')->where("LOWER(`term`) = '{$term}'")->get('firesale_search');
+			$result = $query->row();
+
+			// Update sales
+			$this->db->where("id = '{$result->id}'")->update('firesale_search', array('sales' => ( $result->sales + 1 )));
+
+			// Remove session data
+			$this->session->unset_userdata('term');
+
+			// Fired
+			$this->fired = TRUE;
+		}
+
 	}
 
 }

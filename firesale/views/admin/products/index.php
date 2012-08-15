@@ -10,7 +10,9 @@
 					<ul>
 						<li class="<?php echo alternator('even', ''); ?>">
 							<label for="filter"><?php echo lang('firesale:label_filtercat'); ?></label>
-							<div class="input"><?php echo form_dropdown('filter', $categories, ( isset($category) ? $category : 0 ), 'id="filter-category" class="filter"'); ?></div>
+							<div class="input">
+								<?php echo form_dropdown('filter', $categories, ( isset($category) ? $category : 0 ), 'id="filter-category" class="filter"'); ?>
+							</div>
 						</li>
 					</ul>
 				</fieldset>

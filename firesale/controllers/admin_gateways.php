@@ -91,9 +91,11 @@ class Admin_gateways extends Admin_Controller
 			if ($this->form_validation->run())
 			{
 				$data = array(
-					'slug'	=> $slug,
-					'name'	=> set_value('name'),
-					'desc'	=> set_value('desc')
+					'created' 		 => date("Y-m-d H:i:s"),
+					'ordering_count' => 0,
+					'slug'			 => $slug,
+					'name'			 => set_value('name'),
+					'desc'			 => set_value('desc')
 				);
 				
 				$this->db->trans_begin();

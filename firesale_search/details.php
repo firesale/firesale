@@ -39,7 +39,13 @@ class Module_Firesale_Search extends Module {
 						)
 					)
 				)
-			)			
+			),
+			'events'			 => array(
+				'order_complete'     => array(
+					'model'		 => 'firesale_searcg/search_m',
+					'function'	 => 'order_complete'
+				)
+			)
 		);
 		
 		return $info;
@@ -58,7 +64,8 @@ class Module_Firesale_Search extends Module {
 		$search = array(
 					'id' 	=> array('type' => 'INT', 'constraint' => '6', 'auto_increment' => TRUE),
 					'term'	=> array('type' => 'VARCHAR', 'constraint' => '64'),
-					'count'	=> array('type' => 'INT', 'constraint' => '6')
+					'count'	=> array('type' => 'INT', 'constraint' => '6'),
+					'sales'	=> array('type' => 'INT', 'constraint' => '6')
 				);
 
 		// Insert into the database

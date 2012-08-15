@@ -253,4 +253,15 @@ class Gateways
 		
 		return FALSE;
 	}
+
+	public function id_from_slug($slug)
+	{
+		$query = $this->_CI->db->get_where('firesale_gateways', array('slug' => $slug));
+		
+		if ($query->num_rows())
+			return $query->row()->id;
+		
+		return FALSE;
+	}
+
 }
