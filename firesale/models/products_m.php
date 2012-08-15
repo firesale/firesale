@@ -312,6 +312,43 @@ class Products_m extends MY_Model {
 	}
 
 	/**
+	 * Duplicates a product and all of its' associated values, which also firing an
+	 * event for addon modules to tap into and copy their values too.
+	 *
+	 * @param integer $id Product ID being duplicated
+	 * @return integer The created Product ID
+	 * @access public
+	 */
+	public function duplicate_product($id)
+	{
+
+		// Get original details
+		$product = current($this->db->where('id', $id)->get('firesale_products')->result_array());
+		$cats    = $this->db->where('row_id', $id)->get('firesale_products_firesale_categories')->result_array();
+
+		// Remove original id
+		unset($product['id']);
+
+		// Insert it
+		$this->db->insert('firesale_products', $product);
+		$id = $this->db->insert_id();
+
+		// Add category data
+		foreach( $cats AS $cat )
+		{
+			unset($cat['id']);
+			$cat['row_id'] = $id;
+			$this->db->insert('firesale_products_firesale_categories', $cat);
+		}
+
+		// Fire events
+		Events::trigger('product_duplicated', array('original' => $product['id'], 'new' => $id));
+
+		// Return ID
+		return $id;
+	}
+
+	/**
 	 * Updates the mulitple categories for a Product.
 	 * Required at the moment since the Streams Multiple field type doesn't seem
 	 * to do this automatically at the moment.

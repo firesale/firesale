@@ -42,6 +42,12 @@ class Admin_products extends Admin_Controller
 	public function index($type = 'na', $value = 'na', $start = 0)
 	{
 
+		// Check for btnAction
+		if( $action = $this->input->post('btnAction') )
+		{
+			$this->$action();
+		}
+
 		// Get filter if set
 		if( $type != 'na' AND $value != 'na' )
 		{
@@ -82,7 +88,7 @@ class Admin_products extends Admin_Controller
 	{
 
 		// Check for post data
-		if( $this->input->post('btnAction') == 'save' )
+		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
 			
 			// Variables
@@ -93,6 +99,12 @@ class Admin_products extends Admin_Controller
 						'success_message'	=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
 						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
+
+			// Check button action for return location
+			if( $this->input->post('btnAction') == 'save_exit' )
+			{
+				$extra['return'] = '/admin/firesale/products';
+			}
 
 			// Manually update categories
 			// Multiple tends not to do it for us
@@ -207,6 +219,57 @@ class Admin_products extends Admin_Controller
 		
 		redirect('admin/firesale/products');
 		
+	}
+
+	public function duplicate($prod_id = 0 )
+	{
+
+		$duplicate = true;
+		$products  = $this->input->post('action_to');
+		$latest    = 0;
+
+		if( $this->input->post('btnAction') == 'duplicate' )
+		{
+		
+			for( $i = 0; $i < count($products); $i++ )
+			{
+			
+				if( !$latest = $this->products_m->duplicate_product($products[$i]) )
+				{
+					$duplicate = false;
+				}
+			
+			}
+		
+		}
+		else if( $prod_id !== null )
+		{
+		
+			if( !$latest = $this->products_m->duplicate_product($prod_id) )
+			{
+				$duplicate = false;
+			}
+		
+		}
+		
+		if( $duplicate )
+		{
+			$this->session->set_flashdata('success', lang('firesale:prod_duplicate_success'));
+		}
+		else
+		{
+			$this->session->set_flashdata('error', lang('firesale:prod_duplicate_error'));
+		}
+
+		if( ( $prod_id !== NULL OR count($products) == 1 ) AND $latest != 0 )
+		{
+			redirect('admin/firesale/products/edit/' . $latest);
+		}
+		else
+		{
+			redirect('admin/firesale/products');
+		}
+
 	}
 	
 	public function upload($id)

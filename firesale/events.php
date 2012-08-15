@@ -10,13 +10,14 @@ class Events_Firesale
 		$this->ci =& get_instance();
 		
 		// register the events
-		Events::register('product_created', array($this, 'product_created'));
-		Events::register('product_updated', array($this, 'product_updated'));
-		Events::register('product_delete',  array($this, 'product_deleted'));
-		Events::register('product_viewed',  array($this, 'product_viewed'));
-		Events::register('order_complete',  array($this, 'order_complete'));
-		Events::register('cart_item_added', array($this, 'cart_item_added'));
-		Events::register('page_build',      array($this, 'page_build'));
+		Events::register('product_created',    array($this, 'product_created'));
+		Events::register('product_updated',    array($this, 'product_updated'));
+		Events::register('product_delete',     array($this, 'product_deleted'));
+		Events::register('product_duplicated', array($this, 'product_duplicated'));
+		Events::register('product_viewed',     array($this, 'product_viewed'));
+		Events::register('order_complete',     array($this, 'order_complete'));
+		Events::register('cart_item_added',    array($this, 'cart_item_added'));
+		Events::register('page_build',         array($this, 'page_build'));
 	
 	}
 	
@@ -36,6 +37,12 @@ class Events_Firesale
 	{
 		
 		$this->_run_firesale_events('product_deleted', $data);
+	}
+
+	public function product_duplicated($data)
+	{
+		
+		$this->_run_firesale_events('product_duplicated', $data);
 	}
 	
 	public function product_viewed($data)

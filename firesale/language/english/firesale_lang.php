@@ -62,6 +62,8 @@
 	$lang['firesale:prod_add_error'] 		= 'There was a problem adding a new product';
 	$lang['firesale:prod_delete_error'] 	= 'There was a problem deleting that product';
 	$lang['firesale:prod_delete_success'] 	= 'Product deleted successfully';
+	$lang['firesale:prod_duplicate_error'] 	= 'There was a problem duplicating that product';
+	$lang['firesale:prod_duplicate_success']= 'Product duplicated successfully';
 	$lang['firesale:prod_not_found'] 		= 'That product cannot be found';
 
 	// Labels
@@ -83,6 +85,7 @@
 	$lang['firesale:label_price_tax']	= 'Current Price (before tax)';
 	$lang['firesale:label_stock']		= 'Current Stock Level';
 	$lang['firesale:label_drop_images'] = 'Drop images here to upload';
+	$lang['firesale:label_duplicate']   = 'Duplicate';
 
 	$lang['firesale:label_stock_short']	= 'Stock Level';
 	$lang['firesale:label_stock_status']= 'Stock Status';

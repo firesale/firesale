@@ -68,6 +68,13 @@ $(function(){
 		}
 	});
 
+	// Stock status switch
+	$('#stock').bind('keyup update blur paste delete', function() {
+		var val = $(this).val(), status = 1;
+		if( val == 0 ) { status = 3; } else if( val <= 5 ) { status = 2; }
+		$('#stock_status').val(status).trigger('liszt:updated');
+	});
+
 	// Categories "fix"
 	$('#category_list_2 li').each(function() { if( $('#category').val().indexOf($(this).attr('id')) == -1 ) { $(this).remove(); }});
 	

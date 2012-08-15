@@ -64,7 +64,7 @@
 <?php endforeach; ?>
 
 		<div class="buttons">
-			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
+			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'save_exit', 'cancel') )); ?>
 		</div>
 		
 	<?php echo form_close(); ?>
