@@ -10,10 +10,10 @@ class Plugin_Firesale_Search extends Plugin
 	public function search_terms()
 	{
 	
-		// $results = $this->db->get
-		return 'Coming Soon&#153;';
+		$results = $this->db->order_by('sales, count')->limit(10)->get('firesale_search')->result_array();
+
+		// Return view
+		return $this->module_view('firesale_search', 'admin_searchterms', array('results' => $results), true);
 	}
 
 }
-
-/* End of file plugin.php */

@@ -8,3 +8,4 @@
 	
 	// Dashboard
 	$lang['firesale:elements:search_terms'] = 'Popular Search Terms';
+	$lang['firesale:search:no_terms']		= 'No search terms found';

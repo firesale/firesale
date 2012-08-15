@@ -28,7 +28,7 @@
 	$lang['firesale:dash_overview']			 	= 'Quick Overview';
 	$lang['firesale:dash_categorytrack']	 	= 'Category Tracking';
 	$lang['firesale:elements:product_sales'] 	= 'Product Sales';
-	$lang['firesale:elements:low_stock']	 	= 'Low or Out of Stock Products';
+	$lang['firesale:elements:low_stock']	 	= 'Stock Alerts';
 	$lang['firesale:dashboard:no_sales']	 	= 'No sales found in the last 12 months';
 	$lang['firesale:dashboard:stock_low']	 	= '%s Products with low stock';
 	$lang['firesale:dashboard:stock_out']	 	= '%s Products with no stock';

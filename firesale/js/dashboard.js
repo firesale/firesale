@@ -43,6 +43,8 @@ $(function(){
 	
 	});
 	
-	sameHeight();
+	setTimeout(sameHeight, 50);
+
+	$('.tab-menu li a').click(function() { setTimeout(sameHeight, 50); });
 	
 });

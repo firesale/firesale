@@ -212,8 +212,8 @@ class Plugin_Firesale extends Plugin
 			$data			   = array();
 			$data['low_count'] = $this->db->select("id")->where('stock_status', '2')->get('firesale_products')->num_rows();
 			$data['out_count'] = $this->db->select("id")->where('stock_status', '3')->get('firesale_products')->num_rows();
-			$data['low_prods'] = $this->db->select("title, stock, id, slug")->where('stock_status', '2')->order_by('stock', 'desc')->limit('10')->get('firesale_products')->result_array();
-			$data['out_prods'] = $this->db->select("title, stock, id, slug")->where('stock_status', '3')->order_by('stock', 'desc')->limit('10')->get('firesale_products')->result_array();
+			$data['low_prods'] = $this->db->select("code, title, stock, id, slug")->where('stock_status', '2')->order_by('stock', 'desc')->limit('5')->get('firesale_products')->result_array();
+			$data['out_prods'] = $this->db->select("code, title, stock, id, slug")->where('stock_status', '3')->order_by('stock', 'desc')->limit('5')->get('firesale_products')->result_array();
 
 			// Return view
 			return $this->module_view('firesale', 'admin/dashboard/lowstock', $data, true);
