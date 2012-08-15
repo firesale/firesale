@@ -318,16 +318,18 @@ class Admin_products extends Admin_Controller
 		if( $this->input->is_ajax_request() )
 		{
 
-			$update = $this->products_m->update_product($this->input->post(), true);
+			$update = $this->products_m->update_product($this->input->post(), $this->stream->id, true);
 	
 			if( isset($update) && $update == TRUE )
 			{
 				$this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
 				echo 'ok';
+				exit();
 			}
 			else
 			{
 				echo lang('firesale:prod_edit_error');
+				exit();
 			}
 
 		}

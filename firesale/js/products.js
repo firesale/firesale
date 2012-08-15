@@ -16,8 +16,15 @@ $(function(){
 		title.html('<input type="text" id="title" name="title" value="' + title.text() + '" />');
 		stock.html('<input type="text" id="stock" name="stock" value="' + stock.text() + '" />');
 		price.parent().html('<input type="text" id="price" name="price" value="' + price.text() + '" pattern="^\d+(?:,\d{3})*\.\d{2}$" />');
-		var category = $('#filter').clone(false).removeClass('chzn, chzn-done').removeAttr('id').attr({name: 'parent'}).val(obj.attr('class').replace('cat_', '')).trigger('liszt:updated');
-		cat.html(category).find('.chzn-container').css({width: '110px'});
+		var category = $('#filter-category').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'parent[]'});
+		category.find(':selected').removeAttr('selected');
+		var s = cat.find('span').clone();
+		cat.find('span').remove();
+		s.each(function() {
+			var val = $(this).attr('data-id');
+			category.val(val).find('option[value="' + val + '"]').attr('selected', 'selected');
+			cat.append(category);
+		});
 
 		$(this).addClass('add').text('Update');
 		$(this).unbind('click').click(function() {
@@ -25,11 +32,11 @@ $(function(){
 			var data = {};
 			obj.find('input, select').each(function() {
 				if( typeof $(this).attr('name') != 'undefined' ) {
-					var val = $(this).val().toString();
-					data[$(this).attr('name')] = val;
-				}
+					var name = $(this).attr('name');
+					if( $(this).is('select') ) { var val = $(this).find(':selected').attr('value'); } else { var val = $(this).val(); }
+		            if( name.substr(-2) == '[]' ) { name = name.replace('[]', ''); if( typeof data[name] == 'undefined' ) { data[name] = []; } data[name].push(val); } else { data[name] = val; }
+	           	}
 			});
-			
 	
 			$.post(SITE_URL + 'admin/firesale/products/ajax_quick_edit', data, function(ret) {
 				if( ret == 'ok' ) { window.location.reload(); }

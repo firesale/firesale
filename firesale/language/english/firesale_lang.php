@@ -58,6 +58,7 @@
 	$lang['firesale:prod_title_create'] 	= 'Create New Product';
 	$lang['firesale:prod_title_edit'] 		= 'Edit Product';
 	$lang['firesale:prod_edit_success'] 	= 'Product edited successfully';
+	$lang['firesale:prod_edit_error'] 	 	= 'Product edit failed';
 	$lang['firesale:prod_add_success'] 		= 'A new product was added successfully';
 	$lang['firesale:prod_add_error'] 		= 'There was a problem adding a new product';
 	$lang['firesale:prod_delete_error'] 	= 'There was a problem deleting that product';

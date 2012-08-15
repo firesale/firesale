@@ -61,7 +61,7 @@
 						<td class="item-img"><img src="<?php echo ( $product['image'] != FALSE ? '/files/thumb/' . $product['image'] . '/32/32' : '' ); ?>" alt="Product Image" /></td>
 						<td class="item-title"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
 						<td class="item-category">
-							<?php $string = ''; foreach( $product['category'] AS $cat ) { $string .= ( strlen($string) == 0 ? '' : ', ' ) . $cat['title']; } echo $string; ?>
+							<?php $string = ''; foreach( $product['category'] AS $cat ) { $string .= ( strlen($string) == 0 ? '' : ', ' ) . '<span data-id="' . $cat['id'] . '">' . $cat['title'] . '</span>'; } echo $string; ?>
 						</td>
 						<td class="item-stock"><?php echo $product['stock']; ?></td>
 						<td><?php echo $this->settings->get('currency'); ?><span class="item-price"><?php echo $product['price']; ?></span></td>

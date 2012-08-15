@@ -163,32 +163,46 @@ class Products_m extends MY_Model {
 	 * @return boolean TRUE or FALSE on success of failure
 	 * @access public
 	 */
-	public function update_product($input)
+	public function update_product($input, $stream_id)
 	{
-	
+
 		// Variables
 		$id   = $input['action_to'][0];
 		$data = array(
 					'code'	   => $input['id'],
 					'title'	   => $input['title'],
 					'stock'	   => $input['stock'],
-					'category' => $input['parent'],
 					'price'	   => $input['price']
 				);
-		
+
 		// Update stock status
-		if( $data['stock'] == 0 ) { $data['stock_status'] = 0; }
-		
-		// Update
-		if( $this->db->where('id', $id)->update($this->_table, $data) )
+		if( $data['stock'] == 0 )
 		{
-			return TRUE;
+			$data['stock_status'] = 3;
+		}
+		else if( $data['stock'] <= 10 )
+		{
+			$data['stock_status'] = 2;
 		}
 		else
 		{
-			return FALSE;
+			$data['stock_status'] = 1;
 		}
-	
+		
+		// Update
+		if( $id > 0 AND $this->db->where('id', $id)->update($this->_table, $data) )
+		{
+
+			// Update categories
+			if( isset($input['parent']) AND !empty($input['parent']) )
+			{
+				$this->update_categories($id, $stream_id, implode(',', $input['parent']));
+			}
+
+			return TRUE;
+		}
+
+		return FALSE;	
 	}
 	
 	/**
