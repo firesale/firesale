@@ -25,6 +25,7 @@ class Admin_products extends Admin_Controller
 		$this->load->model('streams_core/row_m');
 		$this->load->library('streams_core/fields');
 		$this->load->library('files/files');
+		$this->load->helper('general');
 
 		// Add metadata
 		$this->template->append_css('module::products.css')
@@ -61,9 +62,9 @@ class Admin_products extends Admin_Controller
 		}
 
 		// Build product data
-		foreach( $products AS $key => $product )
+		foreach( $products AS &$product )
 		{
-			$products[$key] = $this->products_m->get_product($product['id']);
+			$product = $this->products_m->get_product($product['id']);
 		}
 			
 		// Assign variables
@@ -107,9 +108,12 @@ class Admin_products extends Admin_Controller
 			}
 
 			// Manually update categories
-			// Multiple tends not to do it for us
+			// Multiple tends not to do it
 			if( $id !== NULL )
+			{
 				$this->products_m->update_categories($id, $this->stream->id, $input['category']);
+				unset($_POST['category']);
+			}
 
 			// Added to seperate if since above will be removed for 2.2
 			if( $id !== NULL )
@@ -132,7 +136,7 @@ class Admin_products extends Admin_Controller
 		// Assign variables
 		if( $row !== NULL ) { $this->data = $row; }
 		$this->data->id		=  $id;
-		$this->data->fields =  $this->products_m->fields_to_tabs($fields, $this->tabs);
+		$this->data->fields =  fields_to_tabs($fields, $this->tabs);
 		$this->data->tabs	=  array_reverse(array_keys($this->data->fields));
 		
 		// Get current images

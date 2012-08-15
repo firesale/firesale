@@ -44,6 +44,7 @@ class Admin_categories extends Admin_Controller
 		$this->load->language('firesale');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
+		$this->load->helper('general');
 		
 		// Add metadata
 		$this->template->append_css('module::categories.css')
@@ -113,7 +114,7 @@ class Admin_categories extends Admin_Controller
 		// Assign variables
 		$this->data->controller =& $this;
 		$this->data->cats       =  $this->categories_m->generate_streams_tree($params);
-		$this->data->fields     =  $this->products_m->fields_to_tabs($fields, $this->tabs);
+		$this->data->fields     =  fields_to_tabs($fields, $this->tabs);
 		$this->data->tabs	    =  array_reverse(array_keys($this->data->fields));
 	
 		// Build the page

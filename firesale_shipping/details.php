@@ -148,19 +148,28 @@ class Module_Firesale_shipping extends Module {
 		## REBUILD ORDERS ##
 		####################
 
-		// Remove field - without deleting column
-		$this->db->where('field_slug', 'shipping')->where('field_namespace', 'firesale_orders')->delete('data_fields');
-		$this->dbforge->modify_column('firesale_orders', array('shipping' => array('name' => 'tmp_shipping', 'type' => 'int(11)')));
+		// Ensure core is installed first
+		$query = $this->db->select('id')->where("slug = 'firesale' AND installed = 1")->get('modules');
 
-		// Build field
-		$field = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'name' => 'lang:firesale:label_shipping', 'slug' => 'shipping', 'type' => 'integer', 'title_column' => FALSE,  'required' => FALSE, 'unique' => FALSE);
+		// Check query
+		if( $query->num_rows() )
+		{
 
-		// Add field to stream
-		$this->streams->fields->add_field($field);
+			// Remove field - without deleting column
+			$this->db->where('field_slug', 'shipping')->where('field_namespace', 'firesale_orders')->delete('data_fields');
+			$this->dbforge->modify_column('firesale_orders', array('shipping' => array('name' => 'tmp_shipping', 'type' => 'int(11)')));
 
-		// Drop and rename shipping
-		$this->dbforge->drop_column('firesale_orders', 'shipping');
-		$this->dbforge->modify_column('firesale_orders', array('tmp_shipping' => array('name' => 'shipping', 'type' => 'int(11)')));
+			// Build field
+			$field = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'name' => 'lang:firesale:label_shipping', 'slug' => 'shipping', 'type' => 'integer', 'title_column' => FALSE,  'required' => FALSE, 'unique' => FALSE);
+
+			// Add field to stream
+			$this->streams->fields->add_field($field);
+
+			// Drop and rename shipping
+			$this->dbforge->drop_column('firesale_orders', 'shipping');
+			$this->dbforge->modify_column('firesale_orders', array('tmp_shipping' => array('name' => 'shipping', 'type' => 'int(11)')));
+
+		}
 
 		// Return
 		return TRUE;

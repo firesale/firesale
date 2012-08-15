@@ -63,60 +63,6 @@ class Products_m extends MY_Model {
 	}
 	
 	/**
-	 * Splits Streams fileds into an array of tabs, specified fields in a tabs array
-	 * will be put into their designated positions with all others failling into a
-	 * default "general options" array.
-	 *
-	 * @param array $fields A Streams generated array of fields
-	 * @param array $tabs A guide containing the tab name and an array of field names
-	 * @return array
-	 * @access public
-	 */
-	public function fields_to_tabs($fields, $tabs, $default = 'general options')
-	{
-	
-		// Variables
-		$data = array($default => array());
-
-		// Loop fields
-		foreach( $fields AS $field )
-		{
-	
-			// Reset found
-			$found = FALSE;
-	
-			// Loop each of the tab options
-			foreach( $tabs AS $tab => $slugs )
-			{
-			
-				// Add tab to array?
-				if( !array_key_exists($tab, $data) )
-				{
-					$data[$tab] = ( substr($tab, 0, 1) == '_' ? $slugs : array() );
-				}
-
-				// Assign to special tab
-				if( in_array($field['input_slug'], $slugs) )
-				{
-					$data[$tab][] = $field;
-					$found = TRUE;
-				}
-
-			}
-			
-			// Default to general
-			if( $found == FALSE )
-			{
-				$data[$default][] = $field;
-			}
-
-		}
-		
-		// Retrun
-		return $data;	
-	}
-	
-	/**
 	 * Using Streams and a number of other functions to gather categories and images
 	 * this function builds a complete Product array for use in a number of places
 	 * and pages for display.
@@ -372,8 +318,17 @@ class Products_m extends MY_Model {
 		// Loop and insert
 		for( $i = 0; $i < count($categories); $i++ )
 		{
+			
+			// Build data
 			$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => trim($categories[$i]));
-			$this->db->insert('default_firesale_products_firesale_categories', $data);
+
+			// Check exists
+			if( $this->db->where($data)->get('firesale_products_firesale_categories')->num_rows() == 0 )
+			{
+				// Insert it
+				$this->db->insert('default_firesale_products_firesale_categories', $data);
+			}
+
 		}
 
 	}
@@ -391,7 +346,8 @@ class Products_m extends MY_Model {
 		// Build query
 		$query = $this->db->select('firesale_categories_id AS id')
 						  ->from('firesale_products_firesale_categories')
-						  ->where('row_id', $id);
+						  ->where('row_id', $id)
+						  ->group_by('firesale_categories_id');
 
 		// Run query
 		$results = $query->get();
