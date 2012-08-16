@@ -1,13 +1,25 @@
-.clear { clear:both; height: 0; line-height: 0; }
-.close { width: 28px; height: 28px; display: inline-block; margin: 4px -10px 0 0; float: right; overflow: hidden; text-indent: -1000px; }
-.close:hover { background: url('img/icon.close.png') no-repeat; }
-#content {width: 1300px !important; padding-left: 20px !important;}
-.one_half { margin-right: 22px !important; display: inline-block !important; float: none !important; }
-.ui-sortable-placeholder { border:4px dashed rgba(100,100,100,0.2); margin-top: 15px; width: 617px; height: 100%; min-height: 162px; border-radius: 6px; visibility: visible !important; }
-.ui-sortable-placeholder * { visibility: hidden; }
-.section_add { border:4px dashed rgba(100,100,100,0.2); margin: 15px 22px 0 0; width: 617px; min-height: 142px; border-radius: 6px; }
-.section_add section { background: url('img/additem.png') no-repeat 50% 50%; overflow: hidden; text-indent: -10000px; width: 100%; min-height: 162px; }
-.section_add section:hover { opacity: 0.6; cursor: pointer; }
+
+#sortable .one_half:nth-child(2n) { margin-right: 0 !important; float: right !important; }
 .legend table { width: auto !important; }
 .legend table tr { border-bottom: none !important; }
 .legend table td { padding: 3px !important; }
+
+@media only screen and (min-width: 281px) {
+	#sales { width: 250px; height: 260px; }
+}
+
+@media only screen and (min-width: 481px) {
+	#sales { width: 450px; height: 260px; }
+}
+
+@media only screen and (min-width: 768px) {
+	#sales { width: 335px; height: 260px; }
+}
+
+@media only screen and (min-width: 1025px) {
+	#sales { width: 470px; height: 260px; }
+}
+
+@media only screen and (min-width: 1281px) {
+	#sales { width: 595px; height: 260px; }
+}

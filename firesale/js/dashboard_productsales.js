@@ -17,5 +17,5 @@ function buildGraph(sales, count, obj)
 }
 
 function currencyFormatter(v, axis) {
-    return currency + v.toFixed(axis.tickDecimals);
+    return currency + v.toFixed(2);
 }

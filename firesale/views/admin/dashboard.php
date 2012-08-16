@@ -1,11 +1,11 @@
-<div class="full_width">
+<div id="sortable">
 <?php if( isset($items) AND !empty($items) ): ?>
 <?php foreach( $items as $slug => $item ): ?>
 
-	<div class="section-cont one_half<?php /*echo ( $no % 2 == 1 ? ' last' : '' );*/ ?>" id="<?php echo $slug; ?>">
-		<section class="title">
+	<div class="one_half" id="<?php echo $slug; ?>">
+		<section class="draggable title">
 			<h4><?php echo lang($item['title']); ?></h4>
-			<a href="#" class="close">Close</a>
+			<a class="tooltip-s toggle" title="Toggle this element"></a>
 		</section>
 		<section class="item">
 			<?php echo $item['content']; ?>
@@ -13,10 +13,5 @@
 	</div>
 
 <?php endforeach; ?>
-<?php endif; ?>
-<?php if( $count > $shown ): ?>
-	<div class="section_add one_half">
-		<section id="additem">Add item</section>
-	</div>
 <?php endif; ?>
 </div>

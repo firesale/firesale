@@ -60,7 +60,7 @@ class Firesale
 					}
 					
 					// We don't want to run the following code if we're on the modules page.
-					if ($this->_CI->uri->segment(2) != 'modules')
+					if( substr($this->_CI->uri->segment(2), 0, 8) == 'firesale' AND empty($_POST) )
 					{
 						// Keep the module title and desc the same
 						if( !isset($name) && !isset($desc) )
@@ -70,11 +70,11 @@ class Firesale
 							$desc = isset($module_info['description'][CURRENT_LANGUAGE]) ? $module_info['description'][CURRENT_LANGUAGE] : $module_info['description']['en'];
 						}
 						
-						/*if( substr($this->_CI->uri->segment(2), 0, 8) == 'firesale' && !empty($_POST) )
+						if( substr($this->_CI->uri->segment(2), 0, 8) == 'firesale' && empty($_POST) )
 						{
 							$info['name'][CURRENT_LANGUAGE]        = $name;
 							$info['description'][CURRENT_LANGUAGE] = $desc;
-						}*/
+						}
 					}
 					
 					// Register roles
