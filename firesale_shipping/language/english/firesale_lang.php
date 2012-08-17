@@ -6,7 +6,7 @@
 	
 	// Sections
 	$lang['firesale:sections:shipping'] = 'Shipping';
-	$lang['firesale:shipping:title'] 	= 'Shipping (Basic)';
+	$lang['firesale:shipping:title'] 	= 'Shipping Options';
 	$lang['firesale:shipping:create'] 	= 'Create new Shipping Band';
 	$lang['firesale:shipping:edit'] 	= 'Edit "%s" Shipping Band';
 	$lang['firesale:shipping:none']		= 'No Shipping Options Found';

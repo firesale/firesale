@@ -9,6 +9,7 @@ class Front_orders extends Public_Controller
 		
 		// Load models, lang, libraries, etc.
 		$this->load->model('orders_m');
+		$this->load->model('categories_m');
 		$this->load->model('products_m');
 
 	}
@@ -87,9 +88,9 @@ class Front_orders extends Public_Controller
 			$order['price_total'] = number_format($order['price_total'], 2);
 
 			// Format products
-			foreach( $order['items'] AS $key => $item )
+			foreach( $order['items'] AS &$item )
 			{
-				$order['items'][$key]['price'] = number_format($item['price'], 2);
+				$item['price'] = number_format($item['price'], 2);
 			}
 
 			// Build page
@@ -108,9 +109,9 @@ class Front_orders extends Public_Controller
 		}
 		else
 		{
-			// Error
-			// Set flash
-			redirect('/users/orders');
+			// Must be logged in
+			$this->set_flashdata('error', lang('firesale:orders:logged_in'));
+			redirect('/users/login');
 		}
 	
 	}

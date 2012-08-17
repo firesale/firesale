@@ -32,30 +32,33 @@ class Plugin_Firesale extends Plugin
 		// Variables
 		$limit	   	   = $this->attribute('limit', 6);
 		$category  	   = $this->attribute('category', 0);
-		$order_by  	   = $this->attribute('order-by', 'children');
+		$order_by  	   = $this->attribute('order-by', 'ordering_count');
 		$order_dir 	   = $this->attribute('order-dir', 'desc');
 		
-		// SQL Query
-		$sql = "SELECT c.`id`, c.`title`, c.`slug`, ( SELECT COUNT(`id`) FROM `" . SITE_REF . "_firesale_categories` WHERE `parent` = c.`id` ) AS `children`
-				FROM `" . SITE_REF . "_firesale_categories` AS c
-				WHERE c.`status` = 1
-				AND c.`parent` = '{$category}'
-				ORDER BY `{$order_by}` {$order_dir}, c.`ordering_count` DESC";
-				
-		if( ( 0 + $limit ) > 0 ) { $sql .= "\nLIMIT {$limit}"; }
+		// Build query
+		$query = $this->db->select('id, title, slug')
+					  	  ->from('firesale_categories')
+						  ->where('status', '1')
+						  ->where('parent', $category)
+						  ->order_by($order_by, $order_dir);
 
-		// Get main cats
-		$cats = $this->db->query($sql)->result();
-		
-		// Loop cats
-		for( $i = 0; $i < count($cats); $i++ ) {
-		
-			// Get last and subs
-			$cats[$i]->last = ( ( $i + 1 ) == $limit ? ' last' : '' );
-
+		// Add limit?
+		if( $limit > 0 )
+		{
+			$query->limit($limit);
 		}
 
-		return $cats;
+		// Category may be NULL
+		if( $category <= 0 )
+		{
+			$query->or_where('status', '1')
+				  ->where('parent', NULL);
+		}
+
+		// Get categories
+		$categories = $query->get()->result_array();
+		
+		return $categories;
 	}
 	
 	public function sub_categories()
@@ -69,49 +72,62 @@ class Plugin_Firesale extends Plugin
 	{
 
 		// Variables
-		$limit	   = $this->attribute('limit', 10);
-		$where     = $this->attribute('where', NULL);
-		$order_by  = $this->attribute('order-by', 'id');
-		$order_dir = $this->attribute('order-dir', 'desc');
+		$attributes = $this->attributes();
+
+		// Children?
+		if( isset($attributes['category']) )
+		{
+			$children   = $this->categories_m->get_children($attributes['category']);
+			$children[] = $attributes['category'];
+		}
 
 		// Build query
-		$query = $this->db->select('id')
-						  ->from('firesale_products')
-						  ->order_by($order_by, $order_dir)
-						  ->limit($limit);
+		$query = $this->db->select('p.id')
+						  ->from('firesale_products AS p')
+						  ->join('firesale_products_firesale_categories AS pc', 'pc.row_id = p.id', 'inner')
+						  ->join('firesale_categories AS c', 'c.id = pc.firesale_categories_id')
+						  ->where('p.status', '1')
+						  ->group_by('p.slug');
 
-		if( $where != NULL )
+		// Add to query
+		foreach( $attributes AS $key => $val )
 		{
-			foreach( explode('|', $where) AS $where )
+
+			switch($key)
 			{
-				list($field, $val) = explode('=', $where);
-				$query->where(trim($field), trim($val));
+
+				case 'limit':
+					$query->limit($val);
+				break;
+
+				case 'order':
+					list($by, $dir) = explode(' ', $val);
+					$query->order_by('p.' . $by, $dir);
+				break;
+
+				case 'category':
+					$query->where_in('c.id', $children);
+				break;
+
+				default:
+					$query->where($key, $val);
+				break;
+
 			}
+
 		}
 
 		// Run query
-		$results = $query->get();
+		$results = $query->get()->result_array();
 
-		// Check for results
-		if( $results->num_rows() )
+		// Get products
+		foreach( $results AS &$result )
 		{
-
-			// Get results
-			$results  = $results->result_array();
-			$products = array();
-
-			// Get products
-			foreach( $results AS $result )
-			{
-				$products[] = $this->products_m->get_product($result['id']);
-			}
-
-			// Return
-			return $products;
+			$result = $this->products_m->get_product($result['id']);
 		}
 
-		// Nothing?
-		return array();
+		// Return results
+		return $results;
 	}
 
 	public function cart()

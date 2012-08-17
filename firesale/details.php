@@ -136,11 +136,11 @@ class Module_Firesale extends Module {
 		## CATEGORIES ##
 		################
 		
-		// Create products stream
+		// Create categories stream
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:categories'), 'firesale_categories', 'firesale_categories', NULL, NULL) ) return FALSE;
 		
 		// Get stream data
-		$categories = end($this->streams->streams->get_streams('firesale_categories'));
+		$categories = $this->streams->streams->get_stream('firesale_categories', 'firesale_categories');
 	
 		// Add fields
 		$fields   = array();
@@ -176,7 +176,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:products'), 'firesale_products', 'firesale_products', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$products = end($this->streams->streams->get_streams('firesale_products'));
+		$products = $this->streams->streams->get_stream('firesale_products', 'firesale_products');
 		
 		// Add fields
 		$fields   = array();
@@ -216,7 +216,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:gateways'), 'firesale_gateways', 'firesale_gateways', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$gateways = end($this->streams->streams->get_streams('firesale_gateways'));
+		$gateways = $this->streams->streams->get_stream('firesale_gateways', 'firesale_gateways');
 
 		// Add fields
 		$fields   = array();
@@ -255,7 +255,7 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:addresses'), 'firesale_addresses', 'firesale_addresses', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$addresses = end($this->streams->streams->get_streams('firesale_addresses'));
+		$addresses = $this->streams->streams->get_stream('firesale_addresses', 'firesale_addresses');
 
 		// Add fields
 		$fields   = array();
@@ -295,14 +295,14 @@ class Module_Firesale extends Module {
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:orders'), 'firesale_orders', 'firesale_orders', NULL, NULL) ) return FALSE;
 
 		// Get stream data
-		$orders = end($this->streams->streams->get_streams('firesale_orders'));
+		$orders = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
 		
 		// Add fields
 		$fields   = array();
 		$template = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_ip', 'slug' => 'ip', 'type' => 'text', 'extra' => array('max_length' => 32), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_gateway', 'slug' => 'gateway', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $gateways->id), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => $orderstatus, 'choice_type' => 'dropdown', 'default_value' => '1'));
+		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'order_status', 'type' => 'choice', 'extra' => array('choice_data' => $orderstatus, 'choice_type' => 'dropdown', 'default_value' => '1'));
 		$fields[] = array('name' => 'lang:firesale:label_price_sub', 'slug' => 'price_sub', 'extra' => array('max_length' => 10), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_price_ship', 'slug' => 'price_ship', 'extra' => array('max_length' => 10), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_price_total', 'slug' => 'price_total', 'extra' => array('max_length' => 10), 'required' => FALSE);

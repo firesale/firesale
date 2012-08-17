@@ -34,10 +34,10 @@ class Orders_m extends MY_Model
 								   ORDER BY `count` DESC')->result_array();
 
 		// Build overall count and add image
-		foreach( $items AS $key => $item )
+		foreach( $items AS &$item )
 		{
 			$total += $item['count'];
-			$items[$key]['image'] = $this->products_m->get_single_image($item['id']);
+			$item   = $this->products_m->get_single_image($item['id']);
 		}
 		
 		// Return
@@ -330,12 +330,18 @@ class Orders_m extends MY_Model
 
 		if( $order['total'] == 1 )
 		{
+
 			$order 			= $order['entries'][0];
 			$order['items'] = $this->db->get_where('firesale_orders_items', array('order_id' => (int)$order_id))->result_array();
-			foreach( $order['items'] AS $key => $item )
+			
+			foreach( $order['items'] AS $key => &$item )
 			{
-				$order['items'][$key]['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
+				$product       = $this->products_m->get_product($item['id']);
+				$item          = array_merge($product, $item);
+				$item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
+				$item['no']	   = ( $key + 1 );
 			}
+
 			return $order;
 		}
 		
@@ -402,7 +408,7 @@ class Orders_m extends MY_Model
 	public function update_status($order_id, $status = 0)
 	{
 
-		if( $this->db->where("id = '{$order_id}'")->update('firesale_orders', array('status' => $status)) )
+		if( $this->db->where("id = '{$order_id}'")->update('firesale_orders', array('order_status' => $status)) )
 		{
 			return TRUE;
 		}

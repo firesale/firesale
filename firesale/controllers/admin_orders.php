@@ -231,7 +231,7 @@ class Admin_orders extends Admin_Controller
 				}
 				else
 				{
-					$this->db->where('id', $order)->update('firesale_orders', array('status' => $status));
+					$this->db->where('id', $order)->update('firesale_orders', array('order_status' => $status));
 				}
 			}
 

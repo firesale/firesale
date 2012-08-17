@@ -17,6 +17,7 @@ class Events_Firesale
 		Events::register('product_viewed',     array($this, 'product_viewed'));
 		Events::register('order_complete',     array($this, 'order_complete'));
 		Events::register('cart_item_added',    array($this, 'cart_item_added'));
+		Events::register('cart_updated',       array($this, 'cart_updated'));
 		Events::register('page_build',         array($this, 'page_build'));
 	
 	}
@@ -62,9 +63,14 @@ class Events_Firesale
 		$this->_run_firesale_events('cart_item_added', $data);
 	}
 
-	public function page_build(&$template)
+	public function cart_updated($data)
 	{
-		$this->_run_firesale_events('page_build', $template);
+		$this->_run_firesale_events('cart_updated', $data);
+	}
+
+	public function page_build($data)
+	{
+		$this->_run_firesale_events('page_build', $data);
 	}
 
 	
