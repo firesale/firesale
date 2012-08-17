@@ -265,12 +265,20 @@ class Merchant_response
 	public $txn_id;
 	public $amount;
 	public $error_field;
+	public $vars;
 
 	public function __construct($status, $message, $txn_id = null, $amount = null)
 	{
-		$this->status = $status;
+
+		$this->status  = $status;
 		$this->message = $message;
-		$this->txn_id = $txn_id;
-		$this->amount = $amount;
+		$this->txn_id  = $txn_id;
+		$this->amount  = $amount;
+		
+		foreach( $_POST AS $key => $val )
+		{
+			$this->vars->$key = $val;
+		}
+
 	}
 }

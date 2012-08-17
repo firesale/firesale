@@ -336,7 +336,8 @@ class Orders_m extends MY_Model
 			
 			foreach( $order['items'] AS $key => &$item )
 			{
-				$product       = $this->products_m->get_product($item['id']);
+				$product       = $this->products_m->get_product($item['product_id']);
+				$item['id']	   = $product['id'];
 				$item          = array_merge($product, $item);
 				$item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
 				$item['no']	   = ( $key + 1 );

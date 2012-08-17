@@ -104,7 +104,7 @@ class Front_orders extends Public_Controller
 			Events::trigger('page_build', $this->template);
 
 			// Build page
-			$this->template->build('payment_complete');
+			$this->template->build('orders_single');
 
 		}
 		else

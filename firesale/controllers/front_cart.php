@@ -688,7 +688,7 @@ class Front_cart extends Public_Controller
 		$this->cart->destroy();
 
 		// Fire events
-		//Events::trigger('order_complete', $order);
+		Events::trigger('order_complete', $order);
 
 		// Email (user)
 		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user')), 'array');
@@ -714,13 +714,19 @@ class Front_cart extends Public_Controller
 
 	public function success()
 	{
-		if ($order_id = $this->session->userdata('order_id'))
+
+		if( $order_id = $this->session->userdata('order_id') )
 		{
+
 			$order = $this->orders_m->get_order_by_id($order_id);
 
 			$this->cart->destroy();
 
-			$this->template->title('Order Complete')
+			$this->template->title(lang('firesale:payment:title_success'))
+						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
+						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
+						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
 						   ->build('payment_complete', $order);
 		}
 		else
@@ -898,6 +904,7 @@ class Front_cart extends Public_Controller
 					else
 					{
 						// Email (admin)
+						mail('jamie.holdroyd@ne-web.com', 'PayPal Mismatch', print_r($order, true) . print_r($response, true));
 						Events::trigger('email', array_merge($order, (array)$response, array('slug' => 'order-mismatch', 'email' => $this->settings->get('contact_email'))), 'array');
 					}
 				}
