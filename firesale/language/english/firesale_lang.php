@@ -17,6 +17,14 @@
 	$lang['firesale:sections:orders_items']	= 'Order Items';
 	$lang['firesale:sections:gateways']		= 'Gateways';
 	$lang['firesale:sections:settings'] 	= 'Settings';
+
+	// Tabs
+	$lang['firesale:tabs:general']		= 'General Options';
+	$lang['firesale:tabs:description'] 	= 'Description';
+	$lang['firesale:tabs:shipping']		= 'Shipping';
+	$lang['firesale:tabs:metadata']		= 'Metadata';
+	$lang['firesale:tabs:attributes']	= 'Attributes';
+	$lang['firesale:tabs:images']		= 'Images';
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Create Product';

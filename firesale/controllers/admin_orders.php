@@ -169,7 +169,7 @@ class Admin_orders extends Admin_Controller
 		if( $id != NULL )
 		{
 			$products = $this->orders_m->order_products($id);
-			$this->data->products = $products['products'];
+			$this->data->products  = $products['products'];
 			$this->data->prod_drop = $this->products_m->build_dropdown();
 		}
 			

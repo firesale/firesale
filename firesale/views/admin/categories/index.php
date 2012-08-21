@@ -39,7 +39,7 @@
 				<?php if( !empty($tabs) ): ?>
 				<ul class="tab-menu">
 				<?php foreach( $tabs AS $tab ): ?>
-					<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><?php echo ucwords($tab); ?></a></li>
+					<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><?php echo lang('firesale:tabs:' . $tab); ?></a></li>
 				<?php endforeach; ?>
 				</ul>
 				<?php endif; ?>

@@ -14,7 +14,7 @@
 				<ul class="tab-menu">
 					<?php foreach( $tabs AS $tab ): ?>
 					<?php if( ( substr($tab, 0, 1) == '_' && isset($id) && $id > 0 ) || substr($tab, 0, 1) != '_' ): ?>
-					<li><a href="#<?php echo strtolower(str_replace(array(' ', '_'), '', $tab)); ?>"><span><?php echo ucwords(str_replace('_', '', $tab)); ?></span></a></li>
+					<li><a href="#<?php echo strtolower(str_replace(array(' ', '_'), '', $tab)); ?>"><span><?php echo lang('firesale:tabs:' . str_replace('_', '', $tab)); ?></span></a></li>
 					<?php endif; ?>
 				<?php endforeach; ?>
 				</ul>

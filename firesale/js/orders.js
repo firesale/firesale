@@ -60,7 +60,8 @@ $(function() {
 						}
 						else
 						{
-							$('table.cart tbody').append(
+							$('.no_data').remove();
+							$('table.cart').removeAttr('style').find('tbody').append(
 								'<tr>' +
 									'<td class="remove"><input type="checkbox" name="item[' + d.id + '][remove]" value="1" /></td>' +
              						'<td class="image">n/a</td>' +

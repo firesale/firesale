@@ -71,12 +71,13 @@
 				</tbody>
 			</table>
 
+			<div class="table_action_buttons">
+				<?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
+				<button class="btn green" name="btnAction" value="duplicate"><span><?php echo lang('firesale:label_duplicate'); ?></span></button>
+			</div>
+
 		</section>
 	
-		<div class="buttons one_half">
-			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
-			<button class="btn green" name="btnAction" value="duplicate"><span><?php echo lang('firesale:label_duplicate'); ?></span></button>
-		</div>
 <?php if( isset($pagination) ): ?>
 		<div class="one_half">
 			<div id="shortcuts" class="bottom">

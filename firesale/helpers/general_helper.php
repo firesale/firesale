@@ -3,8 +3,11 @@
 	function is_module_installed($module)
 	{
 
+		// Get instance
+		$_CI =& get_instance();
+
 		// Ensure core is installed first
-		$query = $this->db->select('id')->where("slug = '{$module}' AND installed = 1")->get('modules');
+		$query = $_CI->db->select('id')->where("slug = '{$module}' AND installed = 1")->get('modules');
 
 		// Check query
 		if( $query->num_rows() )
@@ -25,7 +28,7 @@
 	 * @return array
 	 * @access public
 	 */
-	function fields_to_tabs($fields, $tabs, $default = 'general options')
+	function fields_to_tabs($fields, $tabs, $default = 'general')
 	{
 	
 		// Variables

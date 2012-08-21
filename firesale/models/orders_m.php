@@ -36,8 +36,8 @@ class Orders_m extends MY_Model
 		// Build overall count and add image
 		foreach( $items AS &$item )
 		{
-			$total += $item['count'];
-			$item   = $this->products_m->get_single_image($item['id']);
+			$total         += $item['count'];
+			$item['image']  = $this->products_m->get_single_image($item['id']);
 		}
 		
 		// Return

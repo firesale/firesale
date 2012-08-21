@@ -41,8 +41,7 @@
 
 		    <div class="form_inputs" id="products">
 		      <fieldset>
-            <?php if( isset($products) && !empty($products) ): ?>
-            <table class="cart">
+            <table class="cart"<?php echo ( ( isset($products) && empty($products) ) || !isset($products) ? ' style="display: none"' : '' ); ?>>
               <thead>
                 <tr>
                   <th class="remove"><?php echo lang('firesale:label_remove'); ?></th>
@@ -55,6 +54,7 @@
                 </tr>
               </thead>
               <tbody>
+              <?php if( isset($products) && !empty($products) ): ?>
               <?php foreach( $products AS $product ): ?>
       	  	    <tr class="prod-<?php echo $product['id']; ?>">
                     <td class="remove"><input type="checkbox" name="item[<?php echo $product['id']; ?>][remove]" value="1" /></td>
@@ -66,11 +66,12 @@
                     <td class="total"><?php echo $this->settings->get('currency') . '<span>' . number_format(( $product['price'] * $product['qty'] ), 2) . '</span>'; ?></td>
                   </tr>
               <?php endforeach; ?>
+              <?php endif; ?>
               </tbody>
             </table>
-            <?php elseif( isset($id) ): ?>
+            <?php if( isset($products) && empty($products) && isset($id) ): ?>
             <div class="no_data"><?php echo lang('firesale:prod_none'); ?></div>
-            <?php else: ?>
+            <?php elseif( !isset($id) ): ?>
   			    <div class="no_data"><?php echo lang('firesale:orders:save_first'); ?></div>
             <?php endif; ?>
             <?php if( isset($id) ): ?>
