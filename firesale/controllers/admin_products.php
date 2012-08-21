@@ -137,7 +137,7 @@ class Admin_products extends Admin_Controller
 		if( $row !== NULL ) { $this->data = $row; }
 		$this->data->id		=  $id;
 		$this->data->fields =  fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs	=  array_reverse(array_keys($this->data->fields));
+		$this->data->tabs	=  array_keys($this->data->fields);
 		
 		// Get current images
 		if( $row != FALSE )
