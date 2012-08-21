@@ -113,11 +113,26 @@ class Admin_orders extends Admin_Controller
 
 			}
 
+			// Check for address
+			if( !isset($input['shipping']) OR $input['shipping'] == NULL )
+			{
+				$input['shipping'] = '0';
+				$_POST = $input;
+			}
+
 			// Check for addresses
 			$ship = $this->address_m->update_address($input['ship_to'], $input, 'ship');
-			if( $ship != TRUE OR $input['ship_to'] != $input['bill_to'] )
+			if( $ship != TRUE OR $ship <= 0 OR $input['ship_to'] != $input['bill_to'] )
 			{
-				$this->address_m->update_address($input['bill_to'], $input, 'bill');
+				$bill = $this->address_m->update_address($input['bill_to'], $input, 'bill');
+			}
+
+			// Did we insert them?
+			if( $ship > 0 OR $bill > 0 )
+			{
+				$input['ship_to'] = $ship;
+				$input['bill_to'] = ( isset($bill) ? $bill : $ship );
+				$_POST = $input;
 			}
 
 		}

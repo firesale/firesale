@@ -3,12 +3,6 @@ $(function() {
 	// Index
 	$('#filters select[name=created_by]').change(function() { window.location = '/admin/firesale/orders/created_by/' + $(this).val(); });
 
-	// Create
-	$('#tabs').tabs();
-	if( !window.location.hash ) {
-		$('#tabs').tabs("select", '#general');
-	}
-
 	$('#price_sub, #price_ship, #price_total').before('<span>' + currency + '&nbsp;</span>');
 
 	// Change address
@@ -27,6 +21,21 @@ $(function() {
 				notif('error', 'Error retrieving address');
 			}
 		});
+	});
+
+	// Link addresses
+	var linked = false;
+	$('#ship fieldset ul:last').append('<li class="wide"><label for="bill_details_same">My Billing and Shipping addresses are the same.</label><input type="checkbox" name="bill_details_same" id="bill_details_same" value="yes" /></li>');
+	$('#bill_details_same').change(function() {
+		if( $(this).attr('checked') == 'checked' ) { checked = true; } else { checked = false; }
+		if( checked == true ) {
+			$(this).parents('fieldset').find('li input').each(function() {
+				if( typeof $(this).attr('name') != 'undefined' )
+				{
+					$('input[name=' + $(this).attr('name').replace('ship_', 'bill_') + ']').val($(this).val());
+				}
+			});
+		}
 	});
 
 	// Add product
