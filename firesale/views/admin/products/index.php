@@ -1,9 +1,5 @@
 
-	<div class="one_half">
-		<h1><?php echo lang('firesale:prod_title'); ?></h1>
-	</div>
-
-	<div class="one_half">
+	<div class="one_half last">
 		<div id="product_search" class="form_inputs">
 			<form method="post" action="">
 				<fieldset>
@@ -29,7 +25,7 @@
 <?php endif; ?>
 
 	<section class="title">
-		<h4><?php echo lang('firesale:sections:products'); ?></h4>
+		<h4><?php echo lang('firesale:prod_title'); ?></h4>
 	</section>
 	
 	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>

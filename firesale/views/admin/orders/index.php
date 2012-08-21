@@ -1,15 +1,3 @@
-
-	<h1><?php echo lang('firesale:sections:orders'); ?></h1>
-
-	<fieldset id="filters">
-	    <legend><?php echo lang('global:filters'); ?></legend>
-	    <ul>  
-	        <li>
-	            <label><?php echo lang('firesale:filters:user'); ?></label>
-	            <?php echo $filter_users; ?>
-	        </li>
-	    </ul>
-	</fieldset>
 		
 	<section class="title">
 		<h4><?php echo lang('firesale:orders:title'); ?></h4>
@@ -19,6 +7,17 @@
 
 		<section class="item">
 <?php if( !empty($orders)): ?>
+
+			<fieldset id="filters">
+			    <legend><?php echo lang('global:filters'); ?></legend>
+			    <ul>  
+			        <li>
+			            <label><?php echo lang('firesale:filters:user'); ?></label>
+			            <?php echo $filter_users; ?>
+			        </li>
+			    </ul>
+			</fieldset>
+	
 			<table id="order_table">		    
 				<thead>
 					<tr>
@@ -54,27 +53,29 @@
 <?php endforeach; ?>
 				</tbody>
 			</table>
+
+			<div class="buttons">
+				<button class="btn green" value="paid" name="btnAction" type="submit" disabled="">
+					<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_paid'); ?></span>
+				</button>
+			
+				<button class="btn red" value="unpaid" name="btnAction" type="submit" disabled="">
+					<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_unpaid'); ?></span>
+				</button>
+			
+				<button class="btn orange" value="dispatched" name="btnAction" type="submit" disabled="">
+					<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_dispatched'); ?></span>
+				</button>
+
+				<button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
+					<span><?php echo lang('firesale:orders:delete'); ?></span>
+				</button>
+			</div>
+
 <?php else: ?>
 			<div class="no_data"><?php echo lang('firesale:orders:no_orders'); ?></div>
 <?php endif; ?>
+
 		</section>
-
-		<div class="table_action_buttons">
-			<button class="btn green" value="paid" name="btnAction" type="submit" disabled="">
-				<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_paid'); ?></span>
-			</button>
-		
-			<button class="btn red" value="unpaid" name="btnAction" type="submit" disabled="">
-				<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_unpaid'); ?></span>
-			</button>
-		
-			<button class="btn orange" value="dispatched" name="btnAction" type="submit" disabled="">
-				<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_dispatched'); ?></span>
-			</button>
-
-			<button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
-				<span><?php echo lang('firesale:orders:delete'); ?></span>
-			</button>
-		</div>
 
 	<?php echo form_close(); ?>

@@ -1,11 +1,10 @@
-
-	<h1><?php echo lang('firesale:gateways:admin_title'); ?></h1>
 	
 	<section class="title">
-		<h4><?php echo lang('firesale:gateways:installed_title'); ?></h4>
+		<h4><?php echo lang('firesale:gateways:admin_title'); ?></h4>
 	</section>
 
 	<section class="item">
+
 		<?php if ( ! empty($gateways)): ?>
 			<table id="product_table">		    
 				<thead>
@@ -43,21 +42,25 @@
 		<?php else: ?>
 			<div class="no_data"><?php echo lang('firesale:gateways:no_gateways'); ?></div>
 		<?php endif; ?>
+
+		<br />
+
+		<div class="table_action_buttons">
+			<?php if (group_has_role('firesale', 'enable_disable_gateways')): ?>
+				<button class="btn red green" value="publish" name="btnAction" type="submit" disabled="">
+					<span><?php echo lang('buttons.enable'); ?></span>
+				</button>
+			
+				<button class="btn red orange" value="publish" name="btnAction" type="submit" disabled="">
+					<span><?php echo lang('buttons.disable'); ?></span>
+				</button>
+			<?php endif; ?>
+			
+			<?php if (group_has_role('firesale', 'install_uninstall_gateways')): ?>
+				<button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
+					<span><?php echo lang('buttons.uninstall'); ?></span>
+				</button>
+			<?php endif; ?>
+		</div>
+
 	</section>
-	<div class="table_action_buttons">
-		<?php if (group_has_role('firesale', 'enable_disable_gateways')): ?>
-			<button class="btn red green" value="publish" name="btnAction" type="submit" disabled="">
-				<span><?php echo lang('buttons.enable'); ?></span>
-			</button>
-		
-			<button class="btn red orange" value="publish" name="btnAction" type="submit" disabled="">
-				<span><?php echo lang('buttons.disable'); ?></span>
-			</button>
-		<?php endif; ?>
-		
-		<?php if (group_has_role('firesale', 'install_uninstall_gateways')): ?>
-			<button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
-				<span><?php echo lang('buttons.uninstall'); ?></span>
-			</button>
-		<?php endif; ?>
-	</div>

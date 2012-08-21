@@ -1,4 +1,4 @@
-#product_search { width: 430px; height: 56px; float: right; padding: 0; margin: 23px -40px 0 0; }
+#product_search { width: 430px; height: 56px; float: right; padding: 0; margin: 23px -20px 0 0; }
 #product_search fieldset { padding: 0; border: none; }
 #product_search label { width: 230px; display: inline-block; text-align: right; }
 #product_search div.input { width: 270px; display: inline-block; }
