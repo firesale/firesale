@@ -51,7 +51,10 @@
 						<ul>
 						<?php foreach( $field AS $input ): ?>
 							<li class="<?php echo alternator('even', ''); ?>">
-								<label for="<?php echo $input['input_slug']; ?>"><?php echo lang(substr($input['input_title'], 5)); ?> <?php echo $input['required']; ?></label>
+								<label for="<?php echo $input['input_slug']; ?>">
+									<?php echo lang(substr($input['input_title'], 5)); ?> <?php echo $input['required']; ?>
+									<small><?php echo $input['instructions']; ?></small>
+								</label>
 								<div class="input"><?php echo $input['input']; ?></div>
 							</li>
 						<?php endforeach; ?>

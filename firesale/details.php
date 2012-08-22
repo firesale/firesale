@@ -185,9 +185,9 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
 		$fields[] = array('name' => 'lang:firesale:label_category', 'slug' => 'category', 'type' => 'multiple', 'extra' => array('choose_stream' => $categories->id), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_rrp', 'slug' => 'rrp', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
+		$fields[] = array('name' => 'lang:firesale:label_rrp', 'slug' => 'rrp', 'type' => 'text', 'instructions' => 'lang:firesale:inst_rrp', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_rrp_tax', 'slug' => 'rrp_tax', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
-		$fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
+		$fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'instructions' => 'lang:firesale:inst_price', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_price_tax', 'slug' => 'price_tax', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 1));
 		$fields[] = array('name' => 'lang:firesale:label_stock', 'slug' => 'stock', 'type' => 'integer');
@@ -340,6 +340,22 @@ class Module_Firesale extends Module {
 
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
+
+		##################
+		## TRANSACTIONS ##
+		##################
+
+		$this->db->query("
+			CREATE TABLE IF NOT EXISTS `".SITE_REF."_firesale_transactions` (
+			  `txn_id` varchar(50) NOT NULL,
+			  `order_id` int(11) NOT NULL,
+			  `gateway` varchar(100) NOT NULL,
+			  `amount` decimal(10,2) NOT NULL,
+			  `message` text NOT NULL,
+			  `status` varchar(100) NOT NULL,
+			  PRIMARY KEY  (`txn_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+		");
 		
 		###########
 		## OTHER ##
@@ -392,6 +408,7 @@ class Module_Firesale extends Module {
 		$this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it =/
 		$this->dbforge->drop_table('firesale_gateway_settings');
 		$this->dbforge->drop_table('firesale_order_items');
+		$this->dbforge->drop_table('firesale_transactions');
 
 		// Return
 		return TRUE;
@@ -399,10 +416,6 @@ class Module_Firesale extends Module {
 
 	public function upgrade($old_version)
 	{
-
-		// Add settings
-		$this->settings('remove');
-		$this->settings('add');
 
 		return TRUE;
 	}
@@ -448,20 +461,6 @@ class Module_Firesale extends Module {
 			'module' 		=> 'firesale'
 		);
 		
-		// Top-level routes
-		$settings[] = array(
-			'slug' 		  	=> 'routes_installed',
-			'title' 	  	=> 'Routes Installed',
-			'description' 	=> 'Have the suggested top-level routes been installed?',
-			'default'		=> '0',
-			'value'			=> '0',
-			'type' 			=> 'select',
-			'options'		=> '1=Yes|0=No',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-		
 		// Make images square
 		$settings[] = array(
 			'slug' 		  	=> 'image_square',
@@ -501,6 +500,7 @@ class Module_Firesale extends Module {
 	public function templates($action)
 	{
 
+		// Define our templates
 		$templates = array('order-complete-admin', 'order-complete-user');
 		$sql = "INSERT INTO `" . SITE_REF . "_email_templates` (`slug`, `name`, `description`, `subject`, `body`, `lang`, `is_default`, `module`) VALUES
 				('order-complete-admin', 'Order Complete (Admin)', 'Sent to the site admin once an order has been completed', '{{ settings:site_name }} :: An order has been complete', 'Email body', 'en', 0, ''),

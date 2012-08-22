@@ -75,6 +75,10 @@
 	$lang['firesale:prod_duplicate_success']= 'Product duplicated successfully';
 	$lang['firesale:prod_not_found'] 		= 'That product cannot be found';
 
+	// Instructions
+	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';
+	$lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)';
+
 	// Labels
 	$lang['firesale:label_draft']		= 'Draft';
 	$lang['firesale:label_live'] 		= 'Live';

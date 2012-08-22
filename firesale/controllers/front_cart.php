@@ -691,10 +691,10 @@ class Front_cart extends Public_Controller
 		Events::trigger('order_complete', $order);
 
 		// Email (user)
-		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user')), 'array');
+		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user', 'to' => $order['email'])), 'array');
 
 		// Email (admin)
-		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-admin', 'email' => $this->settings->get('contact_email'))), 'array');
+		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-admin', 'to' => $this->settings->get('contact_email'))), 'array');
 
 		// Format order for display
 		$order['price_sub']   = number_format($order['price_sub'], 2);
