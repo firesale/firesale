@@ -2,7 +2,7 @@
 	<?php echo form_hidden('return_url', site_url('firesale/cart/payment')); ?>
 	<?php echo form_hidden('cancel_url', site_url('firesale/cart/cancel')); ?>
 	<?php echo form_hidden('reference', 'Test Order'); ?>
-	<?php echo form_hidden('currency_code', 'GBP'); ?>
+	<?php echo form_hidden('currency_code', $this->settings->get('firesale_currency')); ?>
 	<?php echo form_hidden('transaction_id', $this->session->userdata('order_id')); ?>
 	<?php echo form_hidden('email', $this->current_user->email); ?>
 	

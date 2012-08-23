@@ -8,7 +8,7 @@
 	<label>CSC: </label> <?php echo form_input('csc'); ?>
 	<?php echo form_hidden('transaction_id', 'ORDER_ID'); ?>
 	<?php echo form_hidden('reference', 'Test Order'); ?>
-	<?php echo form_hidden('currency_code', 'GBP'); ?>
+	<?php echo form_hidden('currency_code', $this->settings->get('firesale_currency')); ?>
 	<?php echo form_hidden('amount', $this->cart->total); ?>
 	
 	<button type="submit" class="btn"><span>Process Dummy Payment</span></button>

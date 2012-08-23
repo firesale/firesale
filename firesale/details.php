@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module {
 	
-	public $version = '0.9.7';
+	public $version = '0.9.8';
 	public $language_file = 'firesale/firesale';
 	
 	public function __construct()
@@ -416,6 +416,24 @@ class Module_Firesale extends Module {
 
 	public function upgrade($old_version)
 	{
+		if ($old_version == '0.9.7')
+		{
+			// Currency Code
+			$settings = array(
+				'slug' 		  	=> 'firesale_currency',
+				'title' 	  	=> 'Currency Code',
+				'description' 	=> 'The currency you accept (ISO-4217 format)',
+				'default'		=> 'GBP',
+				'value'			=> 'GBP',
+				'type' 			=> 'text',
+				'options'		=> '',
+				'is_required' 	=> 1,
+				'is_gui'		=> 1,
+				'module' 		=> 'firesale'
+			);
+
+			return $this->db->insert('settings', $settings);
+		}
 
 		return TRUE;
 	}
@@ -440,6 +458,20 @@ class Module_Firesale extends Module {
 			'description' 	=> 'The percentage of tax to be applied to the products',
 			'default'		=> '20',
 			'value'			=> '20',
+			'type' 			=> 'text',
+			'options'		=> '',
+			'is_required' 	=> 1,
+			'is_gui'		=> 1,
+			'module' 		=> 'firesale'
+		);
+
+		// Currency Code
+		$settings[] = array(
+			'slug' 		  	=> 'firesale_currency',
+			'title' 	  	=> 'Currency Code',
+			'description' 	=> 'The currency you accept (ISO-4217 format)',
+			'default'		=> 'GBP',
+			'value'			=> 'GBP',
 			'type' 			=> 'text',
 			'options'		=> '',
 			'is_required' 	=> 1,
