@@ -294,7 +294,7 @@ class Front_cart extends Public_Controller
 
 	}
 	
-	private function checkout() // CH: Made private to prevent access for SLiM
+	public function checkout()
 	{
 
 		// No checkout without items
@@ -500,99 +500,8 @@ class Front_cart extends Public_Controller
 		$this->form_validation->set_message('_valid_gateway', 'The payment gateway you selected is not valid');
 		return $this->gateways->is_enabled($value);
 	}
-
-	public function paypal()
-	{
-		// Variables
-		$posted = TRUE;
-		$shipping = $this->session->userdata('shipping');
-
-		$skip	= array('btnAction', 'bill_details_same');
-		$extra 	= array('return' => '/cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
-
-		// Shipping option
-		if( isset($this->firesale->roles['shipping']) AND isset($shipping) )
-		{
-			$role = $this->firesale->roles['shipping'];
-			$shipping = $this->$role['model']->get_option_by_id($shipping);
-		}
-		else
-		{
-			$shipping['price'] = '0.00';
-		}
-		
-		// Modify posted data
-
-		$input['shipping']     = ( isset($shipping['id']) ? $shipping['id'] : 0 );
-		$input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
-		$input['order_status'] = '1'; // Unpaid
-		$input['price_sub']    = $this->cart->subtotal;
-		$input['price_ship']   = $shipping['price'];
-		$input['price_total']  = number_format(( $this->cart->total + $shipping['price'] ), 2);
-		$input['ship_to']      = 0;
-		$input['bill_to']      = 0;
-		$input['gateway']      = $this->gateways->id_from_slug('paypal_checkout');
-		$_POST                 = $input;
-
-
-		// Generate validation
-		//$rules = $this->cart_m->build_validation();
-		//$this->form_validation->set_rules($rules);
-
-		// Run validation
-		//if( $this->form_validation->run() === TRUE )
-		//{
-			// Check for addresses
-		/*	if( !isset($input['ship_to']) OR $input['ship_to'] == 'new' )
-			{
-				$input['ship_to'] = $this->address_m->add_address($input, 'ship');
-			}
-
-			if( !isset($input['bill_to']) OR $input['bill_to'] == 'new' )
-			{
-				$input['bill_to'] = $this->address_m->add_address($input, 'bill');
-			}*/
-
-			// Insert order
-			if( $id = $this->orders_m->insert_order($input) )
-			{
-				// Now for each item in the order
-				foreach( $this->cart->contents() as $item )
-				{
-					$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
-				}
-				
-				// Set order id
-				$this->session->set_userdata('order_id', $id);
-
-				// Redirect to payment
-				if ($this->gateways->is_enabled('paypal_checkout'))
-				{
-					$this->merchant->load('paypal_checkout');
-
-					$this->merchant->initialize($this->gateways->settings('paypal_checkout'));
-
-					$paypal = array(
-						'return_url'	=> site_url('firesale/cart/success').'?action=success',
-						'cancel_url'	=> site_url('firesale/cart/cancel').'?action=cancel',
-						'notify_url'	=> site_url('firesale/cart/callback/paypal_checkout/'.$id).'?action=ipn',
-						'reference'		=> 'Order #'.$id,
-						'currency_code'	=> 'GBP',
-						'amount'		=> $this->cart->total,
-						'items'			=> $this->cart->contents(),
-						'shipping'		=> $shipping
-					);
-
-					$process = $this->merchant->process($paypal);
-						
-				}
-
-			}
-
-		//}
-	}
 	
-	private function payment()
+	public function payment()
 	{
 
 		$order = $this->orders_m->get_order_by_id($this->session->userdata('order_id'));
@@ -757,162 +666,23 @@ class Front_cart extends Public_Controller
 
 	public function callback($gateway = NULL, $order_id = NULL)
 	{
+
 		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND $order_id != NULL)
 		{
+
 			$this->merchant->load($gateway, $this->gateways->settings($gateway));
 			$response = $this->merchant->process_return();
-
-			if ( ! empty($response->txn_id))
+			
+			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
+			
+			$this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
+			
+			if ($response->status == 'authorized')
 			{
-				$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
-				
-				$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status, 'gateway' => $gateway));
-
-				if ($response->status == 'authorized' AND ! $processed)
-				{
-					$order = $this->orders_m->get_order_by_id($order_id);
-
-
-					if ($response->amount == $order['price_total'] AND $response->vars->mc_currency == 'GBP' AND $response->vars->receiver_email == $this->gateways->setting('paypal_checkout', 'paypal_email'))
-					{
-						// We need the ion_auth model to query/create the user.
-						$this->load->model('users/ion_auth_model');
-
-						if ( ! $order['created_by'])
-						{
-							// Has the user got an account, but ordered whilst logged out?
-							$user = $this->db->select('id')
-											 ->get_where('users', array('email' => $response->vars->payer_email));
-
-							if ($user->num_rows())
-							{
-								$user_id = $user->row()->id;
-								$email = $response->vars->payer_email; // This is the same as their db email
-							}
-							else
-							{
-								$this->load->helper('string');
-
-								// Create a unique username
-								$username = strtolower($response->vars->first_name.'-'.substr($response->vars->last_name, 0, 1).uniqid());
-								$password = random_string('alnum', 10);
-								$email = $response->vars->payer_email;
-
-								$additional = array(
-									'display_name'		=> $response->vars->first_name.' '.substr($response->vars->last_name, 0, 1),
-									'first_name'		=> $response->vars->first_name,
-									'last_name'			=> $response->vars->last_name
-								);
-
-
-								$group_name = $this->config->item('default_group', 'ion_auth');
-								$group_id = ($group = $this->db->select('id')
-									->where('name', $group_name)
-									->get('groups')
-									->row()) ? $group->id: 0;
-
-								$salt = $this->ion_auth_model->salt();
-								$ip = $this->input->ip_address();
-								
-								$hashed_password = $this->ion_auth_model->hash_password($password, $salt);
-
-								$user = array(
-									'username'        => $username,
-									'password'        => $hashed_password,
-									'salt'            => $salt,
-									'email'           => $email,
-									'group_id'        => $group_id,
-									'ip_address'      => $ip,
-									'created_on'      => now(),
-									'last_login'      => now(),
-									'active'          => 0,
-									'activation_code' => md5(microtime(TRUE).uniqid())
-								);
-
-								// Add that user!
-								$this->db->insert('users', $user);
-								$user_id = $this->db->insert_id();
-
-								// This is the profile data that we are not running through streams
-								$extra = array(
-									'user_id'			=> $user_id,
-									'display_name' 		=> $additional['display_name']
-								);
-
-								// Add the profile fields
-								$this->streams->entries->insert_entry($additional, 'profiles', 'users', array(), $extra);
-
-								$user['id']       = $user_id;
-								$user['password'] = $password;
-								$user['to']       = $user['email'];
-
-								// Send out an email!!!!
-								Events::trigger('email', array_merge($user, array('slug' => 'user-created-temp')), 'array');
-
-								// We don't need user anymore
-								unset($user);
-							}
-						}
-						else
-						{
-							$user_id = $order['created_by']['user_id'];
-							$email = $order['created_by']['email'];
-						}
-
-						// Did the user get added successfully?
-						if ($user_id)
-						{
-							// Explode PayPal's brilliant way of seperating address line 1 from address line 2 :S
-							$address_lines = explode("\n", $response->vars->address_street);
-							$ship_name = explode(' ', $response->vars->address_name, 2);
-
-							$addr_data = array(
-								'created_by'		=> $user_id,
-								'addr_firstname'	=> $ship_name[0],
-								'addr_lastname'		=> isset($ship_name[1]) ? $ship_name[1] : NULL,
-								'addr_email'		=> $email,
-								'addr_address1'		=> $address_lines[0],
-								'addr_address2'		=> isset($address_lines[1]) ? $address_lines[1] : NULL,
-								'addr_city'			=> $response->vars->address_city,
-								'addr_county'		=> $response->vars->address_state,
-								'addr_postcode'		=> $response->vars->address_zip,
-								'addr_country'		=> $response->vars->address_country_code
-							);
-
-							// Add the address
-							$this->load->model('firesale/address_m');
-
-							// Add/retreive the address
-							$address = $this->address_m->add_address($addr_data, 'addr');
-
-							$order_data = array(
-								'ship_to'    => $address,
-								'bill_to'    => $address,
-								'created_by' => $user_id
-							);
-
-							$this->db->update('firesale_orders', $order_data, array('id' => $order_id));
-
-							// Refresh the order with the new data
-							$order = $this->orders_m->get_order_by_id($order_id);
-
-							// Complete the sale
-							$this->cart_m->sale_complete($order);
-						}
-
-					}
-					else
-					{
-						// Email (admin)
-						mail('jamie.holdroyd@ne-web.com', 'PayPal Mismatch', print_r($order, true) . print_r($response, true));
-						Events::trigger('email', array_merge($order, (array)$response, array('slug' => 'order-mismatch', 'email' => $this->settings->get('contact_email'))), 'array');
-					}
-				}
-
+				$this->db->update('firesale_orders', array('status' => 'paid'), array('id' => $order_id));
 			}
 				
 		}
-
 	}
 
 }
