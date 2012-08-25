@@ -13,7 +13,7 @@ class Front_cart extends Public_Controller
 		parent::__construct();
 		
 		// Load CodeIgniter's cart class, the ci-merchant class and the gateways class
-		$this->load->library(array('cart', 'merchant', 'gateways'));
+		$this->load->library(array('fs_cart', 'merchant', 'gateways'));
 		
 		// Load the required models
 		$this->load->driver('Streams');
@@ -31,20 +31,20 @@ class Front_cart extends Public_Controller
 			$this->has_routes = TRUE;
 		
 		// Set the tax percentage
-		$this->cart->tax_percent = $this->settings->get('firesale_tax');
+		$this->fs_cart->tax_percent = $this->settings->get('firesale_tax');
 		
 		// Set the pricing vars
-		if ($this->cart->total() > 0)
+		if ($this->fs_cart->total() > 0)
 		{
-			$this->cart->total		= $this->cart->total();
-			$this->cart->tax		= ( $this->cart->total / 100 ) * $this->cart->tax_percent;
-			$this->cart->subtotal	= ( $this->cart->total - $this->cart->tax );
+			$this->fs_cart->total		= $this->fs_cart->total();
+			$this->fs_cart->tax		= ( $this->fs_cart->total / 100 ) * $this->fs_cart->tax_percent;
+			$this->fs_cart->subtotal	= ( $this->fs_cart->total - $this->fs_cart->tax );
 		}
 		else
 		{
-			$this->cart->total		= '0.00';
-			$this->cart->tax		= '0.00';
-			$this->cart->subtotal	= '0.00';
+			$this->fs_cart->total		= '0.00';
+			$this->fs_cart->tax		= '0.00';
+			$this->fs_cart->subtotal	= '0.00';
 		}
 
 		// Load shipping model
@@ -60,11 +60,11 @@ class Front_cart extends Public_Controller
 	{
 	
 		// Assign Variables
-		$data['subtotal']    = $this->cart->format_number($this->cart->subtotal);
-		$data['tax']   		 = $this->cart->format_number($this->cart->tax);
-		$data['total']   	 = $this->cart->format_number($this->cart->total);
-		$data['tax_percent'] = $this->cart->tax_percent;
-		$data['contents']    = $this->cart->contents();
+		$data['subtotal']    = $this->fs_cart->format_number($this->fs_cart->subtotal);
+		$data['tax']   		 = $this->fs_cart->format_number($this->fs_cart->tax);
+		$data['total']   	 = $this->fs_cart->format_number($this->fs_cart->total);
+		$data['tax_percent'] = $this->fs_cart->tax_percent;
+		$data['contents']    = $this->fs_cart->contents();
 
 		// Add item id
 		$i = 1;
@@ -132,10 +132,10 @@ class Front_cart extends Public_Controller
 		}
 
 		// Insert items into the cart
-		$this->cart->insert($data);
+		$this->fs_cart->insert($data);
 
 		// Force available quanity
-		$this->cart_m->check_quantity($this->cart->contents(), $tmp);
+		$this->cart_m->check_quantity($this->fs_cart->contents(), $tmp);
 
 		// Return for ajax or redirect
 		if( $this->input->is_ajax_request() )
@@ -161,7 +161,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// Make sure there are items in cart
-		if( !$this->cart->total() )
+		if( !$this->fs_cart->total() )
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
 			redirect(isset($this->has_routes) ? 'cart' : 'firesale/cart');
@@ -170,7 +170,7 @@ class Front_cart extends Public_Controller
 		{
 
 			// Variables
-			$cart = $this->cart->contents(); // Get the current contents of the cart
+			$cart = $this->fs_cart->contents(); // Get the current contents of the cart
 			$data = array(); // Set the empty data array
 			
 			// Loop through the updates, checking the quantity against the stock level and updating accordingly
@@ -232,7 +232,7 @@ class Front_cart extends Public_Controller
 				}
 
 				// Update cart
-				$this->cart->update($data);
+				$this->fs_cart->update($data);
 
 			}	
 
@@ -276,12 +276,12 @@ class Front_cart extends Public_Controller
 		// If this is a current order, update the table
 		if( $this->session->userdata('order_id') > 0 )
 		{
-			$cart = $this->cart->contents();
+			$cart = $this->fs_cart->contents();
 			$this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
 		}
 		
 		// Update the cart
-		$this->cart->update(array('rowid' => $row_id, 'qty' => 0));
+		$this->fs_cart->update(array('rowid' => $row_id, 'qty' => 0));
 		
 		if( $this->input->is_ajax_request() )
 		{
@@ -298,7 +298,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// No checkout without items
-		if( !$this->cart->total() )
+		if( !$this->fs_cart->total() )
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
 			redirect(isset($this->has_routes) ? 'cart' : 'firesale/cart');
@@ -340,9 +340,9 @@ class Front_cart extends Public_Controller
 				$input['shipping']	   = ( isset($input['shipping']) ? $input['shipping'] : 0 );
 				$input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
 				$input['order_status'] = '1'; // Unpaid
-				$input['price_sub']    = $this->cart->subtotal;
+				$input['price_sub']    = $this->fs_cart->subtotal;
 				$input['price_ship']   = $shipping['price'];
-				$input['price_total']  = number_format(( $this->cart->total + $shipping['price'] ), 2);
+				$input['price_total']  = number_format(( $this->fs_cart->total + $shipping['price'] ), 2);
 				$_POST 				   = $input;
 
 				// Generate validation
@@ -368,7 +368,7 @@ class Front_cart extends Public_Controller
 					{
 
 						// Now for each item in the order
-						foreach( $this->cart->contents() as $item )
+						foreach( $this->fs_cart->contents() as $item )
 						{
 							$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
 						}
@@ -405,9 +405,9 @@ class Front_cart extends Public_Controller
 				$input = array(
 					'gateway'		=> $this->gateways->id_from_slug($gateway),
 					'order_status'	=> 1,
-					'price_sub'		=> $this->cart->subtotal,
+					'price_sub'		=> $this->fs_cart->subtotal,
 					'price_ship'	=> $shipping['price'],
-					'price_total'	=> number_format(($this->cart->total + $shipping['price']), 2),
+					'price_total'	=> number_format(($this->fs_cart->total + $shipping['price']), 2),
 					'ship_to'		=> 0,
 					'bill_to'		=> 0,
 					'shipping'		=> $shipping['id']
@@ -418,7 +418,7 @@ class Front_cart extends Public_Controller
 				{
 
 					// Now for each item in the order
-					foreach( $this->cart->contents() as $item )
+					foreach( $this->fs_cart->contents() as $item )
 					{
 						$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
 					}
@@ -459,7 +459,7 @@ class Front_cart extends Public_Controller
 			if( isset($this->firesale->roles['shipping']) )
 			{
 				$role = $this->firesale->roles['shipping'];
-				$data['shipping'] = $this->$role['model']->calculate_methods($this->cart->contents());
+				$data['shipping'] = $this->$role['model']->calculate_methods($this->fs_cart->contents());
 			}
 
 			// Get available bliing and shipping options
@@ -594,7 +594,7 @@ class Front_cart extends Public_Controller
 		$this->cart_m->sale_complete($order);
 
 		// Clear cart
-		$this->cart->destroy();
+		$this->fs_cart->destroy();
 
 		// Fire events
 		Events::trigger('order_complete', $order);
@@ -629,7 +629,7 @@ class Front_cart extends Public_Controller
 
 			$order = $this->orders_m->get_order_by_id($order_id);
 
-			$this->cart->destroy();
+			$this->fs_cart->destroy();
 
 			$this->template->title(lang('firesale:payment:title_success'))
 						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
@@ -652,7 +652,7 @@ class Front_cart extends Public_Controller
 			$this->orders_m->delete_order($order_id);
 			$this->session->unset_userdata('order_id');
 
-			$this->cart->destroy();
+			$this->fs_cart->destroy();
 
 			$this->template->title('Order Cancelled')
 						   ->build('payment_cancelled');

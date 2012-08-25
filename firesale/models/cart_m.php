@@ -37,7 +37,7 @@ class Cart_m extends MY_Model
 					$data['rowid']    = $rowid;
 					$data['qty']   	  = $qty[$product['id']];
 					$data['subtotal'] = number_format(( $data['qty'] * $product['price'] ), 2);
-					$this->cart->update($data);
+					$this->fs_cart->update($data);
 				}
 			}
 		}
@@ -124,15 +124,15 @@ class Cart_m extends MY_Model
 		{
 
 			// Cart contents
-			$response['products'] = $this->cart->contents();
+			$response['products'] = $this->fs_cart->contents();
 
 			// Update cart pricing
 			$this->orders_m->update_order_cost(0, FALSE);
 
 			// Add pricing
-			$response['total'] 		= $this->cart->total;
-			$response['tax']   		= $this->cart->tax;
-			$response['subtotal']	= $this->cart->subtotal;
+			$response['total'] 		= $this->fs_cart->total;
+			$response['tax']   		= $this->fs_cart->tax;
+			$response['subtotal']	= $this->fs_cart->subtotal;
 
 		}
 

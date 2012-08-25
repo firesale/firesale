@@ -4,7 +4,7 @@ class Plugin_Firesale_Shipping extends Plugin {
 
     public function __construct()
     {
-		$this->load->library('cart');
+		$this->load->library('fs_cart');
 		$this->load->model('shipping_m');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
@@ -17,7 +17,7 @@ class Plugin_Firesale_Shipping extends Plugin {
 		$free = $this->attribute('free', TRUE);
 
 		// Get cart and shipping methods
-		$cart    = $this->cart->contents();
+		$cart    = $this->fs_cart->contents();
 		$methods = $this->shipping_m->calculate_methods($cart);
 
 		// Rename free method?

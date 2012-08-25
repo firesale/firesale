@@ -223,7 +223,7 @@ class Orders_m extends MY_Model
 		// Run through cart items
 		if( $cart == TRUE )
 		{
-			foreach( $this->cart->contents() AS $item )
+			foreach( $this->fs_cart->contents() AS $item )
 			{
 				$total += ( $item['qty'] * $item['price'] );
 			}
@@ -245,9 +245,9 @@ class Orders_m extends MY_Model
 		// Update cart
 		if( $cart == TRUE )
 		{
-			$this->cart->total    = number_format($total, 2);
-			$this->cart->subtotal = number_format($sub, 2);
-			$this->cart->tax 	  = number_format(( $total - $sub), 2);
+			$this->fs_cart->total    = number_format($total, 2);
+			$this->fs_cart->subtotal = number_format($sub, 2);
+			$this->fs_cart->tax 	  = number_format(( $total - $sub), 2);
 		}
 
 		// Update?

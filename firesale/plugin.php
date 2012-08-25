@@ -135,7 +135,7 @@ class Plugin_Firesale extends Plugin
 	
 		// Load libraries
 		$this->load->model('products_m');
-		$this->load->library('cart');
+		$this->load->library('fs_cart');
 
 		$tax  		 	= 0.2; // add to settings later
 		$data 		 	= new stdClass;
@@ -146,7 +146,7 @@ class Plugin_Firesale extends Plugin
 		$data->products = array();
 		
 		// Loop products in cart
-		foreach( $this->cart->contents() as $id => $item )
+		foreach( $this->fs_cart->contents() as $id => $item )
 		{
 		
 			$product = $this->products_m->get_product($item['id']);
