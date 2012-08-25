@@ -231,11 +231,19 @@ class Gateways
 		
 		foreach ($uninstalled as $key => $gateway)
 		{
-			$uninstalled[$key]['created'] = date("Y-m-d H:i:s");
-			$uninstalled[$key]['ordering_count'] = 0;
-			$uninstalled[$key]['name'] = lang('firesale:gateways:'.$gateway['slug'].':name');
-			$uninstalled[$key]['desc'] = lang('firesale:gateways:'.$gateway['slug'].':desc');
-			$uninstalled[$key]['enabled'] = $gateway['slug'] == 'dummy' ? 1 : 0;
+			if (lang('firesale:gateways:'.$gateway['slug'].':name')
+				AND lang('firesale:gateways:'.$gateway['slug'].':desc'))
+			{
+				$uninstalled[$key]['created'] = date("Y-m-d H:i:s");
+				$uninstalled[$key]['ordering_count'] = 0;
+				$uninstalled[$key]['name'] = lang('firesale:gateways:'.$gateway['slug'].':name');
+				$uninstalled[$key]['desc'] = lang('firesale:gateways:'.$gateway['slug'].':desc');
+				$uninstalled[$key]['enabled'] = $gateway['slug'] == 'dummy' ? 1 : 0;
+			}
+			else
+			{
+				unset($uninstalled[$key]);
+			}
 		}
 		
 		if ($this->_CI->db->insert_batch('firesale_gateways', $uninstalled))
