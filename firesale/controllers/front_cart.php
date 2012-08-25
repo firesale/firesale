@@ -253,7 +253,7 @@ class Front_cart extends Public_Controller
 				}
 
 				// Send to checkout
-				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/paypal');
+				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/checkout');
 
 			}
 			else if( $this->input->is_ajax_request() )
@@ -310,7 +310,6 @@ class Front_cart extends Public_Controller
 			$this->load->library('gateways');
 			$this->load->model('streams_core/streams_m');
 			$this->load->helper('form');
-			$this->merchant->load('paypal', $this->gateways->settings('paypal'));
 
 			// Variables
 			$data = array();
@@ -386,55 +385,6 @@ class Front_cart extends Public_Controller
 				// Set error flashdata
 				// Let script continue to rebuild page
 
-			}
-			elseif ($gateway = $this->session->flashdata('pay_via'))
-			{
-				if (isset($this->firesale->roles['shipping']) AND $this->session->flashdata('shipping'))
-				{
-					$role = $this->firesale->roles['shipping'];
-					$shipping = $this->$role['model']->get_option_by_id($input['shipping']);
-				}
-				else
-				{
-					$shipping['price'] = '0.00';
-					$shipping['id'] = 0;
-				}
-
-				print_r($shipping);
-
-				$input = array(
-					'gateway'		=> $this->gateways->id_from_slug($gateway),
-					'order_status'	=> 1,
-					'price_sub'		=> $this->fs_cart->subtotal,
-					'price_ship'	=> $shipping['price'],
-					'price_total'	=> number_format(($this->fs_cart->total + $shipping['price']), 2),
-					'ship_to'		=> 0,
-					'bill_to'		=> 0,
-					'shipping'		=> $shipping['id']
-				);
-
-				// Insert order
-				if( $id = $this->orders_m->insert_order($input) )
-				{
-
-					// Now for each item in the order
-					foreach( $this->fs_cart->contents() as $item )
-					{
-						$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
-					}
-					
-					// Set order id
-					$this->session->set_userdata('order_id', $id);
-
-					// Redirect to payment
-					$gateway_info = $this->input->post('gateway_info');
-
-					foreach ($gateway_info as &$value)
-						$value = str_replace('-order_id-', $id, $value);
-
-
-					$process = $this->merchant->process($gateway_info);
-				}
 			}
 			else
 			{
