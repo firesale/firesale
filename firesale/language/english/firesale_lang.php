@@ -174,14 +174,36 @@
 	$lang['firesale:orders:logged_in']			= 'You must be logged in to view your order history.';
 
 	// Gateways
-	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
-	$lang['firesale:gateways:install_title']			= 'Install a Gateway';
-	$lang['firesale:gateways:installed_title']			= 'Installed Gateways';
-	$lang['firesale:gateways:no_gateways']				= 'There are currently no payment gateways installed.';
-	$lang['firesale:gateways:no_uninstalled_gateways']	= 'All available gateways are currently installed.';
-	$lang['firesale:gateways:errors:invalid_bool']		= 'The %s field must be a boolean value.';
-	$lang['firesale:gateways:warning'] 					= 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall this gateway?';
+	$lang['firesale:gateways:admin_title']					= 'Payment Gateways';
+	$lang['firesale:gateways:install_title']				= 'Install a Gateway';
+	$lang['firesale:gateways:edit_title']					= 'Edit Gateway';
+	$lang['firesale:gateways:installed_title']				= 'Installed Gateways';
+	$lang['firesale:gateways:no_gateways']					= 'There are currently no payment gateways installed.';
+	$lang['firesale:gateways:no_uninstalled_gateways']		= 'All available gateways are currently installed.';
+	$lang['firesale:gateways:errors:invalid_bool']			= 'The %s field must be a boolean value.';
+	$lang['firesale:gateways:warning'] 						= 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall this gateway?';
 	
+	$lang['firesale:gateways:installed_success']			= 'Gateway successfully installed';
+	$lang['firesale:gateways:installed_fail']				= 'The gateway could not be installed';
+
+	$lang['firesale:gateways:uninstalled_success']			= 'Gateway uninstalled successfully';
+	$lang['firesale:gateways:uninstalled_fail']				= 'The gateway could not be uninstalled';
+	$lang['firesale:gateways:multiple_uninstalled_success']	= 'The selected gateways were successfully uninstalled';
+	$lang['firesale:gateways:multiple_uninstalled_fail']	= 'The selected gateways could not be uninstalled';
+
+	$lang['firesale:gateways:multiple_enabled_success']		= 'The selected gateways have been enabled';
+	$lang['firesale:gateways:multiple_enabled_fail']		= 'The selected gateways could not be enabled';
+	$lang['firesale:gateways:enabled_success']				= 'The gateway has been enabled';
+	$lang['firesale:gateways:enabled_fail']					= 'The gateway could not be enabled';
+
+	$lang['firesale:gateways:disabled_success']				= 'The gateway has been disabled';
+	$lang['firesale:gateways:disabled_fail']				= 'The gateway could not be disabled';
+	$lang['firesale:gateways:multiple_disabled_success']	= 'The selected gateways were successfully disabled';
+	$lang['firesale:gateways:multiple_disabled_fail']		= 'The selected gateways could not be disabled';
+
+	$lang['firesale:gateways:updated_success'] 				= 'Gateway successfully updated';
+	$lang['firesale:gateways:updated_fail'] 				= 'The gateway could not be updated';
+
 	// Checkout
 	$lang['firesale:gateways:labels:name']			= 'Name';
 	$lang['firesale:gateways:labels:desc']			= 'Description';

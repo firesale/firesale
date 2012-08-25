@@ -1,6 +1,6 @@
 
 	<section class="title">
-		<h4><?php echo lang('firesale:gateways:edit_title'); ?></h4>
+		<h4><?php echo lang('firesale:gateways:install_title'); ?></h4>
 	</section>
 
 	<?php echo form_open(uri_string()); ?>
@@ -34,7 +34,7 @@
 					</ul>	
 				</fieldset>
 				<button class="btn blue" value="install" name="btnAction" type="submit">
-					<span><?php echo lang('buttons.edit'); ?></span>
+					<span><?php echo lang('buttons.install'); ?></span>
 				</button>
 
 			</div>
