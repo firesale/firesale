@@ -29,8 +29,8 @@
 // This will be removed in a future version!
 if ( ! class_exists('CI_Driver')) get_instance()->load->library('driver');
 
-define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/payments/vendor'));
-define('MERCHANT_DRIVER_PATH', realpath(dirname(__FILE__).'/payments'));
+define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/gateways/vendor'));
+define('MERCHANT_DRIVER_PATH', realpath(dirname(__FILE__).'/gateways'));
 
 /**
  * Merchant Class
