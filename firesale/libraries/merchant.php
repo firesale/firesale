@@ -4,6 +4,7 @@
  * CI-Merchant Library
  *
  * Copyright (c) 2011-2012 Crescendo Multimedia Ltd
+ * Includes several modifications by Chris Harvey (FireSALE Team)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,8 +30,8 @@
 // This will be removed in a future version!
 if ( ! class_exists('CI_Driver')) get_instance()->load->library('driver');
 
-define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/payments/vendor'));
-define('MERCHANT_DRIVER_PATH', realpath(dirname(__FILE__).'/payments'));
+define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/gateways/vendor'));
+define('MERCHANT_DRIVER_PATH', realpath(dirname(__FILE__).'/gateways'));
 
 /**
  * Merchant Class
@@ -225,28 +226,14 @@ class Merchant
 	 */
 	public static function redirect_post($post_url, $data)
 	{
-		?>
-<!DOCTYPE html>
-<html>
-<head><title>Redirecting...</title></head>
-<body onload="document.payment.submit();">
-	<p>Please wait while we redirect you to the payment page...</p>
-	<form name="payment" action="<?php echo htmlspecialchars($post_url); ?>" method="post">
-		<p>
-			<?php if (is_array($data)): ?>
-				<?php foreach ($data as $key => $value): ?>
-					<input type="hidden" name="<?php echo $key; ?>" value="<?php echo htmlspecialchars($value); ?>" />
-				<?php endforeach ?>
-			<?php else: ?>
-				<?php echo $data; ?>
-			<?php endif; ?>
-			<input type="submit" value="Continue" />
-		</p>
-	</form>
-</body>
-</html>
-	<?php
-		exit();
+		$_CI =& get_instance();
+
+		$template = $_CI->template->append_js('module::payment_redirection.js')
+								  ->set('data', $data)
+								  ->set('post_url', $post_url)
+								  ->build('payment_redirection');
+
+		exit($template);
 	}
 }
 
@@ -265,7 +252,6 @@ class Merchant_response
 	public $txn_id;
 	public $amount;
 	public $error_field;
-	public $vars;
 
 	public function __construct($status, $message, $txn_id = null, $amount = null)
 	{
