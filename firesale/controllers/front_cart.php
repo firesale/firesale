@@ -37,13 +37,13 @@ class Front_cart extends Public_Controller
 		if ($this->fs_cart->total() > 0)
 		{
 			$this->fs_cart->total		= $this->fs_cart->total();
-			$this->fs_cart->tax		= ( $this->fs_cart->total / 100 ) * $this->fs_cart->tax_percent;
+			$this->fs_cart->tax			= ( $this->fs_cart->total / 100 ) * $this->fs_cart->tax_percent;
 			$this->fs_cart->subtotal	= ( $this->fs_cart->total - $this->fs_cart->tax );
 		}
 		else
 		{
 			$this->fs_cart->total		= '0.00';
-			$this->fs_cart->tax		= '0.00';
+			$this->fs_cart->tax			= '0.00';
 			$this->fs_cart->subtotal	= '0.00';
 		}
 
@@ -456,8 +456,7 @@ class Front_cart extends Public_Controller
 
 		$order = $this->orders_m->get_order_by_id($this->session->userdata('order_id'));
 	
-		if( !empty($order) AND $this->gateways->is_enabled($order['gateway']['id']) )
-
+		if ( ! empty($order) AND $this->gateways->is_enabled($order['gateway']['id']))
 		{
 
 			// Get the gateway slug
@@ -468,24 +467,29 @@ class Front_cart extends Public_Controller
 			$this->merchant->initialize($this->gateways->settings($gateway));
 			
 			// Begin payment processing
-			if( $_SERVER['REQUEST_METHOD'] === 'POST' )
+			if ($this->input->post())
 			{
-
 				// Run payment
 				$process = $this->merchant->process($this->input->post(NULL, TRUE));
-				$status  = '_order_' . $process->status;
+				$status = '_order_' . $process->status;
 
 				// Check status
-				if( $process->status == 'authorized' )
+				if ($process->status == 'authorized')
 				{
-					// Remove ID & Shipping option
-					$this->session->unset_userdata('order_id');
-					$this->session->unset_userdata('shipping');
+					if ((float)$process->amount == (float)$order['price_total'])
+					{
+						// Remove ID & Shipping option
+						$this->session->unset_userdata('order_id');
+						$this->session->unset_userdata('shipping');
+					}
+					else
+					{
+						$status = '_order_mismatch';
+					}
 				}
 
 				// Run status function
 				$this->$status($order);
-
 			}
 			else
 			{
@@ -521,30 +525,73 @@ class Front_cart extends Public_Controller
 		
 	}
 
-	private function _order_failed($order)
+	public function callback($gateway = NULL, $order_id = NULL)
 	{
+		$order = $this->orders_m->get_order_by_id($order_id);
 
-		$this->session->set_flashdata('error', 'There was an error processing the payment, perhaps a field is missing... Oh... This error message needs to be better ;)');
-		redirect('/cart/payment');
+		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND ! empty($order))
+		{
+			$this->merchant->load($gateway, $this->gateways->settings($gateway));
+			$response = $this->merchant->process_return();
+			$status = '_order_' . $process->status;
+
+			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
+			$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
+
+			if ( ! $processed)
+			{
+				// Check status
+				if ($process->status == 'authorized')
+				{
+					if ($process->amount != $order['price_total'])
+					{
+						$status = '_order_mismatch';
+					}
+				}
+
+				// Run status function
+				$this->$status($order, TRUE);
+			}
+		}
+		else
+		{
+			redirect($this->routes_installed ? 'cart' : 'firesale/cart');
+		}
+	}
+
+	private function _order_failed($order, $callback = FALSE)
+	{
+		$this->orders_m->update_status($order['id'], 7);
+		$this->session->set_flashdata('error', lang('firesale:orders:failed_message'));
+
+		if ( ! $callback)
+			redirect('cart/payment');
+	}
+
+	private function _order_declined($order, $callback = FALSE)
+	{
+		$this->orders_m->update_status($order['id'], 8);
+		$this->session->set_flashdata('error', lang('firesale:orders:declined_message'));
+
+		if ( ! $callback)
+			redirect('cart/payment');
 
 	}
 
-	private function _order_declined($order)
+	private function _order_mismatch($order, $callback = FALSE)
 	{
+		$this->orders_m->update_status($order['id'], 9);
+		$this->session->set_flashdata('error', lang('firesale:orders:mismatch_message'));
 
-		$this->session->set_flashdata('error', 'DECLINED! << Great error page, huh?');
-		redirect('/cart/payment');
-
+		if ( ! $callback)
+			redirect('cart/payment');
 	}
 
-	private function _order_authorized($order)
+	private function _order_authorized($order, $callback = FALSE)
 	{
 
 		// Sale made, run updates
 		$this->cart_m->sale_complete($order);
-
-		// Clear cart
-		$this->fs_cart->destroy();
 
 		// Fire events
 		Events::trigger('order_complete', $order);
@@ -555,19 +602,25 @@ class Front_cart extends Public_Controller
 		// Email (admin)
 		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-admin', 'to' => $this->settings->get('contact_email'))), 'array');
 
-		// Format order for display
-		$order['price_sub']   = number_format($order['price_sub'], 2);
-		$order['price_ship']  = number_format($order['price_ship'], 2);
-		$order['price_total'] = number_format($order['price_total'], 2);
+		if ( ! $callback)
+		{
+			// Clear cart
+			$this->fs_cart->destroy();
 
-		// Build page
-		$this->template->title(lang('firesale:payment:title_success'))
-					   ->set_breadcrumb('Home', '/home')
-					   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-					   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
-					   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-					   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
-					   ->build('payment_complete', $order);
+			// Format order for display
+			$order['price_sub']   = number_format($order['price_sub'], 2);
+			$order['price_ship']  = number_format($order['price_ship'], 2);
+			$order['price_total'] = number_format($order['price_total'], 2);
+
+			// Build page
+			$this->template->title(lang('firesale:payment:title_success'))
+						   ->set_breadcrumb('Home', '/home')
+						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
+						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
+						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
+						   ->build('payment_complete', $order);
+		}
 
 	}
 
@@ -612,27 +665,6 @@ class Front_cart extends Public_Controller
 			show_404();
 		}
 		
-	}
-
-	public function callback($gateway = NULL, $order_id = NULL)
-	{
-
-		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND $order_id != NULL)
-		{
-
-			$this->merchant->load($gateway, $this->gateways->settings($gateway));
-			$response = $this->merchant->process_return();
-			
-			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
-			
-			$this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
-			
-			if ($response->status == 'authorized')
-			{
-				$this->db->update('firesale_orders', array('status' => 'paid'), array('id' => $order_id));
-			}
-				
-		}
 	}
 
 }

@@ -29,8 +29,8 @@
 // This will be removed in a future version!
 if ( ! class_exists('CI_Driver')) get_instance()->load->library('driver');
 
-define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/gateways/vendor'));
-define('MERCHANT_DRIVER_PATH', realpath(dirname(__FILE__).'/gateways'));
+define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/payments/vendor'));
+define('MERCHANT_DRIVER_PATH', realpath(dirname(__FILE__).'/payments'));
 
 /**
  * Merchant Class
@@ -269,16 +269,9 @@ class Merchant_response
 
 	public function __construct($status, $message, $txn_id = null, $amount = null)
 	{
-
 		$this->status  = $status;
 		$this->message = $message;
 		$this->txn_id  = $txn_id;
 		$this->amount  = $amount;
-		
-		foreach( $_POST AS $key => $val )
-		{
-			$this->vars->$key = $val;
-		}
-
 	}
 }
