@@ -9,7 +9,7 @@
  */
 class Gateways
 {
-	private $gateway_path = 'payments';
+	private $gateway_path = 'gateways';
 	protected $_CI;
 	
 	public function __construct()
