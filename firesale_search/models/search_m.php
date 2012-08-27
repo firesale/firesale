@@ -68,6 +68,8 @@ class Search_m extends MY_Model {
 			$sql .= "
 				AND c.`slug` = '{$category}'";
 		}
+
+		$sql .= "GROUP BY p.`slug`\n";
 		
 		if( $getcount == TRUE )
 		{
