@@ -14,7 +14,7 @@
 	// Labels
 	$lang['firesale:label_free']		= 'FREE';
 	$lang['firesale:label_save']		= 'Save';
-	$lang['firesale:label_company']		= 'Shipping Carrier';
+	$lang['firesale:label_courier']		= 'Shipping Carrier';
 	$lang['firesale:label_price_min']	= 'Price (Minimum)';
 	$lang['firesale:label_price_max']	= 'Price (Maximum)';
 	$lang['firesale:label_price_min_max']	= 'Price (Min to Max)';

@@ -21,7 +21,7 @@ class Module_Firesale_shipping extends Module {
 				'en' => 'FireSALE Shipping'
 			),
 			'description' => array(
-				'en' => 'The lightweight eCommerce platform for PyroCMS.'
+				'en' => 'Basic band-based shipping options'
 			),
 			'frontend'		=> FALSE,
 			'backend'		=> FALSE,
@@ -82,7 +82,7 @@ class Module_Firesale_shipping extends Module {
 		$template = array('namespace' => 'firesale_shipping', 'assign' => 'firesale_shipping', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 		$fields[] = array_merge($template, array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE));
 		$fields[] = array_merge($template, array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'), 'unique' => TRUE));
-		$fields[] = array_merge($template, array('name' => 'lang:firesale:label_company', 'slug' => 'company', 'type' => 'text', 'extra' => array('max_length' => 255)));
+		$fields[] = array_merge($template, array('name' => 'lang:firesale:label_courier', 'slug' => 'company', 'type' => 'text', 'extra' => array('max_length' => 255)));
 		$fields[] = array_merge($template, array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0)));
 		$fields[] = array_merge($template, array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10)));
 		$fields[] = array_merge($template, array('name' => 'lang:firesale:label_price_min', 'slug' => 'price_min', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));

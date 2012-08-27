@@ -52,9 +52,12 @@
 	$lang['firesale:cats_draft_label']		= 'Draft';
 	$lang['firesale:cats_live_label']		= 'Live';
 	$lang['firesale:cats_edit']				= 'Edit Category';
+	$lang['firesale:cats_edit_title']		= 'Edit "%s"';
 	$lang['firesale:cats_delete']			= 'Delete';
 	$lang['firesale:cats_add_success'] 		= 'New category was added successfully';
 	$lang['firesale:cats_add_error'] 		= 'There was a problem adding the new category';
+	$lang['firesale:cats_edit_success'] 	= 'Category was edited successfully';
+	$lang['firesale:cats_edit_error'] 		= 'There was a problem editing the category';
 	$lang['firesale:cats_delete_success'] 	= 'Category was deleted successfully';
 	$lang['firesale:cats_delete_error'] 	= 'There was a problem deleting that category';
 	

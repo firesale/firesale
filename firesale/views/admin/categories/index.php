@@ -29,7 +29,11 @@
 	<div class="one_half last">
 
 		<section class="title">
-			<h4><?php echo lang('firesale:cats_new'); ?></h4>
+			<h4><?php if( isset($input->id) && $input->id > 0 )
+						echo sprintf(lang('firesale:cats_edit_title'), $input->title);
+					  else
+					   	echo lang('firesale:cats_new');
+			?></h4>
 		</section>
 
 		<section class="item">

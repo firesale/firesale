@@ -21,7 +21,7 @@ class Module_Firesale_Search extends Module {
 				'en' => 'FireSALE Search (Basic)'
 			),
 			'description' => array(
-				'en' => 'A lightweight eCommerce platform for PyroCMS.'
+				'en' => 'Product and category search with ajax capabilities'
 			),
 			'frontend' 		=> TRUE,
 			'backend' 		=> FALSE,

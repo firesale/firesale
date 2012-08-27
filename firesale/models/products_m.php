@@ -117,10 +117,9 @@ class Products_m extends MY_Model {
 	{
 
 		// Build initial query
-		$query = $this->db->select($this->_table . '.id')
-						  ->from($this->_table)
-						  ->order_by('id', 'desc')
-						  ->group_by('id');
+		$query = $this->db->select('p.id')
+						  ->from($this->_table . ' AS p')
+						  ->group_by('p.id');
 		
 		// Add limits if set
 		if( $start > 0 OR $limit > 0 )
@@ -133,8 +132,8 @@ class Products_m extends MY_Model {
 		{
 			if( $key == 'category' )
 			{
-				$query->join('firesale_products_firesale_categories', 'firesale_products.id = firesale_products_firesale_categories.row_id', 'inner')
-					  ->where('firesale_categories_id', $value);
+				$query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
+					  ->where('pc.firesale_categories_id', $value);
 			}
 			else
 			{

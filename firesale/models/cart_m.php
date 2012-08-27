@@ -27,12 +27,16 @@ class Cart_m extends MY_Model
 	public function check_quantity($products, $qty)
 	{
 
+		$changed = FALSE;
+
 		foreach( $products AS $rowid => $product )
 		{
 			if( array_key_exists($product['id'], $qty) )
 			{
+
 				if( (int)$qty[$product['id']] < (int)$product['qty'] )
 				{
+					$changed 		  = TRUE;
 					$data 		   	  = array();
 					$data['rowid']    = $rowid;
 					$data['qty']   	  = $qty[$product['id']];
@@ -42,6 +46,7 @@ class Cart_m extends MY_Model
 			}
 		}
 
+		return $changed;
 	}
 
 	/**
