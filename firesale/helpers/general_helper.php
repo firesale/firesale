@@ -26,6 +26,26 @@
 	}
 
 	/**
+	 * Truncates a string by a number of characters but ensures to complete the
+	 * last word, following by "..."
+	 *
+	 * @param string $string The string to truncate
+	 * @param integer $length (Optional) The character count to limit to
+	 * @return string The truncated string
+	 * @access public
+	 */
+	function truncate_words($string, $length = 140)
+	{
+
+		if( strlen($string) > $length )
+		{
+			$string = substr( $string, 0, strrpos( substr( $string, 0, $length), ' ' ) ) . '...';
+		}
+
+		return $string;
+	}
+
+	/**
 	 * Splits Streams fileds into an array of tabs, specified fields in a tabs array
 	 * will be put into their designated positions with all others failling into a
 	 * default "general options" array.
