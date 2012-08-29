@@ -34,7 +34,7 @@ class Products_m extends MY_Model {
 	function __construct()
     {
         parent::__construct();
-        $this->load->helper('general');
+        $this->load->helper('firesale/general');
     }
 	
 	/**
