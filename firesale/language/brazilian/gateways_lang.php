@@ -1,0 +1,65 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+/*
+ * This file stores the names and descriptions of the
+ * default FireSALE payment gateways.
+ * 
+ * The syntax is:
+ * 		firesale:gateways:{slug}:name
+ * 		firesale:gateways:{slug}:desc
+ * 
+ * The slug comes from the name of the gateway file.
+ * 		e.g. merchant_paypal.php = paypal
+ */
+
+// 2checkout
+$lang['firesale:gateways:2checkout:name'] = '2Checkout';
+$lang['firesale:gateways:2checkout:desc'] = '2Checkout.com é um serviço de pagamento online que ajuda você a aceiar todos os maiores cartões de crédito, débito, PayPal and mais.';
+
+// Authorize.Net SIM
+$lang['firesale:gateways:authorize_net_sim:name'] = 'Authorize.Net SIM';
+$lang['firesale:gateways:authorize_net_sim:desc'] = 'Método de Integração do Servido (SIM) API utilizando um pagamento de transaçoes através de sua digital do dedo através de um formulário hospedado e encriptação 128-bit SSL.';
+
+// Authorize.Net
+$lang['firesale:gateways:authorize_net:name'] = 'Authorize.Net';
+$lang['firesale:gateways:authorize_net:desc'] = 'Meio de Pagamento que habilita comerciantes a receber pagamentos com cartão de crédito através da internet e cheque eletrônico.';
+
+// DPS (PX Pay)
+$lang['firesale:gateways:dps_pxpay:name'] = 'DPS (PX Pay)';
+$lang['firesale:gateways:dps_pxpay:desc'] = 'Integração para DPS PX Pay Gateway para Australia e Nova Zelandia.';
+
+// DPS (PX Post)
+$lang['firesale:gateways:dps_pxpost:name'] = 'DPS (PX Post)';
+$lang['firesale:gateways:dps_pxpost:desc'] = 'PX POST é designado para manejar transações utilizando HTTPS Post Request.';
+
+// Dummy
+$lang['firesale:gateways:dummy:name'] = 'FireSALE Simulado';
+$lang['firesale:gateways:dummy:desc'] = 'The FireSALE - Método de Pagamento Simulado. Para manejar testes de pagamento utilizando um cartao de crédito teste somente.';
+
+// eWAY Shared
+$lang['firesale:gateways:eway_shared:name'] = 'eWAY Shared Payments';
+$lang['firesale:gateways:eway_shared:desc'] = 'Pagamento Compartilhado permite seus clientes serem redirecionados via HTTP FORM POST para a página de pagamento hospedada e com total segurança da eWAY.';
+
+// eWAY
+$lang['firesale:gateways:eway:name'] = 'eWAY';
+$lang['firesale:gateways:eway:desc'] = 'Aceitar cartões de crédito com a UK líder de meios de pagamento, conectando o seu website diretamente com seu banco para processar seus pagamentos.';
+
+// PayPal Pro
+$lang['firesale:gateways:paypal_pro:name'] = 'PayPal Payments Pro';
+$lang['firesale:gateways:paypal_pro:desc'] = 'PayPal Payments Pro o mais acessível website para pagamento para empresas com mais de 100 pedidos por mês.';
+
+// PayPal
+$lang['firesale:gateways:paypal:name'] = 'PayPal Payments Standard';
+$lang['firesale:gateways:paypal:desc'] = 'Processamento Online de pagamentos com cartão de crédito - Simples solução para pagamentos utilizando PayPal Payments Standard.';
+
+// Sage Pay Direct
+$lang['firesale:gateways:sagepay_direct:name'] = 'Sage Pay Direct';
+$lang['firesale:gateways:sagepay_direct:desc'] = 'Sage Pay Go com integração direta dá a você o controle completo da maneira de pagamento para sua loja.';
+
+// Stripe
+$lang['firesale:gateways:stripe:name'] = 'Stripe';
+$lang['firesale:gateways:stripe:desc'] = 'Stripe - deixa as coisas simples para desenvolvedores utilizarem pagamento com cartão de crédito através da web.';
+
+// WorldPay
+$lang['firesale:gateways:worldpay:name'] = 'WorldPay';
+$lang['firesale:gateways:worldpay:desc'] = 'Online meios de pagamento, online contas de comerciante e gerenciamento de risco para ajudar a expandir seu negócio na web.';
