@@ -115,7 +115,7 @@ class Admin_categories extends Admin_Controller
 		$this->data->controller =& $this;
 		$this->data->cats       =  $this->categories_m->generate_streams_tree($params);
 		$this->data->fields     =  fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs	    =  array_reverse(array_keys($this->data->fields));
+		$this->data->tabs	    =  array_keys($this->data->fields);
 	
 		// Build the page
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:categories'))
