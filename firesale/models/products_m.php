@@ -327,21 +327,29 @@ class Products_m extends MY_Model {
 		$this->db->where('row_id', $product_id)->delete('firesale_products_firesale_categories');
 
 		// Get array of new categories
-		$categories = str_replace('category_', '', $categories);
-		$categories = explode(',', $categories);
+		$categories = explode(',', str_replace(' ', '', $categories));
 
 		// Loop and insert
 		for( $i = 0; $i < count($categories); $i++ )
 		{
 			
-			// Build data
-			$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => trim($categories[$i]));
+			// Get ID
+			list($ignore, $id) = explode('_', $categories[$i]);
 
-			// Check exists
-			if( $this->db->where($data)->get('firesale_products_firesale_categories')->num_rows() == 0 )
+			// Check for valid category
+			if( ( 0 + $id ) > 0 AND $this->categories_m->get_category($id) !== FALSE )
 			{
-				// Insert it
-				$this->db->insert('default_firesale_products_firesale_categories', $data);
+
+				// Build data
+				$data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => trim($id));
+
+				// Check exists
+				if( $this->db->where($data)->get('firesale_products_firesale_categories')->num_rows() == 0 )
+				{
+					// Insert it
+					$this->db->insert('default_firesale_products_firesale_categories', $data);
+				}
+
 			}
 
 		}
