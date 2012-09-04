@@ -55,7 +55,7 @@ $(function(){
 		$('#tabs').tabs("select", '#generaloptions');
 	}
 	
-	$('section #description').parent().find('.input').removeClass('input').parent().find('label[for=description]').remove();
+	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
 	// Tax link
 	tax_link($('#rrp'), $('#rrp_tax'));
