@@ -1,29 +1,3 @@
-
-	<div class="one_half last">
-		<div id="product_search" class="form_inputs">
-			<form method="post" action="">
-				<fieldset>
-					<ul>
-						<li class="<?php echo alternator('even', ''); ?>">
-							<label for="filter"><?php echo lang('firesale:label_filtercat'); ?></label>
-							<div class="input">
-								<?php echo form_dropdown('filter', $categories, ( isset($category) ? $category : 0 ), 'id="filter-category" class="filter"'); ?>
-							</div>
-						</li>
-					</ul>
-				</fieldset>
-			</form>
-		</div>
-	</div>
-	
-<?php if( isset($pagination) ): ?>
-	<div class="one_half">
-		<div id="shortcuts">
-			<?php echo $pagination['links']; ?>
-		</div>
-	</div>
-<?php endif; ?>
-
 	<section class="title">
 		<h4><?php echo lang('firesale:prod_title'); ?></h4>
 	</section>
@@ -35,6 +9,17 @@
 			<div class="no_data"><?php echo lang('firesale:prod_none'); ?></div>
 		</section>
 <?php else: ?>
+
+			<fieldset id="filters">
+			    <legend><?php echo lang('global:filters'); ?></legend>
+			    <ul>  
+			        <li class="<?php echo alternator('even', ''); ?>">
+						<div class="input">
+							<?php echo form_dropdown('filter', $categories, ( isset($category) ? $category : 0 ), 'id="filter-category" class="filter"'); ?>
+						</div>
+					</li>
+			    </ul>
+			</fieldset>
 
 			<table id="product_table">		    
 				<thead>
@@ -49,6 +34,13 @@
 						<th style="width: 180px"></th>
 					</tr>
 				</thead>
+
+				<tfoot>
+					<tr>
+						<td colspan="9"><div style="float:right;"><?php echo $pagination['links']; ?></div></td>
+					</tr>
+				</tfoot>
+
 				<tbody>
 <?php foreach($products as $product): ?>
 					<tr class="cat_<?php echo $product['category']['id']; ?>">
@@ -77,14 +69,6 @@
 			</div>
 
 		</section>
-	
-<?php if( isset($pagination) ): ?>
-		<div class="one_half">
-			<div id="shortcuts" class="bottom">
-				<?php echo $pagination['links']; ?>
-			</div>
-		</div>
-<?php endif; ?>
 <?php endif; ?>
 		
 	<?php echo form_close(); ?>
