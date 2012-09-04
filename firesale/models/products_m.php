@@ -197,7 +197,8 @@ class Products_m extends MY_Model {
 			// Update categories
 			if( isset($input['parent']) AND !empty($input['parent']) )
 			{
-				$this->update_categories($id, $stream_id, implode(',', $input['parent']));
+				$categories = 'category_' . implode(',category_', $input['parent']);
+				$this->update_categories($id, $stream_id, $categories);
 			}
 
 			return TRUE;
