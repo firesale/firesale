@@ -2,6 +2,8 @@
 
 class Admin extends Admin_Controller
 {
+	public $section = 'dashboard';
+	
     public function __construct()
     {
         parent::__construct();
