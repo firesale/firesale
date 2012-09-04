@@ -57,4 +57,6 @@ $(function(){
 
 	pyro.sort_tree($item_list, $url, $cookie, data_callback, post_sort_callback);
 	
+	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
+	
 });

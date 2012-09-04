@@ -54,6 +54,8 @@ $(function(){
 	if( !window.location.hash ) {
 		$('#tabs').tabs("select", '#generaloptions');
 	}
+
+	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
 	
 	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
@@ -103,9 +105,3 @@ $(function(){
 	}
 
 	function decimal(no) { return new Number(parseFloat(no)).toFixed(2); }
-	
-	function slugify_field(val, space)
-	{
-		val = val.replace(/ /g, space).toLowerCase();
-		return val;
-	}
