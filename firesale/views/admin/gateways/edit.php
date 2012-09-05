@@ -22,7 +22,9 @@
 									</div>
 								<?php elseif ($field['type'] == 'text'): ?>
 									<label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
-									<textarea id="<?php echo $field['field']; ?>" name="<?php echo $field['field']; ?>" style="width:250px"><?php echo set_value($field['field'], isset($values[$field['field']]) ? $values[$field['field']] : NULL); ?></textarea>
+									<div class="input">
+										<textarea id="<?php echo $field['field']; ?>" name="<?php echo $field['field']; ?>" style="width:250px"><?php echo set_value($field['field'], isset($values[$field['field']]) ? $values[$field['field']] : NULL); ?></textarea>
+									</div>
 								<?php else: ?>
 									<label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
 									<div class="input">
@@ -34,7 +36,7 @@
 					</ul>	
 				</fieldset>
 				<button class="btn blue" value="install" name="btnAction" type="submit">
-					<span><?php echo lang('buttons.edit'); ?></span>
+					<span><?php echo lang('buttons.save'); ?></span>
 				</button>
 
 			</div>

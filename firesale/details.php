@@ -101,16 +101,16 @@ class Module_Firesale extends Module {
 		
 		if (group_has_role('firesale', 'access_gateways'))
 		{
-			$info['sections']['payments'] = array(
+			$info['sections']['gateways'] = array(
 				'name' => 'firesale:sections:gateways',
 				'uri'  => 'admin/firesale/gateways',
 				'shortcuts' => array()
 			);
 		}
 		
-		if (group_has_role('firesale', 'install_uninstall_gateways') AND isset($info['sections']['payments']))
+		if (group_has_role('firesale', 'install_uninstall_gateways') AND isset($info['sections']['gateways']))
 		{
-			$info['sections']['payments']['shortcuts'] = array(
+			$info['sections']['gateways']['shortcuts'] = array(
 				array(
 					'name' 	=> 'firesale:shortcuts:install_gateway',
 					'uri'	=> 'admin/firesale/gateways/add',
