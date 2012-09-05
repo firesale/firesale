@@ -61,8 +61,8 @@ class Front_category extends Public_Controller {
 	{
 	
 		// Get cookie data
-		$this->data->layout = ( isset($_COOKIE['listing_style']) ? $_COOKIE['listing_style'] : 'grid' );
-		$this->data->order  = get_order(( isset($_COOKIE['listing_order']) ? $_COOKIE['listing_order'] : 1 ));
+		$this->data->layout = $this->input->cookie('firesale_listing_style') ? $this->input->cookie('firesale_listing_style') : 'grid';
+		$this->data->order  = get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1);
 
 		// Get category details
 		$category = $this->categories_m->get_category($category);
@@ -157,7 +157,17 @@ class Front_category extends Public_Controller {
 	 */
 	public function style($type)
 	{
-		setcookie('listing_style', $type, ( time() + ( 30 * 24 * 60 * 60 )));
+		$cookie = array(
+			'name'   => 'listing_style',
+			'value'  => $type,
+			'expire' => '2592000',
+			'path'   => '/',
+			'prefix' => 'firesale_',
+			'secure' => FALSE
+		);
+
+		$this->input->set_cookie($cookie);
+		
 		redirect($_SERVER['HTTP_REFERER']);
 	}
 
@@ -176,7 +186,16 @@ class Front_category extends Public_Controller {
 
 		if( array_key_exists($type, $orders) )
 		{
-			setcookie('listing_order', $type, ( time() + ( 30 * 24 * 60 * 60 )));
+			$cookie = array(
+				'name'   => 'listing_order',
+				'value'  => $type,
+				'expire' => '86500',
+				'path'   => '/',
+				'prefix' => 'firesale_',
+				'secure' => FALSE
+			);
+
+			$this->input->set_cookie($cookie);
 		}
 
 		redirect($_SERVER['HTTP_REFERER']);
