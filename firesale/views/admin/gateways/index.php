@@ -54,7 +54,7 @@
 				<?php endif; ?>
 				
 				<?php if (group_has_role('firesale', 'install_uninstall_gateways')): ?>
-					<button class="btn red confirm" value="uninstall" name="btnAction" type="submit" disabled="">
+					<button class="btn red confirm" title="<?php echo lang('firesale:gateways:multiple_warning'); ?>" value="uninstall" name="btnAction" type="submit" disabled="">
 						<span><?php echo lang('buttons.uninstall'); ?></span>
 					</button>
 				<?php endif; ?>
