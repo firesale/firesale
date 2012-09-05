@@ -64,7 +64,7 @@ $(function() {
 							$('table.cart').removeAttr('style').find('tbody').append(
 								'<tr>' +
 									'<td class="remove"><input type="checkbox" name="item[' + d.id + '][remove]" value="1" /></td>' +
-             						'<td class="image">n/a</td>' +
+             						'<td class="image"><img src="/files/thumb/' + d.image + '/64/64" alt="Product Image" class="image" /></td>' +
               						'<td class="name"><a href="/product/' + d.slug + '">' + d.title + '</a></td>' +
               						'<td class="model">' + d.code + '</td>' +
               						'<td><input type="text" name="item[' + d.id + '][qty]" value="' + r.qty + '" /></td>' + 
@@ -73,7 +73,7 @@ $(function() {
 								'</tr>'
 							);
 						}
-						caclulatePrice();
+						calculatePrice();
 					}
 					else
 					{
