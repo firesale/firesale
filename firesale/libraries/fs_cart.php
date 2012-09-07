@@ -17,5 +17,12 @@ require_once(BASEPATH.'libraries/Cart.php');
 
 class Fs_cart extends CI_Cart
 {
-	// There will be some awesome stuff in this class soon :)
+	public function destroy()
+	{
+		// Run the standard CI_Cart function
+		parent::destroy();
+
+		// Fire an event to tell external modules that the cart has been destroyed
+		Events::trigger('cart_destroyed');
+	}
 }
