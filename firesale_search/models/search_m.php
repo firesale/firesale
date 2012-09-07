@@ -56,7 +56,7 @@ class Search_m extends MY_Model {
 		$category = urldecode(trim($category));
 		$term     = urldecode(trim($term));
 
-		$sql  = "SELECT p.*, c.`id` AS `cat_id`, c.`title` AS `cat_title`, MATCH(p.`title`, p.`description`) AGAINST('{$term}') AS `weight`
+		$sql  = "SELECT p.*, c.`id` AS `cat_id`, c.`title` AS `cat_title`, MATCH(p.`title`, p.`description`) AGAINST({$this->db->escape($term)}) AS `weight`
 				FROM `" . SITE_REF . "_firesale_products` AS p
 				INNER JOIN `" . SITE_REF . "_firesale_products_firesale_categories` AS pc ON pc.`row_id` = p.`id`
 				INNER JOIN `" . SITE_REF . "_firesale_categories` AS c ON c.`id` = pc.`firesale_categories_id`
