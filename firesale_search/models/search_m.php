@@ -60,7 +60,7 @@ class Search_m extends MY_Model {
 				FROM `" . SITE_REF . "_firesale_products` AS p
 				INNER JOIN `" . SITE_REF . "_firesale_products_firesale_categories` AS pc ON pc.`row_id` = p.`id`
 				INNER JOIN `" . SITE_REF . "_firesale_categories` AS c ON c.`id` = pc.`firesale_categories_id`
-				WHERE MATCH(p.`title`, p.`description`) AGAINST('{$term}')
+				WHERE MATCH(p.`title`, p.`description`) AGAINST({$this->db->escape($term)})
 				AND p.`status` = 1";
 				
 		if( $category !== 'all' )
