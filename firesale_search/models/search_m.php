@@ -66,10 +66,11 @@ class Search_m extends MY_Model {
 		if( $category !== 'all' )
 		{
 			$sql .= "
-				AND c.`slug` = '{$category}'";
+				AND c.`slug` = {$this->db->escape($category)}";
 		}
 
-		$sql .= "GROUP BY p.`slug`\n";
+		$sql .= "
+				GROUP BY p.`slug`\n";
 		
 		if( $getcount == TRUE )
 		{
@@ -83,13 +84,13 @@ class Search_m extends MY_Model {
 			{
 				$sql .= "
 						ORDER BY `{$order['by']}` {$order['dir']}
-						LIMIT {$start}, {$count}";
+						LIMIT " . (int) $start . ", " . (int) $count;
 			}
 			else
 			{
 				$sql .= "
 						ORDER BY `weight` DESC
-						LIMIT {$start}, {$count}";
+						LIMIT " . (int) $start . ", " . (int) $count;
 			}
 
 			$result = $this->db->query($sql);
@@ -111,11 +112,11 @@ class Search_m extends MY_Model {
 		$this->session->set_userdata(array('term' => $term));
 
 		// Update database terms
-		$query = $this->db->select('id, count')->where("LOWER(`term`) = '{$term}'")->get('firesale_search');
+		$query = $this->db->select('id, count')->where("LOWER(`term`)", $term)->get('firesale_search');
 		if( $query->num_rows() )
 		{
 			$result = $query->row();
-			$this->db->where("id = '{$result->id}'")->update('firesale_search', array('count' => ( $result->count + 1 )));
+			$this->db->where("id", $result->id)->update('firesale_search', array('count' => ( $result->count + 1 )));
 		}
 		else
 		{
@@ -133,11 +134,11 @@ class Search_m extends MY_Model {
 
 			// Get search term
 			$term   = strtolower(trim($term));
-			$query  = $this->db->select('id, sales')->where("LOWER(`term`) = '{$term}'")->get('firesale_search');
+			$query  = $this->db->select('id, sales')->where("LOWER(`term`)", $term)->get('firesale_search');
 			$result = $query->row();
 
 			// Update sales
-			$this->db->where("id = '{$result->id}'")->update('firesale_search', array('sales' => ( $result->sales + 1 )));
+			$this->db->where("id", $result->id)->update('firesale_search', array('sales' => ( $result->sales + 1 )));
 
 			// Remove session data
 			$this->session->unset_userdata('term');
