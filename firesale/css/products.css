@@ -14,7 +14,7 @@ tfoot th { border: none; border-top: 2px solid rgb(221, 221, 221); }
 #product_table .chzn-container .chzn-search input { width: 133px !important; }
 #product_table .actions { width: 200px !important; }
 #product_table .item-img { width: 40px !important; }
-#product_table img { width: 32px; height: 32px; float: left; display: block; background: url('img/none.jpg') no-repeat; overflow: hidden; text-indent: -1000px; }
+#product_table img { width: 32px; height: 32px; float: left; display: block; background: url('img/none.jpg') no-repeat; background-size: 32px 32px; overflow: hidden; text-indent: -1000px; }
 
 #dropbox{position:relative;min-height:290px;padding: 4px 4px 44px 4px;border-radius: 15px; }
 #dropbox.dragging{ background:rgba(100,100,100,0.05); border:4px dashed rgba(100,100,100,0.2); padding: 0 0 40px 0; }

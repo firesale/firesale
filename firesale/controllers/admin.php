@@ -2,6 +2,8 @@
 
 class Admin extends Admin_Controller
 {
+	public $section = 'dashboard';
+	
     public function __construct()
     {
         parent::__construct();
@@ -19,6 +21,12 @@ class Admin extends Admin_Controller
 
 	public function index()
 	{
+
+		// CH: If we're not on the FireSALE dashboard, redirect to it.
+		if ( ! $this->uri->segment(2))
+		{
+			redirect('admin/firesale');
+		}
 
 		// Variables
 		$items  = array();

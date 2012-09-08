@@ -14,3 +14,4 @@ ul.width-half > li { min-height: 44px; }
 .items > * { float: left; }
 .items input { margin: -3px 10px 0;}
 .items button { margin: -1px 0 0; }
+img.image { width: 64px; height: 64px; display: block; background: url('img/none.jpg') no-repeat; background-size: 64px 64px; overflow: hidden; text-indent: -1000px; }

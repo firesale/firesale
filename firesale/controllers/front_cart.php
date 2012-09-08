@@ -55,7 +55,7 @@ class Front_cart extends Public_Controller
 		}
 
 	}
-	
+
 	public function index()
 	{
 	
@@ -68,7 +68,7 @@ class Front_cart extends Public_Controller
 
 		// Add item id
 		$i = 1;
-		foreach( $data['contents'] AS $key => $product )
+		foreach ($data['contents'] AS $key => $product)
 		{
 			$data['contents'][$key]['no'] = $i;
 			$i++;
@@ -94,21 +94,21 @@ class Front_cart extends Public_Controller
 		$tmp  = array();
 
 		// Add an item to the cart, either by post or from the URL
-		if( $prd_code === NULL )
+		if ($prd_code === NULL)
 		{
 
-			if( is_array($this->input->post('prd_code')) AND is_array($this->input->post('prd_code')) )
+			if (is_array($this->input->post('prd_code')) AND is_array($this->input->post('prd_code')))
 			{
 
 				$qtys = $this->input->post('qty', TRUE);
 				
-				foreach( $this->input->post('prd_code', TRUE) as $key => $prd_code )
+				foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code)
 				{
 					
 					$product = $this->products_m->get_product($prd_code);
 					$tmp[$product['id']] = $product['stock'];
 
-					if( $product != FALSE AND $qtys[$key] > 0 )
+					if ($product != FALSE AND $qtys[$key] > 0)
 					{
 						$data[] = $this->cart_m->build_data($product, (int)$qtys[$key]);
 					}
@@ -123,7 +123,7 @@ class Front_cart extends Public_Controller
 			$product = $this->products_m->get_product($prd_code);
 			$tmp[$product['id']] = $product['stock'];
 
-			if( $product != FALSE AND $qty > 0 )
+			if ($product != FALSE AND $qty > 0)
 			{
 				$data[] = $this->cart_m->build_data($product, $qty);
 				$this->session->set_userdata('added', $product['id']);
@@ -137,22 +137,21 @@ class Front_cart extends Public_Controller
 		// Force available quanity
 		$this->cart_m->check_quantity($this->fs_cart->contents(), $tmp);
 
+		if ($product != FALSE)
+		{
+			Events::trigger('cart_item_added', (array)$product);
+		}
+
+		Events::trigger('cart_updated');
+
 		// Return for ajax or redirect
 		if( $this->input->is_ajax_request() )
 		{
-			echo $this->cart_m->ajax_response('ok');
-			exit();
+			exit($this->cart_m->ajax_response('ok'));
 		}
 		else
 		{
-
-			if( $product != FALSE )
-			{
-				Events::trigger('cart_item_added', (array)$product);
-			}
-
 			redirect('/cart');
-
 		}
 
 	}
@@ -161,7 +160,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// Make sure there are items in cart
-		if( !$this->fs_cart->total() )
+		if ( ! $this->fs_cart->total())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
 			redirect(isset($this->has_routes) ? 'cart' : 'firesale/cart');
@@ -174,22 +173,22 @@ class Front_cart extends Public_Controller
 			$data = array(); // Set the empty data array
 			
 			// Loop through the updates, checking the quantity against the stock level and updating accordingly
-			foreach( $this->input->post('item', TRUE) as $row_id => $item )
+			foreach ($this->input->post('item', TRUE) as $row_id => $item)
 			{
 
-				if( array_key_exists($row_id, $cart) )
+				if (array_key_exists($row_id, $cart))
 				{
 
 					$data['rowid'] = $row_id;
 					
 					// Has this item been marked for removal?
-					if( isset($item['remove']) OR $item['qty'] <= 0 )
+					if (isset($item['remove']) OR $item['qty'] <= 0)
 					{
 		
 						$data['qty'] = 0;
 			
 						// If this is a current order, update the table
-						if( $this->session->userdata('order_id') > 0 )
+						if ($this->session->userdata('order_id') > 0)
 						{
 							$this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
 						}
@@ -200,14 +199,14 @@ class Front_cart extends Public_Controller
 
 						$product = $this->products_m->get_product($cart[$row_id]['id']);
 
-						if( $product )
+						if ($product)
 						{
 	
 							// Set the new quantity, or the stock level if the quantity exceeds it.
 							$data['qty'] = $item['qty'] > $product['stock'] ? $product['stock'] : $item['qty'];
 
 							// If this is a current order, update the table
-							if( $this->session->userdata('order_id') > 0 )
+							if ($this->session->userdata('order_id') > 0)
 							{
 								$this->orders_m->insert_update_order_item($this->session->userdata('order_id'), $cart[$row_id], $data['qty']);
 							}
@@ -220,7 +219,7 @@ class Front_cart extends Public_Controller
 							$data['qty'] = 0;
 				
 							// If this is a current order, update the table
-							if( $this->session->userdata('order_id') > 0 )
+							if ($this->session->userdata('order_id') > 0)
 							{
 								$this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
 							}
@@ -243,11 +242,11 @@ class Front_cart extends Public_Controller
 			Events::trigger('cart_updated', array());
 
 			// Are we checking out or just updating?
-			if( $this->input->post('btnAction') == 'checkout' )
+			if ($this->input->post('btnAction') == 'checkout')
 			{
 
 				// Added so shipping can be a cart option
-				if( $shipping = $this->input->post('shipping') )
+				if ($shipping = $this->input->post('shipping'))
 				{
 					$this->session->set_userdata('shipping', $shipping);
 				}
@@ -256,10 +255,9 @@ class Front_cart extends Public_Controller
 				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/checkout');
 
 			}
-			else if( $this->input->is_ajax_request() )
+			elseif ($this->input->is_ajax_request())
 			{
-				echo $this->cart_m->ajax_response('ok');
-				exit();
+				exit($this->cart_m->ajax_response('ok'));
 			}
 			else
 			{
@@ -274,7 +272,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// If this is a current order, update the table
-		if( $this->session->userdata('order_id') > 0 )
+		if ($this->session->userdata('order_id') > 0)
 		{
 			$cart = $this->fs_cart->contents();
 			$this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
@@ -283,7 +281,7 @@ class Front_cart extends Public_Controller
 		// Update the cart
 		$this->fs_cart->update(array('rowid' => $row_id, 'qty' => 0));
 		
-		if( $this->input->is_ajax_request() )
+		if ($this->input->is_ajax_request())
 		{
 			exit('success');
 		}
@@ -298,7 +296,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// No checkout without items
-		if( !$this->fs_cart->total() )
+		if ( ! $this->fs_cart->total())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
 			redirect(isset($this->has_routes) ? 'cart' : 'firesale/cart');
@@ -315,7 +313,7 @@ class Front_cart extends Public_Controller
 			$data = array();
 			
 			// Check for post data
-			if( $this->input->post('btnAction') == 'pay' )
+			if ($this->input->post('btnAction') == 'pay')
 			{
 				
 				// Variables
@@ -325,7 +323,7 @@ class Front_cart extends Public_Controller
 				$extra 	= array('return' => '/cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
 
 				// Shipping option
-				if( isset($this->firesale->roles['shipping']) AND isset($input['shipping']) )
+				if (isset($this->firesale->roles['shipping']) AND isset($input['shipping']))
 				{
 					$role = $this->firesale->roles['shipping'];
 					$shipping = $this->$role['model']->get_option_by_id($input['shipping']);
@@ -349,25 +347,25 @@ class Front_cart extends Public_Controller
 				$this->form_validation->set_rules($rules);
 
 				// Run validation
-				if( $this->form_validation->run() === TRUE )
+				if ($this->form_validation->run() === TRUE)
 				{
 					// Check for addresses
-					if( !isset($input['ship_to']) OR $input['ship_to'] == 'new' )
+					if ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new')
 					{
 						$input['ship_to'] = $this->address_m->add_address($input, 'ship');
 					}
 
-					if( !isset($input['bill_to']) OR $input['bill_to'] == 'new' )
+					if ( ! isset($input['bill_to']) OR $input['bill_to'] == 'new' )
 					{
 						$input['bill_to'] = $this->address_m->add_address($input, 'bill');
 					}
 
 					// Insert order
-					if( $id = $this->orders_m->insert_order($input) )
+					if ($id = $this->orders_m->insert_order($input))
 					{
 
 						// Now for each item in the order
-						foreach( $this->fs_cart->contents() as $item )
+						foreach ($this->fs_cart->contents() as $item)
 						{
 							$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
 						}
@@ -395,7 +393,7 @@ class Front_cart extends Public_Controller
 				$extra  = array();
 				
 				// Check if the user has placed an order before and use these details.
-				if( isset($this->current_user->id) AND $user_id = $this->current_user->id )
+				if (isset($this->current_user->id) AND $user_id = $this->current_user->id)
 				{
 					$input = (object)$this->orders_m->get_last_order($user_id);
 				}

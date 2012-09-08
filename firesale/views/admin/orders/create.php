@@ -58,7 +58,7 @@
               <?php foreach( $products AS $product ): ?>
       	  	    <tr class="prod-<?php echo $product['id']; ?>">
                     <td class="remove"><input type="checkbox" name="item[<?php echo $product['id']; ?>][remove]" value="1" /></td>
-                    <td class="image"><?php if( $product['image'] != FALSE ): ?><img src="/files/thumb/<?php echo $product['image']; ?>/100/100" alt="image" /><?php else: ?>n/a<?php endif; ?></td>
+                    <td class="image"><img src="/files/thumb/<?php echo $product['image']; ?>/64/64" class="image" alt="Product Image" /></td>
                     <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                     <td class="model"><?php echo $product['code']; ?></td>
                     <td><input type="text" name="item[<?php echo $product['id']; ?>][qty]" value="<?php echo $product['qty']; ?>" /></td>

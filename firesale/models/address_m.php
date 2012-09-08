@@ -156,7 +156,7 @@ class Address_m extends MY_Model
 		{
 			if( $id > 0 AND $this->db->where('id', $id)->update('firesale_addresses', $update) )
 			{
-				return TRUE;
+				return $address_id;
 			}
 			else if( $id <= 0 AND $address_id = $this->add_address($input, $type) )
 			{
@@ -166,6 +166,46 @@ class Address_m extends MY_Model
 
 		// Failed?
 		return FALSE;
+	}
+
+	/**
+	 * Hashes the billing and shipping address input in order to check if they're
+	 * the same and if we should insert or update both or just one.
+	 *
+	 * @param array $input The POST array
+	 * @return array Shipping and Billing Hashes
+	 * @access public
+	 */
+	public function input_hash($input)
+	{
+
+		// Variables
+		$ignore    = array('bill_details_same', 'ship_to', 'bill_to');
+		$ship_hash = '';
+		$bill_hash = '';
+
+		// Loop input
+		foreach( $input AS $key => $val )
+		{
+			if( !in_array($key, $ignore) )
+			{
+				if( substr($key, 0, 5) == 'ship_' )
+				{
+					$ship_hash .= $val;
+				}
+				else if( substr($key, 0, 5) == 'bill_' )
+				{
+					$bill_hash .= $val;
+				}
+			}
+		}
+
+		// Generate the hash
+		$ship_hash = md5($ship_hash);
+		$bill_hash = md5($bill_hash);
+
+		// Return them
+		return array($ship_hash, $bill_hash);
 	}
 
 	/**

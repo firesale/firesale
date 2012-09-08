@@ -45,6 +45,10 @@ Either via the Routes Add-on or directly into the config we suggest you put the 
 	$route['users/orders/([0-9]+)']   = 'firesale/front_orders/view_order/$1';
 	$route['users/orders']   		  = 'firesale/front_orders/index';
 	$route['users/addresses(/:any)?'] = 'firesale/front_address$1';
+	
+If you would like to replace the default PyroCMS dashboard with the FireSALE dashboard then you can do so by adding the following route:
+
+	$route['admin'] = 'firesale/admin/index';
 
 ## Feedback and issues
 

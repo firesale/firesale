@@ -191,6 +191,7 @@
 	$lang['firesale:gateways:no_uninstalled_gateways']		= 'All available gateways are currently installed.';
 	$lang['firesale:gateways:errors:invalid_bool']			= 'The %s field must be a boolean value.';
 	$lang['firesale:gateways:warning'] 						= 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall this gateway?';
+	$lang['firesale:gateways:multiple_warning'] 			= 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall the selected gateways?';
 	
 	$lang['firesale:gateways:installed_success']			= 'Gateway successfully installed';
 	$lang['firesale:gateways:installed_fail']				= 'The gateway could not be installed';

@@ -120,9 +120,12 @@ class Admin_orders extends Admin_Controller
 				$_POST = $input;
 			}
 
+			// Create hash
+			list($ship_hash, $bill_hash) = $this->address_m->input_hash($input);
+
 			// Check for addresses
 			$ship = $this->address_m->update_address($input['ship_to'], $input, 'ship');
-			if( $ship != TRUE OR $ship <= 0 OR $input['ship_to'] != $input['bill_to'] )
+			if( $ship != TRUE OR $ship <= 0 OR $input['ship_to'] != $input['bill_to'] OR $ship_hash != $bill_hash )
 			{
 				$bill = $this->address_m->update_address($input['bill_to'], $input, 'bill');
 			}

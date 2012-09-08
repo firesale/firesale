@@ -16,15 +16,16 @@ $(function(){
 		title.html('<input type="text" id="title" name="title" value="' + title.text() + '" />');
 		stock.html('<input type="text" id="stock" name="stock" value="' + stock.text() + '" />');
 		price.parent().html('<input type="text" id="price" name="price" value="' + price.text() + '" pattern="^\d+(?:,\d{3})*\.\d{2}$" />');
-		var category = $('#filter-category').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'parent[]'});
-		category.find(':selected').removeAttr('selected');
-		var s = cat.find('span').clone();
-		cat.find('span').remove();
-		s.each(function() {
-			var val = $(this).attr('data-id');
-			category.val(val).find('option[value="' + val + '"]').attr('selected', 'selected');
+		
+		var select = $('#filter-category').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'parent[]'});
+		select.find(':selected').removeAttr('selected');
+		var c = [];	cat.find('span').each(function() { c.push($(this).attr('data-id')); });
+		cat.html('');
+		for( var k in c ) {
+			var id = c[k], category = select.clone();
+			category.val(id).find('option[value="' + id + '"]').attr('selected', 'selected');
 			cat.append(category);
-		});
+		}
 
 		$(this).addClass('add').text('Update');
 		$(this).unbind('click').click(function() {
@@ -54,8 +55,10 @@ $(function(){
 	if( !window.location.hash ) {
 		$('#tabs').tabs("select", '#generaloptions');
 	}
+
+	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
 	
-	$('section #description').parent().find('.input').removeClass('input').parent().find('label[for=description]').remove();
+	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
 	// Tax link
 	tax_link($('#rrp'), $('#rrp_tax'));
@@ -103,9 +106,3 @@ $(function(){
 	}
 
 	function decimal(no) { return new Number(parseFloat(no)).toFixed(2); }
-	
-	function slugify_field(val, space)
-	{
-		val = val.replace(/ /g, space).toLowerCase();
-		return val;
-	}
