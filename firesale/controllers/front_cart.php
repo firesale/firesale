@@ -97,7 +97,7 @@ class Front_cart extends Public_Controller
 		if ($prd_code === NULL)
 		{
 
-			if (is_array($this->input->post('prd_code')) AND is_array($this->input->post('prd_code')))
+			if (is_array($this->input->post('prd_code')))
 			{
 
 				$qtys = $this->input->post('qty', TRUE);
@@ -188,7 +188,7 @@ class Front_cart extends Public_Controller
 						$data['qty'] = 0;
 			
 						// If this is a current order, update the table
-						if ($this->session->userdata('order_id') > 0)
+						if ($this->cart_m->cart_has_order())
 						{
 							$this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
 						}
@@ -206,7 +206,7 @@ class Front_cart extends Public_Controller
 							$data['qty'] = $item['qty'] > $product['stock'] ? $product['stock'] : $item['qty'];
 
 							// If this is a current order, update the table
-							if ($this->session->userdata('order_id') > 0)
+							if ($this->cart_m->cart_has_order())
 							{
 								$this->orders_m->insert_update_order_item($this->session->userdata('order_id'), $cart[$row_id], $data['qty']);
 							}
@@ -219,7 +219,7 @@ class Front_cart extends Public_Controller
 							$data['qty'] = 0;
 				
 							// If this is a current order, update the table
-							if ($this->session->userdata('order_id') > 0)
+							if ($this->cart_m->cart_has_order())
 							{
 								$this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
 							}
@@ -272,7 +272,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// If this is a current order, update the table
-		if ($this->session->userdata('order_id') > 0)
+		if ($this->cart_m->cart_has_order())
 		{
 			$cart = $this->fs_cart->contents();
 			$this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);

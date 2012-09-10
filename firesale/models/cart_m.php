@@ -173,6 +173,42 @@ class Cart_m extends MY_Model
 	}
 
 	/**
+	 * A secure check to see if a user has an active order that is not
+	 * complete.
+	 *
+	 * @return bool
+	 * @access public
+	 */
+	public function cart_has_order()
+	{
+		if ($order_id = $this->session->userdata('order_id'))
+		{
+			// Load the orders model if its not already loaded
+			$this->load->model('orders_m');
+
+			$order = $this->orders_m->get_order_by_id($order_id);
+
+			// Is the order unpaid?
+			if ($order['order_status']['key'] == 1)
+			{
+				return TRUE;
+			}
+			else
+			{
+				// Remove the order id from session.
+				$this->session->unset_userdata('order_id');
+
+				// Return FALSE, we have no order.
+				return FALSE;
+			}
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	/**
 	 * Called when an Order has been completed.
 	 * Updates the order status and sets it to paid, removes the order tracking from
 	 * the users' session and finally updates the stock status of the items found
