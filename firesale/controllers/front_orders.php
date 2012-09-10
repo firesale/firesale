@@ -26,10 +26,12 @@ class Front_orders extends Public_Controller
 
 			// Set query paramaters
 			$params	 = array(
-						'stream' 	=> 'firesale_orders',
-						'namespace'	=> 'firesale_orders',
-						'where'		=> "created_by = '{$user}'"
-					   );
+				'stream' 	=> 'firesale_orders',
+				'namespace'	=> 'firesale_orders',
+				'where'		=> "created_by = '{$user}'",
+				'order_by'  => 'id',
+				'sort'      => 'desc'
+			);
 		
 			// Get entries		
 			$orders = $this->streams->entries->get_entries($params);
