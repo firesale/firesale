@@ -38,8 +38,8 @@ class Search extends Public_Controller {
 		}
 		
 		// Assign base variables
-		$this->data->layout 	= ( isset($_COOKIE['listing_style']) ? $_COOKIE['listing_style'] : 'grid' );
-		$this->data->order  	= get_order(( isset($_COOKIE['listing_order']) ? $_COOKIE['listing_order'] : 1 ));
+		$this->data->layout 	= $this->input->cookie('firesale_listing_style') ? $this->input->cookie('firesale_listing_style') : 'grid';
+		$this->data->order  	= get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1 );
 		$this->data->categories = $this->search_m->get_cat_dropdown($category);
 		$this->data->ordering   = get_order();
 		$this->data->products   = FALSE;

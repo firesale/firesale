@@ -39,9 +39,9 @@ class Admin extends Admin_Controller
 			$_tmp = $this->firesale->elements['dashboard'];
 
 			// Order dashboard items
-			if( isset($_COOKIE['dashboard_order']) )
+			if ($this->input->cookie('firesale_dashboard_order'))
 			{
-				$order = explode('|', $_COOKIE['dashboard_order']);
+				$order = explode('|', $this->input->cookie('firesale_dashboard_order'));
 				foreach( $order AS $slug )
 				{
 					if( strlen($slug) > 0 )
