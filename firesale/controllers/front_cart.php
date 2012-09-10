@@ -160,7 +160,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// Make sure there are items in cart
-		if ( ! $this->fs_cart->total())
+		if ( ! $this->fs_cart->total_items())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
 			redirect(isset($this->has_routes) ? 'cart' : 'firesale/cart');
