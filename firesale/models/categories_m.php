@@ -9,18 +9,6 @@ class Categories_m extends MY_Model {
 	 * @access public
 	 */
     public $_table = 'firesale_categories';
-	
-	/**
-	 * Loads the parent constructor and gets an
-	 * instance of CI.
-	 *
-	 * @return void
-	 * @access public
-	 */
-	function __construct()
-    {
-        parent::__construct();
-    }
 
 	/**
 	 * Gets the category via id or slug via streams

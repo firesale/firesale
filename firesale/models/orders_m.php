@@ -2,18 +2,6 @@
 
 class Orders_m extends MY_Model
 {
-
-	/**
-	 * Loads the parent constructor and gets an
-	 * instance of CI.
-	 *
-	 * @return void
-	 * @access public
-	 */
-	function __construct()
-    {
-        parent::__construct();
-    }
   
     /**
      * Gets the products for a given order

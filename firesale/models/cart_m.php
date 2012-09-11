@@ -4,18 +4,6 @@ class Cart_m extends MY_Model
 {
 
 	/**
-	 * Loads the parent constructor and gets an
-	 * instance of CI.
-	 *
-	 * @return void
-	 * @access public
-	 */
-	function __construct()
-    {
-        parent::__construct();
-    }
-
-	/**
 	 * Ensures that the product quanities that have been added to a cart are within
 	 * the allowed limits of what is currently in stock.
 	 *
