@@ -2,8 +2,8 @@
     <div class="tabs">
 
       <ul class="tab-menu">
-        <li><a href="#stock-low">Low Stock</a></li>
-        <li><a href="#stock-out">Out of Stock</a></li>
+        <li><a href="#stock-low"><?php echo lang('firesale:dashbord:low_stock'); ?></a></li>
+        <li><a href="#stock-out"><?php echo lang('firesale:dashbord:out_of_stock'); ?></a></li>
       </ul>
 
       <div id="stock-low" class="form_inputs">

@@ -43,6 +43,8 @@
 	$lang['firesale:dashboard:no_stock_low']	= 'Tidak ada produk dengan ketersediaan rendah';
 	$lang['firesale:dashboard:no_stock_out']	= 'Tidak ada produk yang habis';
 	$lang['firesale:dashboard:view_more']		= 'Lihat selengkapnya...';
+	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
+	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Atur Kategori';

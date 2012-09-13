@@ -43,6 +43,8 @@
 	$lang['firesale:dashboard:no_stock_low']	= 'Nėra prekių be minimalių atsargų';
 	$lang['firesale:dashboard:no_stock_out']	= 'Nėra prekių be atsargų';
 	$lang['firesale:dashboard:view_more']		= 'Peržiūrėti daugiau...';
+	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
+	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Tvarkyti kategorijas';

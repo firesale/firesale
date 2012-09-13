@@ -43,6 +43,8 @@
 	$lang['firesale:dashboard:no_stock_low']	= 'Tutti i prodotti hanno delle scorte sufficienti';
 	$lang['firesale:dashboard:no_stock_out']	= 'Non ci sono prodotti senza scorte';
 	$lang['firesale:dashboard:view_more']		= 'Vedi altro…';
+	$lang['firesale:dashbord:low_stock']		= 'Poche scorte';
+	$lang['firesale:dashbord:out_of_stock']		= 'Senza scorte';
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Gestisci categorie';
