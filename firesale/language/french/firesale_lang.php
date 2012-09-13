@@ -27,6 +27,8 @@
 	// Dashboard
 	$lang['firesale:dash_overview']			= 'Vue d\'ensemble';
 	$lang['firesale:dash_categorytrack']	= 'Category Tracking'; // To check.
+	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
+	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
 	
 	// Elements - Dashboard
 	$lang['firesale:elements:product_sales'] = 'Meilleures ventes';
