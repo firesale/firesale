@@ -33,7 +33,7 @@ class Plugin_Firesale extends Plugin
 		$limit	   	   = $this->attribute('limit', 6);
 		$category  	   = $this->attribute('category', 0);
 		$order_by  	   = $this->attribute('order-by', 'ordering_count');
-		$order_dir 	   = $this->attribute('order-dir', 'desc');
+		$order_dir 	   = $this->attribute('order-dir', 'asc');
 		
 		// Build query
 		$query = $this->db->select('id, title, slug')
