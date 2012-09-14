@@ -2,8 +2,8 @@
     <div class="tabs">
 
       <ul class="tab-menu">
-        <li><a href="#stock-low">Low Stock</a></li>
-        <li><a href="#stock-out">Out of Stock</a></li>
+        <li><a href="#stock-low"><?php echo lang('firesale:dashbord:low_stock'); ?></a></li>
+        <li><a href="#stock-out"><?php echo lang('firesale:dashbord:out_of_stock'); ?></a></li>
       </ul>
 
       <div id="stock-low" class="form_inputs">
@@ -22,13 +22,13 @@
                 <td><?php echo $product['code']; ?></td>
                 <td><a href="{{ url:base }}product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                 <td><?php echo $product['stock']; ?></td>
-                <td><a href="/admin/firesale/products/edit/<?php echo $product['id']; ?>" class="btn green"><span>Edit</span></td>
+                <td><a href="/admin/firesale/products/edit/<?php echo $product['id']; ?>" class="btn green"><span><?php echo lang('global:edit'); ?></span></td>
               </tr>
 <?php endforeach; ?>
             </tbody>
           </table>
           <br />
-          <a href="{{ url:base }}admin/firesale/products/stock_status/2" class="btn blue"><span>View More</span></a>
+          <a href="{{ url:base }}admin/firesale/products/stock_status/2" class="btn blue"><span><?php echo lang('firesale:dashboard:view_more'); ?></span></a>
 <?php else: ?>
           <div class="no_data"><?php echo lang('firesale:dashboard:no_stock_low'); ?></div>
 <?php endif; ?>
@@ -51,13 +51,13 @@
                 <td><?php echo $product['code']; ?></td>
                 <td><a href="{{ url:base }}product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                 <td><?php echo $product['stock']; ?></td>
-                <td><a href="/admin/firesale/products/edit/<?php echo $product['id']; ?>" class="btn green"><span>Edit</span></td>
+                <td><a href="/admin/firesale/products/edit/<?php echo $product['id']; ?>" class="btn green"><span><?php echo lang('global:edit'); ?></span></td>
              </tr>
 <?php endforeach; ?>
             </tbody>
           </table>
           <br />
-          <a href="{{ url:base }}admin/firesale/products/stock_status/3" class="btn blue"><span>View More</span></a>
+          <a href="{{ url:base }}admin/firesale/products/stock_status/3" class="btn blue"><span><?php echo lang('firesale:dashboard:view_more'); ?></span></a>
 <?php else: ?>
           <div class="no_data"><?php echo lang('firesale:dashboard:no_stock_out'); ?></div>
 <?php endif; ?>

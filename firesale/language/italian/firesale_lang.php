@@ -41,8 +41,10 @@
 	$lang['firesale:dashboard:stock_low']	 	= '%s prodotti con poche scorte';
 	$lang['firesale:dashboard:stock_out']	 	= '%s prodotti senza scorte';
 	$lang['firesale:dashboard:no_stock_low']	= 'Tutti i prodotti hanno delle scorte sufficienti';
-	$lang['firesale:dashboard:no_stock_out']	= 'Non ci sono prodotti senza scorte';
+	$lang['firesale:dashboard:no_stock_out']	= 'Tutti i prodotti hanno delle scorte';
 	$lang['firesale:dashboard:view_more']		= 'Vedi altro…';
+	$lang['firesale:dashbord:low_stock']		= 'Poche scorte';
+	$lang['firesale:dashbord:out_of_stock']		= 'Senza scorte';
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Gestisci categorie';
@@ -100,7 +102,7 @@
 	$lang['firesale:label_price']		= 'Prezzo di vendita';
 	$lang['firesale:label_price_tax']	= 'Prezzo di vendita (tasse escluse)';
 	$lang['firesale:label_stock']		= 'Quantità in magazzino';
-	$lang['firesale:label_drop_images'] = 'Trascina qui le imamgini da caricare';
+	$lang['firesale:label_drop_images'] = 'Trascina qui le immagini da caricare';
 	$lang['firesale:label_duplicate']   = 'Duplica';
 
 	$lang['firesale:label_stock_short']	= 'Livello scorte';

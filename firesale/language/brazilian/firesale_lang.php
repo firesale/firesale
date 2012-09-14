@@ -43,6 +43,8 @@
 	$lang['firesale:dashboard:no_stock_low']	= 'Produtos sem estoque mínimo';
 	$lang['firesale:dashboard:no_stock_out']	= 'Nenhum produto sem estoque';
 	$lang['firesale:dashboard:view_more']		= 'Ver mais...';
+	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
+	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Gerenciar Categorias';
