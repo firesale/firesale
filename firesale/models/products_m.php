@@ -521,6 +521,35 @@ class Products_m extends MY_Model {
 	}
 
 	/**
+	 * Keeps the file folder for images in sync with changes made to a products
+	 * slug - otherwise upon updating a products slug the images would go missing.
+	 *
+	 * @param string $old The old slug for the folder
+	 * @param string $new The new slug for the folder
+	 * @return boolean TRUE or FALSE on success
+	 * @access public
+	 */
+	public function update_folder_slug($old, $new)
+	{
+
+		// Variables
+		$folder = $this->get_file_folder_by_slug($old);
+
+		// Found?
+		if( $file !== FALSE AND $folder->id > 0 )
+		{
+
+			if( $this->db->where('id', $folder->id)->update('file_folders', array('slug' => $new)) )
+			{
+				return TRUE;
+			}
+
+		}
+
+		return FALSE;
+	}
+
+	/**
 	 * When uploading a new image for a product, based on the settings defined
 	 * in the admin section we can make the image square. This is a requirement
 	 * for many designs to keep things consistent and the same height/width

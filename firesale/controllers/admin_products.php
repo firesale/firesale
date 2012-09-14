@@ -118,8 +118,17 @@ class Admin_products extends Admin_Controller
 			// Added to seperate if since above will be removed for 2.2
 			if( $id !== NULL )
 			{
+
+				// Fire event
 				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
 				Events::trigger('product_updated', $data);
+
+				// Update image folder?
+				if( $row->slug != $input['slug'] )
+				{
+					$this->products_m->update_folder_slug($row->slug, $input['slug']);
+				}
+
 			}
 		
 		}
