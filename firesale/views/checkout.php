@@ -3,7 +3,7 @@
 
     <?php echo form_open(''); ?>
 	  
-        <div id="checkout">
+        <div id="checkout" class="firesale">
 
           <h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:title:ship'); ?></a></h3>
           <fieldset>
@@ -21,7 +21,7 @@
                   <?php echo ( isset($address['city']) ? '<li>' . $address['city'] . '</li>' : '' ); ?>
                   <?php echo ( isset($address['county']) ? '<li>' . $address['county'] . '</li>' : '' ); ?>
                   <?php echo ( isset($address['postcode']) ? '<li>' . $address['postcode'] . '</li>' : '' ); ?>
-                  <?php echo ( isset($address['country']) ? '<li>' . $address['country'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['country']['name']) ? '<li>' . $address['country']['name'] . '</li>' : '' ); ?>
               </ul>
             </label>
 
@@ -63,7 +63,7 @@
                   <?php echo ( isset($address['city']) ? '<li>' . $address['city'] . '</li>' : '' ); ?>
                   <?php echo ( isset($address['county']) ? '<li>' . $address['county'] . '</li>' : '' ); ?>
                   <?php echo ( isset($address['postcode']) ? '<li>' . $address['postcode'] . '</li>' : '' ); ?>
-                  <?php echo ( isset($address['country']) ? '<li>' . $address['country'] . '</li>' : '' ); ?>
+                  <?php echo ( isset($address['country']['name']) ? '<li>' . $address['country']['name'] . '</li>' : '' ); ?>
               </ul>
             </label>
 

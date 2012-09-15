@@ -8,6 +8,20 @@
 .firesale .clear { clear: both; height: 0; line-height: 0; }
 .firesale.sidebar { position: absolute; z-index: 1; top: 62px; right: 0; }
 .firesale.sidebar h2 { background: url('img/front/sidebar.bg.png') no-repeat; }
+.firesale .left { float: left; }
+.firesale .right { float: right; }
+.firesale .clear { clear: both; }
+.firesale .width-threefourth { width: 715px; margin-right: 20px; display: block; float: left; }
+.firesale .width-onefourth { width: 225px; margin-right: 20px; display: block; float: left; }
+.firesale .width-onesixth { width: 150px; margin-right: 12px; display: block; float: left; }
+.firesale .width-onethird { width: 306px; margin-right: 20px; display: block; float: left; }
+.firesale .width-half { width: 300px; display: block; float: left; }
+.firesale .last { margin-right: 0px !important; margin-bottom: 0px !important; }
+.firesale ul.icon-arrow li a { height: 15px; line-height: 15px; padding-left: 15px; font-size: 13px; color: #515151; letter-spacing: -1px; display: inline-block; color: #515151; background: url('images/sprite.png') no-repeat -285px 0; }
+.firesale .button { padding: 2px; display: inline-block; }
+.firesale .button span { font-size: 11px; line-height: 17px; height: 18px; display: inline-block; color: #fff; font-weight: normal; padding: 0 10px; border: 1px solid rgba(255,255,255,0.3); }
+.firesale .align-left { text-align: left !important; }
+.firesale .align-right { text-align: right !important; }
 
 /* Icons */
 .firesale .zoom { width: 24px; height: 24px; display: block; position: absolute; background: #F76900 url('img/front/sprite.png') no-repeat -12px -224px; right: 4px; top: 4px; }
@@ -119,3 +133,35 @@
 .firesale #cart-totals li span { float: right; }
 .firesale #cart-totals li.large { line-height: 24px; font-size: 20px; }
 .firesale #cart-buttons { float: left; clear: both; display: block; height: 37px; margin: 30px 0 30px 0; }
+
+/* Checkout */
+.firesale#checkout > h3 { padding: 10px; margin: 0; cursor: pointer; line-height: 18px; color: rgb(51, 51, 51); border-top: 1px solid #fff; border-bottom: 1px solid rgb(221, 221, 221); background: rgb(238, 238, 238); }
+.firesale#checkout > h3 a { font-size: 15px; line-height: 18px; }
+.firesale#checkout fieldset { padding: 18px 10px 10px 10px; }
+.firesale#checkout fieldset > ul { width: 300px; display: block; }
+.firesale#checkout fieldset > ul:nth-child(odd) { float: left; }
+.firesale#checkout fieldset > ul:nth-child(even) { float: right; }
+.firesale#checkout fieldset > ul li { display: block; width: 100%; margin: 0 0 8px 0; }
+.firesale#checkout fieldset > ul li label { display: inline-block; width: 140px; line-height: 30px; }
+.firesale#checkout fieldset > ul li input[type=text] { width: 245px; }
+.firesale#checkout input[type=checkbox], .firesale#checkout input[type=radio] { width: auto; float: left; margin: 7px 10px 0 0; }
+.firesale#checkout fieldset > ul li.wide label { width: 360px; }
+.firesale#checkout .prev { display: inline-block; margin: 20px 0 0 0; float: left; }
+.firesale#checkout .next { display: inline-block; margin: 20px 0 0 0; float: right; }
+.firesale#checkout fieldset p { font-size: 13px; line-height: 18px; }
+.firesale#checkout .shipping { width: 100%; }
+.firesale#checkout .shipping li { width: 100%; }
+.firesale#checkout .shipping label { width: 900px; }
+
+/* Orders */
+.firesale .order { padding: 20px; border-radius: 6px; position: relative; }
+.firesale .order:hover { box-shadow: 0 0 20px rgba(0,0,0,0.3); }
+.firesale .order:nth-child(3n) { margin-right: 0 !important; }
+.firesale .order header { position: relative; }
+.firesale .order header .right { position: absolute; top: 0; right: 0; text-align: right; }
+.firesale .order header .right input { position: absolute; top: -4px; right: -8px; }
+.firesale .order ul { padding: 0; }
+.firesale .order ul li { line-height: 20px; font-size: 13px; list-style: none; padding: 0; }
+.firesale .order footer { border-top: 1px solid #eee; padding: 20px 0 0 0; margin: 20px 0 0 0; font-size: 28px; line-height: 34px; }
+.firesale .order footer a { line-height: 34px; position: absolute; right: 20px; font-weight: bold; }
+.firesale .order.small { width: 200px; float: left; margin: 0 30px 30px 0; }
