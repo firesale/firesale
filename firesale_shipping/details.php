@@ -41,6 +41,12 @@ class Module_Firesale_shipping extends Module {
 						)
 				    )
 				)
+			),
+			'events'			 => array(
+				'form_build' => array(
+					'model'		 => 'firesale_shipping/shipping_m',
+					'function'	 => 'form_build'
+				)
 			)
 		);
 		

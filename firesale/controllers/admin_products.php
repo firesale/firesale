@@ -6,9 +6,8 @@ class Admin_products extends Admin_Controller
 	public $stream  = NULL;
 	public $perpage = 30;
 	public $section = 'products';
-	public $tabs	= array('description'      => array('description'),
-							'shipping' 		   => array('shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth'),
-							'_images'		   => array());
+	public $tabs	= array('description' => array('description'),
+							'_images'	  => array());
 
 	public function __construct()
 	{
