@@ -1,4 +1,4 @@
-      <div class="width-onefourth sidebar left">
+      <div class="firesale width-onefourth sidebar left">
         <h2>Categories</h2>
         <ul class="icon-arrow categories">
 {{ firesale:categories limit="0" }}
@@ -18,7 +18,7 @@
         </ul>
       </div>
 
-      <div class="width-threefourth right last">
+      <div class="firesale width-threefourth right last">
 
         <section id="listing-header">
 		

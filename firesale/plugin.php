@@ -36,7 +36,7 @@ class Plugin_Firesale extends Plugin
 		$order_dir 	   = $this->attribute('order-dir', 'asc');
 		
 		// Build query
-		$query = $this->db->select('id, title, slug')
+		$query = $this->db->select('id, title, parent, slug')
 					  	  ->from('firesale_categories')
 						  ->where('status', '1')
 						  ->where('parent', $category)

@@ -1,4 +1,4 @@
-      <div class="width-threefourth">
+      <div class="width-threefourth firesale">
         <section class="product-images">
           <ul>
 {{ if images != false }}
@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <div class="width-onefourth sidebar last">
+      <div class="firesale width-onefourth sidebar last">
 
         <h2>Categories</h2>
         <ul class="icon-arrow categories">

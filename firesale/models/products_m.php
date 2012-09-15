@@ -337,6 +337,7 @@ class Products_m extends MY_Model {
 
 			// Build data
 			$data = array(
+						'slug'		  => $input['slug'],
 						'description' => $input['description']
 						/**
 						 * @todo Figure out other data to be added here
