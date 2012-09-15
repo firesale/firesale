@@ -19,6 +19,7 @@ class Events_Firesale
 		Events::register('cart_item_added',    array($this, 'cart_item_added'));
 		Events::register('cart_updated',       array($this, 'cart_updated'));
 		Events::register('page_build',         array($this, 'page_build'));
+		Events::register('form_build',         array($this, 'form_build'));
 	
 	}
 	
@@ -73,6 +74,10 @@ class Events_Firesale
 		$this->_run_firesale_events('page_build', $data);
 	}
 
+	public function form_build($data)
+	{
+		$this->_run_firesale_events('form_build', $data);
+	}
 	
 	public function _run_firesale_events($name, $data)
 	{

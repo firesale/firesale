@@ -8,10 +8,7 @@ class Admin_products extends Admin_Controller
 	public $section = 'products';
 	public $tabs	= array('description'      => array('description'),
 							'shipping' 		   => array('shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth'),
-							'metadata'		   => array('meta_title', 'meta_description', 'meta_keywords'),
-							'_attributes'	   => '{{ firesale_attributes:form product=id }}',
 							'_images'		   => array());
-
 
 	public function __construct()
 	{
@@ -141,6 +138,9 @@ class Admin_products extends Admin_Controller
 	
 		// Get the stream fields
 		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
+
+		// Fire build event
+		Events::trigger('form_build', $this);
 
 		// Assign variables
 		if( $row !== NULL ) { $this->data = $row; }
