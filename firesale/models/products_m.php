@@ -311,6 +311,24 @@ class Products_m extends MY_Model {
 	}
 
 	/**
+	 * Updates the basic information for products with the same slug as the current
+	 * product being edited. This requires the option to be selected in admin
+	 * otherwise they will be left untouched.
+	 * 
+	 * @param integer $id The primary product ID
+	 * @param string $slug The slug to update
+	 * @param array $input The post array to use
+	 * @return TRUE or FALSE on success
+	 * @access public
+	 */
+	public function update_duplicates($id, $slug, $input)
+	{
+
+
+
+	}
+
+	/**
 	 * Updates the mulitple categories for a Product.
 	 * Required at the moment since the Streams Multiple field type doesn't seem
 	 * to do this automatically at the moment.
@@ -475,6 +493,26 @@ class Products_m extends MY_Model {
 		}
 		
 		return $cats;	
+	}
+
+	/**
+	 * Category fix to delete existing categories, format input, etc.
+	 *
+	 * @param integer $product_id The product ID
+	 * @param string $category Category input from POST
+	 * @return string Formatted categories
+	 * @access public
+	 */
+	public function category_fix($product_id, $category)
+	{
+
+		// Drop current categories
+		$this->db->where('row_id', $product_id)->delete('firesale_products_firesale_categories');
+
+		// Fix input
+		$cats = explode(',', $category);
+		$cats = array_unique($cats);
+		return implode(',', $cats);
 	}
 
 	/**

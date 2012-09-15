@@ -107,27 +107,27 @@ class Admin_products extends Admin_Controller
 				$extra['return'] = '/admin/firesale/products';
 			}
 
-			// Manually update categories
-			// Multiple tends not to do it
-			if( $id !== NULL )
-			{
-				$this->products_m->update_categories($id, $this->stream->id, $input['category']);
-				unset($_POST['category']);
-			}
-
-			// Added to seperate if since above will be removed for 2.2
+			// Perform additional tasks to existing products
 			if( $id !== NULL )
 			{
 
-				// Fire event
-				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
-				Events::trigger('product_updated', $data);
+				// Temporary until we move to grid
+				// Remove duplicate entries before updating categories
+				// Also deletes all existing categories from a product
+				$input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
+
+				// Update duplicates
+				$this->products_m->update_duplicates($id, $row->slug, $input);
 
 				// Update image folder?
 				if( $row->slug != $input['slug'] )
 				{
 					$this->products_m->update_folder_slug($row->slug, $input['slug']);
 				}
+
+				// Fire event
+				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
+				Events::trigger('product_updated', $data);
 
 			}
 		
@@ -144,9 +144,9 @@ class Admin_products extends Admin_Controller
 
 		// Assign variables
 		if( $row !== NULL ) { $this->data = $row; }
-		$this->data->id		=  $id;
-		$this->data->fields =  fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs	=  array_keys($this->data->fields);
+		$this->data->id		= $id;
+		$this->data->fields = fields_to_tabs($fields, $this->tabs);
+		$this->data->tabs	= array_keys($this->data->fields);
 		
 		// Get current images
 		if( $row != FALSE )
