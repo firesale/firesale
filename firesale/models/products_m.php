@@ -32,10 +32,10 @@ class Products_m extends MY_Model {
 	 * @access public
 	 */
 	function __construct()
-    {
-        parent::__construct();
-        $this->load->helper('firesale/general');
-    }
+	{
+		parent::__construct();
+		$this->load->helper('firesale/general');
+	}
 	
 	/**
 	 * Builds an array of the require keys and values for a dropdown of products,
@@ -324,7 +324,35 @@ class Products_m extends MY_Model {
 	public function update_duplicates($id, $slug, $input)
 	{
 
+		/**
+		 * @todo Add to options and check it before performing the following actions
+		 */
 
+		// Get IDs of related products
+		$products = $this->db->select('id')->where('slug', $slug)->get('firesale_products')->result_array();
+
+		// Check products
+		if( count($products) > 1 )
+		{
+
+			// Build data
+			$data = array(
+						'description' => $input['description']
+						/**
+						 * @todo Figure out other data to be added here
+						 */
+					);
+
+			// Loop linked products
+			foreach( $products AS $product )
+			{
+
+				// Update them
+				$this->db->where('id', $product['id'])->update('firesale_products', $data);
+
+			}
+
+		}
 
 	}
 
