@@ -79,6 +79,8 @@
 	$lang['firesale:prod_duplicate_error'] 	= 'Ocorreu um erro ao duplicar este produto';
 	$lang['firesale:prod_duplicate_success']= 'Produto duplicado com sucesso';
 	$lang['firesale:prod_not_found'] 		= 'Este produto nao pode ser encontrado';
+	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
+	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Preço de venda antes e após impostos';

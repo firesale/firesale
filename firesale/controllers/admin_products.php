@@ -320,6 +320,25 @@ class Admin_products extends Admin_Controller
 		echo json_encode(array('status' => FALSE, 'message' => 'Error uploading image'));
 		exit();
 	}
+
+	public function delete_image($id)
+	{
+
+		// Delete file
+		if( Files::delete_file($id) )
+		{
+			// Success
+			$this->session->set_flashdata('success', lang('firesale:prod_delimg_success'));
+		}
+		else
+		{
+			// Error
+			$this->session->set_flashdata('error', lang('firesale:prod_delimg_error'));
+		}
+
+		// Redirect
+		redirect($_SERVER['HTTP_REFERER']);
+	}
 	
 	public function ajax_quick_edit()
 	{

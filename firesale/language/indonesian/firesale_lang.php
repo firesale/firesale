@@ -79,6 +79,8 @@
 	$lang['firesale:prod_duplicate_error'] 	= 'Ada masalah saat menduplikasi produk';
 	$lang['firesale:prod_duplicate_success']= 'Produk berhasil diduplikasi';
 	$lang['firesale:prod_not_found'] 		= 'Produk yang dimaksud tidak ditemukan';
+	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
+	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Harga eceran sebelum dan sesudah dikenai pajak';

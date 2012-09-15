@@ -76,6 +76,8 @@
 	$lang['firesale:prod_duplicate_error'] 	= 'Įvyko klaida kopijuojant prekę';
 	$lang['firesale:prod_duplicate_success']= 'Prekė sėkminkai nukopijuota';
 	$lang['firesale:prod_not_found'] 		= 'Prekė nerasta';
+	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
+	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Mažmeninė kaina prieš ir po PVM';

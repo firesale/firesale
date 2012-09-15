@@ -61,7 +61,9 @@
 	$lang['firesale:prod_delete_error'] 	= '[PH] Suppression de produit : échec';
 	$lang['firesale:prod_delete_success'] 	= '[PH] Suppression de produit réussie';
 	$lang['firesale:prod_not_found'] 		= '[PH] Produit introuvable';
-
+	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
+	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
+	
 	// Labels
 	$lang['firesale:label_draft']		= 'Brouillon';
 	$lang['firesale:label_live'] 		= 'En ligne';

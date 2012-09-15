@@ -1,48 +1,42 @@
-#product_search { width: 430px; height: 56px; float: right; padding: 0; margin: 23px -20px 0 0; }
-#product_search fieldset { padding: 0; border: none; }
-#product_search label { width: 230px; display: inline-block; text-align: right; }
-#product_search div.input { width: 270px; display: inline-block; }
-.chzn-container .chzn-single span, .chzn-container li { color: #666; font-weight: normal; }
-
-tbody tr:last-child { border: none; }
-tfoot th { border: none; border-top: 2px solid rgb(221, 221, 221); }
-#product_table #id { width: 100px !important; margin: 0; }
-#product_table #title { width: 330px !important; margin: 0; }
-#product_table .chzn-container { width: 170px !important; margin: 0; }
-#product_table .chzn-container .chzn-drop { width: 168px !important; }
-#product_table .chzn-container .chzn-search { width: 133px !important; }
-#product_table .chzn-container .chzn-search input { width: 133px !important; }
-#product_table .actions { width: 200px !important; }
-#product_table .item-img { width: 40px !important; }
-#product_table img { width: 32px; height: 32px; float: left; display: block; background: url('img/none.jpg') no-repeat; background-size: 32px 32px; overflow: hidden; text-indent: -1000px; }
-
-#dropbox{position:relative;min-height:290px;padding: 4px 4px 44px 4px;border-radius: 15px; }
-#dropbox.dragging{ background:rgba(100,100,100,0.05); border:4px dashed rgba(100,100,100,0.2); padding: 0 0 40px 0; }
-#dropbox .message{font-size:30px;text-align:center;padding-top:147px;display:block;text-transform:uppercase;color:rgba(100,100,100,0.2);font-weight:bold;}
+#product_search{width:430px;height:56px;float:right;margin:23px -20px 0 0;padding:0;}
+#product_search fieldset{border:none;padding:0;}
+#product_search label{width:230px;display:inline-block;text-align:right;}
+#product_search div.input{width:270px;display:inline-block;}
+.chzn-container .chzn-single span,.chzn-container li{color:#666;font-weight:400;}
+tbody tr:last-child{border:none;}
+tfoot th{border:none;border-top:2px solid #ddd;}
+#product_table #id{width:100px!important;margin:0;}
+#product_table #title{width:330px!important;margin:0;}
+#product_table .chzn-container{width:170px!important;margin:0;}
+#product_table .chzn-container .chzn-drop{width:168px!important;}
+#product_table .actions{width:200px!important;}
+#product_table .item-img{width:40px!important;}
+#product_table img{width:32px;height:32px;float:left;display:block;background:url(img/none.jpg) no-repeat;background-size:32px 32px;overflow:hidden;text-indent:-1000px;}
+#dropbox{position:relative;min-height:290px;border-radius:15px;padding:4px 4px 44px;}
+#dropbox.dragging{background:rgba(100,100,100,0.05);border:4px dashed rgba(100,100,100,0.2);padding:0 0 40px;}
+#dropbox .message{font-size:30px;text-align:center;padding-top:147px;display:block;text-transform:uppercase;color:rgba(100,100,100,0.2);font-weight:700;}
 #dropbox:before{border-radius:3px 3px 0 0;}
 #dropbox .preview{width:245px;height:215px;float:left;position:relative;text-align:center;margin:55px 0 0 52px;}
 #dropbox .preview img{max-width:240px;max-height:180px;border:3px solid #fff;display:block;box-shadow:0 0 2px #000;}
 #dropbox .imageHolder{display:inline-block;position:relative;}
-#dropbox .imageTitle{display:block;width:100%;text-align:center;position:relative;margin-top:20px;text-transform: uppercase; }
+#dropbox .imageTitle{display:block;width:100%;text-align:center;position:relative;margin-top:20px;text-transform:uppercase;}
 #dropbox .uploaded{position:absolute;top:0;left:0;height:100%;width:100%;background:url(img/done.png) no-repeat center center rgba(255,255,255,0.5);display:none;}
 #dropbox .preview.done .uploaded{display:block;}
 #dropbox .progressHolder{position:absolute;background-color:#E0DBDB;height:12px;width:100%;left:0;bottom:0;box-shadow:0 0 2px #000;}
 #dropbox .progress{background-color:#EAA54F;position:absolute;height:100%;left:0;width:0;box-shadow:0 0 1px rgba(255,255,255,0.4) inset;-moz-transition:.25s;-webkit-transition:.25s;-o-transition:.25s;transition:.25s;}
 #dropbox .preview.done .progress{width:100%!important;}
-#dropbox .imageHolder:hover {position: relative; cursor: move; z-index: 10000; transform: scale(1.2); -webkit-transform: scale(1.2); -moz-transform: scale(1.2); -o-transform: scale(1.2); -ms-transform: scale(1.2); }
-
-#title, #slug { width: 350px !important; }
-#rrp, #rrp_tax, #price, #price_tax, #stock { width: 70px; min-width: 40px !important; }
-#tabs textarea { width: 100%; }
-span.discount strong { color: #00CC33; }
-.clear { clear: both; height: 0; line-height: 0; }
-
-button.link { width: 40px; height: 40px; background: url('img/link.png') no-repeat 0 0; overflow: hidden; text-indent: -1000px; border: 0; }
-button.link.unlinked { background-position: -40px 0; }
-
-.mult_lists tr.alt { border-bottom: none; }
-.mult_lists tbody { border: 1px solid #eee; }
-.mult_lists td { padding: 1px 0 0 0 !important; border-left: none !important; }
-.mult_lists ul { overflow-x: hidden; width: 260px; padding: 5px !important; }
-
-.loading { min-height: 22px; background: url('img/loading.gif') no-repeat 50% 50% !important; }
+#dropbox .imageHolder:hover{cursor:move;}
+#dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(img/delete.png) no-repeat;}
+#title,#slug{width:350px!important;}
+#rrp,#rrp_tax,#price,#price_tax,#stock{width:70px;min-width:40px!important;}
+#tabs textarea{width:100%;}
+span.discount strong{color:#0C3;}
+.clear{clear:both;height:0;line-height:0;}
+button.link{width:40px;height:40px;background:url(img/link.png) no-repeat 0 0;overflow:hidden;text-indent:-1000px;border:0;}
+button.link.unlinked{background-position:-40px 0;}
+.mult_lists tr.alt{border-bottom:none;}
+.mult_lists tbody{border:1px solid #eee;}
+.mult_lists td{border-left:none!important;padding:1px 0 0!important;}
+.mult_lists ul{overflow-x:hidden;width:260px;padding:5px!important;}
+.loading{min-height:22px;background:url(img/loading.gif) no-repeat 50% 50%!important;}
+#product_table .chzn-container .chzn-search,#product_table .chzn-container .chzn-search input{width:133px!important;}
