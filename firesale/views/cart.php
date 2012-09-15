@@ -1,5 +1,5 @@
 
-      <form method="post" action="/cart/update">
+      <form method="post" action="/cart/update" class="firesale">
 
         <table class="cart">
           <thead>
@@ -18,7 +18,7 @@
 {{ contents }}
 	  	    <tr>
               <td class="remove"><input type="checkbox" name="item[{{ rowid }}][remove]" value="1" /></td>
-              <td class="image">{{ if { helper:string_word_count string=image } > 0 }}<img src="{{ site:url }}files/thumb/{{ image }}/100/100" alt="image" />{{ else }}{{ theme:image file="notfound_xs.jpg" alt="Not Found" }}{{ endif }}</td>
+              <td class="image">{{ if { helper:string_word_count string=image } > 0 }}<img src="{{ site:url }}files/thumb/{{ image }}/100/100" alt="image" />{{ else }}<div class="no_image_60"></div>{{ endif }}</td>
               <td class="name"><a href="/product/{{ slug }}">{{ name }}</a></td>
               <td class="model">{{ code }}</td>
               <td><input type="text" name="item[{{ rowid }}][qty]" value="{{ qty }}" /></td>
@@ -32,6 +32,13 @@
           </tbody>
         </table>
 
+        <section id="cart-buttons">
+          <div class="right">
+            <button type="submit" name="btnAction" value="update" class="btn"><span>Update Cart</span></button>
+            <button type="submit" name="btnAction" value="checkout" class="btn"><span>Goto Checkout</span></button>
+          </div>
+        </section>
+
         <section id="cart-totals">
           <ul>
             <li><label>Sub-Total:</label><span>{{ settings:currency }} {{ subtotal }}</span></li>
@@ -39,13 +46,6 @@
             <li class="large"><label>Total:</label><span>{{ settings:currency }} {{ total }}</li>
           </ul>
           <br class="clear" />
-        </section>
-
-        <section id="cart-buttons">
-          <div class="right">
-            <button type="submit" name="btnAction" value="update" class="btn"><span>Update Cart</span></button>
-            <button type="submit" name="btnAction" value="checkout" class="btn"><span>Goto Checkout</span></button>
-          </div>
         </section>
 
       </form>

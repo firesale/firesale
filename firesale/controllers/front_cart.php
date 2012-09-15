@@ -54,6 +54,10 @@ class Front_cart extends Public_Controller
 			$this->load->model($role['module'] . '/' . $role['model']);
 		}
 
+		// Load css/js
+		$this->template->append_css('module::firesale.css')
+					   ->append_js('module::firesale.js');
+
 	}
 
 	public function index()
