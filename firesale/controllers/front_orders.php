@@ -12,6 +12,10 @@ class Front_orders extends Public_Controller
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 
+		// Load css/js
+		$this->template->append_css('module::firesale.css')
+					   ->append_js('module::firesale.js');
+
 	}
 	
 	public function index()
@@ -67,7 +71,7 @@ class Front_orders extends Public_Controller
 		else
 		{
 			// Must be logged in
-			$this->set_flashdata('error', lang('firesale:orders:logged_in'));
+			$this->session->set_flashdata('error', lang('firesale:orders:logged_in'));
 			redirect('/users/login');
 		}
 	

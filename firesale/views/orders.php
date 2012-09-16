@@ -1,4 +1,6 @@
 
+    <div class="firesale">
+
 {{ orders }}
       <section class="order small">
         <header>
@@ -18,3 +20,5 @@
 
 {{ /orders }}
       <br class="clear" />
+
+    </div>
