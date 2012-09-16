@@ -15,6 +15,10 @@ class Front_product extends Public_Controller {
 		$this->load->model('streams_core/row_m');
 		$this->load->library('files/files');
 
+		// Load css/js
+		$this->template->append_css('module::firesale.css')
+					   ->append_js('module::firesale.js');
+
 	}
 	
 	public function index($product)

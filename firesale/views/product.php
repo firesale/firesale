@@ -1,4 +1,5 @@
-      <div class="width-threefourth firesale">
+      
+      <div class="width-threefourth firesale product">
         <section class="product-images">
           <ul>
 {{ if images != false }}
@@ -19,7 +20,7 @@
 {{ endif }}
 {{ /images}}
 {{ else }}
-            <li class="main"><a href="#">{{ theme:image file="notfound_l.jpg" alt="Not Found" }}</a></li>
+            <li class="main"><a href="#"><div class="no_image_332"></div></a></li>
 {{ endif }}
           </ul>
           <br class="clear" />
@@ -32,62 +33,15 @@
           </ul>
           <section class="price-round large"><span class="rrp">{{ if product.rrp > product.price }}{{ product.rrp }}{{ endif }}</span><span class="price">{{ product.price }}</span><span class="currency">{{ settings:currency }}</span></section>
           <br class="clear" />
-          <hr />
         </section>
-		<section class="product-buy">
-          <form method="post" action="/cart/insert">
+		    <section class="product-buy">
+          <form method="post" action="/cart/insert/{{ product.id }}">
             <input type="hidden" name="id" value="{{ product.id }}" />
             <label for="product_quantity">Qty:</label><input id="product_quantity" size="3" value="1" type="text" />
-            <a href="#cart-mini"><span class="text"><span class="icon"></span> Add to Cart</span></a>
+            <button type="submit" class="btn">Add to Cart</button>
           </form>
         </section>
-        <br class="clear" />
-        <div id="product-tabs" class="width-threefourth">
-          <ul class="tabs">
-            <li class="selected"><a href="#product-description">Description</a></li>
-          </ul>
-          <div class="tabs-container">
-            <section id="product-description">
-
-              {{ product.description }}
-
-            </section>
-          </div>
-        </div>
+        <section id="product-description">
+          {{ product.description }}
+        </section>
       </div>
-
-      <div class="firesale width-onefourth sidebar last">
-
-        <h2>Categories</h2>
-        <ul class="icon-arrow categories">
-{{ firesale:categories limit="0" }}
-{{ if parent == id }}
-          <li>
-            <a href="/category/{{ slug }}"><strong>{{ title }}</strong></a>
-            <ul>
-{{ firesale:sub_categories category=parent limit="0" }}
-              <li><a href="/category/{{ slug }}">{{ if product.category.id == id }}<strong>{{ title }}</strong>{{ else }}{{ title }}{{ endif }}</a></li>
-{{ /firesale:sub_categories }}
-            </ul>
-          </li>
-{{ else }}
-          <li><a href="/category/{{ slug }}">{{ title }}</a></li>
-{{ endif }}
-{{ /firesale:categories }}
-        </ul>
-
-        <h2>Best Sellers</h2>
-        <ol class="products">
-{{ firesale:get_products }}
-          <li>
-            <img src="{{ image }}" alt="{{ title }}" /><a href="/product/{{ slug }}{{ extra }}">{{ title }}</a>
-            <span>{{ settings:currency }}{{ price }}</span>
-{{ firesale_reviews:product_rating width=50 id=get_products.id }}            <span class="stars-small"><span style="width: {{ width }}px"></span>{{ rating }}</span>{{ /firesale_reviews:product_rating }}
-          </li>
-{{ /firesale:get_products }}
-          <li class="more"><a href="#">more...</a></li>
-        </ol>
-
-      </div>
-
-      <br class="clear" />
