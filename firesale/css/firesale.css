@@ -14,7 +14,7 @@
 .firesale .width-threefourth { width: 715px; margin-right: 20px; display: block; float: left; }
 .firesale .width-onefourth { width: 225px; margin-right: 20px; display: block; float: left; }
 .firesale .width-onesixth { width: 150px; margin-right: 12px; display: block; float: left; }
-.firesale .width-onethird { width: 306px; margin-right: 20px; display: block; float: left; }
+.firesale .width-onethird { width: 222px; margin-right: 20px; display: block; float: left; }
 .firesale .width-half { width: 300px; display: block; float: left; }
 .firesale .last { margin-right: 0px !important; margin-bottom: 0px !important; }
 .firesale ul.icon-arrow li a { height: 15px; line-height: 15px; padding-left: 15px; font-size: 13px; color: #515151; letter-spacing: -1px; display: inline-block; color: #515151; background: url('images/sprite.png') no-repeat -285px 0; }
@@ -165,3 +165,18 @@
 .firesale .order footer { border-top: 1px solid #eee; padding: 20px 0 0 0; margin: 20px 0 0 0; font-size: 28px; line-height: 34px; }
 .firesale .order footer a { line-height: 34px; position: absolute; right: 20px; font-weight: bold; }
 .firesale .order.small { width: 200px; float: left; margin: 0 30px 30px 0; }
+
+/* Payment */
+.firesale .payment label { display: inline-block; clear: both; width: 100px; margin-bottom: 6px; }
+.firesale .payment input[type=text] { width: 106px !important; line-height: 32px; margin: -4px 0 10px 0 !important; }
+.firesale .payment select { width: 59px; display: inline-block; margin: 0 0 10px 0; }
+.firesale .payment strong { display: block; padding-bottom: 10px; }
+.firesale .payment .btn { float: right; }
+.firesale.confirmation { font-size: 13px; line-height: 18px; }
+.firesale.confirmation h2 { border: none; color: #000; }
+.firesale.confirmation ul { padding: 0; }
+.firesale.confirmation ul li { list-style: none; padding: 0; }
+.firesale.confirmation .large { line-height: 24px; font-size: 20px; }
+table.firesale.standard th, table.standard td { text-align: center; vertical-align: middle; line-height: 18px; border-right: 1px solid #fff; border-bottom: 1px solid #fff; }
+table.firesale.standard th { padding: 3px 5px; background: #d6d6d6; color: #666; }
+table.firesale.standard td { padding: 5px 10px; }

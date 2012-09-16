@@ -1,7 +1,7 @@
 
-      <div class="width-full confirmation">
+      <div class="firesale width-full confirmation">
 
-        <div class="width-onethird">
+        <div class="firesale width-onethird">
           <h2>Shipping Address</h2>
           <ul>
             {{ if { helper:str_word_count string=ship_to.firstname } > 0 }}<li>{{ ship_to.fistname }}</li> {{ endif }}
@@ -14,7 +14,7 @@
           </ul>
         </div>
 
-        <div class="width-onethird">
+        <div class="firesale width-onethird">
           <h2>Payment Address</h2>
           <ul>
             {{ if { helper:str_word_count string=bill_to.firstname } > 0 }}<li>{{ bill_to.fistname }}</li> {{ endif }}
@@ -27,7 +27,7 @@
           </ul>
         </div>
     
-        <div class="width-onethird payment last">
+        <div class="firesale width-onethird payment last">
           <h2>Payment Details</h2>
 {{ payment }}
         </div>
@@ -37,7 +37,7 @@
     
         <h2>Products</h2>
 
-        <table class="standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <table class="firesale standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <th>Product</th>
             <th>Model</th>

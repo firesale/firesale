@@ -1,5 +1,5 @@
 
-      <div class="width-full confirmation">
+      <div class="firesale width-full confirmation">
 
         <div class="width-half">
           <h2>Shipping Address</h2>
@@ -32,7 +32,7 @@
     
         <h2>Products</h2>
 
-        <table class="standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <table class="firesale standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <th>Product</th>
             <th>Model</th>
@@ -68,7 +68,7 @@
 
         <h2>Order Status</h2>
 
-        <table class="standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
+        <table class="firesale standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
             <th width="150">Status</th>
             <th>Message</th>
