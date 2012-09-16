@@ -3,6 +3,8 @@
 class Front_address extends Public_Controller
 {
 
+	public $user = FALSE;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -12,13 +14,17 @@ class Front_address extends Public_Controller
 		$this->load->model('address_m');
 
 		// Check for user
-		$this->user = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
+		$this->user = ( isset($this->current_user->id) ? $this->current_user->id : FALSE );
 
 		// Check user
 		if( !$this->user )
 		{
 			// Redirect to login if no user
 		}
+
+		// Load css/js
+		$this->template->append_css('module::firesale.css')
+					   ->append_js('module::firesale.js');
 
 	}
 	

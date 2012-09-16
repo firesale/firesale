@@ -1,4 +1,6 @@
 
+    <div class="firesale">
+
 {{ addresses }}
       <section class="order small">
         <header>
@@ -21,5 +23,7 @@
 
 {{ /addresses }}
       <br class="clear" />
+
+    </div>
     
     <a href="/users/addresses/create" class="btn"><span>Create new Address</span></a>
