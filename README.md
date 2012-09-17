@@ -16,6 +16,23 @@ FireSale is a lightweight, extensible eCommerce platform designed and built arou
 
 Through a slightly modified version of the standard details file found in any PyroCMS module we have put together a framework that allows the core and add-ons to look and feel the same on the admin side while interacting seamlessly across the whole package. The idea of extensibility was something we had from day-one and everything we've done has been based around this principle. We've aimed to allow you to use the core as a starting point and to require as little modification as possible and moving all customisation to the add-ons. While add-ons do a lot of the customisation we've also aimed to make as much of the core streams enabled as possible, with more of it being converted as time goes on, meaning you can easily customise and change the options for each area of the module.
 
+## Features
+* Highly powerful product and category creation
+* Complete order tracking
+* Informative dashboard with more information added via modules
+* Available in 6 (and counting) Languages
+* Simple and intuative interface
+* 15 Payment Gateways, powered by CI-Merchant and easily extended
+* Almost fully extensible through modules
+* Totally streams powered for easy customisation
+* Drag and drop, files integrated, image uploading
+* Complete with shipping and search
+
+## Requirements
+* PHP 5.2.*
+* PyroCMS 2.1.4+
+* Theme with jQuery
+
 ## Installation
 
 1. Clone yourself a copy of the FireSale core
