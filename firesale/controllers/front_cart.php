@@ -472,7 +472,12 @@ class Front_cart extends Public_Controller
 			if ($this->input->post())
 			{
 				// Run payment
-				$process = $this->merchant->process($this->input->post(NULL, TRUE));
+				$params = array_merge($this->input->post(NULL, TRUE), array(
+					'currency_code' => $this->settings->get('firesale_currency'),
+					'amount'        => $this->fs_cart->total,
+					'reference'     => 'Order #' . $this->session->userdata('order_id')
+				));
+				$process = $this->merchant->process($params);
 				$status = '_order_' . $process->status;
 
 				// Check status
