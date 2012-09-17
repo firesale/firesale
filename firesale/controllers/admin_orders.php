@@ -10,6 +10,9 @@ class Admin_orders extends Admin_Controller
 	{
 
 		parent::__construct();
+
+		// CH: Instantiate the StdClass object to fix E_STRICT errors
+		$this->data = new StdClass;
 		
 		// Load the models
 		$this->load->model('orders_m');

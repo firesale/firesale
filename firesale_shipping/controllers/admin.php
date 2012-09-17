@@ -10,6 +10,9 @@ class Admin extends Admin_Controller {
     {
 
         parent::__construct();
+
+        // CH: Instantiate the StdClass object to fix E_STRICT errors
+		$this->data = new StdClass;
 	
 		// Load libraries
 		$this->load->driver('Streams');
