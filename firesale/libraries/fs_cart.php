@@ -17,6 +17,8 @@ require_once(BASEPATH.'libraries/Cart.php');
 
 class Fs_cart extends CI_Cart
 {
+	public $product_name_rules	= '\.\:\-_ a-z0-9_-а-яА-Я ';
+	
 	public function destroy()
 	{
 		// Run the standard CI_Cart function
