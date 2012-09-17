@@ -46,6 +46,10 @@ If you would like to replace the default PyroCMS dashboard with the FireSALE das
 
 If you find any issues or want to provide feedback we'd appreciate it if you used the GitHub issue tracker and we'll try to address them as soon as we can.
 
+## Pull Requests
+
+If you would like to submit your bug fixes, enhancements and translations to the project then you are welcome to submit pull requests here on GitHub. We do however ask that you use the UNIX LF (\n) line endings.
+
 # Contributors
 
 Thank you to everyone that has helped along the way, contributing not only code but time, ideas and coffee, without you this wouldn't have been possible.
