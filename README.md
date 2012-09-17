@@ -1,9 +1,9 @@
-# FireSALE Core (Beta)
+# FireSale
 
 * Website: http://www.getfiresale.org
 * Documentation: http://docs.getfiresale.org
 * License: MIT License, a copy of which is included with this package
-* Version: 1.0.0
+* Version: 1.0.2
 
 ## Team
 
@@ -12,7 +12,7 @@
 
 ## Description
 
-FireSALE is a lightweight, extensible eCommerce platform designed and built around [PyroCMS](http://www.pyrocms.com). We've aimed to keep it small yet highly functional while making it easy to use for you and your clients, enabling you to get your new store running in no time. In the core we've included everything you need to build an amazing store and the two additional modules (search and shipping) are intended to be used not only as a template for your future development but also key to the default usability. These two features were left out of the core as we know they're the areas most likely to be customised by many clients and felt it was necessary to allow them to be easily replaced.
+FireSale is a lightweight, extensible eCommerce platform designed and built around [PyroCMS](http://www.pyrocms.com). We've aimed to keep it small yet highly functional while making it easy to use for you and your clients, enabling you to get your new store running in no time. In the core we've included everything you need to build an amazing store and the two additional modules (search and shipping) are intended to be used not only as a template for your future development but also key to the default usability. These two features were left out of the core as we know they're the areas most likely to be customised by many clients and felt it was necessary to allow them to be easily replaced.
 
 Through a slightly modified version of the standard details file found in any PyroCMS module we have put together a framework that allows the core and add-ons to look and feel the same on the admin side while interacting seamlessly across the whole package. The idea of extensibility was something we had from day-one and everything we've done has been based around this principle. We've aimed to allow you to use the core as a starting point and to require as little modification as possible and moving all customisation to the add-ons. While add-ons do a lot of the customisation we've also aimed to make as much of the core streams enabled as possible, with more of it being converted as time goes on, meaning you can easily customise and change the options for each area of the module.
 
@@ -38,7 +38,7 @@ Either via the Routes Add-on or directly into the config we suggest you put the 
 	$route['users/orders']   		  = 'firesale/front_orders/index';
 	$route['users/addresses(/:any)?'] = 'firesale/front_address$1';
 	
-If you would like to replace the default PyroCMS dashboard with the FireSALE dashboard then you can do so by adding the following route:
+If you would like to replace the default PyroCMS dashboard with the FireSale dashboard then you can do so by adding the following route:
 
 	$route['admin'] = 'firesale/admin/index';
 
