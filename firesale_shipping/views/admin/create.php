@@ -1,12 +1,10 @@
-
-<?php if( isset($id) AND $id > 0 ): ?>
-	<h1><?php echo sprintf(lang('firesale:shipping:edit'), $title); ?></h1>
-<?php else: ?>
-	<h1><?php echo lang('firesale:shipping:create'); ?></h1>
-<?php endif; ?>
-
+	
 	<section class="title">
-		<h4><?php echo lang('firesale:sections:shipping'); ?></h4>
+		<?php if( isset($id) AND $id > 0 ): ?>
+			<h4><?php echo sprintf(lang('firesale:shipping:edit'), $title); ?></h4>
+		<?php else: ?>
+			<h4><?php echo lang('firesale:shipping:create'); ?></h4>
+		<?php endif; ?>
 	</section>
 
 	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
@@ -24,10 +22,10 @@
 <?php endforeach; ?>
 				</ul>
 			</fieldset>
+			
+			<div class="buttons">
+				<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
+			</div>
 		</section>
-	
-		<div class="buttons">
-			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
-		</div>
 		
 	<?php echo form_close(); ?>

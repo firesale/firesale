@@ -1,8 +1,6 @@
 
-	<h1><?php echo lang('firesale:shipping:title'); ?></h1>
-
 	<section class="title">
-		<h4><?php echo lang('firesale:sections:shipping'); ?></h4>
+		<h4><?php echo lang('firesale:shipping:title'); ?></h4>
 	</section>
 	
 	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
@@ -48,13 +46,17 @@
 					</tr>
 <?php endforeach; ?>
 				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="9"><div style="float:right;"></div></td>
+					</tr>
+				</tfoot>
 			</table>
 
+			<div class="buttons">
+				<?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
+			</div>
 		</section>
-	
-		<div class="buttons">
-			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
-		</div>
 <?php endif; ?>
 		
 	<?php echo form_close(); ?>
