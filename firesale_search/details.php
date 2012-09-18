@@ -42,7 +42,7 @@ class Module_Firesale_Search extends Module {
 			),
 			'events'			 => array(
 				'order_complete'     => array(
-					'model'		 => 'firesale_searcg/search_m',
+					'model'		 => 'firesale_search/search_m',
 					'function'	 => 'order_complete'
 				)
 			)
