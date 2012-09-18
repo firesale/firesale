@@ -21,6 +21,14 @@ class Front_cart extends Public_Controller
 		$this->load->model('firesale/address_m');
 		$this->load->model('firesale/categories_m');
 		$this->load->model('firesale/products_m');
+
+		// Require login?
+		if( $this->settings->get('firesale_login') == 1 AND !$this->current_user )
+		{
+			$this->session->set_flashdata('error', lang('firesale:cart:login_required'));
+			$this->session->set_userdata('redirect_to', current_url());
+			redirect('users/login');		
+		}
 		
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');

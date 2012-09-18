@@ -220,6 +220,7 @@
 	$lang['firesale:gateways:labels:desc']			= 'Aprašymas';
 	$lang['firesale:cart:title']					= 'Krepšelis';
 	$lang['firesale:cart:empty']					= 'Nėra krepšelyje prekių';
+	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
 	$lang['firesale:checkout:title'] 				= 'Apmokėti';
 	$lang['firesale:checkout:error_callback'] 		= 'Įvyko užsakymo klaida. Pamėginkite dar kartą, naudodami kitą mokėjimo būdą.';
 	$lang['firesale:payment:title'] 				= 'Patvirtinti duomenis';

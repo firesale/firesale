@@ -224,6 +224,7 @@
 	$lang['firesale:gateways:labels:desc']			= 'Description';
 	$lang['firesale:cart:title']					= 'Shopping Cart';
 	$lang['firesale:cart:empty']					= 'There are currently no items in your cart';
+	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that';
 	$lang['firesale:checkout:title'] 				= 'Checkout';
 	$lang['firesale:checkout:error_callback'] 		= 'There seems to have been a problem with your order, please try again, possibly using another payment method.';
 	$lang['firesale:payment:title'] 				= 'Confirm Details';

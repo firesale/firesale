@@ -223,6 +223,7 @@
 	$lang['firesale:gateways:labels:desc']			= 'Deskripsi';
 	$lang['firesale:cart:title']					= 'Keranjang Belanja';
 	$lang['firesale:cart:empty']					= 'Belum ada item di keranjang Anda';
+	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
 	$lang['firesale:checkout:title'] 				= 'Periksa';
 	$lang['firesale:checkout:error_callback'] 		= 'Nampaknya terjadi kesalahan dengan pesanan Anda, silakan coba lagi, mungkin dengan metode pembayaran yang lain.';
 	$lang['firesale:payment:title'] 				= 'Detail Konfirmasi';

@@ -507,6 +507,20 @@ class Module_Firesale extends Module {
 			'module' 		=> 'firesale'
 		);
 
+		// Require login to purchase
+		$settings[] = array(
+			'slug' 		  	=> 'firesale_login',
+			'title' 	  	=> 'Require login to purchase?',
+			'description' 	=> 'Ensure a user is logged in before allowing them to buy products',
+			'default' 		=> '0',
+			'value' 		=> '0',
+			'type' 			=> 'select',
+			'options' 		=> '1=Yes|0=No',
+			'is_required' 	=> 1,
+			'is_gui' 		=> 1,
+			'module' 		=> 'firesale'
+		);
+
 		// Perform	
 		if( $action == 'add' )
 		{
