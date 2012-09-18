@@ -293,6 +293,7 @@ class Admin_gateways extends Admin_Controller
 		
 		if ($query->num_rows())
 		{
+
 			$values['name'] = $query->row()->name;
 			$values['desc'] = $query->row()->desc;
 											
@@ -314,6 +315,9 @@ class Admin_gateways extends Admin_Controller
 	
 			if (is_array($fields))
 			{
+
+				$additional_fields = array();
+
 				foreach ($fields as $field)
 				{
 					$values[$field['slug']] = $this->gateways->setting($slug, $field['slug']);
