@@ -29,9 +29,9 @@ Through a slightly modified version of the standard details file found in any Py
 * Complete with shipping and search
 
 ## Requirements
-* PHP 5.2.*+
+* PHP 5.2+
 * PyroCMS 2.1.4+
-* The suggested routes added to your system/cms/config/routes.php file (see below)
+* The suggested routes added to your system/cms/config/routes.php file ([see below](#routes))
 * Theme with jQuery
 
 ## Installation
