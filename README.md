@@ -47,15 +47,16 @@ Through a slightly modified version of the standard details file found in any Py
 ## Routes
 
 Either via the Routes Add-on or directly into the config we suggest you put the following items into your routes:
-
-	$route['category(:any)'] 		  = 'firesale/front_category/index$1';
-	$route['product(:any)']  		  = 'firesale/front_product/index$1';
-	$route['search(:any)?']  		  = 'firesale_search/search/index$1';
-	$route['cart(:any)?']    		  = 'firesale/cart$1';
-	$route['users/orders/([0-9]+)']   = 'firesale/front_orders/view_order/$1';
-	$route['users/orders']   		  = 'firesale/front_orders/index';
-	$route['users/addresses(/:any)?'] = 'firesale/front_address$1';
 	
+	$route['category/(order|style)/([a-z0-9]+)'] = 'firesale/front_category/$1/$2';
+	$route['category(:any)'] 		  			 = 'firesale/front_category/index$1';
+	$route['product(:any)']  		  			 = 'firesale/front_product/index$1';
+	$route['search(:any)?']  		  			 = 'firesale_search/search/index$1';
+	$route['cart(:any)?']    		  			 = 'firesale/cart$1';
+	$route['users/orders/([0-9]+)']   			 = 'firesale/front_orders/view_order/$1';
+	$route['users/orders']   		  			 = 'firesale/front_orders/index';
+	$route['users/addresses(/:any)?'] 			 = 'firesale/front_address$1';
+
 If you would like to replace the default PyroCMS dashboard with the FireSale dashboard then you can do so by adding the following route:
 
 	$route['admin'] = 'firesale/admin/index';
