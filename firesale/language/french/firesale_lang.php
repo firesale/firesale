@@ -186,3 +186,10 @@
 	
 	// Checkout (Payment Method)
 	$lang['firesale:checkout:title:payment_method']	= 'Mode de paiement';
+		
+	// Products Frontend
+	$lang['firesale:product:label_availability'] = "Availability"; # Translate
+	$lang['firesale:product:label_model'] = "Model"; # Translate
+	$lang['firesale:product:label_product_code'] = "Product Code"; # Translate
+	$lang['firesale:product:label_qty'] = "Qty"; # Translate
+	$lang['firesale:product:label_add_to_cart'] = "Add to Cart"; # Translate
