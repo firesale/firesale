@@ -107,13 +107,14 @@
 	$lang['firesale:label_drop_images'] = 'Trascina qui le immagini da caricare';
 	$lang['firesale:label_duplicate']   = 'Duplica';
 
-	$lang['firesale:label_stock_short']	= 'Livello scorte';
-	$lang['firesale:label_stock_status']= 'Stato delle scorte';
-	$lang['firesale:label_stock_in']	= 'Disponibili';
-	$lang['firesale:label_stock_low']	= 'Pochi pezzi';
-	$lang['firesale:label_stock_out']	= 'Finito';
-	$lang['firesale:label_stock_order']	= 'Scorte in ordine';
-	$lang['firesale:label_stock_ended']	= 'Discontinuo';
+	$lang['firesale:label_stock_short']		= 'Livello scorte';
+	$lang['firesale:label_stock_status']	= 'Stato delle scorte';
+	$lang['firesale:label_stock_in']		= 'Disponibili';
+	$lang['firesale:label_stock_low']		= 'Pochi pezzi';
+	$lang['firesale:label_stock_out']		= 'Finito';
+	$lang['firesale:label_stock_order']		= 'Scorte in ordine';
+	$lang['firesale:label_stock_ended']		= 'Discontinuo';
+	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
 
 	$lang['firesale:label_remove']		= 'Rimuovi';
 	$lang['firesale:label_image']		= 'Immagine';

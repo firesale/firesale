@@ -107,13 +107,14 @@
 	$lang['firesale:label_drop_images'] = 'Tarik dan Lepaskan Gambar Disini untuk Mengunggah';
 	$lang['firesale:label_duplicate']   = 'Duplikasi';
 
-	$lang['firesale:label_stock_short']	= 'Level Stok';
-	$lang['firesale:label_stock_status']= 'Status Stok';
-	$lang['firesale:label_stock_in']	= 'Tersedia';
-	$lang['firesale:label_stock_low']	= 'Hampir Habis';
-	$lang['firesale:label_stock_out']	= 'Habis';
-	$lang['firesale:label_stock_order']	= 'Dipesan tambahan stok';
-	$lang['firesale:label_stock_ended']	= 'Tidak dilanjutkan';
+	$lang['firesale:label_stock_short']		= 'Level Stok';
+	$lang['firesale:label_stock_status']	= 'Status Stok';
+	$lang['firesale:label_stock_in']		= 'Tersedia';
+	$lang['firesale:label_stock_low']		= 'Hampir Habis';
+	$lang['firesale:label_stock_out']		= 'Habis';
+	$lang['firesale:label_stock_order']		= 'Dipesan tambahan stok';
+	$lang['firesale:label_stock_ended']		= 'Tidak dilanjutkan';
+	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
 
 	$lang['firesale:label_remove']		= 'Hapus';
 	$lang['firesale:label_image']		= 'Gambar';

@@ -21,7 +21,6 @@ class Cart_m extends MY_Model
 		{
 			if( array_key_exists($product['id'], $qty) )
 			{
-
 				if( (int)$qty[$product['id']] < (int)$product['qty'] )
 				{
 					$changed 		  = TRUE;
@@ -149,7 +148,7 @@ class Cart_m extends MY_Model
 		$data = array(
 					'id'	=> $product['id'],
 					'code'	=> $product['code'],
-					'qty'	=> ( $qty > $product['stock'] ? $product['stock'] : $qty ),
+					'qty'	=> ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
 					'price'	=> $product['price'],
 					'name'	=> $product['title'],
 					'slug'	=> $product['slug'],

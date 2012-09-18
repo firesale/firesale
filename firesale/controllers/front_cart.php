@@ -4,7 +4,6 @@ class Front_cart extends Public_Controller
 {
 
 	public $validation_rules = array();
-	public $has_routes = FALSE;
 	public $stream;
 
 	public function __construct()
@@ -25,10 +24,6 @@ class Front_cart extends Public_Controller
 		
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
-		
-		// Set routes
-		if( $this->settings->get('routes_installed') == 1 )
-			$this->has_routes = TRUE;
 		
 		// Set the tax percentage
 		$this->fs_cart->tax_percent = $this->settings->get('firesale_tax');
@@ -110,11 +105,11 @@ class Front_cart extends Public_Controller
 				{
 					
 					$product = $this->products_m->get_product($prd_code);
-					$tmp[$product['id']] = $product['stock'];
 
-					if ($product != FALSE AND $qtys[$key] > 0)
+					if ($product != FALSE AND ( $product['stock_status']['key'] == 6 OR $qtys[$key] > 0 ))
 					{
 						$data[] = $this->cart_m->build_data($product, (int)$qtys[$key]);
+						if( $product['stock_status']['key'] != 6 ) { $tmp[$product['id']] = $product['stock']; }
 					}
 
 				}
@@ -125,12 +120,12 @@ class Front_cart extends Public_Controller
 		{
 
 			$product = $this->products_m->get_product($prd_code);
-			$tmp[$product['id']] = $product['stock'];
 
-			if ($product != FALSE AND $qty > 0)
+			if ($product != FALSE AND ( $product['stock_status']['key'] == 6 OR $qty > 0 ))
 			{
 				$data[] = $this->cart_m->build_data($product, $qty);
 				$this->session->set_userdata('added', $product['id']);
+				if( $product['stock_status']['key'] != 6 ) { $tmp[$product['id']] = $product['stock']; }
 			}
 
 		}
@@ -167,7 +162,7 @@ class Front_cart extends Public_Controller
 		if ( ! $this->fs_cart->total_items())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
-			redirect(isset($this->has_routes) ? 'cart' : 'firesale/cart');
+			redirect('cart');
 		}
 		else
 		{
@@ -205,9 +200,9 @@ class Front_cart extends Public_Controller
 
 						if ($product)
 						{
-	
+
 							// Set the new quantity, or the stock level if the quantity exceeds it.
-							$data['qty'] = $item['qty'] > $product['stock'] ? $product['stock'] : $item['qty'];
+							$data['qty'] = ( $product['stock_status']['key'] != 6 && $item['qty'] > $product['stock'] ? $product['stock'] : $item['qty'] );
 
 							// If this is a current order, update the table
 							if ($this->cart_m->cart_has_order())
@@ -256,7 +251,7 @@ class Front_cart extends Public_Controller
 				}
 
 				// Send to checkout
-				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart/checkout');
+				redirect('cart/checkout');
 
 			}
 			elseif ($this->input->is_ajax_request())
@@ -265,7 +260,7 @@ class Front_cart extends Public_Controller
 			}
 			else
 			{
-				redirect(( ! $this->has_routes ? '/firesale' : '' ) . '/cart');
+				redirect('cart');
 			}
 
 		}
@@ -291,7 +286,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect( ( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : ( !$this->has_routes ? '/firesale' : '' ) . '/cart' ));
+			redirect( ( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'cart' ));
 		}
 
 	}
@@ -303,7 +298,7 @@ class Front_cart extends Public_Controller
 		if ( ! $this->fs_cart->total())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
-			redirect(isset($this->has_routes) ? 'cart' : 'firesale/cart');
+			redirect('cart');
 		}
 		else
 		{
@@ -604,7 +599,7 @@ class Front_cart extends Public_Controller
 		Events::trigger('order_complete', $order);
 
 		// Email (user)
-		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user', 'to' => $order['email'])), 'array');
+		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user', 'to' => $order['bill_to']['email'])), 'array');
 
 		// Email (admin)
 		Events::trigger('email', array_merge($order, array('slug' => 'order-complete-admin', 'to' => $this->settings->get('contact_email'))), 'array');

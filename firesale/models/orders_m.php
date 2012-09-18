@@ -359,7 +359,12 @@ class Orders_m extends MY_Model
 			$data['stock']  = ( $product['stock'] - $stock );
 
 			// Get status
-			if( $data['stock'] < 0 )
+			if( $product['stock_status']['key'] == 6 )
+			{
+				// Unlimited, do nothing
+				return TRUE;
+			}
+			else if( $data['stock'] < 0 )
 			{
 				// We dun fucked up
 				$data['stock_status'] = 3;

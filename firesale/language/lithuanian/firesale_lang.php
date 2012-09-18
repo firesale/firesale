@@ -104,13 +104,14 @@
 	$lang['firesale:label_drop_images'] = 'Užtempkite nuotraukas įkėlimui';
 	$lang['firesale:label_duplicate']   = 'Kopijuoti';
 
-	$lang['firesale:label_stock_short']	= 'Atsargų kiekis';
-	$lang['firesale:label_stock_status']= 'Atsagų kiekis';
-	$lang['firesale:label_stock_in']	= 'Yra';
-	$lang['firesale:label_stock_low']	= 'Mažas kiekis';
-	$lang['firesale:label_stock_out']	= 'Nėra';
-	$lang['firesale:label_stock_order']	= 'Užsakytas papildymas';
-	$lang['firesale:label_stock_ended']	= 'Neparduodama';
+	$lang['firesale:label_stock_short']		= 'Atsargų kiekis';
+	$lang['firesale:label_stock_status']	= 'Atsagų kiekis';
+	$lang['firesale:label_stock_in']		= 'Yra';
+	$lang['firesale:label_stock_low']		= 'Mažas kiekis';
+	$lang['firesale:label_stock_out']		= 'Nėra';
+	$lang['firesale:label_stock_order']		= 'Užsakytas papildymas';
+	$lang['firesale:label_stock_ended']		= 'Neparduodama';
+	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
 
 	$lang['firesale:label_remove']		= 'Pašalinti';
 	$lang['firesale:label_image']		= 'Paveiksliukas';

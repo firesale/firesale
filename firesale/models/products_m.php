@@ -21,7 +21,8 @@ class Products_m extends MY_Model {
 							2 => 'firesale:label_stock_low',
 							3 => 'firesale:label_stock_out',
 							4 => 'firesale:label_stock_order',
-							5 => 'firesale:label_stock_ended'
+							5 => 'firesale:label_stock_ended',
+							6 => 'firesale:label_stock_unlimited'
 						   );
 	
 	/**

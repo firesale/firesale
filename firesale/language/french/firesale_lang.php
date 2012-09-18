@@ -83,13 +83,14 @@
 	$lang['firesale:label_price_tax']	= 'Prix courant (avant taxe)'; // to check
 	$lang['firesale:label_stock']		= 'Niveau actuel du stock';
 
-	$lang['firesale:label_stock_short']	= 'Niveau du stock';
-	$lang['firesale:label_stock_status']= 'Statut du stock';
-	$lang['firesale:label_stock_in']	= 'En stock';
-	$lang['firesale:label_stock_low']	= 'Stock bas';
-	$lang['firesale:label_stock_out']	= 'Rupture de stock';
-	$lang['firesale:label_stock_order']	= 'Stock en réapprovisionnement';
-	$lang['firesale:label_stock_ended']	= 'Abandonné';
+	$lang['firesale:label_stock_short']		= 'Niveau du stock';
+	$lang['firesale:label_stock_status']	= 'Statut du stock';
+	$lang['firesale:label_stock_in']		= 'En stock';
+	$lang['firesale:label_stock_low']		= 'Stock bas';
+	$lang['firesale:label_stock_out']		= 'Rupture de stock';
+	$lang['firesale:label_stock_order']		= 'Stock en réapprovisionnement';
+	$lang['firesale:label_stock_ended']		= 'Abandonné';
+	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
 
 	$lang['firesale:label_order']		= 'Commande';
 	$lang['firesale:label_gateway']		= 'Mode de paiement';
