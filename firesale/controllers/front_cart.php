@@ -142,7 +142,11 @@ class Front_cart extends Public_Controller
 		$this->fs_cart->insert($data);
 
 		// Force available quanity
-		$this->cart_m->check_quantity($this->fs_cart->contents(), $tmp);
+		if( $this->cart_m->check_quantity($this->fs_cart->contents(), $tmp) )
+		{
+			// Set flash to warn the user
+			$this->session->set_flashdata('message', lang('firesale:cart:qty_too_low'));
+		}
 
 		if ($product != FALSE)
 		{
@@ -158,7 +162,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect('/cart');
+			redirect('cart');
 		}
 
 	}
@@ -216,6 +220,12 @@ class Front_cart extends Public_Controller
 							if ($this->cart_m->cart_has_order())
 							{
 								$this->orders_m->insert_update_order_item($this->session->userdata('order_id'), $cart[$row_id], $data['qty']);
+							}
+
+							if( $data['qty'] < $item['qty'] )
+							{
+								// Set flash to warn the user
+								$this->session->set_flashdata('message', lang('firesale:cart:qty_too_low'));
 							}
 			
 						}
@@ -327,7 +337,7 @@ class Front_cart extends Public_Controller
 				$posted = TRUE;
 				$input 	= $this->input->post();
 				$skip	= array('btnAction', 'bill_details_same');
-				$extra 	= array('return' => '/cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
+				$extra 	= array('return' => 'cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
 
 				// Shipping option
 				if (isset($this->firesale->roles['shipping']) AND isset($input['shipping']))

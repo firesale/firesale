@@ -224,6 +224,7 @@
 	$lang['firesale:cart:title']					= 'Cesta de Compras';
 	$lang['firesale:cart:empty']					= 'Você não possui nenhum item em sua cesta.';
 	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
+	$lang['firesale:cart:qty_too_low']				= 'Stock level is too low to add that quantity to your cart'; #translate
 	$lang['firesale:checkout:title'] 				= 'Finalizar Compra';
 	$lang['firesale:checkout:error_callback'] 		= 'Parece existir um erro em seu pedido, por favor tente novamente, possivelmente utilizando outro meio de pagamento.';
 	$lang['firesale:payment:title'] 				= 'Confirmar Detalhes';

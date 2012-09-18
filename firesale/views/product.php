@@ -35,9 +35,9 @@
           <br class="clear" />
         </section>
 		    <section class="product-buy">
-          <form method="post" action="/cart/insert/{{ product.id }}">
-            <input type="hidden" name="id" value="{{ product.id }}" />
-            <label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label><input id="product_quantity" size="3" value="1" type="text" />
+          <form method="post" action="/cart/insert">
+            <input type="hidden" name="prd_code[]" value="{{ product.id }}" />
+            <label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label><input id="product_quantity" name="qty[]" size="3" value="1" type="text" />
             <button type="submit" class="btn"><?php echo lang('firesale:product:label_add_to_cart'); ?></button>
           </form>
         </section>

@@ -161,6 +161,7 @@
 	$lang['firesale:cart:title']	= 'Panier d\'achat';
 	$lang['firesale:cart:empty']	= 'Il n\'y a aucun produit dans votre panier';
 	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
+	$lang['firesale:cart:qty_too_low']				= 'Stock level is too low to add that quantity to your cart'; #translate
 
 	// Checkout
 	$lang['firesale:checkout:title'] = 'Finaliser la commande';
