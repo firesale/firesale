@@ -241,3 +241,10 @@
 
 	// Addresses
 	$lang['firesale:addresses:title'] = 'Miei indirizzi';
+	
+	// Products Frontend
+	$lang['firesale:product:label_availability'] = "Disponibilità:";	
+	$lang['firesale:product:label_model'] = "Modello:";
+	$lang['firesale:product:label_product_code'] = "Codice prodotto:";	
+	$lang['firesale:product:label_qty'] = "Quantità:";
+	$lang['firesale:product:label_add_to_cart'] = "Aggiungi al Carrello";	

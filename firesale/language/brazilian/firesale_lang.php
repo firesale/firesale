@@ -233,3 +233,10 @@
 
 	// Addresses
 	$lang['firesale:addresses:title'] = 'Meu Endereço';
+		
+	// Products Frontend
+	$lang['firesale:product:label_availability'] = "Availability"; # Translate
+	$lang['firesale:product:label_model'] = "Model"; # Translate
+	$lang['firesale:product:label_product_code'] = "Product Code"; # Translate
+	$lang['firesale:product:label_qty'] = "Qty"; # Translate
+	$lang['firesale:product:label_add_to_cart'] = "Add to Cart"; # Translate
