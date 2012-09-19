@@ -386,6 +386,9 @@ class Front_cart extends Public_Controller
 						{
 							$this->orders_m->insert_update_order_item($id, $item, $item['qty']);
 						}
+
+						// CH: Trigger an event
+						Events::trigger('order_created', array('id' => $id));
 						
 						// Set order id
 						$this->session->set_userdata('order_id', $id);
