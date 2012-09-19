@@ -54,9 +54,9 @@
 						<td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? '&infin;' : $product['stock'] ); ?></td>
 						<td><?php echo $this->settings->get('currency'); ?><span class="item-price"><?php echo $product['price']; ?></span></td>
 						<td class="actions">
-							<a href="#" class="button quickedit">Quick Edit</a> 
-							<a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="button edit">Edit</a> 
-							<a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="button confirm">Delete</a>
+							<a href="#" class="button quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a> 
+							<a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="button edit"><?php echo lang('global:edit'); ?></a> 
+							<a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="button confirm"><?php echo lang('global:delete'); ?></a>
 						</td>
 					</tr>
 <?php endforeach; ?>
