@@ -627,44 +627,40 @@ class Products_m extends MY_Model {
 	 * @return boolean TRUE or FALSE based on the status of the resize
 	 * @access public
 	 */
-	public function make_square($status)
+	public function make_square($status, $allow = array('jpeg', 'png') )
 	{
 
 		// Variables
-		$bg   = array(255, 255, 255);
-		$id   = $status['data']['id'];
-		$w    = $status['data']['width'];
-		$h	  = $status['data']['height'];
-		$mime = str_replace('image/', '', $status['data']['mimetype']);
-		$path = $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . SITE_REF . '/files/' . $status['data']['filename'];
+		$bg    = array(255, 255, 255);
+		$id    = $status['data']['id'];
+		$w     = $status['data']['width'];
+		$h	   = $status['data']['height'];
+		$mime  = str_replace('image/', '', $status['data']['mimetype']);
+		$path  = $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . SITE_REF . '/files/' . $status['data']['filename'];
 
-		if( $this->settings->get('image_square') == '1' )
+		// Is it required?
+		if( $w != $h AND in_array($mime, $allow) )
 		{
 	
-			if( $w != $h )
-			{
+			// Settings
+			$size = ( $w > $h ? $w : $h );
+			$img  = imagecreatetruecolor($size, $size);
+			$bg   = imagecolorallocate($img, $bg[0], $bg[1], $bg[2]);
+			$copy = 'imagecreatefrom' . $mime;
+			$save = 'image' . $mime;
+			$orig = $copy($path);
+			$x 	  = ( $w != $size ? round( ( $size - $w ) / 2 ) : 0 );
+			$y 	  = ( $h != $size ? round( ( $size - $h ) / 2 ) : 0 );
 		
-				// Settings
-				$size = ( $w > $h ? $w : $h );
-				$img  = imagecreatetruecolor($size, $size);
-				$bg   = imagecolorallocate($img, $bg[0], $bg[1], $bg[2]);
-				$copy = 'imagecreatefrom' . $mime;
-				$save = 'image' . $mime;
-				$orig = $copy($path);
-				$x 	  = ( $w != $size ? round( ( $size - $w ) / 2 ) : 0 );
-				$y 	  = ( $h != $size ? round( ( $size - $h ) / 2 ) : 0 );
-			
-				// Build image
-				imagefilledrectangle($img, 0, 0, $size, $size, $bg);
-				imagecopy($img, $orig, $x, $y, 0, 0, $w, $h);
-				$save($img, $path);
-				imagedestroy($orig);
-				imagedestroy($img);
+			// Build image
+			imagefilledrectangle($img, 0, 0, $size, $size, $bg);
+			imagecopy($img, $orig, $x, $y, 0, 0, $w, $h);
+			$save($img, $path);
+			imagedestroy($orig);
+			imagedestroy($img);
 
-				// Update files table
-				$this->db->where('id', $id)->update('files', array('width' => $size, 'height' => $size));
-	
-			}
+			// Update files table
+			$this->db->where('id', $id)->update('files', array('width' => $size, 'height' => $size));
 
 		}
 			

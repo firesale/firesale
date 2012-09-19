@@ -12,11 +12,13 @@ $(function(){
 		paramname: 'userfile',
     	maxfilesize: maxsize,
 		maxfiles: maxfile,
+		allowedfiletypes: [],
 		url: BASE_URL + 'admin/firesale/products/upload/' + $('#id').val(),
 		data: { csrf_hash_name: $.cookie(pyro.csrf_cookie_name) },
 	
 		uploadFinished:function(i,file,response){
-			$.data(file).addClass('done');
+			if( response.status ) { $.data(file).addClass('done'); }
+			else { $.data(file).addClass('error'); alert(response.message.replace('<p>', '').replace('</p>', '')); }
 		},
 		
     	error: function(err, file) {

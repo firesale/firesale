@@ -92,7 +92,7 @@ class Admin_products extends Admin_Controller
 			$input 	= $this->input->post();
 			$skip	= array('btnAction');
 			$extra 	= array(
-						'return' 			=> '/admin/firesale/products/edit/-id-',
+						'return' 			=> '/admin/firesale/products/edit/-id-?' . time(),
 						'success_message'	=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
 						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
@@ -290,6 +290,7 @@ class Admin_products extends Admin_Controller
 		// Get product
 		$row    = $this->row_m->get_row($id, $this->stream, FALSE);
 		$folder = $this->products_m->get_file_folder_by_slug($row->slug);
+		$allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
 		// Create folder?
 		if( !$folder )
@@ -307,11 +308,13 @@ class Admin_products extends Admin_Controller
 			$status = Files::upload($folder->id);
 
 			// Make square?
-			$this->products_m->make_square($status);
+			if( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 )
+			{
+				$this->products_m->make_square($status, $allow);
+			}
 
 			// Ajax status
-			unset($status['data']);
-			echo json_encode($status);
+			echo json_encode(array('status' => $status['status'], 'message' => $status['message']));
 			exit;
 		}
 
