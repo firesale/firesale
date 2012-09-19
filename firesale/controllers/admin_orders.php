@@ -264,6 +264,7 @@ class Admin_orders extends Admin_Controller
 
 	public function ajax_add_product($order, $id, $qty)
 	{
+
 		if( $this->input->is_ajax_request() )
 		{
 			// Get product
@@ -276,31 +277,30 @@ class Admin_orders extends Admin_Controller
 				$this->orders_m->update_order_cost($order, TRUE, FALSE);
 
 				// Return to the browser
-				$qty = ( $qty > $product['stock'] ? $product['stock'] : $qty );
+				$qty = ( $product['stock_status']['key'] != 6 && $qty > $product['stock'] ? $product['stock'] : $qty );
 				$data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format(( $qty * $product['price']), 2));
 				echo json_encode($data);
 				exit();
 			}
-			else
-			{
-				echo 'false';
-				exit();
-			}
 		}
+
+		echo 'false';
+		exit();
 	}
 
 	public function ajax_get_address($user, $id)
 	{
-		/*if( $this->input->is_ajax_request() )
-		{*/
+
+		if( $this->input->is_ajax_request() )
+		{
 			// Get Address
 			$address = $this->address_m->get_address($id, $user);
 			echo json_encode($address);
 			exit();
-		/*}
+		}
 
 		echo 'false';
-		exit();*/
+		exit();
 	}
 	
 }

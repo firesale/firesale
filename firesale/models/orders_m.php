@@ -156,7 +156,7 @@ class Orders_m extends MY_Model
 				 ->where("product_id", $product['id']);
 
 		// Stock?
-		if( isset($product['stock']) AND $qty > $product['stock'] )
+		if( isset($product['stock']) AND $product['stock_status']['key'] != 6 AND $qty > $product['stock'] )
 		{
 			$qty = $product['stock'];
 		}
@@ -183,10 +183,12 @@ class Orders_m extends MY_Model
 		}
 		else
 		{
-			if( $this->db->update('firesale_orders_items', array('qty' => $qty), array('order_id' => $order_id, 'product_id' => $product['id'])) )
+
+			if( $this->db->where('order_id', $order_id)->where('product_id', $product['id'])->update('firesale_orders_items', array('qty' => $qty)) )
 			{
 				return TRUE;
 			}
+
 		}
 
 		return FALSE;

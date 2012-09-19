@@ -156,7 +156,7 @@ class Address_m extends MY_Model
 		{
 			if( $id > 0 AND $this->db->where('id', $id)->update('firesale_addresses', $update) )
 			{
-				return $address_id;
+				return $id;
 			}
 			else if( $id <= 0 AND $address_id = $this->add_address($input, $type) )
 			{
