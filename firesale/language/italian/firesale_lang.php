@@ -79,8 +79,9 @@
 	$lang['firesale:prod_duplicate_error'] 	= 'Si è verificato un problema nel duplicare il prodotto';
 	$lang['firesale:prod_duplicate_success']= 'Prodotto duplicato con successo';
 	$lang['firesale:prod_not_found'] 		= 'Non è possibile trovare il prodotto specificato';
-	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
-	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
+	$lang['firesale:prod_delimg_success']   = 'Immagine cancellata con successo';
+	$lang['firesale:prod_delimg_error']     = 'Si è verificato un errore nel rimuovere l\'immagine selezionata';
+	$lang['firesale:prod_button_quick_edit']= 'Modifica Veloce';	
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Prezzo di vendita prima e dopo le tasse';
@@ -249,3 +250,18 @@
 	$lang['firesale:product:label_product_code'] = "Codice prodotto:";	
 	$lang['firesale:product:label_qty'] = "Quantità:";
 	$lang['firesale:product:label_add_to_cart'] = "Aggiungi al Carrello";	
+	
+	// Cart Frontend
+	$lang['firesale:cart:label_remove'] = "Rimuovi";
+	$lang['firesale:cart:label_image'] = "Immagine";
+	$lang['firesale:cart:label_name'] = "Nome";
+	$lang['firesale:cart:label_model'] = "Modello";
+	$lang['firesale:cart:label_quantity'] = "Quantità";
+	$lang['firesale:cart:label_unit_price'] = "Prezzo unitario";
+	$lang['firesale:cart:label_total'] = "Totale";
+	$lang['firesale:cart:label_no_items_in_cart'] = "Non ci sono prodotti nel carrello";
+	$lang['firesale:cart:button_update'] = "Aggiorna carrello";
+	$lang['firesale:cart:button_goto_checkout'] = "Vai al pagamento";
+	$lang['firesale:cart:label_sub_total'] = "Sub-Totale";
+	$lang['firesale:cart:label_tax'] = "Tasse"; 
+	$lang['firesale:cart:label_total'] = "Totale";

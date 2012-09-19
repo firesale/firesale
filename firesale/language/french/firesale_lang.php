@@ -82,6 +82,7 @@
 	$lang['firesale:label_price']		= 'Prix courant';
 	$lang['firesale:label_price_tax']	= 'Prix courant (avant taxe)'; // to check
 	$lang['firesale:label_stock']		= 'Niveau actuel du stock';
+	$lang['firesale:prod_button_quick_edit']= 'Quick Edit'; #Translate	
 
 	$lang['firesale:label_stock_short']		= 'Niveau du stock';
 	$lang['firesale:label_stock_status']	= 'Statut du stock';
@@ -194,3 +195,18 @@
 	$lang['firesale:product:label_product_code'] = "Product Code"; # Translate
 	$lang['firesale:product:label_qty'] = "Qty"; # Translate
 	$lang['firesale:product:label_add_to_cart'] = "Add to Cart"; # Translate
+
+	// Cart Frontend
+	$lang['firesale:cart:label_remove'] = "Remove"; # Translate
+	$lang['firesale:cart:label_image'] = "Image"; # Translate
+	$lang['firesale:cart:label_name'] = "Name"; # Translate
+	$lang['firesale:cart:label_model'] = "Model"; # Translate
+	$lang['firesale:cart:label_quantity'] = "Quantity"; # Translate
+	$lang['firesale:cart:label_unit_price'] = "Unit Price"; # Translate
+	$lang['firesale:cart:label_total'] = "Total"; # Translate
+	$lang['firesale:cart:label_no_items_in_cart'] = "No items in your cart"; # Translate
+	$lang['firesale:cart:button_update'] = "Update cart"; # Translate
+	$lang['firesale:cart:button_goto_checkout'] = "Goto Checkout"; # Translate
+	$lang['firesale:cart:label_sub_total'] = "Sub-Total";  # Translate
+	$lang['firesale:cart:label_tax'] = "Tax"; # Translate
+	$lang['firesale:cart:label_total'] = "Total"; # Translate
