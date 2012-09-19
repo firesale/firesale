@@ -247,3 +247,6 @@
 	$lang['firesale:cart:label_quantity'] = "Quantity"; # Translate
 	$lang['firesale:cart:label_unit_price'] = "Unit Price"; # Translate
 	$lang['firesale:cart:label_total'] = "Total"; # Translate
+	$lang['firesale:cart:label_sub_total'] = "Sub-Total";  # Translate
+	$lang['firesale:cart:label_tax'] = "Tax"; # Translate
+	$lang['firesale:cart:label_total'] = "Total"; # Translate

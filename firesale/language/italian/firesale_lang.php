@@ -258,3 +258,6 @@
 	$lang['firesale:cart:label_quantity'] = "Quantità";
 	$lang['firesale:cart:label_unit_price'] = "Prezzo unitario";
 	$lang['firesale:cart:label_total'] = "Totale";
+	$lang['firesale:cart:label_sub_total'] = "Sub-Totale";
+	$lang['firesale:cart:label_tax'] = "Tasse"; 
+	$lang['firesale:cart:label_total'] = "Totale";

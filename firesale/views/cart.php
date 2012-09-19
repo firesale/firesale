@@ -27,23 +27,23 @@
             </tr>
 {{ /contents }}
 {{ else }}
-            <tr><td colspan="7"><center><strong>No items in your cart</strong></center></td></tr>
+            <tr><td colspan="7"><center><strong><?php echo lang('firesale:cart:label_no_items_in_cart'); ?></strong></center></td></tr>
 {{ endif }}
           </tbody>
         </table>
 
         <section id="cart-buttons">
           <div class="right">
-            <button type="submit" name="btnAction" value="update" class="btn"><span>Update Cart</span></button>
-            <button type="submit" name="btnAction" value="checkout" class="btn"><span>Goto Checkout</span></button>
+            <button type="submit" name="btnAction" value="update" class="btn"><span><?php echo lang('firesale:cart:button_update'); ?></span></button>
+            <button type="submit" name="btnAction" value="checkout" class="btn"><span><?php echo lang('firesale:cart:button_goto_checkout'); ?></span></button>
           </div>
         </section>
 
         <section id="cart-totals">
           <ul>
-            <li><label>Sub-Total:</label><span>{{ settings:currency }} {{ subtotal }}</span></li>
-            <li><label>Tax ({{ tax_percent }}%):</label><span>{{ settings:currency }} {{ tax }}</span></li>
-            <li class="large"><label>Total:</label><span>{{ settings:currency }} {{ total }}</li>
+            <li><label><?php echo lang('firesale:cart:label_sub_total'); ?>:</label><span>{{ settings:currency }} {{ subtotal }}</span></li>
+            <li><label><?php echo lang('firesale:cart:label_tax'); ?> ({{ tax_percent }}%):</label><span>{{ settings:currency }} {{ tax }}</span></li>
+            <li class="large"><label><?php echo lang('firesale:cart:label_total'); ?>:</label><span>{{ settings:currency }} {{ total }}</li>
           </ul>
           <br class="clear" />
         </section>
