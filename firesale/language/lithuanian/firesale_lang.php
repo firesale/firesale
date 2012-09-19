@@ -78,6 +78,7 @@
 	$lang['firesale:prod_not_found'] 		= 'Prekė nerasta';
 	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
 	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
+	$lang['firesale:prod_button_quick_edit']= 'Quick Edit'; #Translate	
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Mažmeninė kaina prieš ir po PVM';

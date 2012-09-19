@@ -82,6 +82,7 @@
 	$lang['firesale:label_price']		= 'Prix courant';
 	$lang['firesale:label_price_tax']	= 'Prix courant (avant taxe)'; // to check
 	$lang['firesale:label_stock']		= 'Niveau actuel du stock';
+	$lang['firesale:prod_button_quick_edit']= 'Quick Edit'; #Translate	
 
 	$lang['firesale:label_stock_short']		= 'Niveau du stock';
 	$lang['firesale:label_stock_status']	= 'Statut du stock';

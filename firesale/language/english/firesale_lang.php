@@ -81,6 +81,8 @@
 	$lang['firesale:prod_not_found'] 		= 'That product cannot be found';
 	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully';
 	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified';
+	$lang['firesale:prod_button_quick_edit']= 'Quick Edit';
+
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';
