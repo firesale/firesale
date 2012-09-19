@@ -22,6 +22,7 @@ tfoot th{border:none;border-top:2px solid #ddd;}
 #dropbox .imageTitle{display:block;width:100%;text-align:center;position:relative;margin-top:20px;text-transform:uppercase;}
 #dropbox .uploaded{position:absolute;top:0;left:0;height:100%;width:100%;background:url(img/done.png) no-repeat center center rgba(255,255,255,0.5);display:none;}
 #dropbox .preview.done .uploaded{display:block;}
+#dropbox .preview.error .uploaded{display:block;background-image:url(img/error.png);}
 #dropbox .progressHolder{position:absolute;background-color:#E0DBDB;height:12px;width:100%;left:0;bottom:0;box-shadow:0 0 2px #000;}
 #dropbox .progress{background-color:#EAA54F;position:absolute;height:100%;left:0;width:0;box-shadow:0 0 1px rgba(255,255,255,0.4) inset;-moz-transition:.25s;-webkit-transition:.25s;-o-transition:.25s;transition:.25s;}
 #dropbox .preview.done .progress{width:100%!important;}
