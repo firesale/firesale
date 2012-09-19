@@ -41,7 +41,7 @@ class Plugin_Firesale extends Plugin
 		{
 			$this->db->where('(SELECT COUNT(id)
 				FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
-				WHERE firesale_categories_id=id) >', 0);
+				WHERE firesale_categories_id=' . $this->db->dbprefix('firesale_categories.id') . ') >', 0);
 		}
 		
 		// Build query
