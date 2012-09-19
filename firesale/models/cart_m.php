@@ -175,6 +175,19 @@ class Cart_m extends MY_Model
 
 			$order = $this->orders_m->get_order_by_id($order_id);
 
+			// Are there any items in the order?
+			if (empty($order['items']))
+			{
+				// Nope, delete the order.
+				$this->orders_m->delete_order($order_id);
+
+				// Remove the order id from session.
+				$this->session->unset_userdata('order_id');
+
+				// Return FALSE, we have no order now.
+				return FALSE;
+			}
+
 			// Is the order unpaid?
 			if ($order['order_status']['key'] == 1)
 			{
