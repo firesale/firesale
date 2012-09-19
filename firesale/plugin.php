@@ -34,6 +34,15 @@ class Plugin_Firesale extends Plugin
 		$category  	   = $this->attribute('category', 0);
 		$order_by  	   = $this->attribute('order-by', 'ordering_count');
 		$order_dir 	   = $this->attribute('order-dir', 'asc');
+		$exclude_empty = (bool)$this->attribute('exclude-empty', FALSE);
+
+		// Exclude empty categories?
+		if ($exclude_empty)
+		{
+			$this->db->where('(SELECT COUNT(id)
+				FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
+				WHERE firesale_categories_id=' . $this->db->dbprefix('firesale_categories.id') . ') >', 0);
+		}
 		
 		// Build query
 		$query = $this->db->select('id, title, parent, slug')
