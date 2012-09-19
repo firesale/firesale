@@ -40,8 +40,8 @@
 							<?php echo ( strlen($option['weight_max']) > 0 ? $option['weight_max'] :  'Unlimited' ); ?>kg
 						</td>
 						<td>
-							<a class="button small" href="<?php echo site_url('admin/firesale_shipping/edit/'.$option['id']); ?>">Edit</a>
-							<a class="button small confirm" href="<?php echo site_url('admin/firesale_shipping/delete/'.$option['id']); ?>">Delete</a>
+							<a class="button small" href="<?php echo site_url('admin/firesale_shipping/edit/'.$option['id']); ?>"><?php echo lang('global:edit'); ?></a>
+							<a class="button small confirm" href="<?php echo site_url('admin/firesale_shipping/delete/'.$option['id']); ?>"><?php echo lang('global:delete'); ?></a>
 						</td>
 					</tr>
 <?php endforeach; ?>
