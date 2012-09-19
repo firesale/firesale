@@ -1,7 +1,7 @@
 ﻿<?php
 	
 	// General Titles
-	$lang['firesale:title']				= 'FireSALE';
+	$lang['firesale:title']				= 'FireSale';
 	$lang['firesale:title:general']		= 'Bendrai';
 	$lang['firesale:title:details']		= 'Jūsų duomenys';
 	$lang['firesale:title:address']		= 'Jūsų adresas';
