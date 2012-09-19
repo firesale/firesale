@@ -43,8 +43,8 @@
 	$lang['firesale:dashboard:no_stock_low']	= 'Produtos sem estoque mínimo';
 	$lang['firesale:dashboard:no_stock_out']	= 'Nenhum produto sem estoque';
 	$lang['firesale:dashboard:view_more']		= 'Ver mais...';
-	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
-	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
+	$lang['firesale:dashbord:low_stock']		= 'Baixo estoque';
+	$lang['firesale:dashbord:out_of_stock']		= 'Sem estoque';
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Gerenciar Categorias';
@@ -79,8 +79,8 @@
 	$lang['firesale:prod_duplicate_error'] 	= 'Ocorreu um erro ao duplicar este produto';
 	$lang['firesale:prod_duplicate_success']= 'Produto duplicado com sucesso';
 	$lang['firesale:prod_not_found'] 		= 'Este produto nao pode ser encontrado';
-	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
-	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
+	$lang['firesale:prod_delimg_success']   = 'Imagem removida com sucesso';
+	$lang['firesale:prod_delimg_error']     = 'Ocorreu um erro ao remover a imagem selecionada';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Preço de venda antes e após impostos';
@@ -114,7 +114,7 @@
 	$lang['firesale:label_stock_out']		= 'Sem estoque';
 	$lang['firesale:label_stock_order']		= 'Estoque solicitado';
 	$lang['firesale:label_stock_ended']		= 'Descontinuado';
-	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
+	$lang['firesale:label_stock_unlimited']	= 'Ilimitado';
 
 	$lang['firesale:label_remove']		= 'Remover';
 	$lang['firesale:label_image']		= 'Imagem';
@@ -223,8 +223,8 @@
 	$lang['firesale:gateways:labels:desc']			= 'Descrição';
 	$lang['firesale:cart:title']					= 'Cesta de Compras';
 	$lang['firesale:cart:empty']					= 'Você não possui nenhum item em sua cesta.';
-	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
-	$lang['firesale:cart:qty_too_low']				= 'Stock level is too low to add that quantity to your cart'; #translate
+	$lang['firesale:cart:login_required']			= 'Você deve estar logado antes de realizar isto.';
+	$lang['firesale:cart:qty_too_low']				= 'Nosso nível de estoque é muito baixo para você incluir está quantidade.';
 	$lang['firesale:checkout:title'] 				= 'Finalizar Compra';
 	$lang['firesale:checkout:error_callback'] 		= 'Parece existir um erro em seu pedido, por favor tente novamente, possivelmente utilizando outro meio de pagamento.';
 	$lang['firesale:payment:title'] 				= 'Confirmar Detalhes';
@@ -236,23 +236,23 @@
 	$lang['firesale:addresses:title'] = 'Meu Endereço';
 		
 	// Products Frontend
-	$lang['firesale:product:label_availability'] = "Availability"; # Translate
-	$lang['firesale:product:label_model'] = "Model"; # Translate
-	$lang['firesale:product:label_product_code'] = "Product Code"; # Translate
-	$lang['firesale:product:label_qty'] = "Qty"; # Translate
-	$lang['firesale:product:label_add_to_cart'] = "Add to Cart"; # Translate
+	$lang['firesale:product:label_availability'] = 'Disponibilidade';
+	$lang['firesale:product:label_model'] = 'Modelo';
+	$lang['firesale:product:label_product_code'] = 'Código do produto';
+	$lang['firesale:product:label_qty'] = 'Qtd';
+	$lang['firesale:product:label_add_to_cart'] = 'Adicionar a cesta';
 	
 	// Cart Frontend
-	$lang['firesale:cart:label_remove'] = "Remove"; # Translate
-	$lang['firesale:cart:label_image'] = "Image"; # Translate
-	$lang['firesale:cart:label_name'] = "Name"; # Translate
-	$lang['firesale:cart:label_model'] = "Model"; # Translate
-	$lang['firesale:cart:label_quantity'] = "Quantity"; # Translate
-	$lang['firesale:cart:label_unit_price'] = "Unit Price"; # Translate
-	$lang['firesale:cart:label_total'] = "Total"; # Translate
-	$lang['firesale:cart:label_no_items_in_cart'] = "No items in your cart"; # Translate
-	$lang['firesale:cart:button_update'] = "Update cart"; # Translate
-	$lang['firesale:cart:button_goto_checkout'] = "Goto Checkout"; # Translate
-	$lang['firesale:cart:label_sub_total'] = "Sub-Total";  # Translate
-	$lang['firesale:cart:label_tax'] = "Tax"; # Translate
-	$lang['firesale:cart:label_total'] = "Total"; # Translate
+	$lang['firesale:cart:label_remove'] = 'Remover';
+	$lang['firesale:cart:label_image'] = 'Imagem';
+	$lang['firesale:cart:label_name'] = 'Name';
+	$lang['firesale:cart:label_model'] = 'Modelo';
+	$lang['firesale:cart:label_quantity'] = 'Quantidade';
+	$lang['firesale:cart:label_unit_price'] = 'Preço Unitário';
+	$lang['firesale:cart:label_total'] = 'Total';
+	$lang['firesale:cart:label_no_items_in_cart'] = 'Não existem produtos em sua cesta';
+	$lang['firesale:cart:button_update'] = 'Atualizar cesta';
+	$lang['firesale:cart:button_goto_checkout'] = 'Efetuar pagamento';
+	$lang['firesale:cart:label_sub_total'] = 'Sub-total';
+	$lang['firesale:cart:label_tax'] = 'Impostos';
+	$lang['firesale:cart:label_total'] = 'Total';
