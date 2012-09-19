@@ -67,6 +67,10 @@ class Events_Firesale
 	public function cart_updated($data)
 	{
 		$this->_run_firesale_events('cart_updated', $data);
+
+		$this->ci->load->model('firesale/cart_m');
+
+		$this->ci->cart_m->cart_has_order();
 	}
 
 	public function page_build($data)
