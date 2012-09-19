@@ -4,13 +4,13 @@
         <table class="cart">
           <thead>
             <tr>
-              <th class="remove">Remove</th>
-              <th class="image">Image</th>
-              <th class="name">Name</th>
-              <th class="model">Model</th>
-              <th>Quanity</th>
-              <th>Unit Price</th>
-              <th>Total</th>
+              <th class="remove"><?php echo lang('firesale:cart:label_remove'); ?></th>
+              <th class="image"><?php echo lang('firesale:cart:label_image'); ?></th>
+              <th class="name"><?php echo lang('firesale:cart:label_name'); ?></th>
+              <th class="model"><?php echo lang('firesale:cart:label_model'); ?></th>
+              <th><?php echo lang('firesale:cart:label_quantity'); ?></th>
+              <th><?php echo lang('firesale:cart:label_unit_price'); ?></th>
+              <th><?php echo lang('firesale:cart:label_total'); ?></th>
             </tr>
           </thead>
           <tbody>

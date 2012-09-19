@@ -241,3 +241,12 @@
 	$lang['firesale:product:label_product_code'] = "Product Code"; # Translate
 	$lang['firesale:product:label_qty'] = "Qty"; # Translate
 	$lang['firesale:product:label_add_to_cart'] = "Add to Cart"; # Translate
+	
+	// Cart Frontend
+	$lang['firesale:cart:label_remove'] = "Remove"; # Translate
+	$lang['firesale:cart:label_image'] = "Image"; # Translate
+	$lang['firesale:cart:label_name'] = "Name"; # Translate
+	$lang['firesale:cart:label_model'] = "Model"; # Translate
+	$lang['firesale:cart:label_quantity'] = "Quantity"; # Translate
+	$lang['firesale:cart:label_unit_price'] = "Unit Price"; # Translate
+	$lang['firesale:cart:label_total'] = "Total"; # Translate	

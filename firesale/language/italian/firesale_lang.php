@@ -249,3 +249,12 @@
 	$lang['firesale:product:label_product_code'] = "Codice prodotto:";	
 	$lang['firesale:product:label_qty'] = "Quantità:";
 	$lang['firesale:product:label_add_to_cart'] = "Aggiungi al Carrello";	
+	
+	// Cart Frontend
+	$lang['firesale:cart:label_remove'] = "Rimuovi";
+	$lang['firesale:cart:label_image'] = "Immagine";
+	$lang['firesale:cart:label_name'] = "Nome";
+	$lang['firesale:cart:label_model'] = "Modello";
+	$lang['firesale:cart:label_quantity'] = "Quantità";
+	$lang['firesale:cart:label_unit_price'] = "Prezzo unitario";
+	$lang['firesale:cart:label_total'] = "Totale";
