@@ -18,7 +18,7 @@ class Module_Firesale_shipping extends Module {
 
 		$info = array(
 			'name' => array(
-				'en' => 'FireSALE Shipping'
+				'en' => 'FireSale Shipping'
 			),
 			'description' => array(
 				'en' => 'Basic band-based shipping options'
@@ -40,12 +40,6 @@ class Module_Firesale_shipping extends Module {
 						    'class' => 'add'
 						)
 				    )
-				)
-			),
-			'events'			 => array(
-				'form_build' => array(
-					'model'		 => 'firesale_shipping/shipping_m',
-					'function'	 => 'form_build'
 				)
 			)
 		);

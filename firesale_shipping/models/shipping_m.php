@@ -111,26 +111,4 @@ class Shipping_m extends MY_Model
 	
 	}
 
-    public function form_build(&$controller)
-    {
-
-    	if( !$this->fired['form_build'] )
-		{
-
-			// Remove images (needs to be last)
-	    	unset($controller->tabs['_images']);
-
-	    	// Add metadata to tabs
-	    	$controller->tabs['shipping'] = array('shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth');
-
-	    	// Add images back in
-	    	$controller->tabs['_images'] = array();
-
-	    	// Set to fired
-	    	$this->fired['form_build'] = TRUE;
-
-	    }
-
-    }
-
 }
