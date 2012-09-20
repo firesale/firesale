@@ -18,7 +18,7 @@
 {{ contents }}
 	  	    <tr>
               <td class="remove"><input type="checkbox" name="item[{{ rowid }}][remove]" value="1" /></td>
-              <td class="image">{{ if { helper:string_word_count string=image } > 0 }}<img src="{{ site:url }}files/thumb/{{ image }}/100/100" alt="image" />{{ else }}<div class="no_image_60"></div>{{ endif }}</td>
+              <td class="image">{{ if image > 0 }}<img src="{{ site:url }}files/thumb/{{ image }}/60/60" alt="image" />{{ else }}<div class="no_image_60"></div>{{ endif }}</td>
               <td class="name"><a href="/product/{{ slug }}">{{ name }}</a></td>
               <td class="model">{{ code }}</td>
               <td><input type="text" name="item[{{ rowid }}][qty]" value="{{ qty }}" /></td>

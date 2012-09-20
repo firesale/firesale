@@ -24,7 +24,7 @@
 .firesale .align-right { text-align: right !important; }
 
 /* Icons */
-.firesale .zoom { width: 24px; height: 24px; display: block; position: absolute; background: #F76900 url('img/front/sprite.png') no-repeat -12px -224px; right: 4px; top: 4px; }
+.firesale .zoom { width: 24px; height: 24px; display: block; position: absolute; background: url('img/front/sprite.png') no-repeat -12px -224px; right: 4px; top: 4px; }
 .firesale .icon { width: 25px; height: 22px; display: inline-block; background: #F76900 url('img/front/sprite.png') no-repeat; }
 .firesale .icon.cart { background-position: -36px 0; }
 .firesale .icon.contact { background-position: -61px 0; }

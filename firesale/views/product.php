@@ -2,26 +2,26 @@
       <div class="width-threefourth firesale product">
         <section class="product-images">
           <ul>
-{{ if images != false }}
-{{ images }}
-{{ if i == 0 }}
+<?php if( isset($images) && !empty($images) ): ?>
+<?php foreach( $images AS $key => $image ): ?>
+<?php if( $key == 0 ): ?>
             <li class="main">
-              <a href="/files/thumb/{{ id }}/1000/1000" id="image-{{ id }}" class="cloud-zoom" rel="position:'inside'">
+              <a href="/files/thumb/<?php echo $image->id; ?>/1000/1000" id="image-<?php echo $image->id; ?>" class="cloud-zoom" rel="position:'inside'">
                 <span class="zoom"></span>
-                <img src="/files/thumb/{{ id }}/400/400" alt="{{ name }}" />
+                <img src="/files/thumb/<?php echo $image->id; ?>/400/400" alt="<?php echo $image->name; ?>" />
               </a>
             </li>
-{{ elseif i <= 3 }}
+<?php elseif( $key <= 3 ): ?>
             <li>
-              <a href="/files/thumb/{{ id }}/1000/1000" id="image-{{ id }}">
-                <img src="/files/thumb/{{ id }}/92/92" alt="{{ name }}" />
+              <a href="/files/thumb/<?php echo $image->id; ?>/1000/1000" id="image-<?php echo $image->id; ?>">
+                <img src="/files/thumb/<?php echo $image->id; ?>/92/92" alt="<?php echo $image->name; ?>" />
               </a>
             </li>
-{{ endif }}
-{{ /images}}
-{{ else }}
+<?php endif ?>
+<?php endforeach; ?>
+<?php else: ?>
             <li class="main"><a href="#"><div class="no_image_332"></div></a></li>
-{{ endif }}
+<?php endif; ?>
           </ul>
           <br class="clear" />
         </section>
