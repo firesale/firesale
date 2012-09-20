@@ -6,7 +6,6 @@ class Firesale
 	protected $sections = array();
 	public 	  $elements = array();
 	public    $assets   = array();
-	public 	  $events   = array();
 	public    $roles	= array('shipping' => NULL);
 
 	public function __construct()
@@ -89,11 +88,6 @@ class Firesale
 						$this->register_elements($module->slug, $module_info['elements']);
 					}
 					
-					// Register event listeners
-					if( isset($module_info['events']) && is_array($module_info['events']) )
-					{
-						$this->register_events($module_info['events']);
-					}
 				}
 			}
 		}
@@ -189,17 +183,6 @@ class Firesale
 	
 		}
 		
-	}
-	
-	function register_events($events)
-	{
-	
-		foreach( $events AS $event => $data )
-		{
-			if( !array_key_exists($event, $this->events) ) { $this->events[$event] = array(); }
-			$this->events[$event][] = $data;		
-		}
-	
 	}
 
 }

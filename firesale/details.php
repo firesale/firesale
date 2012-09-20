@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module {
 	
-	public $version = '1.0.2';
+	public $version = '1.0.4';
 	public $language_file = 'firesale/firesale';
 	
 	public function __construct()
@@ -70,11 +70,7 @@ class Module_Firesale extends Module {
 						    'class' => 'add'
 						)
 				    )
-				),
-				'settings' => array(
-					'name' => 'firesale:sections:settings',
-					'uri'  => 'admin/settings#firesale'
-				),
+				)
 			),
 			'elements' => array(
 				'dashboard' => array(
