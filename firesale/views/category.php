@@ -1,18 +1,19 @@
+
       <div class="firesale width-onefourth sidebar left">
         <h2>Categories</h2>
         <ul class="icon-arrow categories">
 {{ firesale:categories limit="0" }}
 {{ if parent == id }}
           <li>
-            <a href="/category/{{ slug }}"><strong>{{ title }}</strong></a>
+            <a href="{{ url:base }}category/{{ slug }}"><strong>{{ title }}</strong></a>
             <ul>
 {{ firesale:sub_categories category=parent limit="0" }}
-              <li><a href="/category/{{ slug }}">{{ if category.id == id }}<strong>{{ title }}</strong>{{ else }}{{ title }}{{ endif }}</a></li>
+              <li><a href="{{ url:base }}category/{{ slug }}">{{ if category.id == id }}<strong>{{ title }}</strong>{{ else }}{{ title }}{{ endif }}</a></li>
 {{ /firesale:sub_categories }}
             </ul>
           </li>
 {{ else }}
-          <li><a href="/category/{{ slug }}">{{ title }}</a></li>
+          <li><a href="{{ url:base }}category/{{ slug }}">{{ title }}</a></li>
 {{ endif }}
 {{ /firesale:categories }}
         </ul>
@@ -23,8 +24,8 @@
         <section id="listing-header">
 		
 		      <div class="left">
-            <a href="/category/style/grid" class="grid{{ if layout == 'grid' }} selected{{ endif }}"><span class="icon"></span>Grid</a>
-            <a href="/category/style/list" class="list{{ if layout == 'list' }} selected{{ endif }}"><span class="icon"></span>List</a>
+            <a href="{{ url:base }}category/style/grid" class="grid{{ if layout == 'grid' }} selected{{ endif }}"><span class="icon"></span>Grid</a>
+            <a href="{{ url:base }}category/style/list" class="list{{ if layout == 'list' }} selected{{ endif }}"><span class="icon"></span>List</a>
           </div>
 		  
           <div class="right">
@@ -32,7 +33,7 @@
               <span>{{ order.title }}</span>
               <ul>
 {{ ordering }}
-                <li><a href="/category/order/{{ key }}">{{ title }}</a></li>
+                <li><a href="{{ url:base }}category/order/{{ key }}">{{ title }}</a></li>
 {{ /ordering }}
               </ul>
             </div>
@@ -51,16 +52,16 @@
 {{ if image == null }}
             <div class="no_image_180"></div>
 {{ else }}
-           <a href="/product/{{ slug }}"><img src="{{ url:site }}files/thumb/{{ image }}/180/180" alt="{{ title }}" /></a>
+           <a href="{{ url:base }}product/{{ slug }}"><img src="{{ url:site }}files/thumb/{{ image }}/180/180" alt="{{ title }}" /></a>
 {{ endif }}
             <section class="price-round medium"><span class="rrp">{{ if rrp > price }}{{ rrp }}{{ endif }}</span><span class="price">{{ settings:currency }}{{ price }}</span></section>
             <header>
-              <h3><a href="/product/{{ slug }}">{{ title }}</a></h3>
+              <h3><a href="{{ url:base }}product/{{ slug }}">{{ title }}</a></h3>
               <em>{{ code }}</em>
             </header>
             <p class="description">{{ helper:substr string=description start="0" end="250" }}...</p>
             <footer>
-              <a href="/cart/insert/{{ id }}/1" class="basket"><span class="icon"></span>Add to Basket</a>
+              <a href="{{ url:base }}cart/insert/{{ id }}/1" class="basket"><span class="icon"></span>Add to Basket</a>
             </footer>
             <br class="clear" />
           </article>
