@@ -116,7 +116,7 @@
 	$lang['firesale:label_stock_out']		= 'Out of Stock';
 	$lang['firesale:label_stock_order']		= 'More stock ordered';
 	$lang['firesale:label_stock_ended']		= 'Discontinued';
-	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
+	$lang['firesale:label_stock_unlimited']	= 'Unlimited';
 
 	$lang['firesale:label_remove']		= 'Remove';
 	$lang['firesale:label_image']		= 'Image';
@@ -188,6 +188,12 @@
 	$lang['firesale:orders:declined_message']	= 'Your payment was declined, please try again.';
 	$lang['firesale:orders:mismatch_message']	= 'Your payment did not match the order.';
 	$lang['firesale:orders:logged_in']			= 'You must be logged in to view your order history.';
+	$lang['firesale:orders:label_view_order']	= 'View Order';
+	$lang['firesale:orders:label_products']		= 'Products';
+	$lang['firesale:orders:label_view_order']	= 'View Order';
+	$lang['firesale:orders:label_customer']		= 'Customer';
+	$lang['firesale:orders:label_date_placed']	= 'Date Placed';
+	$lang['firesale:orders:label_order_id'] 	= "Order ID";
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Payment Gateways';

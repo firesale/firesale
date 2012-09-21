@@ -187,6 +187,12 @@
 	$lang['firesale:orders:declined_message']	= 'Pembayaran Anda tertolak, silakan coba lagi.';
 	$lang['firesale:orders:mismatch_message']	= 'PEmbayaran Anda tidak cocok dengan pesanan.';
 	$lang['firesale:orders:logged_in']			= 'Anda harus masuk terlebih dahulu untuk melihat riwayat pesanan Anda.';
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_products']		= 'Products'; # Translate
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
+	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
+	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate	
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Gateway Pembayaran';
