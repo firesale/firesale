@@ -52,8 +52,7 @@
 {{ if image == null }}
             <div class="no_image_180"></div>
 {{ else }}
-           <a href="{{ url:base }}product/{{ slug }}"><img src="{{ url:site }}files/thumb/{{ image }}/180/180" alt="{{ title }}" /></a>
-{{ endif }}
+            <a href="{{ url:base }}product/{{ slug }}"><img src="{{ url:site }}files/thumb/{{ image }}/180/180" alt="{{ title }}" /></a>
             <section class="price-round medium"><span class="rrp">{{ if rrp > price }}{{ rrp }}{{ endif }}</span><span class="price">{{ settings:currency }}{{ price }}</span></section>
             <header>
               <h3><a href="{{ url:base }}product/{{ slug }}">{{ title }}</a></h3>

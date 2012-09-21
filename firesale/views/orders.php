@@ -4,17 +4,17 @@
 {{ orders }}
       <section class="order small">
         <header>
-          <h3>Order ID: <span>#{{ id }}</span></h3>
+          <h3><?php echo lang('firesale:orders:label_order_id'); ?>: <span>#{{ id }}</span></h3>
           <h3 class="right">{{ status.value }}</h3>
         </header>
         <ul>
-          <li><strong>Date Placed:</strong> {{ helper:date timestamp=created format="d/m/Y" }}
-          <li><strong>Customer:</strong> {{ created_by.display_name }}</li>
-          <li><strong>Products:</strong> {{ count }}</li>
+          <li><strong><?php echo lang('firesale:orders:label_date_placed'); ?>:</strong> {{ helper:date timestamp=created format="d/m/Y" }}
+          <li><strong><?php echo lang('firesale:orders:label_customer'); ?>:</strong> {{ created_by.display_name }}</li>
+          <li><strong><?php echo lang('firesale:orders:label_products'); ?>:</strong> {{ count }}</li>
         </ul>
         <footer>
           <span>{{ settings:currency }}{{ price_total }}</span>
-          <a href="/users/orders/{{ id }}">View Order</a>
+          <a href="/users/orders/{{ id }}"><?php echo lang('firesale:orders:label_view_order'); ?></a>
         </footer>
       </section>
 

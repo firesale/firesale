@@ -145,6 +145,12 @@
 	$lang['firesale:orders:delete_success'] = 'La commande a bien été supprimée';
 	$lang['firesale:orders:delete_error']	= 'La commande n\'a pas pu être supprimée - erreur';
 	$lang['firesale:orders:save_first']		= 'Merci d\'enregistrer votre commande avant d\'ajouter des produits';
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_products']		= 'Products'; # Translate
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
+	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
+	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate	
 	
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Plateforme de paiement';

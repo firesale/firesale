@@ -184,6 +184,12 @@
 	$lang['firesale:orders:declined_message']	= 'Jūsų apmokėjimas atmestas, pamėginkite dar kartą.';
 	$lang['firesale:orders:mismatch_message']	= 'Jūsų apmokįjimas nesutampa su užsakymu.';
 	$lang['firesale:orders:logged_in']			= 'Prisijunkite, kad matytumėte užsakymų istoriją.';
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_products']		= 'Products'; # Translate
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
+	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
+	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Mokėjimo būdai';

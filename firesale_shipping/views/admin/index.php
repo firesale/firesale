@@ -32,11 +32,11 @@
 						<td><?php echo $this->settings->get('currency') . $option['price']; ?></td>
 						<td>
 							<?php echo $this->settings->get('currency') . ( strlen($option['price_min']) > 0 ? $option['price_min'] : '0.00' ); ?>
-							up to
+							<?php echo lang('firesale:label_up_to'); ?>
 							<?php echo ( strlen($option['price_max']) > 0 ? $this->settings->get('currency') . $option['price_max'] : 'Unlimited' ); ?></td>
 						<td>
 							<?php echo ( strlen($option['weight_min']) > 0 ? $option['weight_min']: '0.00' ); ?>kg
-							up to
+							<?php echo lang('firesale:label_up_to'); ?>
 							<?php echo ( strlen($option['weight_max']) > 0 ? $option['weight_max'] :  'Unlimited' ); ?>kg
 						</td>
 						<td>

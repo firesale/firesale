@@ -187,7 +187,13 @@
 	$lang['firesale:orders:declined_message']	= 'Il tuo pagamento è stato rifiutato, per favore riprova.';
 	$lang['firesale:orders:mismatch_message']	= 'Il pagamento non corrisponde all\'ordine.';
 	$lang['firesale:orders:logged_in']			= 'Devi effettuare il login per vedere i tuoi ordini passati.';
-	
+	$lang['firesale:orders:label_view_order']	= 'Vedi ordine';
+	$lang['firesale:orders:label_products']		= 'Prodotti';
+	$lang['firesale:orders:label_view_order']	= 'Vedi ordine';
+	$lang['firesale:orders:label_customer']		= 'Cliente';
+	$lang['firesale:orders:label_date_placed']	= 'Data acquisto';
+	$lang['firesale:orders:label_order_id'] 	= "ID ordine";
+		
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
 	$lang['firesale:gateways:install_title']			= 'Install a Gateway';

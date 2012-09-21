@@ -187,6 +187,12 @@
 	$lang['firesale:orders:declined_message']	= 'Seu pagamento foi rejeitado, por favor tente novamente.';
 	$lang['firesale:orders:mismatch_message']	= 'Seu pagamento não pertence a este pedido.';
 	$lang['firesale:orders:logged_in']			= 'Você deve estar logado no sistema para visualizar seu histórico de compra.';
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_products']		= 'Products'; # Translate
+	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
+	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
+	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
+	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Meios de Pagamento';
