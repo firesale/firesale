@@ -1,14 +1,16 @@
 <?php
+
+	// FireSale Shipping 0.7.1
 	
 	// General
 	$lang['firesale:title']					= 'FireSALE';
-	$lang['firesale:shortcuts:band_create'] = 'Create New Band'; // to check
+	$lang['firesale:shortcuts:band_create'] = 'Ajouter un mode d\'expédition';
 	
 	// Sections
 	$lang['firesale:sections:shipping'] = 'Envoi';
 	$lang['firesale:shipping:title'] 	= 'Envoi (basique)';
-	$lang['firesale:shipping:create'] 	= 'Create new Shipping Band'; // to check
-	$lang['firesale:shipping:edit'] 	= 'Edit "%s" Shipping Band'; // to check
+	$lang['firesale:shipping:create'] 	= 'Créer un nouveau mode d\'expédition';
+	$lang['firesale:shipping:edit'] 	= 'Modifier le mode d\'expédition "%s"';
 	$lang['firesale:shipping:none']		= 'Aucune option d\'envoi n\'a été trouvée';
 
 	// Labels
@@ -24,5 +26,5 @@
 	$lang['firesale:label_height_cm']	= 'Hauteur du produit (cm)';
 	$lang['firesale:label_width_cm']	= 'Largeur du produit (cm)';
 	$lang['firesale:label_depth_cm']	= 'Profondeur du produit (cm)';
-	$lang['firesale:label_up_to']		= 'Up to'; # Translate
+	$lang['firesale:label_up_to']		= 'Jusqu\'à';
 

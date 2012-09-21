@@ -18,10 +18,12 @@ class Module_Firesale_Search extends Module {
 		
 		$info = array(
 			'name' => array(
-				'en' => 'FireSALE Search (Basic)'
+				'en' => 'FireSALE Search (Basic)',
+				'fr' => 'FireSale Recherche (Basique)'
 			),
 			'description' => array(
-				'en' => 'Product and category search with ajax capabilities'
+				'en' => 'Product and category search with ajax capabilities', 
+				'fr' => 'Recherche dans les produits et la catégories, dynamisée par AJAX'
 			),
 			'frontend' 		=> TRUE,
 			'backend' 		=> FALSE,
