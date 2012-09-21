@@ -18,10 +18,12 @@ class Module_Firesale_shipping extends Module {
 
 		$info = array(
 			'name' => array(
-				'en' => 'FireSale Shipping'
+				'en' => 'FireSale Shipping',
+				'fr' => 'FireSale Expédition'
 			),
 			'description' => array(
-				'en' => 'Basic band-based shipping options'
+				'en' => 'Basic band-based shipping options',
+				'fr' => 'Gestionnaire de modes d\'expédition'
 			),
 			'frontend'		=> FALSE,
 			'backend'		=> FALSE,

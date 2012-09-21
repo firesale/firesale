@@ -1,5 +1,7 @@
 <?php
 	
+	// FireSale Search 0.3.1
+
 	$lang['firesale:test:label_hello'] 		  = 'Hello World!';
 	$lang['firesale:sections:search'] 		  = 'Recherche';
 	$lang['firesale:sections:search_results'] = 'Résultats de recherche correspondant à "%s"';
