@@ -51,7 +51,7 @@
 						<td class="item-category">
 							<?php $string = ''; foreach( $product['category'] AS $cat ) { $string .= ( strlen($string) == 0 ? '' : ', ' ) . '<span data-id="' . $cat['id'] . '">' . $cat['title'] . '</span>'; } echo $string; ?>
 						</td>
-						<td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? '&infin;' : $product['stock'] ); ?></td>
+						<td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? lang('firesale:label_stock_unlimited') . ' (&infin;)' : $product['stock'] ); ?></td>
 						<td><?php echo $this->settings->get('currency'); ?><span class="item-price"><?php echo $product['price']; ?></span></td>
 						<td class="actions">
 							<a href="#" class="button quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a> 
