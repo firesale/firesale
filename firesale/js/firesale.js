@@ -28,8 +28,10 @@ $(function() {
 	$('#bill_details_same').change(function() {
 		if( $(this).attr('checked') == 'checked' ) { checked = true; } else { checked = false; }
 		if( checked == true ) {
-			$(this).parent().parent().parent().find('li input').each(function() {
-				$('input[name=' + $(this).attr('name').replace('ship_', 'bill_') + ']').val($(this).val());
+			$('#bill_to_new').attr("checked", "checked").change();
+			$(this).parent().parent().parent().find('li input, li select').each(function() {
+				var key = $(this).attr('name').replace('ship_', 'bill_');
+				$('input[name=' + key + '], select[name=' + key +']').val($(this).val());
 			});
 		}
 	});
