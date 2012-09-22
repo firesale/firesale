@@ -38,7 +38,9 @@ $(function() {
 	$("#checkout").accordion({autoHeight: false});
 	
 	// Navigation
-	$('a.prev, a.next').click(function(e) { e.preventDefault(); if( $(this).hasClass('next') ) { $(this).parent().next('h3').click(); } else { $(this).parent().prev('h3').prev('h3').click(); } });
+	$('a.prev, a.next').click(function(e) {
+		e.preventDefault();
+		$($(this).attr('href')).click(); });
 	
 	// Addresses
 	$('input[name=ship_to], input[name=bill_to]').change(function() { var p = $(this).parents('fieldset').find('ul.width-half'); if( $(this).val() != 'new' ) { p.hide(); } else { p.show(); } });
