@@ -271,3 +271,8 @@
 	$lang['firesale:cart:label_sub_total'] = 'Sub-total';
 	$lang['firesale:cart:label_tax'] = 'Impostos';
 	$lang['firesale:cart:label_total'] = 'Total';
+	
+	//Categories Frontend
+	$lang['firesale:categories:grid'] = 'Grid';	#Translate
+	$lang['firesale:categories:list'] = 'List';	#Translate
+	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate

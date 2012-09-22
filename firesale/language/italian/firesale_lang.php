@@ -279,3 +279,8 @@
 	$lang['firesale:cart:label_sub_total'] = "Sub-Totale";
 	$lang['firesale:cart:label_tax'] = "Tasse"; 
 	$lang['firesale:cart:label_total'] = "Totale";
+	
+	//Categories Frontend
+	$lang['firesale:categories:grid'] = 'Griglia';
+	$lang['firesale:categories:list'] = 'Lista';
+	$lang['firesale:categories:add_to_basket'] = 'Aggiungi al carrello';
