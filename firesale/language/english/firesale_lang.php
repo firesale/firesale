@@ -247,6 +247,10 @@
 
 	// Addresses
 	$lang['firesale:addresses:title'] = 'My Addresses';
+	$lang['firesale:addresses:edit_adress'] = 'Edit Address';
+	$lang['firesale:addresses:new_adress'] = 'Create new Address';
+	$lang['firesale:addresses:save']	= 'Save';
+	$lang['firesale:addresses:cancel'] = 'Cancel';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Availability";

@@ -242,6 +242,8 @@
 
 	// Addresses
 	$lang['firesale:addresses:title'] = 'Mano adresai';
+	$lang['firesale:addresses:edit_adress'] = 'Edit Address'; # Translate
+	$lang['firesale:addresses:new_adress'] = 'Create new Address'; # Translate
 		
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Availability"; # Translate
