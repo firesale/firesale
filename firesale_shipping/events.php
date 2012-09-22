@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Events_Firesale_Shipping
+class Events_Firesale_shipping
 {
 
 	protected $ci;
