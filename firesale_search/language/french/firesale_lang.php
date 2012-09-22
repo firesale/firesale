@@ -10,3 +10,8 @@
 	
 	// Dashboard
 	$lang['firesale:elements:search_terms'] = 'Termes de recherches populaires';
+	$lang['firesale:search:no_terms']		= 'No search terms found'; # Translate
+	
+	//Search Frontend
+	$lang['firesale:search:label_search'] 			= 'Search';	# Translate
+	$lang['firesale:search:label_nothing_found'] 	= 'Nothing found!';	# Translate

@@ -8,4 +8,8 @@
 	
 	// Dashboard
 	$lang['firesale:elements:search_terms'] = 'Pencarian Istilah Populer';
-	$lang['firesale:search:no_terms']		= 'Tidak ada daftar istilah pada pencarian';
+	$lang['firesale:search:no_terms']		= 'Tidak ada daftar istilah pada pencarian';	
+	
+	//Search Frontend
+	$lang['firesale:search:label_search'] 			= 'Search';	# Translate
+	$lang['firesale:search:label_nothing_found'] 	= 'Nothing found!';	# Translate
