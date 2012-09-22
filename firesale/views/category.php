@@ -24,8 +24,8 @@
         <section id="listing-header">
 		
 		      <div class="left">
-            <a href="{{ url:base }}category/style/grid" class="grid{{ if layout == 'grid' }} selected{{ endif }}"><span class="icon"></span>Grid</a>
-            <a href="{{ url:base }}category/style/list" class="list{{ if layout == 'list' }} selected{{ endif }}"><span class="icon"></span>List</a>
+            <a href="{{ url:base }}category/style/grid" class="grid{{ if layout == 'grid' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:grid'); ?></a>
+            <a href="{{ url:base }}category/style/list" class="list{{ if layout == 'list' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:list'); ?></a>
           </div>
 		  
           <div class="right">
@@ -61,14 +61,14 @@
             </header>
             <p class="description">{{ helper:substr string=description start="0" end="250" }}...</p>
             <footer>
-              <a href="{{ url:base }}cart/insert/{{ id }}/1" class="basket"><span class="icon"></span>Add to Basket</a>
+              <a href="{{ url:base }}cart/insert/{{ id }}/1" class="basket"><span class="icon"></span><?php echo lang('firesale:categories:add_to_basket'); ?></a>
             </footer>
             <br class="clear" />
           </article>
 
 {{ /products }}
 {{ else }}
-          <center style="margin-top: 135px"><h3>No products found</h3></center>
+          <center style="margin-top: 135px"><h3><?php echo lang('firesale:prod_none'); ?></h3></center>
 {{ endif }}
 
           <br class="clear" />
