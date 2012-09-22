@@ -193,6 +193,10 @@
 	$lang['firesale:orders:label_customer']		= 'Cliente';
 	$lang['firesale:orders:label_date_placed']	= 'Data acquisto';
 	$lang['firesale:orders:label_order_id'] 	= "ID ordine";
+	$lang['firesale:orders:labe_shipping_address'] 	= 'Indirizzo di spedizione';
+	$lang['firesale:orders:labe_payment_address'] 	= 'Indirizzo di fatturazione';
+	$lang['firesale:orders:label_order_status']		= 'Stato dell\'ordine';
+	$lang['firesale:orders:label_message']			= 'Messaggio';
 		
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
@@ -238,8 +242,8 @@
 	$lang['firesale:gateways:labels:desc']			= 'Descrizione';
 	$lang['firesale:cart:title']					= 'Carrello';
 	$lang['firesale:cart:empty']					= 'Non ci sono oggetti nel tuo carrello';
-	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
-	$lang['firesale:cart:qty_too_low']				= 'Stock level is too low to add that quantity to your cart'; #translate
+	$lang['firesale:cart:login_required']			= 'Devi effettuare il login prima di procedere';
+	$lang['firesale:cart:qty_too_low']				= 'Non abbiamo sufficienti scorte per soddisfare la tua richiesta';
 	$lang['firesale:checkout:title'] 				= 'Pagamento';
 	$lang['firesale:checkout:error_callback'] 		= 'Sembra esserci un problema con il tuo ordine, prova ancora, possibilmente utilizza un altro metodo di pagamento.';
 	$lang['firesale:payment:title'] 				= 'Conferma dettagli';

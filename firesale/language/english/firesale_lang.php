@@ -194,6 +194,10 @@
 	$lang['firesale:orders:label_customer']		= 'Customer';
 	$lang['firesale:orders:label_date_placed']	= 'Date Placed';
 	$lang['firesale:orders:label_order_id'] 	= "Order ID";
+	$lang['firesale:orders:labe_shipping_address'] = 'Shipping Address';
+	$lang['firesale:orders:labe_payment_address'] = 'Payment Address';
+	$lang['firesale:orders:label_order_status']	= 'Order Status';
+	$lang['firesale:orders:label_message']	= 'Message';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Payment Gateways';
