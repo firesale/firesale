@@ -263,3 +263,8 @@
 	$lang['firesale:cart:label_sub_total'] = "Sub-Total";  # Translate
 	$lang['firesale:cart:label_tax'] = "Tax"; # Translate
 	$lang['firesale:cart:label_total'] = "Total"; # Translate
+	
+	//Categories Frontend
+	$lang['firesale:categories:grid'] = 'Grid';	#Translate
+	$lang['firesale:categories:list'] = 'List';	#Translate
+	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate
