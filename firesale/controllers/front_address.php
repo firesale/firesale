@@ -20,7 +20,7 @@ class Front_address extends Public_Controller
 		if( !$this->user )
 		{
 			// Redirect to login if no user
-			$this->session->set_flashdata('error', 'Login etc.');
+			$this->session->set_flashdata('error', lang('firesale:addresses:no_user'));
 			redirect('users/login');
 		}
 

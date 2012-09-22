@@ -257,6 +257,7 @@
 	$lang['firesale:addresses:new_address']  = 'Crea un nuovo indirizzo';
 	$lang['firesale:addresses:save']	     = 'Salva';
 	$lang['firesale:addresses:cancel']       = 'Annulla';
+	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Disponibilità:";	
