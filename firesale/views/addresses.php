@@ -17,7 +17,7 @@
         </ul>
         <footer>
           <span>&nbsp;</span>
-          <a href="{{ url:base }}users/addresses/edit/{{ id }}"><?php echo lang('firesale:addresses:edit_adress'); ?></a>
+          <a href="{{ url:base }}users/addresses/edit/{{ id }}"><?php echo lang('firesale:addresses:edit_address'); ?></a>
         </footer>
       </section>
 
@@ -26,4 +26,4 @@
 
     </div>
     
-    <a href="{{ url:base }}users/addresses/create" class="btn"><span><?php echo lang('firesale:addresses:new_adress'); ?></span></a>
+    <a href="{{ url:base }}users/addresses/create" class="btn"><span><?php echo lang('firesale:addresses:new_address'); ?></span></a>

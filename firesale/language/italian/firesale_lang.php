@@ -252,11 +252,11 @@
 	$lang['firesale:checkout:title:payment_method']	= 'Metodo di pagamento';
 
 	// Addresses
-	$lang['firesale:addresses:title'] = 'Miei indirizzi';
-	$lang['firesale:addresses:edit_adress'] = 'Modifica indirizzo';
-	$lang['firesale:addresses:new_adress'] = 'Crea un nuovo indirizzo';
-	$lang['firesale:addresses:save']	= 'Salva';
-	$lang['firesale:addresses:cancel'] = 'Annulla';
+	$lang['firesale:addresses:title']        = 'Miei indirizzi';
+	$lang['firesale:addresses:edit_address'] = 'Modifica indirizzo';
+	$lang['firesale:addresses:new_address']  = 'Crea un nuovo indirizzo';
+	$lang['firesale:addresses:save']	     = 'Salva';
+	$lang['firesale:addresses:cancel']       = 'Annulla';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Disponibilità:";	

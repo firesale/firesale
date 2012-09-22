@@ -244,11 +244,11 @@
 	$lang['firesale:checkout:title:payment_method']	= 'Método de Pagamento';
 
 	// Addresses
-	$lang['firesale:addresses:title'] = 'Meu Endereço';
-	$lang['firesale:addresses:edit_adress'] = 'Edit Address'; # Translate
-	$lang['firesale:addresses:new_adress'] = 'Create new Address'; # Translate
-	$lang['firesale:addresses:save']	= 'Save'; # Translate
-	$lang['firesale:addresses:cancel'] = 'Cancel'; # Translate
+	$lang['firesale:addresses:title']        = 'Meu Endereço';
+	$lang['firesale:addresses:edit_address'] = 'Edit Address'; # Translate
+	$lang['firesale:addresses:new_address']  = 'Create new Address'; # Translate
+	$lang['firesale:addresses:save']	     = 'Save'; # Translate
+	$lang['firesale:addresses:cancel']       = 'Cancel'; # Translate
 		
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = 'Disponibilidade';
