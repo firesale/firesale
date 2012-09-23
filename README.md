@@ -1,9 +1,9 @@
-# FireSale (Development)
+# FireSale
 
 * Website: http://www.getfiresale.org
 * Documentation: http://docs.getfiresale.org
 * License: MIT License, a copy of which is included with this package
-* Version: 1.1.0
+* Version: 1.0.4
 
 ## Team
 
