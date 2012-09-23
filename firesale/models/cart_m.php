@@ -220,6 +220,7 @@ class Cart_m extends MY_Model
 	 */
 	public function sale_complete($order)
 	{
+
 		// Update this order status
 		$this->orders_m->update_status($order['id'], 2);
 

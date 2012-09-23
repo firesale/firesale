@@ -219,7 +219,7 @@ class Admin_orders extends Admin_Controller
 		// Redirect?
 		if( !$this->input->post('btnAction') )
 		{
-			redirect('/admin/firesale/orders');
+			redirect('admin/firesale/orders');
 		}
 
 	}
@@ -252,14 +252,14 @@ class Admin_orders extends Admin_Controller
 				}
 				else
 				{
-					$this->db->where('id', $order)->update('firesale_orders', array('order_status' => $status));
+					$this->orders_m->update_status($order, $status);
 				}
 			}
 
 		}
 
 		// Redirect
-		redirect('/admin/firesale/orders');
+		redirect('admin/firesale/orders');
 	}
 
 	public function ajax_add_product($order, $id, $qty)

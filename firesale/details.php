@@ -545,10 +545,11 @@ class Module_Firesale extends Module {
 	{
 
 		// Define our templates
-		$templates = array('order-complete-admin', 'order-complete-user');
+		$templates = array('order-complete-admin', 'order-complete-user', 'order-dispatched');
 		$sql = "INSERT INTO `" . SITE_REF . "_email_templates` (`slug`, `name`, `description`, `subject`, `body`, `lang`, `is_default`, `module`) VALUES
 				('order-complete-admin', 'Order Complete (Admin)', 'Sent to the site admin once an order has been completed', '{{ settings:site_name }} :: An order has been complete', 'Email body', 'en', 0, ''),
-				('order-complete-user', 'Order Complete (User)', 'Sent to the user once an order has been completed', '{{ settings:site_name }} :: Your Order Confirmation', 'Email body', 'en', 0, '');";
+				('order-complete-user', 'Order Complete (User)', 'Sent to the user once an order has been completed', '{{ settings:site_name }} :: Your Order Confirmation', 'Email body', 'en', 0, ''),
+				('order-dispatched', 'Order Dispatched (user)', 'Sent to the user when their order has been dispatched', '{{ settings:site_name }} :: Your Order Has Been Dispatched', 'Email body', 'en', 0, '');";
 
 		if( $action == 'add' )
 		{
