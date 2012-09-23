@@ -321,9 +321,10 @@ class Orders_m extends MY_Model
 		if( $order['total'] == 1 )
 		{
 
-			$order 			= $order['entries'][0];
-			$order['items'] = $this->db->get_where('firesale_orders_items', array('order_id' => (int)$order_id))->result_array();
-			
+			$order 			    = $order['entries'][0];
+			$order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int)$order_id))->result_array();
+			$order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] ), 2);
+
 			foreach( $order['items'] AS $key => &$item )
 			{
 
