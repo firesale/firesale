@@ -33,7 +33,7 @@ class Module_Firesale extends Module {
 			'menu'	   => 'FireSALE',
 			'author'   => 'Jamie Holdroyd & Chris Harvey',
 			'roles' => array(
-				'edit_orders', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways'
+				'edit_orders', 'access_routes', 'edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways'
 			),
 			'sections' => array(
 				'dashboard' => array(
@@ -96,6 +96,14 @@ class Module_Firesale extends Module {
 				)
 			)
 		);
+
+		if (group_has_role('firesale', 'access_routes'))
+		{
+			$info['sections']['routes'] = array(
+				'name' => 'firesale:sections:routes',
+				'uri'  => 'admin/firesale/routes'
+			);
+		}
 		
 		if (group_has_role('firesale', 'access_gateways'))
 		{
@@ -150,7 +158,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_description', 'slug' => 'description', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'));
 
 		// Combine
-		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 	
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
@@ -193,7 +201,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_description', 'slug' => 'description', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'advanced'));
 
 		// Combine
-		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 	
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
@@ -225,7 +233,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0));
 
 		// Combine
-		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 	
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
@@ -272,7 +280,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_country', 'slug' => 'country', 'type' => 'country');
 
 		// Combine
-		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 		
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
@@ -309,7 +317,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_shipping', 'slug' => 'shipping', 'type' => 'integer', 'required' => FALSE);
 	
 		// Combine
-		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 		
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
@@ -334,7 +342,28 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_quantity', 'slug' => 'qty', 'type' => 'integer', 'required' => FALSE);
 
 		// Combine
-		foreach( $fields AS $key => $field ) { $fields[$key] = array_merge($template, $field); }
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
+
+		############
+		## ROUTES ##
+		############
+
+		// Create routes stream
+		if( !$this->streams->streams->add_stream(lang('firesale:sections:routes'), 'firesale_routes', 'firesale_routes', NULL, NULL) ) return FALSE;
+
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_routes', 'assign' => 'firesale_routes', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'name', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'name', 'space_type' => '-'));
+		$fields[] = array('name' => 'lang:firesale:label_route', 'slug' => 'route', 'extra' => array('max_length' => 128), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_translation', 'slug' => 'translation', 'extra' => array('max_length' => 128), 'unique' => TRUE);
+
+		// Combine
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
@@ -401,6 +430,7 @@ class Module_Firesale extends Module {
 		$this->streams->utilities->remove_namespace('firesale_addresses');
 		$this->streams->utilities->remove_namespace('firesale_orders');
 		$this->streams->utilities->remove_namespace('firesale_orders_items');
+		$this->streams->utilities->remove_namespace('firesale_routes');
 		
 		// Drop the payment gateway tables
 		$this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it =/

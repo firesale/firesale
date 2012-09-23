@@ -17,6 +17,7 @@
 	$lang['firesale:sections:orders_items']	= 'Order Items';
 	$lang['firesale:sections:gateways']		= 'Gateways';
 	$lang['firesale:sections:settings'] 	= 'Settings';
+	$lang['firesale:sections:routes']       = 'Routes';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'General Options';
@@ -163,6 +164,9 @@
 	$lang['firesale:label_time_day']	= '1 day ago.';
 	$lang['firesale:label_time_days'] 	= '%s days ago.';
 
+	$lang['firesale:label_route']       = 'Route';
+	$lang['firesale:label_translation'] = 'Translation';
+
 	// Orders
 	$lang['firesale:orders:title']				= 'Orders';
 	$lang['firesale:orders:no_orders']			= 'There are currently no orders';
@@ -244,6 +248,12 @@
 	$lang['firesale:payment:title_success'] 		= 'Payment Complete';
 	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';
 	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
+
+	// Routes
+	$lang['firesale:routes:title']       = 'Routes';
+	$lang['firesale:routes:new']         = 'Add a new Route';
+	$lang['firesale:routes:add_success'] = 'New route added successfully';
+	$lang['firesale:routes:add_error']   = 'Error adding a new route';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
