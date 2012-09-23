@@ -641,8 +641,13 @@ class Front_cart extends Public_Controller
 						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
 						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
 						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
-						   ->build('payment_complete', $order);
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment');
+
+			// Fire events
+			Events::trigger('page_build', $this->template);
+
+			// Build the page
+			$this->template->build('payment_complete', $order);
 		}
 
 	}
