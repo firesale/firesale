@@ -20,7 +20,7 @@ class Routes_m extends MY_Model
 	 * routes file to be cached and used by the system.
 	 *
 	 * @param array $input POST input array
-	 * @return TRUE or FALSE on success or failure
+	 * @return Integer/Boolean ID or FALSE on success or failure
 	 * @access public
 	 */
 	public function create($input)
@@ -44,15 +44,8 @@ class Routes_m extends MY_Model
 			// Update routes file
 			$this->write($input['name'], $input['route'], $input['translation']);
 
-			// Remove for now
-			$this->db->where('id', $id)->delete('firesale_routes');
-
+			return $id;
 		}
-
-		echo '<pre>';
-			print_r($input);
-		echo '</pre>';
-		exit();
 
 		return FALSE;
 	}

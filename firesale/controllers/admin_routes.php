@@ -75,7 +75,7 @@ class Admin_routes extends Admin_Controller
 				}
 				else
 				{
-					redirect('admin/firesale/routes/edit/-id-');
+					redirect('admin/firesale/routes/edit/'.$id);
 				}
 
 			}
@@ -91,6 +91,16 @@ class Admin_routes extends Admin_Controller
         			   ->set($this->data)
         			   ->build('admin/routes/create');
 	
+	}
+
+	public function edit($id)
+	{
+
+
+		// Build the page
+        $this->template->title(lang('firesale:routes:edit'))
+        			   ->set($this->data)
+        			   ->build('admin/routes/edit');
 	}
 
 }
