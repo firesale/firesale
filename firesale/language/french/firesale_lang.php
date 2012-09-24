@@ -281,3 +281,8 @@
 	$lang['firesale:categories:grid'] = 'Grid';	#Translate
 	$lang['firesale:categories:list'] = 'List';	#Translate
 	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate
+	
+	//Payment Frontend
+	$lang['firesale:payment:cancelled'] = 'Order Cancelled'; #Translate
+	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...'; #Translate
+	$lang['firesale:payment:btn_continue'] = 'Continue'; #Translate

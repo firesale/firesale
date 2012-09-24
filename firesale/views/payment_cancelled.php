@@ -1,1 +1,1 @@
-<h2>Order Cancelled</h2>
+<h2><?php echo lang('firesale:payment:cancelled'); ?></h2>
