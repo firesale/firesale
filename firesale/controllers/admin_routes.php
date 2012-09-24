@@ -3,7 +3,6 @@
 class Admin_routes extends Admin_Controller
 {
 
-	public $data    = stdClass;
 	public $section = 'routes';
 
 	public function __construct()
@@ -80,7 +79,7 @@ class Admin_routes extends Admin_Controller
 			}
 			else
 			{
-				redirect('admin/firesale/routes/edit/'.$id);
+				redirect('admin/firesale/routes/edit/'.$fields);
 			}
 
 		}
@@ -155,7 +154,26 @@ class Admin_routes extends Admin_Controller
 	public function delete($id)
 	{
 
+		// Get the route
+		$row = $this->row_m->get_row($id, $this->stream, false);
 
+		// Remove it
+		if( $row AND $this->db->where('id', $id)->delete('firesale_routes') )
+		{
+			// Remove from file
+			$this->routes_m->remove($row->name);
+
+			// Success
+			$this->session->set_flashdata('success', lang('firesale:routes:delete_success'));
+		}
+		else
+		{
+			// Failed
+			$this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
+		}
+
+		// Redirect
+		redirect('firesale/admin/routes');
 
 	}
 

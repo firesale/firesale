@@ -251,15 +251,17 @@
 	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
 
 	// Routes
-	$lang['firesale:routes:title']        = 'Routes';
-	$lang['firesale:routes:new']          = 'Add a new Route';
-	$lang['firesale:routes:add_success']  = 'New route added successfully';
-	$lang['firesale:routes:add_error']    = 'Error adding a new route';
-	$lang['firesale:routes:edit']         = 'Edit Route';
-	$lang['firesale:routes:edit_success'] = 'Route edited successfully';
-	$lang['firesale:routes:edit_error']   = 'Error editing the route';
-	$lang['firesale:routes:not_found']    = 'The selected route could not be found';
-	$lang['firesale:routes:none']         = 'No routes found';
+	$lang['firesale:routes:title']          = 'Routes';
+	$lang['firesale:routes:new']            = 'Add a new Route';
+	$lang['firesale:routes:add_success']    = 'New route added successfully';
+	$lang['firesale:routes:add_error']      = 'Error adding a new route';
+	$lang['firesale:routes:edit']           = 'Edit Route';
+	$lang['firesale:routes:edit_success']   = 'Route edited successfully';
+	$lang['firesale:routes:edit_error']     = 'Error editing the route';
+	$lang['firesale:routes:not_found']      = 'The selected route could not be found';
+	$lang['firesale:routes:none']           = 'No routes found';
+	$lang['firesale:routes:delete_success'] = 'Route removed successfully';
+	$lang['firesale:routes:delete_error']   = 'Error removing route';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';

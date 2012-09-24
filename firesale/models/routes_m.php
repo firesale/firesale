@@ -103,4 +103,19 @@ class Routes_m extends MY_Model
 		file_put_contents($file, $content);
 	}
 
+	public function remove($title)
+	{
+
+		// Variables
+		$file    = $_SERVER['DOCUMENT_ROOT'].APPPATH_URI.'config/routes.php';
+		$content = file_get_contents($file);
+		$regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
+
+		// Replace in string
+		$content = preg_replace($regex, '', $content);
+
+		// Write it
+		file_put_contents($file, $content);
+	}
+
 }
