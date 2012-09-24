@@ -115,7 +115,7 @@
 	$lang['firesale:label_stock_out']		= 'Finito';
 	$lang['firesale:label_stock_order']		= 'Scorte in ordine';
 	$lang['firesale:label_stock_ended']		= 'Discontinuo';
-	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
+	$lang['firesale:label_stock_unlimited']	= 'Senza limiti';
 
 	$lang['firesale:label_remove']		= 'Rimuovi';
 	$lang['firesale:label_image']		= 'Immagine';
@@ -257,7 +257,7 @@
 	$lang['firesale:addresses:new_address']  = 'Crea un nuovo indirizzo';
 	$lang['firesale:addresses:save']	     = 'Salva';
 	$lang['firesale:addresses:cancel']       = 'Annulla';
-	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
+	$lang['firesale:addresses:no_user']      = 'Devi effettuare il login per gestire l\'elenco dei tuooi indirizzi';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Disponibilità:";	
@@ -285,3 +285,8 @@
 	$lang['firesale:categories:grid'] = 'Griglia';
 	$lang['firesale:categories:list'] = 'Lista';
 	$lang['firesale:categories:add_to_basket'] = 'Aggiungi al carrello';
+	
+	//Payment Frontend
+	$lang['firesale:payment:cancelled'] = 'Ordine cancellato';
+	$lang['firesale:payment:wait_redirect'] = 'Per favore attendi il reindirizzamento alla pagina dei pagamenti...';
+	$lang['firesale:payment:btn_continue'] = 'Continua';
