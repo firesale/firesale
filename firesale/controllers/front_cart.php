@@ -10,7 +10,7 @@ class Front_cart extends Public_Controller
 	{
 
 		parent::__construct();
-		
+
 		// Load CodeIgniter's cart class, the ci-merchant class and the gateways class
 		$this->load->library(array('fs_cart', 'merchant', 'gateways'));
 		
@@ -25,8 +25,21 @@ class Front_cart extends Public_Controller
 		// Require login?
 		if( $this->settings->get('firesale_login') == 1 AND !$this->current_user )
 		{
+
+			// Posted to cart
+			if( $this->uri->segment('2') == 'insert' AND $code = $this->input->post('prd_code') )
+			{
+				$qty  = $this->input->post('prd_qty');
+				$url  = BASE_URL.'cart/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
+			}
+			else
+			{
+				$url = current_url();
+			}
+
+			// Set data and redirect
 			$this->session->set_flashdata('error', lang('firesale:cart:login_required'));
-			$this->session->set_userdata('redirect_to', current_url());
+			$this->session->set_userdata('redirect_to', $url);
 			redirect('users/login');		
 		}
 		
