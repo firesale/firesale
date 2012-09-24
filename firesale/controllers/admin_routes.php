@@ -87,7 +87,7 @@ class Admin_routes extends Admin_Controller
 		}
 
 		// Build the page
-        $this->template->title(lang('firesale:routes:new'))
+        $this->template->title(lang('firesale:title').' '.lang('firesale:routes:new'))
         			   ->set($this->data)
         			   ->build('admin/routes/create');
 	
@@ -96,11 +96,61 @@ class Admin_routes extends Admin_Controller
 	public function edit($id)
 	{
 
+		// Variables
+		$fields = $this->streams_m->get_stream_fields($this->stream->id);
+		$row    = $this->row_m->get_row($id, $this->stream, false);
+		$input  = $this->input->post();
+		$skip   = array('btnAction');
+		$extra  = array(
+            'return'          => 'admin/firesale/routes/edit/-id-',
+            'success_message' => lang('firesale:routes:edit_success'),
+            'failure_message' => lang('firesale:routes:edit_error'),
+            'title'           => lang('firesale:routes:edit')
+        );
+
+		// Build the fields
+		$this->data->fields = $this->fields->build_fields($fields, $row, 'edit', NULL, $skip, $extra);
+		
+		// Posted
+		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
+		{
+
+			// Set rules
+			$this->fields->set_rules($fields, 'edit', $skip, false, null);
+
+			// Run validation
+			if( $this->form_validation->run() === TRUE )
+			{
+
+				// Save it
+				$id = $this->routes_m->edit($id, $input, $row);
+
+				// Success message
+				$this->session->set_flashdata('success', $extra['success_message']);
+
+				// Redirect
+				if( $input['btnAction'] == 'save_exit' )
+				{
+					redirect('admin/firesale/routes');
+				}
+				else
+				{
+					redirect('admin/firesale/routes/edit/'.$id);
+				}
+
+			}
+
+			// Failed validation
+			$this->session->set_flashdata('error', $extra['failure_message']);
+			redirect('admin/firesale/routes/create');
+
+		}
 
 		// Build the page
-        $this->template->title(lang('firesale:routes:edit'))
+        $this->template->title(lang('firesale:title').' '.lang('firesale:routes:edit'))
         			   ->set($this->data)
-        			   ->build('admin/routes/edit');
+        			   ->build('admin/routes/create');
+	
 	}
 
 }

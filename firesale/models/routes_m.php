@@ -50,11 +50,33 @@ class Routes_m extends MY_Model
 		return FALSE;
 	}
 
-	public function write($title, $route, $map)
+	public function edit($id, $input, $row)
+	{
+
+		// Remove btnAction
+		unset($input['btnAction']);
+
+		// Add extra information
+		$input['updated'] = date("Y-m-d H:i:s");
+
+		// Insert it
+		if( $this->db->where('id', $id)->update('firesale_routes', $input) )
+		{
+
+			// Update routes file
+			$this->write($input['name'], $input['route'], $input['translation'], ( $row['name'] != $input['name'] ? $row['name'] : false ));
+
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+
+	public function write($title, $route, $map, $old_title = false)
 	{
 
 		// Variables
-		$file    = APPPATH_URI.'config/routes.php';
+		$file    = $_SERVER['DOCUMENT_ROOT'].APPPATH_URI.'config/routes.php';
 		$content = file_get_contents($file);
 		$before  = "\n/* End of file routes.php */";
 		$regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
