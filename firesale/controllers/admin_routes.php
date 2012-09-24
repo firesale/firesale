@@ -3,6 +3,7 @@
 class Admin_routes extends Admin_Controller
 {
 
+	public $data    = stdClass;
 	public $section = 'routes';
 
 	public function __construct()
@@ -149,6 +150,13 @@ class Admin_routes extends Admin_Controller
         			   ->set($this->data)
         			   ->build('admin/routes/edit');
 	
+	}
+
+	public function delete($id)
+	{
+
+
+
 	}
 
 }

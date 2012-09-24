@@ -30,8 +30,8 @@
 					<td><?php echo $route['slug']; ?></td>
 					<td><?php echo $route['route']; ?></td>
 					<td><?php echo $route['translation']; ?></td>
-					<td><?php echo anchor('admin/faq/edit/' . $route['id'], lang('global:edit'), 'class="btn orange edit"'); ?>
-                                            <?php echo anchor('admin/faq/delete/' . $route['id'], lang('global:delete'), array('class' => 'confirm btn red delete')); ?>
+					<td><?php echo anchor('admin/firesale/routes/edit/' . $route['id'], lang('global:edit'), 'class="btn orange edit"'); ?>
+                                            <?php echo anchor('admin/firesale/routes/delete/' . $route['id'], lang('global:delete'), array('class' => 'confirm btn red delete')); ?>
                                         </td>
 				</tr>
 				<?php endforeach; ?>
