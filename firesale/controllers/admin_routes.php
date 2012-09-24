@@ -22,6 +22,17 @@ class Admin_routes extends Admin_Controller
 	public function index()
 	{
 
+		// Variables
+        $params = array(
+            'stream'       => 'firesale_routes',
+            'namespace'    => 'firesale_routes',
+            'paginate'     => 'yes',
+            'page_segment' => 4
+        );
+
+        // Assign routes
+        $this->data->routes = $this->streams->entries->get_entries($params);
+
 		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:routes'))
 					   ->set($this->data);
@@ -38,53 +49,43 @@ class Admin_routes extends Admin_Controller
 	{
 
 		// Variables
-		$fields = $this->streams_m->get_stream_fields($this->stream->id);
-		$input  = $this->input->post();
-		$skip   = array('btnAction');
-		$extra  = array(
-            'return'          => 'admin/firesale/routes/edit/-id-',
+		$input = $this->input->post();
+		$skip  = array('btnAction');
+		$extra = array(
+            'return'          => false,
             'success_message' => lang('firesale:routes:add_success'),
             'failure_message' => lang('firesale:routes:add_error'),
             'title'           => lang('firesale:routes:new')
         );
 
-		// Build the fields
-		$this->data->fields = $this->fields->build_fields($fields, $input, 'new', NULL, $skip, $extra);
+		// Build the form
+		$fields = $this->fields->build_form($this->stream, 'new', $input, false, false, $skip, $extra);
 		
 		// Posted
 		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
 		{
 
-			// Set rules
-			$this->fields->set_rules($fields, 'new', $skip, false, null);
-
-			// Run validation
-			if( $this->form_validation->run() === TRUE )
+			// Got an ID back
+			if( is_numeric($fields) )
 			{
-
-				// Save it
-				$id = $this->routes_m->create($input);
-
-				// Success message
-				$this->session->set_flashdata('success', $extra['success_message']);
-
-				// Redirect
-				if( $input['btnAction'] == 'save_exit' )
-				{
-					redirect('admin/firesale/routes');
-				}
-				else
-				{
-					redirect('admin/firesale/routes/edit/'.$id);
-				}
-
+				// Add the route
+				$this->routes_m->write($input['name'], $input['route'], $input['translation']);
 			}
 
-			// Failed validation
-			$this->session->set_flashdata('error', $extra['failure_message']);
-			redirect('admin/firesale/routes/create');
+			// Redirect
+			if( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) )
+			{
+				redirect('admin/firesale/routes');
+			}
+			else
+			{
+				redirect('admin/firesale/routes/edit/'.$id);
+			}
 
 		}
+
+		// Assign data
+		$this->data->fields = $fields;
 
 		// Build the page
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:new'))
@@ -97,59 +98,56 @@ class Admin_routes extends Admin_Controller
 	{
 
 		// Variables
-		$fields = $this->streams_m->get_stream_fields($this->stream->id);
-		$row    = $this->row_m->get_row($id, $this->stream, false);
-		$input  = $this->input->post();
-		$skip   = array('btnAction');
-		$extra  = array(
-            'return'          => 'admin/firesale/routes/edit/-id-',
+		$row   = $this->row_m->get_row($id, $this->stream, false);
+		$input = $this->input->post();
+		$skip  = array('btnAction');
+		$extra = array(
+            'return'          => false,
             'success_message' => lang('firesale:routes:edit_success'),
             'failure_message' => lang('firesale:routes:edit_error'),
             'title'           => lang('firesale:routes:edit')
         );
 
-		// Build the fields
-		$this->data->fields = $this->fields->build_fields($fields, $row, 'edit', NULL, $skip, $extra);
+        // Not found
+        if( empty($row) )
+        {
+        	$this->session->set_flashdata('error', lang('firesale:routes:not_found'));
+        	redirect('admin/firesale/routes/create');
+        }
+
+		// Build the form
+		$fields = $this->fields->build_form($this->stream, 'edit', $row, false, false, $skip, $extra);
 		
 		// Posted
 		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
 		{
 
-			// Set rules
-			$this->fields->set_rules($fields, 'edit', $skip, false, null);
-
-			// Run validation
-			if( $this->form_validation->run() === TRUE )
+			// Got an ID back
+			if( is_numeric($fields) )
 			{
-
-				// Save it
-				$id = $this->routes_m->edit($id, $input, $row);
-
-				// Success message
-				$this->session->set_flashdata('success', $extra['success_message']);
-
-				// Redirect
-				if( $input['btnAction'] == 'save_exit' )
-				{
-					redirect('admin/firesale/routes');
-				}
-				else
-				{
-					redirect('admin/firesale/routes/edit/'.$id);
-				}
-
+				// Add the route
+				$this->routes_m->write($input['name'], $input['route'], $input['translation'], $row->name);
 			}
 
-			// Failed validation
-			$this->session->set_flashdata('error', $extra['failure_message']);
-			redirect('admin/firesale/routes/create');
+			// Redirect
+			if( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) )
+			{
+				redirect('admin/firesale/routes');
+			}
+			else
+			{
+				redirect('admin/firesale/routes/edit/'.$id);
+			}
 
 		}
+
+		// Assign data
+		$this->data->fields = $fields;
 
 		// Build the page
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:edit'))
         			   ->set($this->data)
-        			   ->build('admin/routes/create');
+        			   ->build('admin/routes/edit');
 	
 	}
 

@@ -30,10 +30,10 @@ class Module_Firesale extends Module {
 			'frontend'		=> TRUE,
 			'backend'		=> TRUE,
 			'firesale_core'	=> TRUE,
-			'menu'	   => 'FireSALE',
+			'menu'	   => 'FireSale',
 			'author'   => 'Jamie Holdroyd & Chris Harvey',
 			'roles' => array(
-				'edit_orders', 'access_routes', 'edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways'
+				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways'
 			),
 			'sections' => array(
 				'dashboard' => array(
@@ -101,7 +101,19 @@ class Module_Firesale extends Module {
 		{
 			$info['sections']['routes'] = array(
 				'name' => 'firesale:sections:routes',
-				'uri'  => 'admin/firesale/routes'
+				'uri'  => 'admin/firesale/routes',
+				'shortcuts' => array()
+			);
+		}
+
+		if (group_has_role('firesale', 'create_edit_routes') AND isset($info['sections']['routes']))
+		{
+			$info['sections']['routes']['shortcuts'] = array(
+				array(
+					'name' 	=> 'firesale:shortcuts:create_routes',
+					'uri'	=> 'admin/firesale/routes/create',
+					'class' => 'add'
+				)
 			);
 		}
 		

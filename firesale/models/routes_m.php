@@ -64,7 +64,8 @@ class Routes_m extends MY_Model
 		{
 
 			// Update routes file
-			$this->write($input['name'], $input['route'], $input['translation'], ( $row['name'] != $input['name'] ? $row['name'] : false ));
+			$old_title = ( $row['name'] != $input['name'] ? $row['name'] : false );
+			$this->write($input['name'], $input['route'], $input['translation'], $old_title);
 
 			return TRUE;
 		}
@@ -79,7 +80,7 @@ class Routes_m extends MY_Model
 		$file    = $_SERVER['DOCUMENT_ROOT'].APPPATH_URI.'config/routes.php';
 		$content = file_get_contents($file);
 		$before  = "\n/* End of file routes.php */";
-		$regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
+		$regex   = "%(\n/\* FireSale - ".($old_title?$old_title:$title)." \*/\n.+?\n)%si";
 		$map     = preg_replace('/\$([0-9]+)/si', '\$__$1', $map);
 		$string  = "\n/* FireSale - {$title} */\n\$route['{$route}'] = '{$map}';\n";
 

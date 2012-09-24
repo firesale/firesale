@@ -9,15 +9,16 @@
 	$lang['firesale:title:ship']		= 'Shipping Details';
 
 	// Sections
-	$lang['firesale:sections:dashboard'] 	= 'Dashboard';
-	$lang['firesale:sections:categories'] 	= 'Categories';
-	$lang['firesale:sections:products'] 	= 'Products';
-	$lang['firesale:sections:orders'] 		= 'Orders';
-	$lang['firesale:sections:addresses'] 	= 'Addresses';
-	$lang['firesale:sections:orders_items']	= 'Order Items';
-	$lang['firesale:sections:gateways']		= 'Gateways';
-	$lang['firesale:sections:settings'] 	= 'Settings';
-	$lang['firesale:sections:routes']       = 'Routes';
+	$lang['firesale:sections:dashboard'] 	  = 'Dashboard';
+	$lang['firesale:sections:categories'] 	  = 'Categories';
+	$lang['firesale:sections:products'] 	  = 'Products';
+	$lang['firesale:sections:orders'] 		  = 'Orders';
+	$lang['firesale:sections:addresses'] 	  = 'Addresses';
+	$lang['firesale:sections:orders_items']	  = 'Order Items';
+	$lang['firesale:sections:gateways']		  = 'Gateways';
+	$lang['firesale:sections:settings'] 	  = 'Settings';
+	$lang['firesale:sections:routes']         = 'Routes';
+	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'General Options';
@@ -250,10 +251,15 @@
 	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
 
 	// Routes
-	$lang['firesale:routes:title']       = 'Routes';
-	$lang['firesale:routes:new']         = 'Add a new Route';
-	$lang['firesale:routes:add_success'] = 'New route added successfully';
-	$lang['firesale:routes:add_error']   = 'Error adding a new route';
+	$lang['firesale:routes:title']        = 'Routes';
+	$lang['firesale:routes:new']          = 'Add a new Route';
+	$lang['firesale:routes:add_success']  = 'New route added successfully';
+	$lang['firesale:routes:add_error']    = 'Error adding a new route';
+	$lang['firesale:routes:edit']         = 'Edit Route';
+	$lang['firesale:routes:edit_success'] = 'Route edited successfully';
+	$lang['firesale:routes:edit_error']   = 'Error editing the route';
+	$lang['firesale:routes:not_found']    = 'The selected route could not be found';
+	$lang['firesale:routes:none']         = 'No routes found';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
