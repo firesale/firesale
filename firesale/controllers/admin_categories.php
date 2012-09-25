@@ -1,5 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Categories admin controller
+ *
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Controllers
+ *
+ */
 class Admin_categories extends Admin_Controller
 {
 

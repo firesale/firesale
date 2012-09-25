@@ -1,5 +1,13 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Product controller
+ *
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Controllers
+ *
+ */
 class Front_product extends Public_Controller {
 	
 	public function __construct()

@@ -1,5 +1,13 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
+/**
+ * Dashboard controller
+ *
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Controllers
+ *
+ */
 class Admin extends Admin_Controller
 {
 	public $section = 'dashboard';

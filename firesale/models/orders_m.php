@@ -1,5 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Orders model
+ *
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Models
+ *
+ */
 class Orders_m extends MY_Model
 {
   

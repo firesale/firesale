@@ -1,5 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Orders admin controller
+ *
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Controllers
+ *
+ */
 class Admin_orders extends Admin_Controller
 {
 

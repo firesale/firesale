@@ -1,5 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Gateways admin controller
+ *
+ * @author		Chris Harvey
+ * @author		Jamie Holdroyd
+ * @package		FireSale\Core\Controllers
+ *
+ */
 class Admin_gateways extends Admin_Controller
 {
 	public $section = 'gateways';

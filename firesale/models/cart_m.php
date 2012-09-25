@@ -1,5 +1,13 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Cart model
+ *
+ * @author		Chris Harvey
+ * @author		Jamie Holdroyd
+ * @package		FireSale\Core\Models
+ *
+ */
 class Cart_m extends MY_Model
 {
 

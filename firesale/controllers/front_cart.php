@@ -1,5 +1,13 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+ * Cart controller
+ *
+ * @author		Chris Harvey
+ * @author		Jamie Holdroyd
+ * @package		FireSale\Core\Controllers
+ *
+ */
 class Front_cart extends Public_Controller
 {
 
@@ -556,7 +564,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect('/cart/checkout');
+			redirect('cart/checkout');
 		}
 		
 	}
@@ -591,7 +599,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect($this->routes_installed ? 'cart' : 'firesale/cart');
+			redirect('cart');
 		}
 	}
 
@@ -654,7 +662,8 @@ class Front_cart extends Public_Controller
 						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
 						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
 						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment');
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
+						   ->order = $order;
 
 			// Fire events
 			Events::trigger('page_build', $this->template);
