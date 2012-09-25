@@ -98,6 +98,8 @@ class Admin_routes extends Admin_Controller
 		// Build the page
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:new'))
         			   ->set($this->data)
+        			   ->append_css('module::routes.css')
+					   ->append_js('module::routes.js')
         			   ->build('admin/routes/create');
 	
 	}
@@ -155,6 +157,8 @@ class Admin_routes extends Admin_Controller
 		// Build the page
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:edit'))
         			   ->set($this->data)
+        			   ->append_css('module::routes.css')
+					   ->append_js('module::routes.js')
         			   ->build('admin/routes/edit');
 	
 	}
