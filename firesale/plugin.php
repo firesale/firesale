@@ -30,14 +30,15 @@ class Plugin_Firesale extends Plugin
 	{
 	
 		// Variables
-		$limit	   	   = $this->attribute('limit', 6);
-		$category  	   = $this->attribute('category', 0);
-		$order_by  	   = $this->attribute('order-by', 'ordering_count');
-		$order_dir 	   = $this->attribute('order-dir', 'asc');
-		$exclude_empty = (bool)$this->attribute('exclude-empty', FALSE);
+		$limit	   = $this->attribute('limit', 6);
+		$category  = $this->attribute('category', 0);
+		$where     = $this->attribute('where', FALSE);
+		$order_by  = $this->attribute('order-by', 'ordering_count');
+		$order_dir = $this->attribute('order-dir', 'asc');
+		$not_empty = (bool)$this->attribute('exclude-empty', FALSE);		
 
 		// Exclude empty categories?
-		if ($exclude_empty)
+		if( $not_empty )
 		{
 			$this->db->where('(SELECT COUNT(id)
 				FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
@@ -50,6 +51,16 @@ class Plugin_Firesale extends Plugin
 						  ->where('status', '1')
 						  ->where('parent', $category)
 						  ->order_by($order_by, $order_dir);
+						  
+		// Add where?
+		if( $where !== FALSE )
+		{
+			list($field, $value) = @explode('=', $where, 2);
+			if( !empty($field) AND !empty($value) )
+			{
+				$query->where($field, $value);
+			}
+		}
 
 		// Add limit?
 		if( $limit > 0 )
