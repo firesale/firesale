@@ -2,37 +2,39 @@ $(function() {
 	
 	// Variables
 	var section = $('input#slug').val();
-	var html    = '';
-
-	// Temp
-	$('#translation').val($('#route').val());
+	var html    = '<br />';
+	var id      = $('form.crud').attr('action').split('/');
+	    id      = id[(id.length-1)];
 
 	// Bind to route
-	$('#route').bind('keyup keydown change delete paste update', function() {
-		var val = $('#route').val();
+	$('#map').bind('keyup keydown change delete paste update', function() {
+		var val = $('#map').val();
 		$('.route-action').each(function() {
 			var regex = new RegExp($(this).data('route'),"g");
 			val = val.replace(regex, $(this).data('translation'));
 		});
-		$('#translation').val(val);
+		$('#route').val(val);
 	});
 
+	// Fix map value
+	$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
+
 	// Section specific
-	if( section == 'category' || section == 'product' )
+	if( id == '1' || id == '2' )
 	{
-		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="[0-9]+"><span>Add ID</span></button>';
-		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z-]+)"><span>Add Slug</span></button>';
-		html += '<button class="btn blue route-action" data-route="{{ title }}" data-translation="([a-z-]+)"><span>Add Title</span></button>';
+		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="([0-9]+)"><span>Add ID</span></button>';
+		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z0-9-]+)"><span>Add Slug</span></button>';
+		html += '<button class="btn blue route-action" data-route="{{ title }}" data-translation=".+?"><span>Add Title</span></button>';
 	}
 
 	// Add to document
-	$(html).insertAfter($('#route'));
+	$(html).insertAfter($('#map'));
 
 	// Bind events
 	$('button.route-action').click(function(e) {
 		e.preventDefault();
-		$('#route').val($('#route').val()+$(this).data('route')).focus();
-		$('#translation').val($('#translation').val()+$(this).data('translation'));
+		$('#map').val($('#map').val()+$(this).data('route')).focus();
+		$('#route').val($('#route').val()+$(this).data('translation'));
 	});
 
 

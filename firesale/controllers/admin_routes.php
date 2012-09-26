@@ -77,7 +77,7 @@ class Admin_routes extends Admin_Controller
 			if( is_numeric($fields) )
 			{
 				// Add the route
-				$this->routes_m->write($input['name'], $input['route'], $input['translation']);
+				$this->routes_m->write($input['title'], $input['route'], $input['translation']);
 			}
 
 			// Redirect
@@ -125,8 +125,20 @@ class Admin_routes extends Admin_Controller
         	redirect('admin/firesale/routes/create');
         }
 
+        // Don't allow title and slug to be changed
+        $_POST['title'] = $row->title;
+        $_POST['slug']  = $row->slug;
+
 		// Build the form
 		$fields = $this->fields->build_form($this->stream, 'edit', $row, false, false, $skip, $extra);
+
+		// Remove title and slug
+		if( is_array($fields) )
+		{
+			// Remove title and slug
+			unset($fields[0]);
+			unset($fields[1]);
+		}
 		
 		// Posted
 		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
@@ -136,7 +148,7 @@ class Admin_routes extends Admin_Controller
 			if( is_numeric($fields) )
 			{
 				// Add the route
-				$this->routes_m->write($input['name'], $input['route'], $input['translation'], $row->name);
+				$this->routes_m->write($row->title, $input['route'], $input['translation']);
 			}
 
 			// Redirect
@@ -152,41 +164,16 @@ class Admin_routes extends Admin_Controller
 		}
 
 		// Assign data
+		$this->data->row    = $row;
 		$this->data->fields = $fields;
 
 		// Build the page
-        $this->template->title(lang('firesale:title').' '.lang('firesale:routes:edit'))
+        $this->template->title(lang('firesale:title').' '.sprintf(lang('firesale:routes:edit'), $row->title))
         			   ->set($this->data)
         			   ->append_css('module::routes.css')
 					   ->append_js('module::routes.js')
         			   ->build('admin/routes/edit');
 	
-	}
-
-	public function delete($id)
-	{
-
-		// Get the route
-		$row = $this->row_m->get_row($id, $this->stream, false);
-
-		// Remove it
-		if( $row AND $this->db->where('id', $id)->delete('firesale_routes') )
-		{
-			// Remove from file
-			$this->routes_m->remove($row->name);
-
-			// Success
-			$this->session->set_flashdata('success', lang('firesale:routes:delete_success'));
-		}
-		else
-		{
-			// Failed
-			$this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
-		}
-
-		// Redirect
-		redirect('firesale/admin/routes');
-
 	}
 
 }

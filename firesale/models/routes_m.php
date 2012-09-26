@@ -50,7 +50,7 @@ class Routes_m extends MY_Model
 			$id = $this->db->insert_id();
 
 			// Update routes file
-			$this->write($input['name'], $input['route'], $input['translation']);
+			$this->write($input['title'], $input['route'], $input['translation']);
 
 			return $id;
 		}
@@ -72,12 +72,33 @@ class Routes_m extends MY_Model
 		{
 
 			// Update routes file
-			$old_title = ( $row['name'] != $input['name'] ? $row['name'] : false );
-			$this->write($input['name'], $input['route'], $input['translation'], $old_title);
+			$old_title = ( $row['title'] != $input['title'] ? $row['title'] : false );
+			$this->write($input['title'], $input['route'], $input['translation'], $old_title);
 
 			return TRUE;
 		}
 
+		return FALSE;
+	}
+
+	public function delete($id)
+	{
+
+		// Variables
+		$stream = $this->streams->streams->get_stream('firesale_routes', 'firesale_routes');
+		$row = $this->row_m->get_row($id, $stream, false);
+
+		// Remove it
+		if( $row AND $this->db->where('id', $id)->delete('firesale_routes') )
+		{
+			// Remove from file
+			$this->remove($row->title);
+
+			// Success
+			return TRUE;
+		}
+		
+		// Something went wrong
 		return FALSE;
 	}
 

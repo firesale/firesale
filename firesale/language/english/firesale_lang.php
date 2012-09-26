@@ -165,6 +165,7 @@
 	$lang['firesale:label_time_day']	= '1 day ago.';
 	$lang['firesale:label_time_days'] 	= '%s days ago.';
 
+	$lang['firesale:label_map']         = 'Map';
 	$lang['firesale:label_route']       = 'Route';
 	$lang['firesale:label_translation'] = 'Translation';
 
@@ -255,7 +256,7 @@
 	$lang['firesale:routes:new']            = 'Add a new Route';
 	$lang['firesale:routes:add_success']    = 'New route added successfully';
 	$lang['firesale:routes:add_error']      = 'Error adding a new route';
-	$lang['firesale:routes:edit']           = 'Edit Route';
+	$lang['firesale:routes:edit']           = 'Edit %s Route';
 	$lang['firesale:routes:edit_success']   = 'Route edited successfully';
 	$lang['firesale:routes:edit_error']     = 'Error editing the route';
 	$lang['firesale:routes:not_found']      = 'The selected route could not be found';
