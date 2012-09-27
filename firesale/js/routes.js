@@ -33,9 +33,10 @@ $(function() {
 	// Bind events
 	$('button.route-action').click(function(e) {
 		e.preventDefault();
-		$('#map').val($('#map').val()+$(this).data('route')).focus();
-		$('#route').val($('#route').val()+$(this).data('translation'));
+		$('#map').atCaret('insert', $(this).data('route'));
+		$('#map').change().focus();
 	});
 
-
 });
+
+$.fn.extend({insertAtCaret:function(a){if(document.selection){this.focus();sel=document.selection.createRange();sel.text=a;this.focus()}else if(this.selectionStart||this.selectionStart=="0"){var b=this.selectionStart;var c=this.selectionEnd;var d=this.scrollTop;this.value=this.value.substring(0,b)+a+this.value.substring(c,this.value.length);this.focus();this.selectionStart=b+a.length;this.selectionEnd=b+a.length;this.scrollTop=d}else{this.value+=a;this.focus()}}})

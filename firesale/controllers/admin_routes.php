@@ -99,6 +99,7 @@ class Admin_routes extends Admin_Controller
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:new'))
         			   ->set($this->data)
         			   ->append_css('module::routes.css')
+					   ->append_js('module::jquery.caret.js')
 					   ->append_js('module::routes.js')
         			   ->build('admin/routes/create');
 	
@@ -173,6 +174,7 @@ class Admin_routes extends Admin_Controller
         $this->template->title(lang('firesale:title').' '.sprintf(lang('firesale:routes:edit'), $row->title))
         			   ->set($this->data)
         			   ->append_css('module::routes.css')
+        			   ->append_js('module::jquery.caret.js')
 					   ->append_js('module::routes.js')
         			   ->build('admin/routes/edit');
 	
