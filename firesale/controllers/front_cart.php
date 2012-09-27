@@ -556,7 +556,7 @@ class Front_cart extends Public_Controller
 							   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
 							   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
 							   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-							   ->set('payment', $this->load->view('gateways/' . $gateway, $var, TRUE))
+							   ->set('payment', $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE))
 							   ->build('payment', $order);
 
 			}
