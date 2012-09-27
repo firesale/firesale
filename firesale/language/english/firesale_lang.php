@@ -194,6 +194,10 @@
 	$lang['firesale:orders:label_customer']		= 'Customer';
 	$lang['firesale:orders:label_date_placed']	= 'Date Placed';
 	$lang['firesale:orders:label_order_id'] 	= "Order ID";
+	$lang['firesale:orders:labe_shipping_address'] = 'Shipping Address';
+	$lang['firesale:orders:labe_payment_address'] = 'Payment Address';
+	$lang['firesale:orders:label_order_status']	= 'Order Status';
+	$lang['firesale:orders:label_message']	= 'Message';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Payment Gateways';
@@ -242,7 +246,12 @@
 	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
 
 	// Addresses
-	$lang['firesale:addresses:title'] = 'My Addresses';
+	$lang['firesale:addresses:title']        = 'My Addresses';
+	$lang['firesale:addresses:edit_address'] = 'Edit Address';
+	$lang['firesale:addresses:new_address']  = 'Create new Address';
+	$lang['firesale:addresses:save']	     = 'Save';
+	$lang['firesale:addresses:cancel']       = 'Cancel';
+	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Availability";
@@ -265,3 +274,13 @@
 	$lang['firesale:cart:label_sub_total'] = "Sub-Total";
 	$lang['firesale:cart:label_tax'] = "Tax";
 	$lang['firesale:cart:label_total'] = "Total";
+	
+	//Categories Frontend
+	$lang['firesale:categories:grid'] = 'Grid';
+	$lang['firesale:categories:list'] = 'List';
+	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';
+	
+	//Payment Frontend
+	$lang['firesale:payment:cancelled'] = 'Order Cancelled';
+	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...';
+	$lang['firesale:payment:btn_continue'] = 'Continue';

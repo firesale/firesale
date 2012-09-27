@@ -3,7 +3,7 @@
 	
 		<input type="text" name="search" placeholder="Search term..." <?php echo ( isset($current) ? 'value="' . urldecode($current) . '" ' : '' ); ?>/>
 		<?php echo form_dropdown('category', $categories, set_value('category', ( isset($cat) ? $cat : NULL )), 'id="category"'); ?>
-		<button type="submit" class="btn" name="btnAction" value="search"><span>Search</span></button>
+		<button type="submit" class="btn" name="btnAction" value="search"><span><?php echo lang('firesale:search:label_search'); ?></span></button>
 		<br class="clear" />
 
 	</form>
@@ -15,7 +15,7 @@
 	<div id="results">
 <?php if( isset($current) AND $total <= 0 ): ?>
 
-		<h2>Nothing found!</h2>
+		<h2><?php echo lang('firesale:search:label_nothing_found'); ?></h2>
 
 <?php elseif( isset($current) AND $total > 0 ): ?>
 <?php foreach( $results as $product ): ?>

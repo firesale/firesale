@@ -5,7 +5,7 @@
 	  
         <div id="checkout" class="firesale">
 
-          <h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:title:ship'); ?></a></h3>
+          <h3 id="shipping_details"><a href="#shipping"><?php echo lang('firesale:title:ship'); ?></a></h3>
           <fieldset>
 <?php if( isset($addresses) && !empty($addresses) ): ?>
 <?php foreach( $addresses AS $key => $address): ?>
@@ -43,11 +43,11 @@
             </ul>
 <?php endforeach; ?>
             <br class="clear" />
-            <a href="#billing" class="next btn"><span>Next</span></a>
+            <a href="#billing_details" class="next btn"><span>Next</span></a>
             <br class="clear" />
           </fieldset>
 
-          <h3 id="billing"><a href="#billing"><?php echo lang('firesale:title:bill'); ?></a></h3>
+          <h3 id="billing_details"><a href="#billing"><?php echo lang('firesale:title:bill'); ?></a></h3>
           <fieldset>
 <?php if( isset($addresses) && !empty($addresses) ): ?>
 <?php foreach( $addresses AS $key => $address): ?>
@@ -85,7 +85,7 @@
             </ul>
 <?php endforeach; ?>
             <br class="clear" />
-            <a href="#billing" class="prev btn"><span>Previous</span></a>
+            <a href="#shipping_details" class="prev btn"><span>Previous</span></a>
             <a href="#shipping" class="next btn"><span>Next</span></a>
             <br class="clear" />
           </fieldset>
@@ -104,7 +104,7 @@
 <?php endforeach; ?>
             </ul>
             <br class="clear" />
-            <a href="#billing" class="prev btn"><span>Previous</span></a>
+            <a href="#billing_details" class="prev btn"><span>Previous</span></a>
             <a href="#payment" class="next btn"><span>Next</span></a>
             <br class="clear" />
           </fieldset>

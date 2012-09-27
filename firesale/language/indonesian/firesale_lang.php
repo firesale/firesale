@@ -193,6 +193,10 @@
 	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
 	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
 	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate	
+	$lang['firesale:orders:labe_shipping_address'] 	= 'Shipping Address'; # Translate
+	$lang['firesale:orders:labe_payment_address'] 	= 'Payment Address'; # Translate
+	$lang['firesale:orders:label_order_status']		= 'Order Status'; # Translate
+	$lang['firesale:orders:label_message']			= 'Message'; # Translate
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Gateway Pembayaran';
@@ -240,7 +244,12 @@
 	$lang['firesale:checkout:title:payment_method']	= 'Metode Pembayaran';
 
 	// Addresses
-	$lang['firesale:addresses:title'] = 'Alamat Saya';
+	$lang['firesale:addresses:title']        = 'Alamat Saya';
+	$lang['firesale:addresses:edit_address'] = 'Edit Address'; # Translate
+	$lang['firesale:addresses:new_address']  = 'Create new Address'; # Translate
+	$lang['firesale:addresses:save']	     = 'Save'; # Translate
+	$lang['firesale:addresses:cancel']       = 'Cancel'; # Translate
+	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
 		
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Availability"; # Translate
@@ -263,3 +272,13 @@
 	$lang['firesale:cart:label_sub_total'] = "Sub-Total";  # Translate
 	$lang['firesale:cart:label_tax'] = "Tax"; # Translate
 	$lang['firesale:cart:label_total'] = "Total"; # Translate
+	
+	//Categories Frontend
+	$lang['firesale:categories:grid'] = 'Grid';	#Translate
+	$lang['firesale:categories:list'] = 'List';	#Translate
+	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate
+	
+	//Payment Frontend
+	$lang['firesale:payment:cancelled'] = 'Order Cancelled'; #Translate
+	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...'; #Translate
+	$lang['firesale:payment:btn_continue'] = 'Continue'; #Translate

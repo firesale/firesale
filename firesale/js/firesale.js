@@ -28,8 +28,10 @@ $(function() {
 	$('#bill_details_same').change(function() {
 		if( $(this).attr('checked') == 'checked' ) { checked = true; } else { checked = false; }
 		if( checked == true ) {
-			$(this).parent().parent().parent().find('li input').each(function() {
-				$('input[name=' + $(this).attr('name').replace('ship_', 'bill_') + ']').val($(this).val());
+			$('#bill_to_new').attr("checked", "checked").change();
+			$(this).parent().parent().parent().find('li input, li select').each(function() {
+				var key = $(this).attr('name').replace('ship_', 'bill_');
+				$('input[name=' + key + '], select[name=' + key +']').val($(this).val());
 			});
 		}
 	});
@@ -38,7 +40,9 @@ $(function() {
 	$("#checkout").accordion({autoHeight: false});
 	
 	// Navigation
-	$('a.prev, a.next').click(function(e) { e.preventDefault(); if( $(this).hasClass('next') ) { $(this).parent().next('h3').click(); } else { $(this).parent().prev('h3').prev('h3').click(); } });
+	$('a.prev, a.next').click(function(e) {
+		e.preventDefault();
+		$($(this).attr('href')).click(); });
 	
 	// Addresses
 	$('input[name=ship_to], input[name=bill_to]').change(function() { var p = $(this).parents('fieldset').find('ul.width-half'); if( $(this).val() != 'new' ) { p.hide(); } else { p.show(); } });

@@ -321,16 +321,25 @@ class Orders_m extends MY_Model
 		if( $order['total'] == 1 )
 		{
 
-			$order 			= $order['entries'][0];
-			$order['items'] = $this->db->get_where('firesale_orders_items', array('order_id' => (int)$order_id))->result_array();
-			
+			$order 			    = $order['entries'][0];
+			$order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int)$order_id))->result_array();
+			$order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] ), 2);
+
 			foreach( $order['items'] AS $key => &$item )
 			{
+
+				// Get the product
 				$product       = $this->products_m->get_product($item['product_id']);
-				$item['id']	   = $product['id'];
-				$item          = array_merge($product, $item);
-				$item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
-				$item['no']	   = ( $key + 1 );
+
+				// Check it exists
+				if( $product !== FALSE )
+				{
+					$item['id']	   = $product['id'];
+					$item          = array_merge($product, $item);
+					$item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
+					$item['no']	   = ( $key + 1 );
+				}
+
 			}
 
 			return $order;
@@ -404,8 +413,23 @@ class Orders_m extends MY_Model
 	public function update_status($order_id, $status = 0)
 	{
 
-		if( $this->db->where("id = '{$order_id}'")->update('firesale_orders', array('order_status' => $status)) )
+		// Update order status
+		if( $this->db->where('id', $order_id)->update('firesale_orders', array('order_status' => $status)) )
 		{
+
+			// Email update for dispatched
+			if( $status == 3 )
+			{
+
+				// Get the order
+				$order = $this->orders_m->get_order_by_id($order_id);
+
+				// Email the user
+				Events::trigger('email', array_merge($order, array('slug' => 'order-dispatched', 'to' => $order['bill_to']['email'])), 'array');
+
+			}
+
+
 			return TRUE;
 		}
 

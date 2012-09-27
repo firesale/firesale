@@ -115,7 +115,7 @@
 	$lang['firesale:label_stock_out']		= 'Finito';
 	$lang['firesale:label_stock_order']		= 'Scorte in ordine';
 	$lang['firesale:label_stock_ended']		= 'Discontinuo';
-	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
+	$lang['firesale:label_stock_unlimited']	= 'Senza limiti';
 
 	$lang['firesale:label_remove']		= 'Rimuovi';
 	$lang['firesale:label_image']		= 'Immagine';
@@ -193,6 +193,10 @@
 	$lang['firesale:orders:label_customer']		= 'Cliente';
 	$lang['firesale:orders:label_date_placed']	= 'Data acquisto';
 	$lang['firesale:orders:label_order_id'] 	= "ID ordine";
+	$lang['firesale:orders:labe_shipping_address'] 	= 'Indirizzo di spedizione';
+	$lang['firesale:orders:labe_payment_address'] 	= 'Indirizzo di fatturazione';
+	$lang['firesale:orders:label_order_status']		= 'Stato dell\'ordine';
+	$lang['firesale:orders:label_message']			= 'Messaggio';
 		
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
@@ -238,8 +242,8 @@
 	$lang['firesale:gateways:labels:desc']			= 'Descrizione';
 	$lang['firesale:cart:title']					= 'Carrello';
 	$lang['firesale:cart:empty']					= 'Non ci sono oggetti nel tuo carrello';
-	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
-	$lang['firesale:cart:qty_too_low']				= 'Stock level is too low to add that quantity to your cart'; #translate
+	$lang['firesale:cart:login_required']			= 'Devi effettuare il login prima di procedere';
+	$lang['firesale:cart:qty_too_low']				= 'Non abbiamo sufficienti scorte per soddisfare la tua richiesta';
 	$lang['firesale:checkout:title'] 				= 'Pagamento';
 	$lang['firesale:checkout:error_callback'] 		= 'Sembra esserci un problema con il tuo ordine, prova ancora, possibilmente utilizza un altro metodo di pagamento.';
 	$lang['firesale:payment:title'] 				= 'Conferma dettagli';
@@ -248,7 +252,12 @@
 	$lang['firesale:checkout:title:payment_method']	= 'Metodo di pagamento';
 
 	// Addresses
-	$lang['firesale:addresses:title'] = 'Miei indirizzi';
+	$lang['firesale:addresses:title']        = 'Miei indirizzi';
+	$lang['firesale:addresses:edit_address'] = 'Modifica indirizzo';
+	$lang['firesale:addresses:new_address']  = 'Crea un nuovo indirizzo';
+	$lang['firesale:addresses:save']	     = 'Salva';
+	$lang['firesale:addresses:cancel']       = 'Annulla';
+	$lang['firesale:addresses:no_user']      = 'Devi effettuare il login per gestire l\'elenco dei tuooi indirizzi';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Disponibilità:";	
@@ -271,3 +280,13 @@
 	$lang['firesale:cart:label_sub_total'] = "Sub-Totale";
 	$lang['firesale:cart:label_tax'] = "Tasse"; 
 	$lang['firesale:cart:label_total'] = "Totale";
+	
+	//Categories Frontend
+	$lang['firesale:categories:grid'] = 'Griglia';
+	$lang['firesale:categories:list'] = 'Lista';
+	$lang['firesale:categories:add_to_basket'] = 'Aggiungi al carrello';
+	
+	//Payment Frontend
+	$lang['firesale:payment:cancelled'] = 'Ordine cancellato';
+	$lang['firesale:payment:wait_redirect'] = 'Per favore attendi il reindirizzamento alla pagina dei pagamenti...';
+	$lang['firesale:payment:btn_continue'] = 'Continua';
