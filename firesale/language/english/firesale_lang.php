@@ -168,6 +168,7 @@
 	$lang['firesale:label_map']         = 'Map';
 	$lang['firesale:label_route']       = 'Route';
 	$lang['firesale:label_translation'] = 'Translation';
+	$lang['firesale:label_table']       = 'Table';
 
 	// Orders
 	$lang['firesale:orders:title']				= 'Orders';

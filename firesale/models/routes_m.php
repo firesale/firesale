@@ -11,6 +11,8 @@
 class Routes_m extends MY_Model
 {
 
+	protected $route_cache = array();
+
 	/**
 	 * Loads the parent constructor and gets an
 	 * instance of CI.
@@ -21,6 +23,48 @@ class Routes_m extends MY_Model
 	public function __construct()
 	{
 		parent::__construct();
+	}
+
+	public function build_url($slug, $id)
+	{
+
+		// Variables
+		$cache_key = $slug.'-'.$id;
+
+		// Check cache
+		if( array_key_exists($cache_key, $this->route_cache) )
+		{
+			// return cache
+			return $this->route_cache[$cache_key];
+		}
+		else
+		{
+			// Get route info
+			$query = $this->db->where('slug', $slug)->get('firesale_routes');
+			$route = $query->row();
+
+			// Found it
+			if( !empty($route) )
+			{
+
+				// Get type
+				$query = $this->db->select('id, slug, title')->where('id', $id)->get($route->table);
+				$type  = $query->row();
+
+				// Perform replacements
+				$formatted = $route->map;
+				$formatted = html_entity_decode($formatted);
+				$formatted = str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
+
+				// Add to cache
+				$this->route_cache[$cache_key] = $formatted;
+
+				// Return
+				return $formatted;
+			}
+		}
+
+		return FALSE;
 	}
 
 	/**

@@ -7,6 +7,18 @@ class Plugin_Firesale extends Plugin
     {
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
+		$this->load->model('routes_m');
+	}
+
+	public function url()
+	{
+
+		// Variables
+		$route = $this->attribute('route');
+		$id    = $this->attribute('id');
+
+		// Get the URL
+		return BASE_URL.$this->routes_m->build_url($route, $id);
 	}
 
 	public function module_installed()

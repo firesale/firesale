@@ -5,15 +5,15 @@
 {{ firesale:categories limit="0" }}
 {{ if parent == id }}
           <li>
-            <a href="{{ url:base }}category/{{ slug }}"><strong>{{ title }}</strong></a>
+            <a href="{{ firesale:url route="category" id=id }}"><strong>{{ title }}</strong></a>
             <ul>
 {{ firesale:sub_categories category=parent limit="0" }}
-              <li><a href="{{ url:base }}category/{{ slug }}">{{ if category.id == id }}<strong>{{ title }}</strong>{{ else }}{{ title }}{{ endif }}</a></li>
+              <li><a href="{{ firesale:url route="category" id=id }}">{{ if category.id == id }}<strong>{{ title }}</strong>{{ else }}{{ title }}{{ endif }}</a></li>
 {{ /firesale:sub_categories }}
             </ul>
           </li>
 {{ else }}
-          <li><a href="{{ url:base }}category/{{ slug }}">{{ title }}</a></li>
+          <li><a href="{{ firesale:url route="category" id=id }}">{{ title }}</a></li>
 {{ endif }}
 {{ /firesale:categories }}
         </ul>

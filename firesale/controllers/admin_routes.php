@@ -128,6 +128,7 @@ class Admin_routes extends Admin_Controller
         // Don't allow title and slug to be changed
         $_POST['title'] = $row->title;
         $_POST['slug']  = $row->slug;
+        $_POST['table'] = $row->table;
 
 		// Build the form
 		$fields = $this->fields->build_form($this->stream, 'edit', $row, false, false, $skip, $extra);
@@ -135,9 +136,10 @@ class Admin_routes extends Admin_Controller
 		// Remove title and slug
 		if( is_array($fields) )
 		{
-			// Remove title and slug
+			// Remove title, slug and table
 			unset($fields[0]);
 			unset($fields[1]);
+			unset($fields[2]);
 		}
 		
 		// Posted
