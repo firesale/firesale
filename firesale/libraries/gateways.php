@@ -36,9 +36,9 @@ class Gateways
 	{
 		if ($handle = opendir($this->gateway_path))
 		{
-		    while (FALSE !== ($file = readdir($handle)))
+		    while (($file = readdir($handle)) !== FALSE)
 		    {
-				if (substr($file, 0, 9) == 'merchant_')
+				if (substr($file, 0, 9) == 'merchant_' AND substr($file, -8, 4) != 'base')
 				{
 					$gateway_name = substr($file, 9, -4);
 					
@@ -141,8 +141,7 @@ class Gateways
 		{
 			if ($this->_CI->merchant->load($gateway))
 			{
-				$instance = $this->_CI->merchant->_driver;
-				foreach ($instance->settings as $setting => $value)
+				foreach ($this->_CI->merchant->default_settings() as $setting => $value)
 				{
 					$settings[] = array(
 						'slug'	=> $setting,
