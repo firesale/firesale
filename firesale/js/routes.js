@@ -19,12 +19,18 @@ $(function() {
 	// Fix map value
 	$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
 
-	// Section specific
+	// Category and product
 	if( id == '1' || id == '2' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="([0-9]+)"><span>Add ID</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z0-9-]+)"><span>Add Slug</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ title }}" data-translation=".+?"><span>Add Title</span></button>';
+	}
+
+	// Product specific
+	if( id == '2' )
+	{
+		html += '<button class="btn blue route-action" data-route="{{ category_slug }}" data-translation=".+?"><span>Add Category Slug</span></button>';
 	}
 
 	// Add to document

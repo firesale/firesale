@@ -8,7 +8,8 @@
  * @package		FireSale\Core\Models
  *
  */
-class Categories_m extends MY_Model {
+class Categories_m extends MY_Model
+{
 
 	/**
 	 * Contains the current database table name

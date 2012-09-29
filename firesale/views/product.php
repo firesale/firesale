@@ -6,15 +6,15 @@
 <?php foreach( $images AS $key => $image ): ?>
 <?php if( $key == 0 ): ?>
             <li class="main">
-              <a href="/files/thumb/<?php echo $image->id; ?>/1000/1000" id="image-<?php echo $image->id; ?>" class="cloud-zoom" rel="position:'inside'">
+              <a href="{{ url:base }}files/thumb/<?php echo $image->id; ?>/1000/1000" id="image-<?php echo $image->id; ?>" class="cloud-zoom" rel="position:'inside'">
                 <span class="zoom"></span>
-                <img src="/files/thumb/<?php echo $image->id; ?>/400/400" alt="<?php echo $image->name; ?>" />
+                <img src="{{ url:base }}files/thumb/<?php echo $image->id; ?>/400/400" alt="<?php echo $image->name; ?>" />
               </a>
             </li>
 <?php elseif( $key <= 3 ): ?>
             <li>
-              <a href="/files/thumb/<?php echo $image->id; ?>/1000/1000" id="image-<?php echo $image->id; ?>">
-                <img src="/files/thumb/<?php echo $image->id; ?>/92/92" alt="<?php echo $image->name; ?>" />
+              <a href="{{ url:base }}files/thumb/<?php echo $image->id; ?>/1000/1000" id="image-<?php echo $image->id; ?>">
+                <img src="{{ url:base }}files/thumb/<?php echo $image->id; ?>/92/92" alt="<?php echo $image->name; ?>" />
               </a>
             </li>
 <?php endif ?>
@@ -35,7 +35,7 @@
           <br class="clear" />
         </section>
 		    <section class="product-buy">
-          <form method="post" action="/cart/insert">
+          <form method="post" action="{{ url:base }}cart/insert">
             <input type="hidden" name="prd_code[]" value="{{ product.id }}" />
             <label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label><input id="product_quantity" name="qty[]" size="3" value="1" type="text" />
             <button type="submit" class="btn"><?php echo lang('firesale:product:label_add_to_cart'); ?></button>
