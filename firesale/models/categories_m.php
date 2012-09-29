@@ -38,7 +38,7 @@ class Categories_m extends MY_Model
 	{
 
 		// Variables
-		$type = ( is_integer($id_slug) ? 'id' : 'slug' );
+		$type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
 
 		// Check cache
 		if( array_key_exists($id_slug, $this->cache[$type]) )

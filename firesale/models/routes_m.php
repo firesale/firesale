@@ -47,22 +47,29 @@ class Routes_m extends MY_Model
 			if( !empty($route) )
 			{
 
-				// Get type
-				$query = $this->db->select('id, slug, title')->where('id', $id)->get($route->table);
-				$type  = $query->row();
-
-				// Perform replacements
+				// Basic route formatting
 				$formatted = $route->map;
 				$formatted = html_entity_decode($formatted);
-				$formatted = str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
 
-				// Check for product and category slug
-				if( $route->table == 'firesale_products' AND strpos($formatted, '{{ category_slug }}') !== FALSE )
+				// Check table
+				if( ! empty($route->table) )
 				{
-					// Get category
-					$this->load->model('products_m');
-					$category  = current($this->products_m->get_categories($type->id));
-					$formatted = str_replace('{{ category_slug }}', $category['slug'], $formatted);
+
+					// Get type
+					$query = $this->db->select('id, slug, title')->where('id', $id)->get($route->table);
+					$type  = $query->row();
+
+					// Perform replacements
+					$formatted = str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
+
+					// Check for product and category slug
+					if( $route->table == 'firesale_products' AND strpos($formatted, '{{ category_slug }}') !== FALSE )
+					{
+						// Get category
+						$this->load->model('products_m');
+						$category  = current($this->products_m->get_categories($type->id));
+						$formatted = str_replace('{{ category_slug }}', $category['slug'], $formatted);
+					}
 				}
 
 				// Add to cache
