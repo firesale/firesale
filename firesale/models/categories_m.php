@@ -72,11 +72,15 @@ class Categories_m extends MY_Model
 			if( $category['total'] > 0 )
 			{
 
+				// Get category
+				$category = current($category['entries']);
+
 				// Add to cache
-				$this->cache[$type][$id_slug] = current($category['entries']);
+				$this->cache['id'][$category['id']]     = $category;
+				$this->cache['slug'][$category['slug']] = $category;
 
 				// Return it
-				return current($category['entries']);
+				return $category;
 			}
 
 		}

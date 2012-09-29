@@ -18,6 +18,14 @@ class Products_m extends MY_Model {
 	 */
 	public $_table = 'firesale_products';
 
+    /**
+     * Caches all product queries by slug or id
+     *
+     * @var array
+     * @access protected
+     */
+    protected $cache = array('id' => array(), 'slug' => array());
+
 	/**
 	 * Contains an array of the possible stock status options
 	 *
@@ -84,31 +92,49 @@ class Products_m extends MY_Model {
 	public function get_product($id_slug)
 	{
 
-		// Set params
-		$params	 = array(
-					'stream' 	=> 'firesale_products',
-					'namespace'	=> 'firesale_products',
-					'where'		=> ( is_numeric($id_slug) ? 'id = ' : 'slug = ' ) . "'{$id_slug}' AND status = 1",
-					'limit'		=> '1',
-					'order_by'	=> 'id',
-					'sort'		=> 'desc'
-				   );
-		
-		// Get entries		
-		$product = $this->streams->entries->get_entries($params);
+		// Variables
+		$type = ( is_integer($id_slug) ? 'id' : 'slug' );
 
-		// Check exists
-		if( $product['total'] > 0 )
+		// Check cache
+		if( array_key_exists($id_slug, $this->cache[$type]) )
+		{
+			// Return cached version
+			return $this->cache[$type][$id_slug];
+		}
+		else
 		{
 
-			// Get and format product data
-			$product 			 = current($product['entries']);
-			$product['snippet']  = truncate_words($product['description']);
-			$product['category'] = $this->get_categories($product['id']);
-			$product['image']    = $this->get_single_image($product['id']);
+			// Set params
+			$params	 = array(
+						'stream' 	=> 'firesale_products',
+						'namespace'	=> 'firesale_products',
+						'where'		=> "{$type} = '{$id_slug}' AND status = 1",
+						'limit'		=> '1',
+						'order_by'	=> 'id',
+						'sort'		=> 'desc'
+					   );
+			
+			// Get entries		
+			$product = $this->streams->entries->get_entries($params);
 
-			// Return
-			return $product;
+			// Check exists
+			if( $product['total'] > 0 )
+			{
+
+				// Get and format product data
+				$product 			 = current($product['entries']);
+				$product['snippet']  = truncate_words($product['description']);
+				$product['category'] = $this->get_categories($product['id']);
+				$product['image']    = $this->get_single_image($product['id']);
+
+				// Add to cache
+				$this->cache['id'][$product['id']]     = $product;
+				$this->cache['slug'][$product['slug']] = $product;
+
+				// Return
+				return $product;
+			}
+
 		}
 		
 		// Nothing?
