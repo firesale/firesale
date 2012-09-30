@@ -2,11 +2,22 @@ $(function() {
 	
 	// Variables
 	var section = $('input#slug').val();
-	var html    = '<br />';
-	var id      = $('form.crud').attr('action').split('/');
-	    id      = id[(id.length-1)];
 
-	// Bind to route
+
+	// Add target
+	$('<div class="btntar"></div>').insertAfter($('#map'));
+
+	// Fix map value
+	$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
+
+	// Initial load
+	build_buttons();
+
+	// Bind events
+	$('#slug, #title').bind('keyup keydown change update blur focus', function() {
+		build_buttons();
+	});
+
 	$('#map').bind('keyup keydown change delete paste update', function() {
 		var val = $('#map').val();
 		$('.route-action').each(function() {
@@ -16,11 +27,21 @@ $(function() {
 		$('#route').val(val);
 	});
 
-	// Fix map value
-	$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
+
+
+});
+
+function build_buttons()
+{
+
+	// Variables
+	var html = '<button class="btn blue route-action" data-route="{{ any }}" data-translation="(:any)"><span>Add Any</span></button>';
+	var slug = $('#slug').val();
+	var id   = $('form.crud').attr('action').split('/');
+	    id   = id[(id.length-1)];
 
 	// Category and product
-	if( id == '1' || id == '2' )
+	if( id == '1' || slug == 'category' || id == '2' || slug == 'product' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="([0-9]+)"><span>Add ID</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z0-9-]+)"><span>Add Slug</span></button>';
@@ -28,21 +49,19 @@ $(function() {
 	}
 
 	// Product specific
-	if( id == '2' )
+	if( id == '2' || slug == 'product' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ category_slug }}" data-translation=".+?"><span>Add Category Slug</span></button>';
 	}
 
-	// Add to document
-	$(html).insertAfter($('#map'));
+	// Insert
+	$('.btntar').html(html);
 
-	// Bind events
+	// Bind action
 	$('button.route-action').click(function(e) {
 		e.preventDefault();
 		$('#map').atCaret('insert', $(this).data('route'));
 		$('#map').change().focus();
 	});
 
-});
-
-$.fn.extend({insertAtCaret:function(a){if(document.selection){this.focus();sel=document.selection.createRange();sel.text=a;this.focus()}else if(this.selectionStart||this.selectionStart=="0"){var b=this.selectionStart;var c=this.selectionEnd;var d=this.scrollTop;this.value=this.value.substring(0,b)+a+this.value.substring(c,this.value.length);this.focus();this.selectionStart=b+a.length;this.selectionEnd=b+a.length;this.scrollTop=d}else{this.value+=a;this.focus()}}})
+}

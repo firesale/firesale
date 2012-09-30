@@ -11,7 +11,7 @@
 class Routes_m extends MY_Model
 {
 
-	protected $route_cache = array();
+	protected $cache = array();
 
 	/**
 	 * Loads the parent constructor and gets an
@@ -32,10 +32,10 @@ class Routes_m extends MY_Model
 		$cache_key = $slug.'-'.$id;
 
 		// Check cache
-		if( array_key_exists($cache_key, $this->route_cache) )
+		if( array_key_exists($cache_key, $this->cache) )
 		{
 			// return cache
-			return $this->route_cache[$cache_key];
+			return $this->cache[$cache_key];
 		}
 		else
 		{
@@ -73,7 +73,7 @@ class Routes_m extends MY_Model
 				}
 
 				// Add to cache
-				$this->route_cache[$cache_key] = $formatted;
+				$this->cache[$cache_key] = $formatted;
 
 				// Return
 				return $formatted;
