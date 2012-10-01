@@ -44,7 +44,7 @@ class Routes_m extends MY_Model
 			$route = $query->row();
 
 			// Found it
-			if( !empty($route) )
+			if( !empty($route) AND $route != 'null' )
 			{
 
 				// Basic route formatting

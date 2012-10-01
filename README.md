@@ -52,7 +52,7 @@ Either via the Routes Add-on or directly into the config we suggest you put the 
 	$route['category(:any)'] 		  			 = 'firesale/front_category/index$1';
 	$route['product(:any)']  		  			 = 'firesale/front_product/index$1';
 	$route['search(:any)?']  		  			 = 'firesale_search/search/index$1';
-	$route['cart(:any)?']    		  			 = 'firesale/cart$1';
+	$route['cart(:any)?']    		  			 = 'firesale/front_cart$1';
 	$route['users/orders/([0-9]+)']   			 = 'firesale/front_orders/view_order/$1';
 	$route['users/orders']   		  			 = 'firesale/front_orders/index';
 	$route['users/addresses(/:any)?'] 			 = 'firesale/front_address$1';
