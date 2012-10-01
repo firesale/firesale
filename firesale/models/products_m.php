@@ -80,11 +80,17 @@ class Products_m extends MY_Model {
 		$params	 = array(
 					'stream' 	=> 'firesale_products',
 					'namespace'	=> 'firesale_products',
-					'where'		=> ( is_numeric($id_slug) ? 'id = ' : 'slug = ' ) . "'{$id_slug}' AND status = 1",
+					'where'		=> ( is_numeric($id_slug) ? 'id = ' : 'slug = ' ) . "'{$id_slug}'",
 					'limit'		=> '1',
 					'order_by'	=> 'id',
 					'sort'		=> 'desc'
 				   );
+
+		// Add to params if required
+		if( $this->uri->segment('1') != 'admin' )
+		{
+			$params['where'] .= ' AND status = 1';
+		}
 		
 		// Get entries		
 		$product = $this->streams->entries->get_entries($params);
