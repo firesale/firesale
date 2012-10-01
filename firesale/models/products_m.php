@@ -624,7 +624,7 @@ class Products_m extends MY_Model {
 		$original_title = $title;
 
 		// Append title name if required
-		while( $this->db->from('file_folders')->count_by('slug', $slug) )
+		while( $this->db->where('slug', $slug)->get('file_folders')->num_rows() )
 		{
 			$i++;
 			$slug  = $original_slug.'-'.$i;
