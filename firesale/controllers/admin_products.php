@@ -100,25 +100,39 @@ class Admin_products extends Admin_Controller
 			$input 	= $this->input->post();
 			$skip	= array('btnAction');
 			$extra 	= array(
-						'return' 			=> '/admin/firesale/products/edit/-id-?' . time(),
+						'return' 			=> FALSE,
 						'success_message'	=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
 						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
 
-			// Check button action for return location
-			if( $this->input->post('btnAction') == 'save_exit' )
-			{
-				$extra['return'] = '/admin/firesale/products';
-			}
-
-			// Perform additional tasks to existing products
+			// Temporary until we move to grid
+			// Remove duplicate entries before updating categories
+			// Also deletes all existing categories from a product
 			if( $id !== NULL )
 			{
-
-				// Temporary until we move to grid
-				// Remove duplicate entries before updating categories
-				// Also deletes all existing categories from a product
 				$input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
+			}
+		
+		}
+		else
+		{
+			$input = FALSE;
+			$skip  = array();
+			$extra = array();
+		}
+	
+		// Get the stream fields
+		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
+
+		// Posted
+		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
+		{
+
+			// Got an ID back
+			if( is_numeric($fields) AND ! empty($row) )
+			{
+				// Assign ID
+				$id = $fields;
 
 				// Update duplicates
 				$this->products_m->update_duplicates($id, $row->slug, $input);
@@ -132,19 +146,19 @@ class Admin_products extends Admin_Controller
 				// Fire event
 				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
 				Events::trigger('product_updated', $data);
-
 			}
-		
+
+			// Redirect
+			if( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) )
+			{
+				redirect('admin/firesale/products');
+			}
+			else
+			{
+				redirect('admin/firesale/products/edit/'.$fields);
+			}
+
 		}
-		else
-		{
-			$input = FALSE;
-			$skip  = array();
-			$extra = array();
-		}
-	
-		// Get the stream fields
-		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
 
 		// Fire build event
 		Events::trigger('form_build', $this);

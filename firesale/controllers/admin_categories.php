@@ -90,9 +90,11 @@ class Admin_categories extends Admin_Controller
 						'success_message'	=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
 						'error_message'		=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
-					  
-			if( $id != null ) {
-				$input = (object)$input;
+			
+			// Assign input
+			if( $id != null )
+			{
+				$input             = (object)$input;
 				$this->data->input = $input;
 			}
 		
