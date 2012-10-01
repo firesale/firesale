@@ -53,7 +53,7 @@ class Categories_m extends MY_Model
 			$params	 = array(
 						'stream' 	=> 'firesale_categories',
 						'namespace'	=> 'firesale_categories',
-						'where'		=> ( ( 0 + $id_slug ) > 0 ? 'id = ' : 'slug = ' ) . "'{$id_slug}'",
+						'where'		=> "{$type} = '{$id_slug}'",
 						'limit'		=> '1',
 						'order_by'	=> 'id',
 						'sort'		=> 'desc'
