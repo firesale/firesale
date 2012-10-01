@@ -56,7 +56,7 @@
 {{ endif }}
             <section class="price-round medium"><span class="rrp">{{ if rrp > price }}{{ rrp }}{{ endif }}</span><span class="price">{{ settings:currency }}{{ price }}</span></section>
             <header>
-              <h3><a href="{{ url:base }}product/{{ slug }}">{{ title }}</a></h3>
+              <h3><a href="{{ firesale:url route="product" id=id }}">{{ title }}</a></h3>
               <em>{{ code }}</em>
             </header>
             <p class="description">{{ helper:substr string=description start="0" end="250" }}...</p>

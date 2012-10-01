@@ -51,7 +51,7 @@ function build_buttons()
 	// Product specific
 	if( id == '2' || slug == 'product' )
 	{
-		html += '<button class="btn blue route-action" data-route="{{ category_slug }}" data-translation=".+?"><span>Add Category Slug</span></button>';
+		html += '<button class="btn blue route-action" data-route="{{ category_slug }}" data-translation="[a-z0-9-]+"><span>Add Category Slug</span></button>';
 	}
 
 	// Insert
