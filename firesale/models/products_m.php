@@ -667,10 +667,11 @@ class Products_m extends MY_Model {
 	public function get_single_image($product)
 	{
 		$query = $this->db->select('files.id')
-						  ->join('file_folders', 'firesale_products.slug = file_folders.slug', 'left')
-						  ->join('files', 'file_folders.id = files.folder_id', 'left')
+						  ->join('file_folders', 'firesale_products.slug = file_folders.slug', 'inner')
+						  ->join('files', 'file_folders.id = files.folder_id', 'inner')
 						  ->where('firesale_products.id', $product)
 						  ->or_where('code', $product)
+						  ->order_by('files.sort', 'asc')
 						  ->get('firesale_products', 1);
 		
 		if ($query->num_rows())
