@@ -605,6 +605,57 @@ class Products_m extends MY_Model {
 		
 		return FALSE;
 	}
+
+	/**
+	 * Creates a new file folder within a given parent ID, Title and Slug.
+	 *
+	 * @param integer $parent The parent folder ID
+	 * @param string $title The title of the new folder
+	 * @param string $slug The folder slug
+	 * @return array or boolean
+	 * @access public
+	 */
+	public function create_file_folder($parent, $title, $slug)
+	{
+
+		// Variables
+		$return         = array();
+		$original_slug  = $slug;
+		$original_title = $title;
+
+		// Append title name if required
+		while( $this->db->from('file_folders')->count_by('slug', $slug) )
+		{
+			$i++;
+			$slug  = $original_slug.'-'.$i;
+			$title = $original_title.'-'.$i;
+		}
+
+		// Build insert data
+		$insert = array(
+						'parent_id'        => $parent, 
+						'slug'             => $slug, 
+						'name'             => $title,
+						'location'         => 'local',
+						'remote_container' => '',
+						'date_added'       => now(), 
+						'sort'             => now()
+					);
+
+		// Insert it
+		if( $this->db->insert('file_folders', $insert) )
+		{
+
+			// Build return data
+			$return['id'] = $this->db->insert_id();
+
+			// Return
+			return $return;
+		}
+
+		// Failed
+		return FALSE;
+	}
 	
 	/**
 	 * Gets the first image ID available for a product to be used with Files.

@@ -304,12 +304,12 @@ class Admin_products extends Admin_Controller
 		if( !$folder )
 		{
 			$parent = $this->products_m->get_file_folder_by_slug('product-images');
-			$folder = Files::create_folder($parent->id, $row->title);
+			$folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
 			$folder = (object)$folder['data'];
 		}
 
 		// Check for folder
-		if( is_object($folder) )
+		if( is_object($folder) AND ! empty($folder) )
 		{
 
 			// Upload it
