@@ -355,7 +355,7 @@ class Categories_m extends MY_Model
 				// Variables
 				$id     = str_replace('cat_', '', $child['id']);
 				$parent = str_replace('cat_', '', $cat['id']);
-				$upadte = array('parent' => ( $parent != $id ? $parent : 0 ), 'ordering_count' => $i)
+				$update = array('parent' => ( $parent != $id ? $parent : 0 ), 'ordering_count' => $i);
 
 				// Update
 				$this->db->where('id', $id)->update('firesale_categories', $update);
