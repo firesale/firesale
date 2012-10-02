@@ -613,7 +613,8 @@ class Module_Firesale extends Module {
 			// Check action
 			if( $action == 'add' )
 			{
-
+				// Add
+				$this->routes_m->create($route);
 			}
 			else if( $action == 'remove' )
 			{
