@@ -113,6 +113,11 @@ class Module_Firesale extends Module {
 					'name' 	=> 'firesale:shortcuts:create_routes',
 					'uri'	=> 'admin/firesale/routes/create',
 					'class' => 'add'
+				),
+				array(
+					'name' 	=> 'firesale:shortcuts:build_routes',
+					'uri'	=> 'admin/firesale/routes/rebuild',
+					'class' => ''
 				)
 			);
 		}

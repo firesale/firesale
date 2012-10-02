@@ -19,6 +19,7 @@
 	$lang['firesale:sections:settings'] 	  = 'Settings';
 	$lang['firesale:sections:routes']         = 'Routes';
 	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route';
+	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'General Options';
@@ -264,6 +265,8 @@
 	$lang['firesale:routes:none']           = 'No routes found';
 	$lang['firesale:routes:delete_success'] = 'Route removed successfully';
 	$lang['firesale:routes:delete_error']   = 'Error removing route';
+	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file';
+	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';

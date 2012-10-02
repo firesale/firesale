@@ -180,4 +180,30 @@ class Admin_routes extends Admin_Controller
 	
 	}
 
+	public function rebuild()
+	{
+
+		// Variables
+        $params = array(
+            'stream'       => 'firesale_routes',
+            'namespace'    => 'firesale_routes',
+            'paginate'     => 'yes',
+            'page_segment' => 4
+        );
+
+        // Get routes
+        $routes = $this->streams->entries->get_entries($params);
+
+        // Loop routes
+        foreach( $routes['entries'] AS $route )
+        {
+        	// Rebuild
+        	$this->routes_m->write($route['title'], $route['route'], $route['translation']);
+        }
+
+        // Flash and redirect
+        $this->session->set_flashdata('success', lang('firesale:routes:build_success'));
+        redirect('admin/firesale/routes');
+	}
+
 }
