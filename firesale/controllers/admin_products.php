@@ -100,18 +100,18 @@ class Admin_products extends Admin_Controller
 			$input 	= $this->input->post();
 			$skip	= array('btnAction');
 			$extra 	= array(
-						'return' 			=> FALSE,
-						'success_message'	=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+						'return'          => FALSE,
+						'success_message' => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
+						'error_message'   => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
 
 			// Temporary until we move to grid
 			// Remove duplicate entries before updating categories
 			// Also deletes all existing categories from a product
-			if( $id !== NULL )
+			/*if( $id !== NULL )
 			{
 				$input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
-			}
+			}*/
 		
 		}
 		else
@@ -125,7 +125,7 @@ class Admin_products extends Admin_Controller
 		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
 
 		// Posted
-		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
+		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
 
 			// Got an ID back

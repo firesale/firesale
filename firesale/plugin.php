@@ -99,6 +99,13 @@ class Plugin_Firesale extends Plugin
 		// Return
 		return $this->categories();
 	}
+	
+	public function sub_sub_categories()
+	{
+	
+		// Return
+		return $this->categories();
+	}
 
 	public function products()
 	{

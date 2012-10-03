@@ -63,13 +63,15 @@ class Routes_m extends MY_Model
 					$formatted = str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
 
 					// Check for product and category slug
-					if( $route->table == 'firesale_products' AND strpos($formatted, '{{ category_slug }}') !== FALSE )
+					if( $route->table == 'firesale_products' AND ( strpos($formatted, '{{ category_slug }}') !== FALSE OR strpos($formatted, '{{ category_id }}') !== FALSE ) )
 					{
 						// Get category
 						$this->load->model('products_m');
 						$category  = current($this->products_m->get_categories($type->id));
 						$formatted = str_replace('{{ category_slug }}', $category['slug'], $formatted);
+						$formatted = str_replace('{{ category_id }}', $category['id'], $formatted);
 					}
+
 				}
 
 				// Add to cache

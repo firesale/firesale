@@ -377,8 +377,8 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
 		$fields[] = array('name' => 'lang:firesale:label_table', 'slug' => 'table', 'type' => 'text', 'extra' => array('max_length' => 255), 'required' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_map', 'slug' => 'map', 'extra' => array('max_length' => 128), 'unique' => TRUE);
-		$fields[] = array('name' => 'lang:firesale:label_route', 'slug' => 'route', 'extra' => array('max_length' => 128), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_map', 'slug' => 'map', 'extra' => array('max_length' => 255), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_route', 'slug' => 'route', 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_translation', 'slug' => 'translation', 'extra' => array('max_length' => 128), 'unique' => TRUE);
 
 		// Combine
@@ -410,6 +410,9 @@ class Module_Firesale extends Module {
 		// Add settings
 		$this->settings('add');
 
+		// Ass routes
+		$this->routes('add');
+
 		// Add email templates
 		$this->templates('add');
 		
@@ -431,6 +434,9 @@ class Module_Firesale extends Module {
 	
 		// Remove settings
 		$this->settings('remove');
+
+		// Remove routes
+		$this->routes('remove');
 
 		// Remove email templates
 		$this->templates('remove');
@@ -594,7 +600,7 @@ class Module_Firesale extends Module {
 	{
 
 		// Load model
-		$this->load->model('routes_m');
+		$this->load->model('firesale/routes_m');
 
 		// Routes
 		$routes   = array();
