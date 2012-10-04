@@ -55,28 +55,30 @@ class Module_Firesale_Search extends Module {
 	
 	public function install()
 	{
+		if ($this->firesale->is_installed())
+		{
+			// Variables
+			$_return = TRUE;
 
-		// Variables
-		$_return = TRUE;
+			##################
+			## SEARCH TERMS ##
+			##################
 
-		##################
-		## SEARCH TERMS ##
-		##################
+			$search = array(
+						'id' 	=> array('type' => 'INT', 'constraint' => '6', 'auto_increment' => TRUE),
+						'term'	=> array('type' => 'VARCHAR', 'constraint' => '64'),
+						'count'	=> array('type' => 'INT', 'constraint' => '6'),
+						'sales'	=> array('type' => 'INT', 'constraint' => '6')
+					);
 
-		$search = array(
-					'id' 	=> array('type' => 'INT', 'constraint' => '6', 'auto_increment' => TRUE),
-					'term'	=> array('type' => 'VARCHAR', 'constraint' => '64'),
-					'count'	=> array('type' => 'INT', 'constraint' => '6'),
-					'sales'	=> array('type' => 'INT', 'constraint' => '6')
-				);
+			// Insert into the database
+			$this->dbforge->add_field($search);
+			$this->dbforge->add_key('id', TRUE);
+			if( !$this->dbforge->create_table('firesale_search') ) { $_return = FALSE; }
 
-		// Insert into the database
-		$this->dbforge->add_field($search);
-		$this->dbforge->add_key('id', TRUE);
-		if( !$this->dbforge->create_table('firesale_search') ) { $_return = FALSE; }
-
-		// Return
-		return $_return;
+			// Return
+			return $_return;
+		}
 	}
 
 	public function uninstall()

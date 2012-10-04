@@ -290,3 +290,8 @@
 	$lang['firesale:payment:cancelled'] = 'Ordine cancellato';
 	$lang['firesale:payment:wait_redirect'] = 'Per favore attendi il reindirizzamento alla pagina dei pagamenti...';
 	$lang['firesale:payment:btn_continue'] = 'Continua';
+	
+	// Install errors
+	$lang['firesale:install:wrong_version'] = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above'; #Translate
+	$lang['firesale:install:missing_multiple'] = 'FireSale requires the Multiple Relationships field type to operate. You can download this from <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">here</a>'; #Translate
+	$lang['firesale:install:not_installed'] = 'Please install the FireSale module before installing additional FireSale addons'; #Translate

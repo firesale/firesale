@@ -147,7 +147,21 @@ class Module_Firesale extends Module {
 	
 	public function install()
 	{
-		
+		if (CMS_VERSION < "2.1.4")
+		{
+			$this->session->set_flashdata('error', lang('firesale:install:wrong_version'));
+			redirect('admin/modules');
+			return FALSE;
+		}
+		elseif ( ! is_dir(SHARED_ADDONPATH . 'field_types/multiple')
+			AND ! is_dir(ADDONPATH . 'field_types/multiple')
+			AND ! is_dir(APPPATH . 'modules/streams_core/field_types/multiple'))
+		{
+			$this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
+			redirect('admin/modules');
+			return FALSE;
+		}
+
 		// Load required items
 		$this->load->driver('Streams');
 		$this->load->language($this->language_file);

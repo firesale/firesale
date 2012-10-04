@@ -12,6 +12,8 @@ class Firesale
 	{
 		// Get an instance of CodeIgniter
 		$this->_CI =& get_instance();
+		
+		$this->_CI->lang->load('firesale/firesale');
 	}
 	
 	public function info($info, $lang_file = NULL)
@@ -116,6 +118,26 @@ class Firesale
 		$info['sections'] = $this->sections;
 
 		return $info;
+	}
+	
+	public function is_installed()
+	{
+		if (module_exists('firesale'))
+		{
+			$installed = $this->_CI->db->where('installed', 1)
+				->where('slug', 'firesale')
+				->count_all_results('modules');
+			
+			if ($installed)
+			{
+				return TRUE;
+			}
+		}
+		
+		$this->_CI->session->set_flashdata('error', lang('firesale:install:not_installed'));
+
+		redirect('admin/modules');
+		return FALSE;
 	}
 	
 	function register_elements($module, $module_info)
