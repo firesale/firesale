@@ -30,7 +30,7 @@
 										<a class="btn green enable" href="<?php echo site_url('admin/firesale/gateways/enable/'.$gateway['id']); ?>"><?php echo lang('buttons.enable'); ?></a>
 									<?php endif; ?>
 									<?php if (group_has_role('firesale', 'edit_gateways')): ?>
-										<a class="btn orange edit" href="<?php echo site_url('admin/firesale/gateways/edit/'.$gateway['slug']); ?>"><?php echo lang('buttons.edit'); ?></a>
+										<a class="btn blue edit" href="<?php echo site_url('admin/firesale/gateways/edit/'.$gateway['slug']); ?>"><?php echo lang('buttons.edit'); ?></a>
 									<?php endif; ?>
 									<?php if (group_has_role('firesale', 'install_uninstall_gateways')): ?>
 										<a class="confirm btn red" href="<?php echo site_url('admin/firesale/gateways/uninstall/'.$gateway['id']); ?>" title="<?php echo lang('firesale:gateways:warning'); ?>"><?php echo lang('buttons.uninstall'); ?></a>
