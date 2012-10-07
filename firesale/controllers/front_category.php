@@ -117,10 +117,10 @@ class Front_category extends Public_Controller {
 
 			// Breadcrumbs
 			$cat_tree = $this->products_m->get_cat_path($category['id'], true);
-			$this->template->set_breadcrumb('Home', '/home');
+			$this->template->set_breadcrumb('Home', 'home');
 			foreach( $cat_tree as $key => $cat )
 			{
-				$this->template->set_breadcrumb($cat['title'], '/category/' . $cat['slug']);
+				$this->template->set_breadcrumb($cat['title'], 'category/' . $cat['slug']);
 			}
 
 			// Assign parent data

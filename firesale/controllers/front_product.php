@@ -48,15 +48,15 @@ class Front_product extends Public_Controller {
 
 			// Breadcrumbs
 			$cat_tree = $this->products_m->get_cat_path($this->data->category, true);
-			$this->template->set_breadcrumb('Home', '/home');
+			$this->template->set_breadcrumb('Home', 'home');
 			foreach( $cat_tree as $key => $cat )
 			{
 				if( $key == 0 ) { $this->data->parent = $cat['id']; }
-				$this->template->set_breadcrumb($cat['title'], '/category/' . $cat['slug']);
+				$this->template->set_breadcrumb($cat['title'], 'category/' . $cat['slug']);
 			}
 		
 			// Build Page
-			$this->template->set_breadcrumb($this->data->product['title'], '/product/' . $this->data->product['slug'])
+			$this->template->set_breadcrumb($this->data->product['title'], 'product/' . $this->data->product['slug'])
 						   ->append_css('module::firesale.css')
 					   	   ->append_js('module::firesale.js')
 						   ->title($this->data->product['title'])
