@@ -20,6 +20,7 @@ class Front_address extends Public_Controller
 		// Load models, lang, libraries, etc.
 		$this->load->model('orders_m');
 		$this->load->model('address_m');
+		$this->load->model('routes_m');
 
 		// Check for user
 		$this->user = ( isset($this->current_user->id) ? $this->current_user->id : FALSE );
@@ -58,8 +59,7 @@ class Front_address extends Public_Controller
 		
 		// Add page content
 		$this->template->title(lang('firesale:addresses:title'))
-					   ->set_breadcrumb('Home', '/home')
-					   ->set_breadcrumb(lang('firesale:addresses:title'), '/users/addresses')
+					   ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
 					   ->set($this->data);
 
 		// Fire events
@@ -76,7 +76,7 @@ class Front_address extends Public_Controller
 		// Variables
         $skip  = array('btnAction');
         $extra = array(
-            'return' => 'users/addresses/edit/-id-',
+            'return'          => $this->routes_m->build_url('addresses').'/edit/-id-',
             'success_message' => lang('faq:submit_success'),
             'failure_message' => lang('faq:submit_failure')
         );
@@ -89,8 +89,7 @@ class Front_address extends Public_Controller
 		
 		// Add page content
 		$this->template->title(lang('firesale:addresses:title'))
-					   ->set_breadcrumb('Home', '/home')
-					   ->set_breadcrumb(lang('firesale:addresses:title'), '/users/addresses')
+					   ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
 					   ->set($this->data);
 
 		// Fire events
@@ -107,7 +106,7 @@ class Front_address extends Public_Controller
 		// Variables
         $skip  = array('btnAction');
         $extra = array(
-            'return' => 'users/addresses/edit/-id-',
+            'return'          => $this->routes_m->build_url('addresses').'/edit/-id-',
             'success_message' => lang('faq:submit_success'),
             'failure_message' => lang('faq:submit_failure')
         );
@@ -127,8 +126,7 @@ class Front_address extends Public_Controller
 
 			// Build page
 			$this->template->title(lang('firesale:addresses:title'))
-						   ->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:addresses:title'), '/users/addresses')
+						   ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
 						   ->build('address_create', $this->data);
 
 		}

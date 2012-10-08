@@ -40,6 +40,7 @@ class Front_category extends Public_Controller {
 		$this->lang->load('firesale');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
+		$this->load->model('routes_m');
 		$this->load->helper('firesale/general');
 
 		// Get perpage option
@@ -119,16 +120,15 @@ class Front_category extends Public_Controller {
 			// Assign pagination
 			if( !empty($products) )
 			{
-				$this->data->pagination = create_pagination('/category/' . $category['slug'] . ( isset($sale) ? '/' . $sale : '' ),  $this->categories_m->total_products($category['id']), $this->perpage, ( isset($sale) ? 4 : 3 ));
+				$this->data->pagination = create_pagination($this->routes_m->build_url('category', $category['id']).'/'.$category['slug'] . ( isset($sale) ? '/' . $sale : '' ),  $this->categories_m->total_products($category['id']), $this->perpage, ( isset($sale) ? 4 : 3 ));
 				$this->data->pagination['shown'] = count($products);
 			}
 
 			// Breadcrumbs
 			$cat_tree = $this->products_m->get_cat_path($category['id'], true);
-			$this->template->set_breadcrumb('Home', '/home');
 			foreach( $cat_tree as $key => $cat )
 			{
-				$this->template->set_breadcrumb($cat['title'], '/category/' . $cat['slug']);
+				$this->template->set_breadcrumb($cat['title'], $this->routes_m->build_url('category', $key));
 			}
 
 			// Assign parent data

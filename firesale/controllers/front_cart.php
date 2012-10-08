@@ -29,6 +29,7 @@ class Front_cart extends Public_Controller
 		$this->load->model('firesale/address_m');
 		$this->load->model('firesale/categories_m');
 		$this->load->model('firesale/products_m');
+		$this->load->model('firesale/routes_m');
 
 		// Require login?
 		if( $this->settings->get('firesale_login') == 1 AND !$this->current_user )
@@ -38,7 +39,7 @@ class Front_cart extends Public_Controller
 			if( $this->uri->segment('2') == 'insert' AND $code = $this->input->post('prd_code') )
 			{
 				$qty  = $this->input->post('prd_qty');
-				$url  = BASE_URL.'cart/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
+				$url  = $this->routes_m->build_url('cart').'/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
 			}
 			else
 			{
@@ -103,8 +104,7 @@ class Front_cart extends Public_Controller
 		}
 
 		// Add page data
-		$this->template->set_breadcrumb('Home', '/home')
-					   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
+		$this->template->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
 					   ->title(lang('firesale:cart:title'));
 
 		// Fire events
@@ -183,7 +183,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect('cart');
+			redirect($this->routes_m->build_url('cart'));
 		}
 
 	}
@@ -195,7 +195,7 @@ class Front_cart extends Public_Controller
 		if ( ! $this->fs_cart->total_items())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
-			redirect('cart');
+			redirect($this->routes_m->build_url('cart'));
 		}
 		else
 		{
@@ -290,7 +290,7 @@ class Front_cart extends Public_Controller
 				}
 
 				// Send to checkout
-				redirect('cart/checkout');
+				redirect($this->routes_m->build_url('cart').'/checkout');
 
 			}
 			elseif ($this->input->is_ajax_request())
@@ -299,7 +299,7 @@ class Front_cart extends Public_Controller
 			}
 			else
 			{
-				redirect('cart');
+				redirect($this->routes_m->build_url('cart'));
 			}
 
 		}
@@ -325,7 +325,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect( ( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'cart' ));
+			redirect( ( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->routes_m->build_url('cart') ));
 		}
 
 	}
@@ -337,7 +337,7 @@ class Front_cart extends Public_Controller
 		if ( ! $this->fs_cart->total())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
-			redirect('cart');
+			redirect($this->routes_m->build_url('cart'));
 		}
 		else
 		{
@@ -415,14 +415,14 @@ class Front_cart extends Public_Controller
 						$this->session->set_userdata('order_id', $id);
 
 						// Redirect to payment
-						redirect('/cart/payment');
+						redirect($this->routes_m->build_url('cart').'/payment');
 
 					}
 
 				}
 
-				// Set error flashdata
-				// Let script continue to rebuild page
+				// Set error flashdata & continue to page build
+				$this->session->set_flashdata('error', 'Unknown Error');
 
 			}
 			else
@@ -464,9 +464,8 @@ class Front_cart extends Public_Controller
 			}
 
 			// Build page
-			$this->template->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
+			$this->template->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
+						   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
 						   ->title(lang('firesale:checkout:title'))
 						   ->build('checkout', $data);
 
@@ -552,10 +551,9 @@ class Front_cart extends Public_Controller
 
 				// Build page
 				$this->template->title(lang('firesale:payment:title'))
-							   ->set_breadcrumb('Home', '/home')
-							   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-							   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
-							   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
+							   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart').'/payment')
+							   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
+							   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
 							   ->set('payment', $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE))
 							   ->build('payment', $order);
 
@@ -564,13 +562,14 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect('cart/checkout');
+			redirect($this->routes_m->build_url('cart').'/checkout');
 		}
 		
 	}
 
 	public function callback($gateway = NULL, $order_id = NULL)
 	{
+
 		$order = $this->orders_m->get_order_by_id($order_id);
 
 		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND ! empty($order))
@@ -599,7 +598,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect('cart');
+			redirect($this->routes_m->build_url('cart'));
 		}
 	}
 
@@ -609,7 +608,7 @@ class Front_cart extends Public_Controller
 		$this->session->set_flashdata('error', lang('firesale:orders:failed_message'));
 
 		if ( ! $callback)
-			redirect('cart/payment');
+			redirect($this->routes_m->build_url('cart').'/payment');
 	}
 
 	private function _order_declined($order, $callback = FALSE)
@@ -618,7 +617,7 @@ class Front_cart extends Public_Controller
 		$this->session->set_flashdata('error', lang('firesale:orders:declined_message'));
 
 		if ( ! $callback)
-			redirect('cart/payment');
+			redirect($this->routes_m->build_url('cart').'/payment');
 
 	}
 
@@ -628,7 +627,7 @@ class Front_cart extends Public_Controller
 		$this->session->set_flashdata('error', lang('firesale:orders:mismatch_message'));
 
 		if ( ! $callback)
-			redirect('cart/payment');
+			redirect($this->routes_m->build_url('cart').'/payment');
 	}
 
 	private function _order_authorized($order, $callback = FALSE)
@@ -658,11 +657,10 @@ class Front_cart extends Public_Controller
 
 			// Build page
 			$this->template->title(lang('firesale:payment:title_success'))
-						   ->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
-						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
+						   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
+						   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
+						   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), $this->routes_m->build_url('cart').'/payment')
 						   ->order = $order;
 
 			// Fire events
@@ -685,10 +683,10 @@ class Front_cart extends Public_Controller
 			$this->fs_cart->destroy();
 
 			$this->template->title(lang('firesale:payment:title_success'))
-						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
-						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
+						   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
+						   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
+						   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), $this->routes_m->build_url('cart').'/payment')
 						   ->build('payment_complete', $order);
 		}
 		else

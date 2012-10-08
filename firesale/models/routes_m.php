@@ -25,7 +25,7 @@ class Routes_m extends MY_Model
 		parent::__construct();
 	}
 
-	public function build_url($slug, $id)
+	public function build_url($slug, $id = NULL)
 	{
 
 		// Variables
@@ -50,9 +50,10 @@ class Routes_m extends MY_Model
 				// Basic route formatting
 				$formatted = $route->map;
 				$formatted = html_entity_decode($formatted);
+				$formatted = str_replace('{{ any }}', '', $formatted);
 
 				// Check table
-				if( ! empty($route->table) )
+				if( ! empty($route->table) AND $id != NULL )
 				{
 
 					// Get type
