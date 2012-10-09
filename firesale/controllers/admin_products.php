@@ -149,11 +149,11 @@ class Admin_products extends Admin_Controller
 			}
 
 			// Redirect
-			if( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) )
+			if( $input['btnAction'] == 'save_exit' AND ! is_object($fields) )
 			{
 				redirect('admin/firesale/products');
 			}
-			else
+			else if( is_integer($fields) )
 			{
 				redirect('admin/firesale/products/edit/'.$fields);
 			}
