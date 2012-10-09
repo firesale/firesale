@@ -46,10 +46,6 @@ class Front_category extends Public_Controller {
 		// Get perpage option
 		$this->perpage = $this->settings->get('firesale_perpage');
 
-		// Load css/js
-		$this->template->append_css('module::firesale.css')
-					   ->append_js('module::firesale.js');
-
 	}
 
 	/**
@@ -66,7 +62,7 @@ class Front_category extends Public_Controller {
 	 * @return void
 	 * @access public
 	 */	
-	public function index($category, $start = 0, $extra = NULL)
+	public function index($category = NULL, $start = 0, $extra = NULL)
 	{
 	
 		// Get cookie data
@@ -74,10 +70,13 @@ class Front_category extends Public_Controller {
 		$this->data->order  = get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1);
 
 		// Get category details
-		$category = $this->categories_m->get_category($category);
+		if( $category != NULL )
+		{
+			$category = $this->categories_m->get_category($category);
+		}
 
 		// Check category exists
-		if( $category != FALSE )
+		if( $category != FALSE or $category == NULL )
 		{
 			
 			// Query
@@ -138,7 +137,9 @@ class Front_category extends Public_Controller {
 			$this->session->set_userdata('category', $this->data->category['id']);
 
 			// Build Page
-			$this->template->title($this->data->category['title'])
+			$this->template->title(( $category != NULL ? $this->data->category['title'] : lang('firesale:cats_all_products') ))
+						   ->append_css('module::firesale.css')
+					       ->append_js('module::firesale.js')
 						   ->set($this->data);
 
 			// Fire events

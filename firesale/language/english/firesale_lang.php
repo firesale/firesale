@@ -65,6 +65,7 @@
 	$lang['firesale:cats_edit_error'] 		= 'There was a problem editing the category';
 	$lang['firesale:cats_delete_success'] 	= 'Category was deleted successfully';
 	$lang['firesale:cats_delete_error'] 	= 'There was a problem deleting that category';
+	$lang['firesale:cats_all_products']     = 'All Products';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'No Products Found';

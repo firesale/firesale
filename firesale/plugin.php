@@ -176,7 +176,7 @@ class Plugin_Firesale extends Plugin
 		$this->load->model('products_m');
 		$this->load->library('fs_cart');
 
-		$tax  		 	= 0.2; // add to settings later
+		$tax  		 	= round(( 100 - $this->settings->get('firesale_tax') ) / 100, 3);
 		$data 		 	= new stdClass;
 		$data->sub 	 	= 0;
 		$data->tax 	 	= 0;
@@ -213,6 +213,27 @@ class Plugin_Firesale extends Plugin
 		$data->total = number_format($data->total, 2);
 
 		return array($data);
+	}
+
+	public function prevoius_next()
+	{
+
+		// Variables
+		$id   = $this->attribute('id');
+		$type = $this->attribute('type', 'next');
+
+		// Check ID for previous
+		if( $type == 'previous' AND $id != 1 )
+		{
+			return $this->products_m->get_product(( $id - 1 ));
+		}
+		else if( $type == 'next' )
+		{
+			return $this->products_m->get_product(( $id + 1 ));
+		}
+
+		// Otherwise
+		return FALSE;
 	}
 
 	#######################
