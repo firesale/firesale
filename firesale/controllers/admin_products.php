@@ -108,10 +108,10 @@ class Admin_products extends Admin_Controller
 			// Temporary until we move to grid
 			// Remove duplicate entries before updating categories
 			// Also deletes all existing categories from a product
-			/*if( $id !== NULL )
+			if( $id !== NULL )
 			{
 				$input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
-			}*/
+			}
 		
 		}
 		else

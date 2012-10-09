@@ -29,7 +29,7 @@ tfoot th{border:none;border-top:2px solid #ddd;}
 #dropbox .imageHolder:hover{cursor:move;}
 #dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(img/delete.png) no-repeat;}
 #title,#slug{width:350px!important;}
-#rrp,#rrp_tax,#price,#price_tax,#stock{width:70px;min-width:40px!important;}
+#cost,#cost_tax,#rrp,#rrp_tax,#price,#price_tax,#stock{width:70px;min-width:40px!important;}
 #tabs textarea{width:100%;}
 span.discount strong{color:#0C3;}
 .clear{clear:both;height:0;line-height:0;}

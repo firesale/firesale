@@ -61,9 +61,10 @@ $(function(){
 	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
 	// Tax link
+	tax_link($('#cost'), $('#cost_tax'));
 	tax_link($('#rrp'), $('#rrp_tax'));
 	tax_link($('#price'), $('#price_tax'));
-	$('#rrp, #rrp_tax, #price, #price_tax');
+	$('#cost, #cost_tax, #rrp, #rrp_tax, #price, #price_tax');
 
 	// Image reordering
 	$('#dropbox').sortable({
