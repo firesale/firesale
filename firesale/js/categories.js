@@ -29,7 +29,7 @@ $(function(){
 			$('.form_inputs input[name=title]').val(data.title);
 			$('.form_inputs input[name=slug]').val(data.slug);
 			if( data.parent != null ) { $('.form_inputs select[name=parent]').val(data.parent.id).trigger('liszt:updated'); }
-			$('.form_inputs select[name=status]').val(data.status.key).trigger('liszt:updated');
+			if( data.status != null ) { $('.form_inputs select[name=status]').val(data.status.key).trigger('liszt:updated'); }
 			$('.form_inputs textarea[name=description]').val(data.description);
 			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
 			.append(( data.id != 1 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
