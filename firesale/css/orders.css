@@ -15,3 +15,11 @@ ul.width-half > li { min-height: 44px; }
 .items input { margin: -3px 10px 0;}
 .items button { margin: -1px 0 0; }
 img.image { width: 64px; height: 64px; display: block; background: url('img/none.jpg') no-repeat; background-size: 64px 64px; overflow: hidden; text-indent: -1000px; }
+
+/* Table */
+table.tablesorter thead tr .tablesorter-header{background-image:url(img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer;}
+table.tablesorter thead tr .tablesorter-headerSortUp{background-image:url(img/asc.gif);}
+table.tablesorter thead tr .tablesorter-headerSortDown{background-image:url(img/desc.gif);}
+table.tablesorter thead tr .tablesorter-headerSortDown, table.tablesorter thead tr .tablesorter-headerSortUp{background-color:#f3f3f3;color:#000;}
+table.tablesorter input[type=search] { width: 100% !important; min-width: 100% !important; }
+table.tablesorter tbody tr.status-2 { background: #F0FBEA; }

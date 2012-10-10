@@ -3,6 +3,8 @@ $(function(){
 	// Dashboard
 	$('.filter').change(function() { if( $(this).val() > 0 ) { window.location = '/admin/firesale/products/' + $(this).attr('id').replace('filter-', '') + '/' + $(this).val(); } });
 	
+	$('#product_table').tablesorter({headers:{0:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
+
 	$('.quickedit').click(function() {
 	
 		var obj   = $(this).parent().parent();

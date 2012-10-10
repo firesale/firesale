@@ -34,7 +34,7 @@
 				</thead>
 				<tbody>
 <?php foreach( $orders AS $order ): ?>
-					<tr>
+					<tr class="status-<?php echo $order['order_status']['key']; ?>">
 						<td><input type="checkbox" name="action_to[]" value="<?php echo $order['id']; ?>"  /></td>
 						<td><?php echo date('H:i:s d-m-Y', $order['created']); ?></td>
 						<td><?php echo $order['ship_to']['firstname'] . ' ' . $order['ship_to']['lastname']; ?></td>

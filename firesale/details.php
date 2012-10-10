@@ -619,9 +619,9 @@ class Module_Firesale extends Module {
 		// Routes
 		$routes   = array();
 		$routes[] = array('id' => '7', 'title' => 'Category (Customisation)', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
-		$routes[] = array('id' => '1', 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category{{ any }}', 'route' => 'category(:any)', 'translation' => 'firesale/front_category/index$1');
-		$routes[] = array('id' => '2', 'title' => 'Product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product{{ any }}', 'route' => 'product(:any)', 'translation' => 'firesale/front_product/index$1');
-		$routes[] = array('id' => '3', 'title' => 'Cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart/index$1');
+		$routes[] = array('id' => '1', 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category{{ any }}', 'route' => 'category(/:any)?', 'translation' => 'firesale/front_category/index$1');
+		$routes[] = array('id' => '2', 'title' => 'Product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ any }}', 'route' => 'product/(:any)', 'translation' => 'firesale/front_product/index/$1');
+		$routes[] = array('id' => '3', 'title' => 'Cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
 		$routes[] = array('id' => '5', 'title' => 'Orders (Single)', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
 		$routes[] = array('id' => '4', 'title' => 'Orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
 		$routes[] = array('id' => '6', 'title' => 'Addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');

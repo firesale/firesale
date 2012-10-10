@@ -33,6 +33,9 @@ class Admin_products extends Admin_Controller
 
 		// Add metadata
 		$this->template->append_css('module::products.css')
+					   ->append_js('module::jquery.tablesort.js')
+					   ->append_js('module::jquery.metadata.js')
+					   ->append_js('module::jquery.tablesort.plugins.js')
 					   ->append_js('module::products.js')
 					   ->append_metadata('<script type="text/javascript">' .
 										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 

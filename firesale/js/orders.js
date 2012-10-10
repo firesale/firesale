@@ -5,6 +5,8 @@ $(function() {
 
 	$('#price_sub, #price_ship, #price_total').before('<span>' + currency + '&nbsp;</span>');
 
+	$('#order_table').tablesorter({headers:{0:{sorter:false},8:{sorter:false}}, widgets:["saveSort"]});
+
 	// Change address
 	$('#ship_to, #bill_to').change(function() {
 		var pre = $(this).attr('id').replace('_to', '');

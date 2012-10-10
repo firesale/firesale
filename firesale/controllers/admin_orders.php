@@ -33,6 +33,9 @@ class Admin_orders extends Admin_Controller
 
 		// Add metadata
 		$this->template->append_css('module::orders.css')
+					   ->append_js('module::jquery.tablesort.js')
+					   ->append_js('module::jquery.metadata.js')
+					   ->append_js('module::jquery.tablesort.plugins.js')
 					   ->append_js('module::orders.js')
 					   ->append_metadata('<script type="text/javascript">' .
 										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 

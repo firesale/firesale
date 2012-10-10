@@ -41,3 +41,8 @@ button.link.unlinked{background-position:-40px 0;}
 .mult_lists ul{overflow-x:hidden;width:260px;padding:5px!important;}
 .loading{min-height:22px;background:url(img/loading.gif) no-repeat 50% 50%!important;}
 #product_table .chzn-container .chzn-search,#product_table .chzn-container .chzn-search input{width:133px!important;}
+table.tablesorter thead tr .tablesorter-header{background-image:url(img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer;}
+table.tablesorter thead tr .tablesorter-headerSortUp{background-image:url(img/asc.gif);}
+table.tablesorter thead tr .tablesorter-headerSortDown{background-image:url(img/desc.gif);}
+table.tablesorter thead tr .tablesorter-headerSortDown, table.tablesorter thead tr .tablesorter-headerSortUp{background-color:#f3f3f3;color:#000;}
+table.tablesorter input[type=search] { width: 100% !important; min-width: 100% !important; }
