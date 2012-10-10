@@ -22,6 +22,9 @@ class Admin_routes extends Admin_Controller
 		$this->load->driver('Streams');
 		$this->load->model('routes_m');
 
+		// Initialise data
+		$this->data = new stdClass();
+
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_routes', 'firesale_routes');
 
