@@ -513,13 +513,13 @@ class Front_cart extends Public_Controller
 					'amount'        => $this->fs_cart->total,
 					'reference'     => 'Order #' . $this->session->userdata('order_id')
 				));
-				$process = $this->merchant->process($params);
-				$status = '_order_' . $process->status;
+				$process = $this->merchant->purchase($params);
+				$status = '_order_' . $process->status();
 
 				// Check status
-				if ($process->status == 'authorized')
+				if ($process->status() == 'authorized')
 				{
-					if ((float)$process->amount == (float)$order['price_total'])
+					if ((float)$process->amount() == (float)$order['price_total'])
 					{
 						// Remove ID & Shipping option
 						$this->session->unset_userdata('order_id');
@@ -529,6 +529,11 @@ class Front_cart extends Public_Controller
 					{
 						$status = '_order_mismatch';
 					}
+				}
+
+				if ( ! method_exists($this, $status))
+				{
+					$status = '_order_processing';
 				}
 
 				// Run status function
@@ -670,6 +675,11 @@ class Front_cart extends Public_Controller
 			$this->template->build('payment_complete', $order);
 		}
 
+	}
+
+	private function _order_complete()
+	{
+		call_user_func_array(array($this, '_order_authorized'), func_get_args());
 	}
 
 	public function success()
