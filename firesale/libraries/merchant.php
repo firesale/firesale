@@ -626,13 +626,17 @@ abstract class Merchant_driver
 	 */
 	protected function secure_request()
 	{
-		if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) AND $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+		// CH: Only check for SSL if we're in a production environment
+		if (ENVIRONMENT === PYRO_PRODUCTION)
 		{
-			return TRUE;
-		}
-		if (empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) == 'off')
-		{
-			return FALSE;
+			if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) AND $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+			{
+				return TRUE;
+			}
+			if (empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) == 'off')
+			{
+				return FALSE;
+			}
 		}
 
 		return TRUE;
