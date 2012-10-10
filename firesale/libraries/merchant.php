@@ -325,28 +325,15 @@ class Merchant
 	 */
 	public static function post_redirect($url, $data, $message = NULL)
 	{
-		if (empty($message))
-		{
-			$message = lang('merchant_payment_redirect');
-		}
+		$_CI =& get_instance();
 
-		?><!DOCTYPE html>
-<html>
-<head><title>Redirecting...</title></head>
-<body onload="document.forms[0].submit();">
-	<form name="payment" action="<?php echo htmlspecialchars($url); ?>" method="post">
-		<p><?php echo htmlspecialchars($message); ?></p>
-		<p>
-			<?php foreach ($data as $key => $value): ?>
-				<input type="hidden" name="<?php echo htmlspecialchars($key); ?>" value="<?php echo htmlspecialchars($value); ?>" />
-			<?php endforeach ?>
-			<input type="submit" value="Continue" />
-		</p>
-	</form>
-</body>
-</html>
-<?php
-		exit();
+		$template = $_CI->template->append_js('module::payment_redirection.js')
+								  ->set('data', $data)
+								  ->set('post_url', $url)
+								  ->set('message', $message)
+								  ->build('payment_redirection');
+
+		exit($template);
 	}
 }
 
