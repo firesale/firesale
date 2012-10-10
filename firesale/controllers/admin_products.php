@@ -81,15 +81,25 @@ class Admin_products extends Admin_Controller
 		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
 		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
 
-		// Add page data
-		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
-					   ->set($this->data);
+		// Ajax request?
+		if( $this->input->is_ajax_request() )
+		{
+			echo json_encode($this->data->products);
+			exit();
+		}
+		else
+		{
+			// Add page data
+			$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
+						   ->set($this->data);
 
-		// Fire events
-		Events::trigger('page_build', $this->template);
+			// Fire events
+			Events::trigger('page_build', $this->template);
 
-		// Build page
-		$this->template->build('admin/products/index');
+			// Build page
+			$this->template->build('admin/products/index');
+		}
+
 	}
 	
 	public function create($id = NULL, $row = NULL)
@@ -423,6 +433,15 @@ class Admin_products extends Admin_Controller
 
 		echo 'error';
 		exit();
+	}
+
+	public function ajax_filter()
+	{
+		if( $this->input->is_ajax_request() )
+		{
+			echo json_encode($this->products_m->get_product($id));
+			exit();
+		}
 	}
 	
 }
