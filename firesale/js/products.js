@@ -4,56 +4,56 @@ $(function(){
 	** DASHBOARD **
 	**************/
 	$('.filter').change(function() {
-		if( $(this).val() > 0 ) {
-			var data = {filter: $(this).attr('id').replace('filter-', ''), value: $(this).val()};
-			$.post('/admin/firesale/products/'+data.filter+'/'+data.value, function(p) {
+
+		var data = {filter: $(this).attr('id').replace('filter-', ''), value: $(this).val()};
+		$.post('/admin/firesale/products' + ( data.value > 0 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
 	
+			// Variables
+			var products = $.parseJSON(p), tar = $('#product_table tbody'), row = '';
+
+			// Clear table
+			tar.html('<tr class="loading"><td colspan="8">&nbsp;</td></tr>');
+
+			// Loop new products
+			for( var k in products )
+			{
+
 				// Variables
-				var products = $.parseJSON(p), tar = $('#product_table tbody'), row = '';
+				var p   = products[k];
+				var str = '';
 
-				// Clear table
-				tar.html('<tr class="loading"><td colspan="8">&nbsp;</td></tr>');
+				// Categories
+				for( var c in p.category ) { var cat = p.category[c]; str += ( str.length == 0 ? '' : ', ' ) + '<span data-id="'+cat.id+'">'+cat.title+'</span>'; }
 
-				// Loop new products
-				for( var k in products )
-				{
+				// Build row
+				row    += '<tr class="cat_'+p.category.id+'">'+
+						  '	<td><input type="checkbox" name="action_to[]" value="'+p.id+'"  /></td>'+
+						  '	<td class="item-id">'+p.code+'</td>'+
+						  ' <td class="item-img"><img src="'+(p.image!=false?'/files/thumb/'+p.image+'/32/32':'')+'" alt="Product Image" /></td>'+
+						  ' <td class="item-title"><a href="product/'+p.slug+'">'+p.title+'</a></td>'+
+						  ' <td class="item-category">'+
+						  '  '+str+
+						  ' </td>'+
+						  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
+						  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
+						  ' <td class="actions">'+
+						  '  <a href="#" class="button quickedit">Quick Edit</a>'+
+						  '  <a href="/admin/firesale/products/edit/'+p.id+'" class="button edit">Edit</a>'+
+						  '  <a href="/admin/firesale/products/delete/'+p.id+'" class="button confirm">Delete</a>'+
+						  ' </td>'+
+						  '</tr>';
 
-					// Variables
-					var p   = products[k];
-					var str = '';
+			}
 
-					// Categories
-					for( var c in p.category ) { var cat = p.category[c]; str += ( str.length == 0 ? '' : ', ' ) + '<span data-id="'+cat.id+'">'+cat.title+'</span>'; }
+			// Remove loading
+			tar.html(row);
 
-					// Build row
-					row    += '<tr class="cat_'+p.category.id+'">'+
-							  '	<td><input type="checkbox" name="action_to[]" value="'+p.id+'"  /></td>'+
-							  '	<td class="item-id">'+p.code+'</td>'+
-							  ' <td class="item-img"><img src="'+(p.image!=false?'/files/thumb/'+p.image+'/32/32':'')+'" alt="Product Image" /></td>'+
-							  ' <td class="item-title"><a href="product/'+p.slug+'">'+p.title+'</a></td>'+
-							  ' <td class="item-category">'+
-							  '  '+str+
-							  ' </td>'+
-							  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
-							  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
-							  ' <td class="actions">'+
-							  '  <a href="#" class="button quickedit">Quick Edit</a>'+
-							  '  <a href="/admin/firesale/products/edit/'+p.id+'" class="button edit">Edit</a>'+
-							  '  <a href="/admin/firesale/products/delete/'+p.id+'" class="button confirm">Delete</a>'+
-							  ' </td>'+
-							  '</tr>';
+			// Rebind values
+			$('#product_table').trigger("update"); 
+			build_quickedit();
 
-				}
+		});
 
-				// Remove loading
-				tar.html(row);
-
-				// Rebind values
-				$('#product_table').trigger("update"); 
-				build_quickedit();
-
-			});
-		}
 	});
 	
 	$('#product_table').tablesorter({headers:{0:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
