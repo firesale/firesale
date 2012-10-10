@@ -61,15 +61,15 @@ class Front_cart extends Public_Controller
 		// Set the pricing vars
 		if ($this->fs_cart->total() > 0)
 		{
-			$this->fs_cart->total		= $this->fs_cart->total();
-			$this->fs_cart->tax			= ( $this->fs_cart->total / 100 ) * $this->fs_cart->tax_percent;
-			$this->fs_cart->subtotal	= ( $this->fs_cart->total - $this->fs_cart->tax );
+			$this->fs_cart->total	 = $this->fs_cart->total();
+			$this->fs_cart->tax		 = $this->fs_cart->total / (( $this->fs_cart->tax_percent / 100 ) + 1 ) * ( $this->fs_cart->tax_percent / 100 );
+			$this->fs_cart->subtotal = ( $this->fs_cart->total - $this->fs_cart->tax );
 		}
 		else
 		{
-			$this->fs_cart->total		= '0.00';
-			$this->fs_cart->tax			= '0.00';
-			$this->fs_cart->subtotal	= '0.00';
+			$this->fs_cart->total	 = '0.00';
+			$this->fs_cart->tax		 = '0.00';
+			$this->fs_cart->subtotal = '0.00';
 		}
 
 		// Load shipping model
