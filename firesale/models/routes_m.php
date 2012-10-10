@@ -195,7 +195,7 @@ class Routes_m extends MY_Model
 	{
 
 		// Variables
-		$file    = $_SERVER['DOCUMENT_ROOT'].APPPATH_URI.'config/routes.php';
+		$file    = APPPATH.'config/routes.php';
 		$content = file_get_contents($file);
 		$before  = "\n/* End of file routes.php */";
 		$regex   = "%(\n/\* FireSale - ".($old_title?$old_title:$title)." \*/\n.+?\n)%si";
@@ -225,7 +225,7 @@ class Routes_m extends MY_Model
 	{
 
 		// Variables
-		$file    = $_SERVER['DOCUMENT_ROOT'].APPPATH_URI.'config/routes.php';
+		$file    = APPPATH.'config/routes.php';
 		$content = file_get_contents($file);
 		$regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
 
