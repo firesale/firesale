@@ -32,7 +32,7 @@
 						<th style="width: 160px"><?php echo lang('firesale:label_parent'); ?></th>
 						<th style="width: 80px"><?php echo lang('firesale:label_stock_short'); ?></th>
 						<th style="width: 90px"><?php echo lang('firesale:label_price'); ?></th>
-						<th style="width: 180px"></th>
+						<th></th>
 					</tr>
 				</thead>
 
@@ -55,9 +55,15 @@
 						<td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? lang('firesale:label_stock_unlimited') . ' (&infin;)' : $product['stock'] ); ?></td>
 						<td><?php echo $this->settings->get('currency'); ?><span class="item-price"><?php echo $product['price']; ?></span></td>
 						<td class="actions">
-							<a href="#" class="button quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a> 
-							<a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="button edit"><?php echo lang('global:edit'); ?></a> 
-							<a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="button confirm"><?php echo lang('global:delete'); ?></a>
+							<div class="split-button">
+								<span class="action">Action</span>
+								<ul>
+									<li><strong>Action</strong></li>
+									<li><a href="#" class="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a></li>
+									<li><a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="edit"><?php echo lang('global:edit'); ?></a></li>
+									<li><a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="confirm"><?php echo lang('global:delete'); ?></a></li>
+								</ul>
+							</div>
 						</td>
 					</tr>
 <?php endforeach; ?>

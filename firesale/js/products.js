@@ -37,9 +37,15 @@ $(function(){
 						  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
 						  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
 						  ' <td class="actions">'+
-						  '  <a href="#" class="button quickedit">Quick Edit</a>'+
-						  '  <a href="/admin/firesale/products/edit/'+p.id+'" class="button edit">Edit</a>'+
-						  '  <a href="/admin/firesale/products/delete/'+p.id+'" class="button confirm">Delete</a>'+
+						  '  <div class="split-button">'+
+						  '   <span class="action">Action</span>'+
+						  '    <ul>'+
+						  '     <li><a href="#" class="quickedit">Quick Edit</a>'+
+						  '     <li><a href="/admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
+						  '     <li><a href="/admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
+						  '    </ul>'+
+						  '   </span>'+
+						  '  </div>'+
 						  ' </td>'+
 						  '</tr>';
 
@@ -58,6 +64,7 @@ $(function(){
 
     $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
 	$('#product_table').tablesorter({headers:{0:{sorter:false},2:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
+	build_quickedit();
 
 	/*************
 	** CREATION **
@@ -122,8 +129,11 @@ $(function(){
 	function build_quickedit()
 	{
 		$('.quickedit').click(function() {
+
+			$('<li><a href="#" class="reload">Cancel</a></li>').insertAfter($(this).parent());
+			$('.reload').unbind('click').click(function(e) { e.preventDefault(); window.location = window.location; });
 	
-			var obj   = $(this).parent().parent();
+			var obj   = $(this).parents('tr');
 			var id    = obj.find('.item-id');
 			var title = obj.find('.item-title');
 			var cat   = obj.find('.item-category');

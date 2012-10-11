@@ -6,10 +6,10 @@
 tbody tr:last-child{border:none;}
 tfoot th{border:none;border-top:2px solid #ddd;}
 #product_table #id{width:100px!important;margin:0;}
-#product_table #title{width:330px!important;margin:0;}
+#product_table #title{width:95%!important;margin:0;}
 #product_table .chzn-container{width:170px!important;margin:0;}
 #product_table .chzn-container .chzn-drop{width:168px!important;}
-#product_table .actions{width:200px!important;}
+#product_table .actions{width:80px!important;}
 #product_table .item-img{width:40px!important;}
 #product_table img{width:32px;height:32px;float:left;display:block;background:url(img/none.jpg) no-repeat;background-size:32px 32px;overflow:hidden;text-indent:-1000px;}
 #dropbox{position:relative;min-height:290px;border-radius:15px;padding:4px 4px 44px;}
@@ -48,3 +48,9 @@ table.tablesorter thead tr .tablesorter-headerSortDown{background-image:url(img/
 table.tablesorter thead tr .tablesorter-headerSortDown, table.tablesorter thead tr .tablesorter-headerSortUp{background-color:#f3f3f3;color:#000;}
 table.tablesorter input[type=search] { width: 100% !important; min-width: 100% !important; }
 table.tablesorter tbody tr.loading td { width: 100%; height: 200px; background:url(img/loading.gif) no-repeat 50% 50%; }
+.split-button, .split-button ul { position: relative; -webkit-appearance: none; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; background: #dddddd; background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#dddddd)); background-image: -moz-linear-gradient(#ffffff, #dddddd); background-image: -ms-linear-gradient(#ffffff, #dddddd); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dddddd)); background-image: -webkit-linear-gradient(#ffffff, #dddddd); background-image: -o-linear-gradient(#ffffff, #dddddd); background-image: linear-gradient(#ffffff, #dddddd); border: 1px solid; line-height: 14px; border-color: #dddddd #bbbbbb #999999; cursor: pointer; color: #333333; font-weight: bold; font-size: 13px; outline: 0; overflow: visible; padding: 3px 10px; text-shadow: #ffffff 0 1px 1px; width: auto; }
+.split-button { width: 70px; padding-right: 30px; }
+.split-button ul { left: -1px; top: -1px; width: 100%; position: absolute; }
+.split-button ul li { padding-right: 30px; display: none; line-height: 22px; text-align: right !important; }
+.split-button ul li:first-child { display: block; background: url(img/split.bg.png) no-repeat 100% 0; }
+.split-button:hover ul li { display: block; }
