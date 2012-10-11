@@ -26,6 +26,9 @@
 					<li>
 						<center><input type="text" name="search" placeholder="Keyword Search..." /></center>
 					</li>
+					<li class="wide">
+						<center><div id="price-slider"></div></center>
+					</li>
 			    </ul>
 			</fieldset>
 

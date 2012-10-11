@@ -445,5 +445,20 @@ class Admin_products extends Admin_Controller
 			exit();
 		}
 	}
+
+	public function _remap($method, $args)
+	{
+
+		// Check for search
+		if( $method == 'search' )
+		{
+			call_user_func_array(array($this, 'index'), array_merge(array($method), $args));
+		}
+		else
+		{
+			call_user_func_array(array($this, $method), $args);
+		}
+
+	}
 	
 }
