@@ -242,6 +242,11 @@
 	$lang['firesale:payment:title_success'] 		= 'Pembayaran Lengkap';
 	$lang['firesale:checkout:title:ship_method']	= 'Metode Pengiriman';
 	$lang['firesale:checkout:title:payment_method']	= 'Metode Pembayaran';
+	$lang['firesale:checkout:next']							= 'Next';	#Translate
+	$lang['firesale:checkout:previous']						= 'Previous';		#Translate
+	$lang['firesale:checkout:preferred_shipping_method']	= 'Please select your preferred shipping method below before continuing';	#Translate
+	$lang['firesale:checkout:preferred_payment_method']		= 'Please select your preferred payment method below before continuing';	#Translate
+	$lang['firesale:checkout:submit_pay']					= '	Submit &amp; Pay';	#Translate
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Alamat Saya';

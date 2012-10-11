@@ -232,18 +232,23 @@
 	$lang['firesale:gateways:updated_fail'] 				= 'The gateway could not be updated';
 
 	// Checkout
-	$lang['firesale:gateways:labels:name']			= 'Name';
-	$lang['firesale:gateways:labels:desc']			= 'Description';
-	$lang['firesale:cart:title']					= 'Shopping Cart';
-	$lang['firesale:cart:empty']					= 'There are currently no items in your cart';
-	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that';
-	$lang['firesale:cart:qty_too_low']				= 'Stock level is too low to add that quantity to your cart';
-	$lang['firesale:checkout:title'] 				= 'Checkout';
-	$lang['firesale:checkout:error_callback'] 		= 'There seems to have been a problem with your order, please try again, possibly using another payment method.';
-	$lang['firesale:payment:title'] 				= 'Confirm Details';
-	$lang['firesale:payment:title_success'] 		= 'Payment Complete';
-	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';
-	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
+	$lang['firesale:gateways:labels:name']					= 'Name';
+	$lang['firesale:gateways:labels:desc']					= 'Description';
+	$lang['firesale:cart:title']							= 'Shopping Cart';
+	$lang['firesale:cart:empty']							= 'There are currently no items in your cart';
+	$lang['firesale:cart:login_required']					= 'You must be logged in before you can do that';
+	$lang['firesale:cart:qty_too_low']						= 'Stock level is too low to add that quantity to your cart';
+	$lang['firesale:checkout:title'] 						= 'Checkout';
+	$lang['firesale:checkout:error_callback'] 				= 'There seems to have been a problem with your order, please try again, possibly using another payment method.';
+	$lang['firesale:payment:title'] 						= 'Confirm Details';
+	$lang['firesale:payment:title_success'] 				= 'Payment Complete';
+	$lang['firesale:checkout:title:ship_method']			= 'Shipping Method';
+	$lang['firesale:checkout:title:payment_method']			= 'Payment Method';
+	$lang['firesale:checkout:next']							= 'Next';
+	$lang['firesale:checkout:previous']						= 'Previous';	
+	$lang['firesale:checkout:preferred_shipping_method']	= 'Please select your preferred shipping method below before continuing';
+	$lang['firesale:checkout:preferred_payment_method']		= 'Please select your preferred payment method below before continuing';
+	$lang['firesale:checkout:submit_pay']					= '	Submit &amp; Pay';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
