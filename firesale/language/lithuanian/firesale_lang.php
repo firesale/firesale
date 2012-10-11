@@ -239,6 +239,11 @@
 	$lang['firesale:payment:title_success'] 		= 'Mokėjimas baigtas';
 	$lang['firesale:checkout:title:ship_method']	= 'Pristatymo būdas';
 	$lang['firesale:checkout:title:payment_method']	= 'Mokėjimo būdas';
+	$lang['firesale:checkout:next']							= 'Next';	#Translate
+	$lang['firesale:checkout:previous']						= 'Previous';		#Translate
+	$lang['firesale:checkout:preferred_shipping_method']	= 'Please select your preferred shipping method below before continuing';	#Translate
+	$lang['firesale:checkout:preferred_payment_method']		= 'Please select your preferred payment method below before continuing';	#Translate
+	$lang['firesale:checkout:submit_pay']					= '	Submit &amp; Pay';	#Translate
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mano adresai';
