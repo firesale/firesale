@@ -70,7 +70,7 @@ class Products_m extends MY_Model {
 	{
 	
 		$_products = $this->db->select('id, slug, title')->order_by('title')->get($this->_table)->result_array();
-		$products  = array();
+		$products  = array('0' => lang('firesale:label_filterprod'));
 		
 		foreach( $_products AS $product )
 		{
@@ -78,6 +78,34 @@ class Products_m extends MY_Model {
 		}
 	
 		return $products;	
+	}
+
+	/**
+	 * Builds a dropdown of the available stock status' for products and reutnrs
+	 * the dropdown string with the optionally passed ID preselected.
+	 *
+	 * @param integer $id (Optional) Pre-selected key in the dropdown
+	 * @return string The HTML dropdown string
+	 * @access public
+	 */
+	public function status_dropdown($id = NULL)
+	{
+
+		// Variables
+		$list = array('0' => lang('firesale:label_filterstat'));
+		$drop = '';
+
+		// Loop products
+		foreach( $this->_stockstatus AS $key => $status )
+		{
+			$list[$key] = lang($status);
+		}
+
+		// Build the dropbown
+		$drop = form_dropdown('stock_status', $list, $id);
+
+		// Return it
+		return $drop;
 	}
 	
 	/**

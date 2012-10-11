@@ -3,9 +3,9 @@ $(function(){
 	/**************
 	** DASHBOARD **
 	**************/
-	$('.filter').change(function() {
+	$('#filters select').change(function() {
 
-		var data = {filter: $(this).attr('id').replace('filter-', ''), value: $(this).val()};
+		var data = {filter: $(this).attr('name'), value: $(this).val()};
 		$.post('/admin/firesale/products' + ( data.value > 0 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
 	
 			// Variables
@@ -13,6 +13,19 @@ $(function(){
 
 			// Clear table
 			tar.html('<tr class="loading"><td colspan="8">&nbsp;</td></tr>');
+
+			// Check products
+			if( products.length > 0 )
+			{
+				$('.no_data').remove();
+				tar.parent().fadeIn(250);
+			}
+			else
+			{
+				tar.parent().fadeOut(250);
+				$('.no_data').remove();
+				$('<div class="no_data">No Products Found</div>').insertAfter(tar.parent());
+			}
 
 			// Loop new products
 			for( var k in products )
@@ -37,15 +50,11 @@ $(function(){
 						  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
 						  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
 						  ' <td class="actions">'+
-						  '  <div class="split-button">'+
-						  '   <span class="action">Action</span>'+
-						  '    <ul>'+
-						  '     <li><a href="#" class="quickedit">Quick Edit</a>'+
-						  '     <li><a href="/admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
-						  '     <li><a href="/admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
-						  '    </ul>'+
-						  '   </span>'+
-						  '  </div>'+
+						  '  <ul class="split-button">'+
+						  '   <li><a href="#" class="quickedit">Quick Edit</a>'+
+						  '   <li><a href="/admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
+						  '   <li><a href="/admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
+						  '  </ul>'+
 						  ' </td>'+
 						  '</tr>';
 

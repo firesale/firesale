@@ -14,10 +14,11 @@
 			<fieldset id="filters" style="display: none">
 			    <legend><?php echo lang('global:filters'); ?></legend>
 			    <ul>  
-			        <li class="<?php echo alternator('even', ''); ?>">
-						<div class="input">
-							<?php echo form_dropdown('filter', $categories, ( isset($category) ? $category : 0 ), 'id="filter-category" class="filter"'); ?>
-						</div>
+			        <li>
+						<?php echo form_dropdown('category', $categories, ( isset($category) ? $category : 0 )); ?>
+					</li>
+			        <li>
+						<?php echo $status; ?>
 					</li>
 			    </ul>
 			</fieldset>
@@ -55,15 +56,12 @@
 						<td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? lang('firesale:label_stock_unlimited') . ' (&infin;)' : $product['stock'] ); ?></td>
 						<td><?php echo $this->settings->get('currency'); ?><span class="item-price"><?php echo $product['price']; ?></span></td>
 						<td class="actions">
-							<div class="split-button">
-								<span class="action">Action</span>
-								<ul>
-									<li><strong>Action</strong></li>
-									<li><a href="#" class="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a></li>
-									<li><a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="edit"><?php echo lang('global:edit'); ?></a></li>
-									<li><a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="confirm"><?php echo lang('global:delete'); ?></a></li>
-								</ul>
-							</div>
+							<ul class="split-button">
+								<li><strong>Action</strong></li>
+								<li><a href="#" class="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a></li>
+								<li><a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="edit"><?php echo lang('global:edit'); ?></a></li>
+								<li><a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="confirm"><?php echo lang('global:delete'); ?></a></li>
+							</ul>
 						</td>
 					</tr>
 <?php endforeach; ?>

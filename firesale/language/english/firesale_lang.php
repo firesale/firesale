@@ -104,6 +104,8 @@
 	$lang['firesale:label_parent']		= 'Parent Category';
 	$lang['firesale:label_filtercat']	= 'Filter by Category';
 	$lang['firesale:label_filtersel']	= 'Select a Category';
+	$lang['firesale:label_filterprod']  = 'Select a Product';
+	$lang['firesale:label_filterstat']  = 'Select a Stock Status';
 	$lang['firesale:label_rrp']			= 'Recommended Retail Price';
 	$lang['firesale:label_rrp_tax']		= 'Recommended Retail Price (before tax)';
 	$lang['firesale:label_rrp_short']	= 'RRP';

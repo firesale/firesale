@@ -13,8 +13,10 @@
 			    <legend><?php echo lang('global:filters'); ?></legend>
 			    <ul>  
 			        <li>
-			            <label><?php echo lang('firesale:filters:user'); ?></label>
 			            <?php echo $filter_users; ?>
+			        </li>
+			        <li>
+			            <?php echo $filter_prods; ?>
 			        </li>
 			    </ul>
 			</fieldset>
@@ -33,6 +35,11 @@
 						<th></th>
 					</tr>
 				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="9"></td>
+					</tr>
+				</tfoot>
 				<tbody>
 <?php foreach( $orders AS $order ): ?>
 					<tr class="status-<?php echo $order['order_status']['key']; ?>">

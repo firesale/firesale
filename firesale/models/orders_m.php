@@ -86,12 +86,19 @@ class Orders_m extends MY_Model
 				);
 
 		// Build user list
-		$users = $this->db->select('user_id, display_name')->group_by('user_id')->get('profiles')->result_array();
+		$users = $this->db->select('u.id, u.email, p.display_name')
+						  ->from('users AS u')
+						  ->join('profiles AS p', 'p.user_id = u.id', 'inner')
+						  ->get()
+						  ->result_array();
+
+		// Start building list
 		$list  = array('0' => lang('firesale:label_user_order'));
 
+		// Loop users
 		foreach( $users AS $user )
 		{
-			$list[$user['user_id']] = $user['display_name'] . ' ( #' . $user['user_id'] . ' )';
+			$list[$user['id']] = $user['display_name'] . ' ( ' . $user['email'] . ' )';
 		}
 
 		// Assign it to the array
@@ -99,6 +106,36 @@ class Orders_m extends MY_Model
 
 		// Return
 		return $array;
+	}
+
+	/**
+	 * Builds the product field used in the order administration section.
+	 *
+	 * @param integer $id (Optional) Product ID to pre-select
+	 * @return array The product dropdowm
+	 * @access public
+	 */
+	public function product_dropdown($id = NULL)
+	{
+
+		// Variables
+		$list = array('0' => lang('firesale:label_product_order'));
+		$drop = '';
+
+		// Get products
+		$products = $this->db->select('id, title')->order_by('id')->get('firesale_products')->result_array();
+
+		// Loop products
+		foreach( $products AS $product )
+		{
+			$list[$product['id']] = $product['title'];
+		}
+
+		// Build the dropbown
+		$drop = form_dropdown('products', $list, $id);
+
+		// Return it
+		return $drop;
 	}
 
 	/**

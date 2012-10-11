@@ -2,6 +2,7 @@
 .clear { clear: both; height: 0; line-height: 0; }
 tbody tr:last-child { border: none; }
 .actions { width: 115px; }
+#filters > ul > li { width: 33%; display: inline-block; }
 
 /* Form */
 ul.width-half { width: 50% !important; display: block; float: left; }
