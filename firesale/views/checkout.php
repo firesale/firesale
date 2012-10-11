@@ -28,7 +28,7 @@
 <?php endforeach; ?>
             <br class="clear" />
 			<input name="ship_to" id="ship_to_new" type="radio" value="new" />
-			<label for="ship_to_new">New Address</label>
+			<label for="ship_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
 			<br class="clear" />
 <?php endif; ?>
 <?php foreach( $fields AS $subtitle => $section ): ?>
@@ -43,7 +43,7 @@
             </ul>
 <?php endforeach; ?>
             <br class="clear" />
-            <a href="#billing_details" class="next btn"><span>Next</span></a>
+            <a href="#billing_details" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
             <br class="clear" />
           </fieldset>
 
@@ -70,7 +70,7 @@
 <?php endforeach; ?>
             <br class="clear" />
 			<input name="bill_to" id="bill_to_new" type="radio" value="new" />
-			<label for="bill_to_new">New Address</label>
+			<label for="bill_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
 			<br class="clear" />
 <?php endif; ?>
 <?php foreach( $fields AS $subtitle => $section ): ?>
@@ -85,15 +85,15 @@
             </ul>
 <?php endforeach; ?>
             <br class="clear" />
-            <a href="#shipping_details" class="prev btn"><span>Previous</span></a>
-            <a href="#shipping" class="next btn"><span>Next</span></a>
+            <a href="#shipping_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+            <a href="#shipping" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
             <br class="clear" />
           </fieldset>
 
 <?php if( isset($shipping) && is_array($shipping) ): ?>
           <h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:checkout:title:ship_method'); ?></a></h3>
           <fieldset>
-            <p>Please select your preferred shipping method below before continuing</p>
+            <p><?php echo lang('firesale:checkout:preferred_shipping_method'); ?></p>
             <br />
             <ul class="shipping">
 <?php foreach( $shipping AS $key => $option ): ?>
@@ -104,8 +104,8 @@
 <?php endforeach; ?>
             </ul>
             <br class="clear" />
-            <a href="#billing_details" class="prev btn"><span>Previous</span></a>
-            <a href="#payment" class="next btn"><span>Next</span></a>
+            <a href="#billing_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+            <a href="#payment" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
             <br class="clear" />
           </fieldset>
 
@@ -115,7 +115,7 @@
 <?php endif; ?>
           <h3 id="payment"><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>
           <fieldset>
-            <p>Please select your preferred payment method below before continuing</p>
+            <p><?php echo lang('firesale:checkout:preferred_payment_method'); ?></p>
             <br />
             <ul>
 <?php foreach( $this->gateways->get_enabled() as $gateway_id => $gateway ): ?>
@@ -126,8 +126,8 @@
 <?php endforeach; ?>
             </ul>
             <br class="clear" />
-            <a href="#shipping" class="prev btn"><span>Previous</span></a>
-            <button type="submit" name="btnAction" value="pay" class="next btn"><span>Submit &amp; Pay</span></button>
+            <a href="#shipping" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+            <button type="submit" name="btnAction" value="pay" class="next btn"><span><?php echo lang('firesale:checkout:submit_pay'); ?></span></button>
             <br class="clear" />
           </fieldset>
 

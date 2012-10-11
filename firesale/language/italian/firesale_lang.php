@@ -250,6 +250,11 @@
 	$lang['firesale:payment:title_success'] 		= 'Pagamento completato';
 	$lang['firesale:checkout:title:ship_method']	= 'Modalità di spedizione';
 	$lang['firesale:checkout:title:payment_method']	= 'Metodo di pagamento';
+	$lang['firesale:checkout:next']					= 'Avanti';
+	$lang['firesale:checkout:previous']				= 'Indietro';
+	$lang['firesale:checkout:preferred_shipping_method']	= 'Prima di procedere seleziona il metodo di spedizione che preferisci.';
+	$lang['firesale:checkout:preferred_payment_method']		= 'Prima di procedere seleziona il metodo di pagamento che preferisci.';
+	$lang['firesale:checkout:submit_pay']					= 'Conferma e paga';	
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Miei indirizzi';
