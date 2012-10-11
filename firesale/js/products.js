@@ -55,9 +55,9 @@ $(function(){
 		});
 
 	});
-	
-	$('#product_table').tablesorter({headers:{0:{sorter:false},2:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
 
+    $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
+	$('#product_table').tablesorter({headers:{0:{sorter:false},2:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
 
 	/*************
 	** CREATION **

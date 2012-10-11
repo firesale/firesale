@@ -1,5 +1,6 @@
 	<section class="title">
 		<h4><?php echo lang('firesale:prod_title'); ?></h4>
+		<a class="tooltip-s show-filter" original-title="<?php echo lang('firesale:label_showfilter'); ?>"></a>
 	</section>
 	
 	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
@@ -10,7 +11,7 @@
 		</section>
 <?php else: ?>
 
-			<fieldset id="filters">
+			<fieldset id="filters" style="display: none">
 			    <legend><?php echo lang('global:filters'); ?></legend>
 			    <ul>  
 			        <li class="<?php echo alternator('even', ''); ?>">
