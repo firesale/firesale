@@ -10,7 +10,7 @@ a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-re
 #product_table #title{width:95%!important;margin:0;}
 #product_table .chzn-container{width:170px!important;margin:0;}
 #product_table .chzn-container .chzn-drop{width:168px!important;}
-#product_table .actions{width:120px!important;}
+#product_table .actions{width:125px!important;}
 #product_table .item-img{width:40px!important;}
 #product_table img{width:32px;height:32px;float:left;display:block;background:url(img/none.jpg) no-repeat;background-size:32px 32px;overflow:hidden;text-indent:-1000px;}
 #product_table .chzn-container .chzn-search,#product_table .chzn-container .chzn-search input{width:133px!important;}

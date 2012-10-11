@@ -75,12 +75,13 @@ class Admin_products extends Admin_Controller
 		}
 			
 		// Assign variables
-		$this->data->products 	= $products;
-		$this->data->count      = $this->products_m->get_products(( isset($filter) ? $filter : array() ), 0, 0);
-		$this->data->count		= ( $this->data->count ? count($this->data->count) : 0 );
-		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
-		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
-		$this->data->status     = $this->products_m->status_dropdown(( $type == 'stock_status' ? $value : 0 ));
+		$this->data->products 	  = $products;
+		$this->data->count        = $this->products_m->get_products(( isset($filter) ? $filter : array() ), 0, 0);
+		$this->data->count		  = ( $this->data->count ? count($this->data->count) : 0 );
+		$this->data->pagination   = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
+		$this->data->categories   = array(-1 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
+		$this->data->status       = $this->products_m->status_dropdown(( $type == 'status' ? $value : -1 ));
+		$this->data->stock_status = $this->products_m->stock_status_dropdown(( $type == 'stock_status' ? $value : -1 ));
 
 		// Ajax request?
 		if( $this->input->is_ajax_request() )

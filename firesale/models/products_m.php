@@ -70,7 +70,7 @@ class Products_m extends MY_Model {
 	{
 	
 		$_products = $this->db->select('id, slug, title')->order_by('title')->get($this->_table)->result_array();
-		$products  = array('0' => lang('firesale:label_filterprod'));
+		$products  = array('-1' => lang('firesale:label_filterprod'));
 		
 		foreach( $_products AS $product )
 		{
@@ -81,7 +81,7 @@ class Products_m extends MY_Model {
 	}
 
 	/**
-	 * Builds a dropdown of the available stock status' for products and reutnrs
+	 * Builds a dropdown of the available product status' for products and returns
 	 * the dropdown string with the optionally passed ID preselected.
 	 *
 	 * @param integer $id (Optional) Pre-selected key in the dropdown
@@ -92,7 +92,31 @@ class Products_m extends MY_Model {
 	{
 
 		// Variables
-		$list = array('0' => lang('firesale:label_filterstat'));
+		$list       = array();
+		$list['-1'] = lang('firesale:label_filterstatus');
+		$list['0']  = lang('firesale:label_draft');
+		$list['1']  = lang('firesale:label_live');
+
+		// Build the dropbown
+		$drop = form_dropdown('status', $list, $id);
+
+		// Return it
+		return $drop;
+	}
+
+	/**
+	 * Builds a dropdown of the available stock status' for products and returns
+	 * the dropdown string with the optionally passed ID preselected.
+	 *
+	 * @param integer $id (Optional) Pre-selected key in the dropdown
+	 * @return string The HTML dropdown string
+	 * @access public
+	 */
+	public function stock_status_dropdown($id = NULL)
+	{
+
+		// Variables
+		$list = array('-1' => lang('firesale:label_filtersstatus'));
 		$drop = '';
 
 		// Loop products
@@ -205,6 +229,11 @@ class Products_m extends MY_Model {
 			{
 				$query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
 					  ->where('pc.firesale_categories_id', $value);
+			}
+			else if( $key == 'search' )
+			{
+				$query->like('title', $value)
+					  ->or_like('code', $value);
 			}
 			else
 			{

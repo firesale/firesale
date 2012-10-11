@@ -3,11 +3,11 @@ $(function(){
 	/**************
 	** DASHBOARD **
 	**************/
-	$('#filters select').change(function() {
+	$('#filters select, #filters input').change(function() {
 
 		var data = {filter: $(this).attr('name'), value: $(this).val()};
-		$.post('/admin/firesale/products' + ( data.value > 0 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
-	
+		$.post('/admin/firesale/products' + ( parseInt(data.value) != -1 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
+			
 			// Variables
 			var products = $.parseJSON(p), tar = $('#product_table tbody'), row = '';
 
@@ -43,7 +43,7 @@ $(function(){
 						  '	<td><input type="checkbox" name="action_to[]" value="'+p.id+'"  /></td>'+
 						  '	<td class="item-id">'+p.code+'</td>'+
 						  ' <td class="item-img"><img src="'+(p.image!=false?'/files/thumb/'+p.image+'/32/32':'')+'" alt="Product Image" /></td>'+
-						  ' <td class="item-title"><a href="product/'+p.slug+'">'+p.title+'</a></td>'+
+						  ' <td class="item-title"><a href="'+SITE_URL+'product/'+p.slug+'">'+p.title+'</a></td>'+
 						  ' <td class="item-category">'+
 						  '  '+str+
 						  ' </td>'+
@@ -51,9 +51,10 @@ $(function(){
 						  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
 						  ' <td class="actions">'+
 						  '  <ul class="split-button">'+
+						  '   <li><strong>Action</strong></li>'+
 						  '   <li><a href="#" class="quickedit">Quick Edit</a>'+
-						  '   <li><a href="/admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
-						  '   <li><a href="/admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
+						  '   <li><a href="'+SITE_URL+'admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
+						  '   <li><a href="'+SITE_URL+'admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
 						  '  </ul>'+
 						  ' </td>'+
 						  '</tr>';

@@ -15,10 +15,16 @@
 			    <legend><?php echo lang('global:filters'); ?></legend>
 			    <ul>  
 			        <li>
-						<?php echo form_dropdown('category', $categories, ( isset($category) ? $category : 0 )); ?>
+						<center><?php echo form_dropdown('category', $categories, ( isset($category) ? $category : 0 )); ?></center>
 					</li>
 			        <li>
-						<?php echo $status; ?>
+						<center><?php echo $status; ?></center>
+					</li>
+			        <li>
+						<center><?php echo $stock_status; ?></center>
+					</li>
+					<li>
+						<center><input type="text" name="search" placeholder="Keyword Search..." /></center>
 					</li>
 			    </ul>
 			</fieldset>
