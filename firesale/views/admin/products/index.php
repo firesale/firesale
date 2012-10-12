@@ -27,7 +27,13 @@
 						<center><input type="text" name="search" placeholder="Keyword Search..." /></center>
 					</li>
 					<li class="wide">
-						<center><div id="price-slider"></div></center>
+						<center>
+							<div class="ui-slider-cont">
+								<label class="left"><?php echo $this->settings->get('currency'); ?><span><?php echo $min_max['min']; ?></span></label>
+								<label class="right"><?php echo $this->settings->get('currency'); ?><span><?php echo $min_max['max']; ?></span></label>
+								<div id="price-slider"></div>
+							</div>
+						</center>
 					</li>
 			    </ul>
 			</fieldset>

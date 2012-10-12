@@ -82,6 +82,7 @@ class Admin_products extends Admin_Controller
 		$this->data->categories   = array(-1 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
 		$this->data->status       = $this->products_m->status_dropdown(( $type == 'status' ? $value : -1 ));
 		$this->data->stock_status = $this->products_m->stock_status_dropdown(( $type == 'stock_status' ? $value : -1 ));
+		$this->data->min_max      = $this->products_m->price_min_max();
 
 		// Ajax request?
 		if( $this->input->is_ajax_request() )
@@ -449,8 +450,11 @@ class Admin_products extends Admin_Controller
 	public function _remap($method, $args)
 	{
 
+		// Capture
+		$remap = array('search', 'price');
+
 		// Check for search
-		if( $method == 'search' )
+		if( in_array($method, $remap) )
 		{
 			call_user_func_array(array($this, 'index'), array_merge(array($method), $args));
 		}

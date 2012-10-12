@@ -6,15 +6,25 @@ $(function(){
 
 	$('#price-slider').slider({
 		range: true,
-		min: 0,
-		max: 25000,
+		min: parseFloat($('.ui-slider-cont .left span').text()),
+		max: parseFloat($('.ui-slider-cont .right span').text()),
 		step: 0.5,
-		values: [10, 100],
+		values: [parseFloat($('.ui-slider-cont .left span').text()), parseFloat($('.ui-slider-cont .right span').text())],
 		slide: function(event, ui) {
+			$('.ui-slider-cont .left span').html(ui.values[0].toFixed(2));
+			$('.ui-slider-cont .right span').html(ui.values[1].toFixed(2));
+		},
+		stop: function(event, ui) {
 			var data = {filter:'price',value:ui.values[0]+'-'+ui.values[1]};
-			// update_products(data);
+			update_products(data);
 		}
 	});
+
+	var prices = $('#price-slider').slider('values');
+	if( typeof prices == 'array' ) {
+		$('.ui-slider-cont .left span').html(prices[0].toFixed(2));
+		$('.ui-slider-cont .right span').html(prices[1].toFixed(2));
+	}
 
 	$('#filters select, #filters input').change(function() {
 		var data = {filter: $(this).attr('name'), value: $(this).val()};
@@ -104,7 +114,7 @@ $(function(){
 			stock.html('<input type="text" id="stock" name="stock" value="' + ( stock.text() == 'Unlimited (∞)' ? '0' : stock.text() ) + '" />');
 			price.parent().html('<input type="text" id="price" name="price" value="' + price.text() + '" pattern="^\d+(?:,\d{3})*\.\d{2}$" />');
 			
-			var select = $('#filter-category').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'parent[]'});
+			var select = $('select[name=category]').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'parent[]'});
 			select.find(':selected').removeAttr('selected');
 			var c = [];	cat.find('span').each(function() { c.push($(this).attr('data-id')); });
 			cat.html('');
@@ -147,61 +157,63 @@ $(function(){
 			var products = $.parseJSON(p), tar = $('#product_table tbody'), row = '';
 
 			// Clear table
-			tar.html('<tr class="loading"><td colspan="8">&nbsp;</td></tr>');
+			tar.html('');
 
 			// Check products
-			if( products.length > 0 )
+			if( products != null && products.length > 0 )
 			{
+
 				$('.no_data').remove();
-				tar.parent().fadeIn(250);
+				tar.parent().show();
+
+				// Loop new products
+				for( var k in products )
+				{
+
+					// Variables
+					var p   = products[k];
+					var str = '';
+
+					// Categories
+					for( var c in p.category ) { var cat = p.category[c]; str += ( str.length == 0 ? '' : ', ' ) + '<span data-id="'+cat.id+'">'+cat.title+'</span>'; }
+
+					// Build row
+					row    += '<tr class="cat_'+p.category.id+'">'+
+							  '	<td><input type="checkbox" name="action_to[]" value="'+p.id+'"  /></td>'+
+							  '	<td class="item-id">'+p.code+'</td>'+
+							  ' <td class="item-img"><img src="'+(p.image!=false?'/files/thumb/'+p.image+'/32/32':'')+'" alt="Product Image" /></td>'+
+							  ' <td class="item-title"><a href="'+SITE_URL+'product/'+p.slug+'">'+p.title+'</a></td>'+
+							  ' <td class="item-category">'+
+							  '  '+str+
+							  ' </td>'+
+							  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
+							  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
+							  ' <td class="actions">'+
+							  '  <ul class="split-button">'+
+							  '   <li><strong>Action</strong></li>'+
+							  '   <li><a href="#" class="quickedit">Quick Edit</a>'+
+							  '   <li><a href="'+SITE_URL+'admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
+							  '   <li><a href="'+SITE_URL+'admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
+							  '  </ul>'+
+							  ' </td>'+
+							  '</tr>';
+
+				}
+
+				// Remove loading
+				tar.html(row);
+
+				// Rebind values
+				$('#product_table').trigger("update"); 
+				build_quickedit();
+
 			}
 			else
 			{
-				tar.parent().fadeOut(250);
+				tar.parent().hide();
 				$('.no_data').remove();
 				$('<div class="no_data">No Products Found</div>').insertAfter(tar.parent());
 			}
-
-			// Loop new products
-			for( var k in products )
-			{
-
-				// Variables
-				var p   = products[k];
-				var str = '';
-
-				// Categories
-				for( var c in p.category ) { var cat = p.category[c]; str += ( str.length == 0 ? '' : ', ' ) + '<span data-id="'+cat.id+'">'+cat.title+'</span>'; }
-
-				// Build row
-				row    += '<tr class="cat_'+p.category.id+'">'+
-						  '	<td><input type="checkbox" name="action_to[]" value="'+p.id+'"  /></td>'+
-						  '	<td class="item-id">'+p.code+'</td>'+
-						  ' <td class="item-img"><img src="'+(p.image!=false?'/files/thumb/'+p.image+'/32/32':'')+'" alt="Product Image" /></td>'+
-						  ' <td class="item-title"><a href="'+SITE_URL+'product/'+p.slug+'">'+p.title+'</a></td>'+
-						  ' <td class="item-category">'+
-						  '  '+str+
-						  ' </td>'+
-						  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
-						  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
-						  ' <td class="actions">'+
-						  '  <ul class="split-button">'+
-						  '   <li><strong>Action</strong></li>'+
-						  '   <li><a href="#" class="quickedit">Quick Edit</a>'+
-						  '   <li><a href="'+SITE_URL+'admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
-						  '   <li><a href="'+SITE_URL+'admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
-						  '  </ul>'+
-						  ' </td>'+
-						  '</tr>';
-
-			}
-
-			// Remove loading
-			tar.html(row);
-
-			// Rebind values
-			$('#product_table').trigger("update"); 
-			build_quickedit();
 
 		});
 

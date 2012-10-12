@@ -235,6 +235,12 @@ class Products_m extends MY_Model {
 				$query->like('title', $value)
 					  ->or_like('code', $value);
 			}
+			else if( $key == 'price' )
+			{
+				list($from, $to) = explode('-', $value);
+				$query->where('p.price >=', $from)
+				      ->where('p.price <=', $to);
+			}
 			else
 			{
 				$query->where($key, $value);
@@ -252,6 +258,41 @@ class Products_m extends MY_Model {
 
 		// Nothing?
 		return FALSE;
+	}
+
+	/**
+	 * Generates the minimum and maximum available pricing for products.
+	 *
+	 * @return array The min and max price
+	 * @access public
+	 */
+	public function price_min_max()
+	{
+
+		// Variables
+		$return = array('min' => '0.00', 'max' => '0.00');
+
+		// Run min query
+		$query = $this->db->select('price')->order_by('price', 'asc')->limit('1')->get('firesale_products');
+
+		// Check for min
+		if( $query->num_rows() )
+		{
+			$results = current($query->result_array());
+			$return['min'] = $results['price'];
+		}
+
+		// Run max query
+		$query = $this->db->select('price')->order_by('price', 'desc')->limit('1')->get('firesale_products');
+
+		// Check for max
+		if( $query->num_rows() )
+		{
+			$results = current($query->result_array());
+			$return['max'] = $results['price'];
+		}
+
+		return $return;
 	}
 	
 	/**
