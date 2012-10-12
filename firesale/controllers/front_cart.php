@@ -1,13 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * Cart controller
- *
- * @author		Chris Harvey
- * @author		Jamie Holdroyd
- * @package		FireSale\Core\Controllers
- *
- */
 class Front_cart extends Public_Controller
 {
 
@@ -61,7 +53,7 @@ class Front_cart extends Public_Controller
 		if ($this->fs_cart->total() > 0)
 		{
 			$this->fs_cart->total		= $this->fs_cart->total();
-			$this->fs_cart->tax			= ( $this->fs_cart->total / 100 ) * $this->fs_cart->tax_percent;
+			$this->fs_cart->tax		= $this->fs_cart->total / (( $this->fs_cart->tax_percent / 100 ) + 1 ) * ( $this->fs_cart->tax_percent / 100 );
 			$this->fs_cart->subtotal	= ( $this->fs_cart->total - $this->fs_cart->tax );
 		}
 		else
@@ -103,8 +95,8 @@ class Front_cart extends Public_Controller
 		}
 
 		// Add page data
-		$this->template->set_breadcrumb('Home', '/home')
-					   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
+		$this->template->set_breadcrumb('Home', 'home')
+					   ->set_breadcrumb(lang('firesale:cart:title'), 'cart')
 					   ->title(lang('firesale:cart:title'));
 
 		// Fire events
@@ -464,9 +456,9 @@ class Front_cart extends Public_Controller
 			}
 
 			// Build page
-			$this->template->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
+			$this->template->set_breadcrumb('Home', 'home')
+						   ->set_breadcrumb(lang('firesale:cart:title'), 'cart')
+						   ->set_breadcrumb(lang('firesale:checkout:title'), 'cart/checkout')
 						   ->title(lang('firesale:checkout:title'))
 						   ->build('checkout', $data);
 
@@ -552,11 +544,11 @@ class Front_cart extends Public_Controller
 
 				// Build page
 				$this->template->title(lang('firesale:payment:title'))
-							   ->set_breadcrumb('Home', '/home')
-							   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-							   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
-							   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-							   ->set('payment', $this->load->view('gateways/' . $gateway, $var, TRUE))
+							   ->set_breadcrumb('Home', 'home')
+							   ->set_breadcrumb(lang('firesale:cart:title'), 'cart')
+							   ->set_breadcrumb(lang('firesale:checkout:title'), 'cart/checkout')
+							   ->set_breadcrumb(lang('firesale:payment:title'), 'cart/payment')
+							   ->set('payment', $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE))
 							   ->build('payment', $order);
 
 			}
@@ -564,7 +556,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect('cart/checkout');
+			redirect('/cart/checkout');
 		}
 		
 	}
@@ -599,7 +591,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect('cart');
+			redirect($this->routes_installed ? 'cart' : 'firesale/cart');
 		}
 	}
 
@@ -658,18 +650,12 @@ class Front_cart extends Public_Controller
 
 			// Build page
 			$this->template->title(lang('firesale:payment:title_success'))
-						   ->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
-						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
-						   ->order = $order;
-
-			// Fire events
-			Events::trigger('page_build', $this->template);
-
-			// Build the page
-			$this->template->build('payment_complete', $order);
+						   ->set_breadcrumb('Home', 'home')
+						   ->set_breadcrumb(lang('firesale:cart:title'), 'cart')
+						   ->set_breadcrumb(lang('firesale:checkout:title'), 'cart/checkout')
+						   ->set_breadcrumb(lang('firesale:payment:title'), 'cart/payment')
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), 'cart/payment')
+						   ->build('payment_complete', $order);
 		}
 
 	}
@@ -685,10 +671,10 @@ class Front_cart extends Public_Controller
 			$this->fs_cart->destroy();
 
 			$this->template->title(lang('firesale:payment:title_success'))
-						   ->set_breadcrumb(lang('firesale:cart:title'), '/cart')
-						   ->set_breadcrumb(lang('firesale:checkout:title'), '/cart/checkout')
-						   ->set_breadcrumb(lang('firesale:payment:title'), '/cart/payment')
-						   ->set_breadcrumb(lang('firesale:payment:title_success'), '/cart/payment')
+						   ->set_breadcrumb(lang('firesale:cart:title'), 'cart')
+						   ->set_breadcrumb(lang('firesale:checkout:title'), 'cart/checkout')
+						   ->set_breadcrumb(lang('firesale:payment:title'), 'cart/payment')
+						   ->set_breadcrumb(lang('firesale:payment:title_success'), 'cart/payment')
 						   ->build('payment_complete', $order);
 		}
 		else

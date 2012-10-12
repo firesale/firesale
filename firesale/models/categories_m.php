@@ -1,13 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/**
- * Categories model
- *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Models
- *
- */
 class Categories_m extends MY_Model {
 
 	/**
@@ -319,14 +311,21 @@ class Categories_m extends MY_Model {
 		{
 			foreach( $cat['children'] as $i => $child )
 			{
-				$this->db->where('id', str_replace('cat_', '', $child['id']));
-				$this->db->update('firesale_categories', array('parent' => str_replace('cat_', '', $cat['id']), 'ordering_count' => $i));
+
+				// Variables
+				$id     = str_replace('cat_', '', $child['id']);
+				$parent = str_replace('cat_', '', $cat['id']);
+				$update = array('parent' => ( $parent != $id ? $parent : 0 ), 'ordering_count' => $i);
+
+				// Update
+				$this->db->where('id', $id)->update('firesale_categories', $update);
 				
 				//repeat as long as there are children
-				if (isset($child['children']))
+				if( isset($child['children']) )
 				{
 					$this->set_children($child);
 				}
+
 			}
 		}
 	}

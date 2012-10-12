@@ -1,13 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-/**
- * Orders controller
- *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Controllers
- *
- */
 class Front_orders extends Public_Controller
 {
 
@@ -65,8 +57,8 @@ class Front_orders extends Public_Controller
 		
 			// Build page
 			$this->template->title(lang('firesale:orders:my_orders'))
-						   ->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:orders:my_orders'), '/users/orders')
+						   ->set_breadcrumb('Home', 'home')
+						   ->set_breadcrumb(lang('firesale:orders:my_orders'), 'users/orders')
 						   ->set($this->data);
 
 			// Fire events
@@ -80,7 +72,7 @@ class Front_orders extends Public_Controller
 		{
 			// Must be logged in
 			$this->session->set_flashdata('error', lang('firesale:orders:logged_in'));
-			redirect('/users/login');
+			redirect('users/login');
 		}
 	
 	}
@@ -109,9 +101,9 @@ class Front_orders extends Public_Controller
 
 			// Build page
 			$this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
-						   ->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:orders:my_orders'), '/users/orders')
-						   ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), '/users/orders/' . $id)
+						   ->set_breadcrumb('Home', 'home')
+						   ->set_breadcrumb(lang('firesale:orders:my_orders'), 'users/orders')
+						   ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), 'users/orders/' . $id)
 						   ->set($order);
 
 			// Fire events
@@ -125,7 +117,7 @@ class Front_orders extends Public_Controller
 		{
 			// Must be logged in
 			$this->set_flashdata('error', lang('firesale:orders:logged_in'));
-			redirect('/users/login');
+			redirect('users/login');
 		}
 	
 	}

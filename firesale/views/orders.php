@@ -14,7 +14,7 @@
         </ul>
         <footer>
           <span>{{ settings:currency }}{{ price_total }}</span>
-          <a href="/users/orders/{{ id }}"><?php echo lang('firesale:orders:label_view_order'); ?></a>
+          <a href="{{ url:base }}users/orders/{{ id }}"><?php echo lang('firesale:orders:label_view_order'); ?></a>
         </footer>
       </section>
 

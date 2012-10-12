@@ -26,6 +26,6 @@
 	</div>
 
 	<button type="submit" name="btnAction" value="save" class="btn blue"><span><?php echo lang('firesale:addresses:save'); ?></span></button>	
-	<a href="/users/addresses" class="btn"><span><?php echo lang('firesale:addresses:cancel'); ?></span></a>
+	<a href="{{ url:base }}users/addresses" class="btn"><span><?php echo lang('firesale:addresses:cancel'); ?></span></a>
 
 <?php echo form_close();?>
