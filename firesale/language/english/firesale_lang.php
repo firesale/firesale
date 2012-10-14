@@ -280,6 +280,10 @@
 	$lang['firesale:addresses:save']	     = 'Save';
 	$lang['firesale:addresses:cancel']       = 'Cancel';
 	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book';
+	$lang['firesale:addresses:add_success']  = 'Address created successfully';
+	$lang['firesale:addresses:add_error']    = 'Error creating address';
+	$lang['firesale:addresses:edit_success'] = 'Address edited successfully';
+	$lang['firesale:addresses:edit_error']   = 'Error editing address';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Availability";

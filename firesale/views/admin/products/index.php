@@ -64,7 +64,7 @@
 						<td><input type="checkbox" name="action_to[]" value="<?php echo $product['id']; ?>"  /></td>
 						<td class="item-id"><?php echo $product['code']; ?></td>
 						<td class="item-img"><img src="<?php echo ( $product['image'] != FALSE ? site_url('files/thumb/' . $product['image'] . '/32/32') : '' ); ?>" alt="Product Image" /></td>
-            			<td class="item-title"><a href="<?php echo site_url(); ?>product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
+            			<td class="item-title"><a href="<?php echo $this->routes_m->build_url('product', $product['id']); ?>"><?php echo $product['title']; ?></a></td>
             			<td class="item-category">
 							<?php $string = ''; foreach( $product['category'] AS $cat ) { $string .= ( strlen($string) == 0 ? '' : ', ' ) . '<span data-id="' . $cat['id'] . '">' . $cat['title'] . '</span>'; } echo $string; ?>
 						</td>

@@ -24,6 +24,7 @@ class Admin_products extends Admin_Controller
 
 		// Load libraries, drivers & models
 		$this->load->driver('Streams');
+		$this->load->model('routes_m');
 		$this->load->model('products_m');
 		$this->load->model('categories_m');
 		$this->load->model('streams_core/row_m');

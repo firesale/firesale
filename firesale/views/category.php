@@ -24,8 +24,8 @@
         <section id="listing-header">
 		
 		      <div class="left">
-            <a href="{{ url:base }}category/style/grid" class="grid{{ if layout == 'grid' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:grid'); ?></a>
-            <a href="{{ url:base }}category/style/list" class="list{{ if layout == 'list' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:list'); ?></a>
+            <a href="{{ firesale:url route="category-custom" }}style/grid" class="grid{{ if layout == 'grid' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:grid'); ?></a>
+            <a href="{{ firesale:url route="category-custom" }}style/list" class="list{{ if layout == 'list' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:list'); ?></a>
           </div>
 		  
           <div class="right">
@@ -33,7 +33,7 @@
               <span>{{ order.title }}</span>
               <ul>
 {{ ordering }}
-                <li><a href="{{ url:base }}category/order/{{ key }}">{{ title }}</a></li>
+                <li><a href="{{ firesale:url route="category-custom" }}order/{{ key }}">{{ title }}</a></li>
 {{ /ordering }}
               </ul>
             </div>
@@ -61,7 +61,7 @@
             </header>
             <p class="description">{{ helper:substr string=description start="0" end="250" }}...</p>
             <footer>
-              <a href="{{ url:base }}cart/insert/{{ id }}/1" class="basket"><span class="icon"></span><?php echo lang('firesale:categories:add_to_basket'); ?></a>
+              <a href="{{ firesale:url route="cart" }}/insert/{{ id }}/1" class="basket"><span class="icon"></span><?php echo lang('firesale:categories:add_to_basket'); ?></a>
             </footer>
             <br class="clear" />
           </article>

@@ -125,9 +125,10 @@ class Front_category extends Public_Controller {
 
 			// Breadcrumbs
 			$cat_tree = $this->products_m->get_cat_path($category['id'], true);
+			$this->template->set_breadcrumb(lang('firesale:cats_all_products'), $this->routes_m->build_url('category', NULL));
 			foreach( $cat_tree as $key => $cat )
 			{
-				$this->template->set_breadcrumb($cat['title'], $this->routes_m->build_url('category', $key));
+				$this->template->set_breadcrumb($cat['title'], $this->routes_m->build_url('category', $cat['id']));
 			}
 
 			// Assign parent data

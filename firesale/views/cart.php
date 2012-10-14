@@ -1,5 +1,5 @@
 
-      <form method="post" action="{{ url:base }}cart/update" class="firesale">
+      <form method="post" action="{{ firesale:url route="cart" }}/update" class="firesale">
 
         <table class="cart">
           <thead>

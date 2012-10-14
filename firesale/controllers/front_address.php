@@ -15,8 +15,12 @@ class Front_address extends Public_Controller
 
 	public function __construct()
 	{
+
 		parent::__construct();
-		
+
+		// Add data array
+		$this->data = new stdClass();
+
 		// Load models, lang, libraries, etc.
 		$this->load->model('orders_m');
 		$this->load->model('address_m');
@@ -77,8 +81,8 @@ class Front_address extends Public_Controller
         $skip  = array('btnAction');
         $extra = array(
             'return'          => $this->routes_m->build_url('addresses').'/edit/-id-',
-            'success_message' => lang('faq:submit_success'),
-            'failure_message' => lang('faq:submit_failure')
+            'success_message' => lang('firesale:addresses:add_success'),
+            'failure_message' => lang('firesale:addresses:add_error')
         );
 
 		// Get the stream
@@ -107,8 +111,8 @@ class Front_address extends Public_Controller
         $skip  = array('btnAction');
         $extra = array(
             'return'          => $this->routes_m->build_url('addresses').'/edit/-id-',
-            'success_message' => lang('faq:submit_success'),
-            'failure_message' => lang('faq:submit_failure')
+            'success_message' => lang('firesale:addresses:edit_success'),
+            'failure_message' => lang('firesale:addresses:edit_error')
         );
 
 		// Get the stream

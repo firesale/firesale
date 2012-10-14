@@ -60,7 +60,7 @@ class Front_product extends Public_Controller {
 			foreach( $cat_tree as $key => $cat )
 			{
 				if( $key == 0 ) { $this->data->parent = $cat['id']; }
-				$this->template->set_breadcrumb($cat['title'], $this->routes_m->build_url('category', $key));
+				$this->template->set_breadcrumb($cat['title'], $this->routes_m->build_url('category', $cat['id']));
 			}
 		
 			// Build Page

@@ -13,9 +13,14 @@ class Front_orders extends Public_Controller
 
 	public function __construct()
 	{
+
 		parent::__construct();
 		
+		// Add data array
+		$this->data = new stdClass();
+
 		// Load models, lang, libraries, etc.
+		$this->load->model('routes_m');
 		$this->load->model('orders_m');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
@@ -65,8 +70,7 @@ class Front_orders extends Public_Controller
 		
 			// Build page
 			$this->template->title(lang('firesale:orders:my_orders'))
-						   ->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:orders:my_orders'), '/users/orders')
+						   ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->routes_m->build_url('orders'))
 						   ->set($this->data);
 
 			// Fire events
