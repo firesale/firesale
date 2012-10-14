@@ -574,6 +574,20 @@ class Module_Firesale extends Module {
 			'module' 		=> 'firesale'
 		);
 
+		// Image background colour
+		$settings[] = array(
+			'slug' 		  	=> 'image_background',
+			'title' 	  	=> 'Image Background Colour',
+			'description' 	=> 'Hexcode (without #) colour you wish resized image backgrounds to be',
+			'default'		=> 'ffffff',
+			'value'			=> 'ffffff',
+			'type' 			=> 'text',
+			'options'		=> '',
+			'is_required' 	=> 1,
+			'is_gui'		=> 1,
+			'module' 		=> 'firesale'
+		);
+
 		// Require login to purchase
 		$settings[] = array(
 			'slug' 		  	=> 'firesale_login',

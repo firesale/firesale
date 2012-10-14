@@ -828,6 +828,15 @@ class Products_m extends MY_Model {
 		$mime  = str_replace('image/', '', $status['data']['mimetype']);
 		$path  = $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . SITE_REF . '/files/' . $status['data']['filename'];
 
+		// Build background colour
+		$colour = str_replace('#', '', $this->settings->get('image_background', 'ffffff'));
+		$colour = ( strlen($colour) == 3 ? $colour : '' ) . $colour;
+  		$bg     = array(
+  					'r' => hexdec(substr($colour, 0, 2)),
+   					'g' => hexdec(substr($colour, 2, 2)),
+   					'b' => hexdec(substr($colour, 4, 2))
+  				  );
+
 		// Is it required?
 		if( $w != $h AND in_array($mime, $allow) )
 		{
@@ -835,7 +844,7 @@ class Products_m extends MY_Model {
 			// Settings
 			$size = ( $w > $h ? $w : $h );
 			$img  = imagecreatetruecolor($size, $size);
-			$bg   = imagecolorallocate($img, $bg[0], $bg[1], $bg[2]);
+			$bg   = imagecolorallocate($img, $bg['r'], $bg['g'], $bg['b']);
 			$copy = 'imagecreatefrom' . $mime;
 			$save = 'image' . $mime;
 			$orig = $copy($path);
