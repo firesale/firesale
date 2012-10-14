@@ -821,7 +821,6 @@ class Products_m extends MY_Model {
 	{
 
 		// Variables
-		$bg    = array(255, 255, 255);
 		$id    = $status['data']['id'];
 		$w     = $status['data']['width'];
 		$h	   = $status['data']['height'];
