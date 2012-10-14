@@ -9,14 +9,17 @@
 	$lang['firesale:title:ship']		= 'Dettagli spedizioni';
 
 	// Sections
-	$lang['firesale:sections:dashboard'] 	= 'Dashboard';
-	$lang['firesale:sections:categories'] 	= 'Categorie';
-	$lang['firesale:sections:products'] 	= 'Prodotti';
-	$lang['firesale:sections:orders'] 		= 'Ordini';
-	$lang['firesale:sections:addresses'] 	= 'Indirizzi';
-	$lang['firesale:sections:orders_items']	= 'Oggetti Ordinati';
-	$lang['firesale:sections:gateways']		= 'Metodi di pagamento';
-	$lang['firesale:sections:settings'] 	= 'Impostazioni';
+	$lang['firesale:sections:dashboard'] 	  = 'Dashboard';
+	$lang['firesale:sections:categories'] 	  = 'Categorie';
+	$lang['firesale:sections:products'] 	  = 'Prodotti';
+	$lang['firesale:sections:orders'] 		  = 'Ordini';
+	$lang['firesale:sections:addresses'] 	  = 'Indirizzi';
+	$lang['firesale:sections:orders_items']	  = 'Oggetti Ordinati';
+	$lang['firesale:sections:gateways']		  = 'Metodi di pagamento';
+	$lang['firesale:sections:settings'] 	  = 'Impostazioni';
+	$lang['firesale:sections:routes']         = 'Routes'; # Translate
+	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
+	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
 	
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opzioni generali';
@@ -81,7 +84,8 @@
 	$lang['firesale:prod_not_found'] 		= 'Non è possibile trovare il prodotto specificato';
 	$lang['firesale:prod_delimg_success']   = 'Immagine cancellata con successo';
 	$lang['firesale:prod_delimg_error']     = 'Si è verificato un errore nel rimuovere l\'immagine selezionata';
-	$lang['firesale:prod_button_quick_edit']= 'Modifica Veloce';	
+	$lang['firesale:prod_button_quick_edit']= 'Modifica Veloce';
+	$lang['firesale:cats_all_products']     = 'All Products'; # Translate
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Prezzo di vendita prima e dopo le tasse';
@@ -107,6 +111,7 @@
 	$lang['firesale:label_stock']		= 'Quantità in magazzino';
 	$lang['firesale:label_drop_images'] = 'Trascina qui le immagini da caricare';
 	$lang['firesale:label_duplicate']   = 'Duplica';
+	$lang['firesale:label_showfilter']  = 'Show Filters'; # Translate
 
 	$lang['firesale:label_stock_short']		= 'Livello scorte';
 	$lang['firesale:label_stock_status']	= 'Stato delle scorte';
@@ -161,6 +166,11 @@
 	$lang['firesale:label_time_hours']	= 'circa %s ore fa.';
 	$lang['firesale:label_time_day']	= '1 giorno da.';
 	$lang['firesale:label_time_days'] 	= '%s giorni fa.';
+
+	$lang['firesale:label_map']         = 'Map'; # Translate
+	$lang['firesale:label_route']       = 'Route'; # Translate
+	$lang['firesale:label_translation'] = 'Translation'; # Translate
+	$lang['firesale:label_table']       = 'Table'; # Translate
 
 	// Orders
 	$lang['firesale:orders:title']			= 'Ordini';
@@ -251,6 +261,21 @@
 	$lang['firesale:checkout:title:ship_method']	= 'Modalità di spedizione';
 	$lang['firesale:checkout:title:payment_method']	= 'Metodo di pagamento';
 
+	// Routes
+	$lang['firesale:routes:title']          = 'Routes'; # Translate
+	$lang['firesale:routes:new']            = 'Add a new Route'; # Translate
+	$lang['firesale:routes:add_success']    = 'New route added successfully'; # Translate
+	$lang['firesale:routes:add_error']      = 'Error adding a new route'; # Translate
+	$lang['firesale:routes:edit']           = 'Edit %s Route'; # Translate
+	$lang['firesale:routes:edit_success']   = 'Route edited successfully'; # Translate
+	$lang['firesale:routes:edit_error']     = 'Error editing the route'; # Translate
+	$lang['firesale:routes:not_found']      = 'The selected route could not be found'; # Translate
+	$lang['firesale:routes:none']           = 'No routes found'; # Translate
+	$lang['firesale:routes:delete_success'] = 'Route removed successfully'; # Translate
+	$lang['firesale:routes:delete_error']   = 'Error removing route'; # Translate
+	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
+	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Miei indirizzi';
 	$lang['firesale:addresses:edit_address'] = 'Modifica indirizzo';
@@ -258,7 +283,11 @@
 	$lang['firesale:addresses:save']	     = 'Salva';
 	$lang['firesale:addresses:cancel']       = 'Annulla';
 	$lang['firesale:addresses:no_user']      = 'Devi effettuare il login per gestire l\'elenco dei tuooi indirizzi';
-	
+	$lang['firesale:addresses:add_success']  = 'Address created successfully'; # Translate
+	$lang['firesale:addresses:add_error']    = 'Error creating address'; # Translate
+	$lang['firesale:addresses:edit_success'] = 'Address edited successfully'; # Translate
+	$lang['firesale:addresses:edit_error']   = 'Error editing address'; # Translate
+
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Disponibilità:";	
 	$lang['firesale:product:label_model'] = "Modello:";

@@ -17,6 +17,9 @@
 	$lang['firesale:sections:orders_items']	= 'Items adquiridos';
 	$lang['firesale:sections:gateways']		= 'Meios de Pagamento';
 	$lang['firesale:sections:settings'] 	= 'Configurações';
+	$lang['firesale:sections:routes']         = 'Routes'; # Translate
+	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
+	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opções Gerais';
@@ -62,7 +65,8 @@
 	$lang['firesale:cats_edit_error'] 		= 'Ocorreu um erro ao editar sua categoria';
 	$lang['firesale:cats_delete_success'] 	= 'Categoria excluída com sucesso';
 	$lang['firesale:cats_delete_error'] 	= 'Ocorreu um erro ao excluir esta categoria';
-	
+	$lang['firesale:cats_all_products']     = 'All Products'; # Translate
+
 	// Products
 	$lang['firesale:prod_none']				= 'Produtos não encontrados';
 	$lang['firesale:prod_create'] 			= 'Criar produto';
@@ -85,7 +89,7 @@
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Preço de venda antes e após impostos';
-	$lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)';
+	$lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)'; # Translate
 
 	// Labels
 	$lang['firesale:label_draft']		= 'Rascunho';
@@ -107,6 +111,7 @@
 	$lang['firesale:label_stock']		= 'Quantidade em Estoque';
 	$lang['firesale:label_drop_images'] = 'Solte suas imagens aqui para realizar o upload';
 	$lang['firesale:label_duplicate']   = 'Duplicado';
+	$lang['firesale:label_showfilter']  = 'Show Filters'; # Translate
 
 	$lang['firesale:label_stock_short']		= 'Estoque';
 	$lang['firesale:label_stock_status']	= 'Situaçao do Estoque';
@@ -162,6 +167,11 @@
 	$lang['firesale:label_time_day']	= '1 dia atrás.';
 	$lang['firesale:label_time_days'] 	= '%s dias atrás.';
 
+	$lang['firesale:label_map']         = 'Map'; # Translate
+	$lang['firesale:label_route']       = 'Route'; # Translate
+	$lang['firesale:label_translation'] = 'Translation'; # Translate
+	$lang['firesale:label_table']       = 'Table'; # Translate
+
 	// Orders
 	$lang['firesale:orders:title']				= 'Pedidos';
 	$lang['firesale:orders:no_orders']			= 'Sem pedidos no momento';
@@ -207,7 +217,8 @@
 	$lang['firesale:gateways:no_uninstalled_gateways']		= 'Todos os meios de pagamento disponíveis estão instalados no momento.';
 	$lang['firesale:gateways:errors:invalid_bool']			= 'O %s campo deve ser ter um valor do tipo verdadeiro/falso.';
 	$lang['firesale:gateways:warning'] 						= 'Todos as configurações para os meios de pagamento serão perdidas e sua loja pode ser incapaz de receber pagamentos! Tem certeza que deseja desinstalar este meio de pagamento?';
-	
+	$lang['firesale:gateways:multiple_warning']             = 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall the selected gateways?'; # Translate
+
 	$lang['firesale:gateways:installed_success']			= 'Meio de Pagamento instalado com sucesso';
 	$lang['firesale:gateways:installed_fail']				= 'O meio de pagamento não pode ser instalado';
 
@@ -243,6 +254,21 @@
 	$lang['firesale:checkout:title:ship_method']	= 'Método de Entrega';
 	$lang['firesale:checkout:title:payment_method']	= 'Método de Pagamento';
 
+	// Routes
+	$lang['firesale:routes:title']          = 'Routes'; # Translate
+	$lang['firesale:routes:new']            = 'Add a new Route'; # Translate
+	$lang['firesale:routes:add_success']    = 'New route added successfully'; # Translate
+	$lang['firesale:routes:add_error']      = 'Error adding a new route'; # Translate
+	$lang['firesale:routes:edit']           = 'Edit %s Route'; # Translate
+	$lang['firesale:routes:edit_success']   = 'Route edited successfully'; # Translate
+	$lang['firesale:routes:edit_error']     = 'Error editing the route'; # Translate
+	$lang['firesale:routes:not_found']      = 'The selected route could not be found'; # Translate
+	$lang['firesale:routes:none']           = 'No routes found'; # Translate
+	$lang['firesale:routes:delete_success'] = 'Route removed successfully'; # Translate
+	$lang['firesale:routes:delete_error']   = 'Error removing route'; # Translate
+	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
+	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Meu Endereço';
 	$lang['firesale:addresses:edit_address'] = 'Edit Address'; # Translate
@@ -250,7 +276,11 @@
 	$lang['firesale:addresses:save']	     = 'Save'; # Translate
 	$lang['firesale:addresses:cancel']       = 'Cancel'; # Translate
 	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
-		
+	$lang['firesale:addresses:add_success']  = 'Address created successfully'; # Translate
+	$lang['firesale:addresses:add_error']    = 'Error creating address'; # Translate
+	$lang['firesale:addresses:edit_success'] = 'Address edited successfully'; # Translate
+	$lang['firesale:addresses:edit_error']   = 'Error editing address'; # Translate
+
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = 'Disponibilidade';
 	$lang['firesale:product:label_model'] = 'Modelo';
@@ -273,12 +303,12 @@
 	$lang['firesale:cart:label_tax'] = 'Impostos';
 	$lang['firesale:cart:label_total'] = 'Total';
 	
-	//Categories Frontend
+	// Categories Frontend
 	$lang['firesale:categories:grid'] = 'Grid';	#Translate
 	$lang['firesale:categories:list'] = 'List';	#Translate
 	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate
 	
-	//Payment Frontend
+	// Payment Frontend
 	$lang['firesale:payment:cancelled'] = 'Order Cancelled'; #Translate
 	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...'; #Translate
 	$lang['firesale:payment:btn_continue'] = 'Continue'; #Translate

@@ -87,7 +87,6 @@
 	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified';
 	$lang['firesale:prod_button_quick_edit']= 'Quick Edit';
 
-
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';
 	$lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)';
@@ -307,12 +306,12 @@
 	$lang['firesale:cart:label_tax'] = "Tax";
 	$lang['firesale:cart:label_total'] = "Total";
 	
-	//Categories Frontend
+	// Categories Frontend
 	$lang['firesale:categories:grid'] = 'Grid';
 	$lang['firesale:categories:list'] = 'List';
 	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';
 	
-	//Payment Frontend
+	// Payment Frontend
 	$lang['firesale:payment:cancelled'] = 'Order Cancelled';
 	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...';
 	$lang['firesale:payment:btn_continue'] = 'Continue';

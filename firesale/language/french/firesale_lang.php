@@ -1,6 +1,4 @@
 <?php
-	
-	// FireSale 1.0.4
 
 	// General Titles
 	$lang['firesale:title']				= 'FireSale';
@@ -11,14 +9,17 @@
 	$lang['firesale:title:ship']		= 'Information d\'expédition';
 
 	// Sections
-	$lang['firesale:sections:dashboard'] 	= 'Tableau de bord';
-	$lang['firesale:sections:categories'] 	= 'Catégories';
-	$lang['firesale:sections:products'] 	= 'Produits';
-	$lang['firesale:sections:orders'] 		= 'Commandes';
-	$lang['firesale:sections:addresses'] 	= 'Addresses';
-	$lang['firesale:sections:orders_items']	= 'Eléments de la commande';
-	$lang['firesale:sections:gateways']		= 'Paiements';
-	$lang['firesale:sections:settings'] 	= 'Paramètres';
+	$lang['firesale:sections:dashboard'] 	  = 'Tableau de bord';
+	$lang['firesale:sections:categories'] 	  = 'Catégories';
+	$lang['firesale:sections:products'] 	  = 'Produits';
+	$lang['firesale:sections:orders'] 		  = 'Commandes';
+	$lang['firesale:sections:addresses'] 	  = 'Addresses';
+	$lang['firesale:sections:orders_items']	  = 'Eléments de la commande';
+	$lang['firesale:sections:gateways']		  = 'Paiements';
+	$lang['firesale:sections:settings'] 	  = 'Paramètres';
+	$lang['firesale:sections:routes']         = 'Routes'; # Translate
+	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
+	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Options générales';
@@ -64,6 +65,7 @@
 	$lang['firesale:cats_edit_error'] 		= 'Impossible de modifier la catégorie';
 	$lang['firesale:cats_delete_success'] 	= 'Catégorie supprimée';
 	$lang['firesale:cats_delete_error'] 	= 'Impossible de supprimer la catégorie';
+	$lang['firesale:cats_all_products']     = 'All Products'; # Translate
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Aucun produit trouvé';
@@ -84,7 +86,6 @@
 	$lang['firesale:prod_delimg_success']   = 'Image supprimée';
 	$lang['firesale:prod_delimg_error']     = 'Impossible de supprimer l\'image';
 	$lang['firesale:prod_button_quick_edit']= 'Modification rapide';
-
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Prix de vente conseillé avant et après taxation';
@@ -110,6 +111,7 @@
 	$lang['firesale:label_stock']		= 'Niveau des stocks';
 	$lang['firesale:label_drop_images'] = 'Glissez les images ici';
 	$lang['firesale:label_duplicate']   = 'Dupliquer';
+	$lang['firesale:label_showfilter']  = 'Show Filters'; # Translate
 
 	$lang['firesale:label_stock_short']		= 'Niveau des stocks';
 	$lang['firesale:label_stock_status']	= 'Stocks';
@@ -156,6 +158,11 @@
 	$lang['firesale:label_pricehigh']	= 'Prix Haut &gt; Bas';
 	$lang['firesale:label_modelaz']		= 'Modèle A - Z';
 	$lang['firesale:label_modelza']		= 'Modèle Z - A';
+
+	$lang['firesale:label_map']         = 'Map'; # Translate
+	$lang['firesale:label_route']       = 'Route'; # Translate
+	$lang['firesale:label_translation'] = 'Translation'; # Translate
+	$lang['firesale:label_table']       = 'Table'; # Translate
 
 	$lang['firesale:label_time_now']	= 'il y a moins d\'une minute.';
 	$lang['firesale:label_time_min']	= 'il y a une minute.';
@@ -247,6 +254,21 @@
 	$lang['firesale:checkout:title:ship_method']	= 'Mode d\'expédition';
 	$lang['firesale:checkout:title:payment_method']	= 'Mode de paiement';
 
+	// Routes
+	$lang['firesale:routes:title']          = 'Routes'; # Translate
+	$lang['firesale:routes:new']            = 'Add a new Route'; # Translate
+	$lang['firesale:routes:add_success']    = 'New route added successfully'; # Translate
+	$lang['firesale:routes:add_error']      = 'Error adding a new route'; # Translate
+	$lang['firesale:routes:edit']           = 'Edit %s Route'; # Translate
+	$lang['firesale:routes:edit_success']   = 'Route edited successfully'; # Translate
+	$lang['firesale:routes:edit_error']     = 'Error editing the route'; # Translate
+	$lang['firesale:routes:not_found']      = 'The selected route could not be found'; # Translate
+	$lang['firesale:routes:none']           = 'No routes found'; # Translate
+	$lang['firesale:routes:delete_success'] = 'Route removed successfully'; # Translate
+	$lang['firesale:routes:delete_error']   = 'Error removing route'; # Translate
+	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
+	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mes adresses';
 	$lang['firesale:addresses:edit_address'] = 'Modifier adresse';
@@ -254,6 +276,10 @@
 	$lang['firesale:addresses:save']	     = 'Sauvegarder';
 	$lang['firesale:addresses:cancel']       = 'Annuler';
 	$lang['firesale:addresses:no_user']      = 'Vous devez être connecté pour gèrer vos adresses';
+	$lang['firesale:addresses:add_success']  = 'Address created successfully'; # Translate
+	$lang['firesale:addresses:add_error']    = 'Error creating address'; # Translate
+	$lang['firesale:addresses:edit_success'] = 'Address edited successfully'; # Translate
+	$lang['firesale:addresses:edit_error']   = 'Error editing address'; # Translate
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Disponibilité";

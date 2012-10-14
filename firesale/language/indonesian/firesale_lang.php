@@ -17,6 +17,9 @@
 	$lang['firesale:sections:orders_items']	= 'Item Pesanan';
 	$lang['firesale:sections:gateways']		= 'Gateway'; //
 	$lang['firesale:sections:settings'] 	= 'Pengaturan';
+	$lang['firesale:sections:routes']         = 'Routes'; # Translate
+	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
+	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opsi Umum';
@@ -62,6 +65,7 @@
 	$lang['firesale:cats_edit_error'] 		= 'Ada masalah saat memperbaharui kategori';
 	$lang['firesale:cats_delete_success'] 	= 'Kategori berhasil dihapus';
 	$lang['firesale:cats_delete_error'] 	= 'Ada masalah saat menghapus kategori';
+	$lang['firesale:cats_all_products']     = 'All Products'; # Translate
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Tidak Ada Produk';
@@ -107,6 +111,7 @@
 	$lang['firesale:label_stock']		= 'Level Stok Saat Ini';
 	$lang['firesale:label_drop_images'] = 'Tarik dan Lepaskan Gambar Disini untuk Mengunggah';
 	$lang['firesale:label_duplicate']   = 'Duplikasi';
+	$lang['firesale:label_showfilter']  = 'Show Filters'; # Translate
 
 	$lang['firesale:label_stock_short']		= 'Level Stok';
 	$lang['firesale:label_stock_status']	= 'Status Stok';
@@ -162,6 +167,11 @@
 	$lang['firesale:label_time_day']	= '1 hari yang lalu.';
 	$lang['firesale:label_time_days'] 	= '%s hari yang lalu.';
 
+	$lang['firesale:label_map']         = 'Map'; # Translate
+	$lang['firesale:label_route']       = 'Route'; # Translate
+	$lang['firesale:label_translation'] = 'Translation'; # Translate
+	$lang['firesale:label_table']       = 'Table'; # Translate
+
 	// Orders
 	$lang['firesale:orders:title']				= 'Pesanan';
 	$lang['firesale:orders:no_orders']			= 'Tidak ada pesanan untuk saat ini';
@@ -207,7 +217,8 @@
 	$lang['firesale:gateways:no_uninstalled_gateways']		= 'Semua gateway yang ada sudah terpasang.';
 	$lang['firesale:gateways:errors:invalid_bool']			= 'Kolom %s harus bernilai boolean.';
 	$lang['firesale:gateways:warning'] 						= 'Semua pengaturan gateway akan hilang dan toko Anda tidak akan dapat memproses pembayaran! Apakah Anda yakin akan mencopot gateway ini?';
-	
+	$lang['firesale:gateways:multiple_warning']             = 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall the selected gateways?'; # Translate
+
 	$lang['firesale:gateways:installed_success']			= 'Gateway berhasil dipasang';
 	$lang['firesale:gateways:installed_fail']				= 'Gateway tidak dapat dipasang';
 
@@ -243,6 +254,21 @@
 	$lang['firesale:checkout:title:ship_method']	= 'Metode Pengiriman';
 	$lang['firesale:checkout:title:payment_method']	= 'Metode Pembayaran';
 
+	// Routes
+	$lang['firesale:routes:title']          = 'Routes'; # Translate
+	$lang['firesale:routes:new']            = 'Add a new Route'; # Translate
+	$lang['firesale:routes:add_success']    = 'New route added successfully'; # Translate
+	$lang['firesale:routes:add_error']      = 'Error adding a new route'; # Translate
+	$lang['firesale:routes:edit']           = 'Edit %s Route'; # Translate
+	$lang['firesale:routes:edit_success']   = 'Route edited successfully'; # Translate
+	$lang['firesale:routes:edit_error']     = 'Error editing the route'; # Translate
+	$lang['firesale:routes:not_found']      = 'The selected route could not be found'; # Translate
+	$lang['firesale:routes:none']           = 'No routes found'; # Translate
+	$lang['firesale:routes:delete_success'] = 'Route removed successfully'; # Translate
+	$lang['firesale:routes:delete_error']   = 'Error removing route'; # Translate
+	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
+	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Alamat Saya';
 	$lang['firesale:addresses:edit_address'] = 'Edit Address'; # Translate
@@ -250,7 +276,11 @@
 	$lang['firesale:addresses:save']	     = 'Save'; # Translate
 	$lang['firesale:addresses:cancel']       = 'Cancel'; # Translate
 	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
-		
+	$lang['firesale:addresses:add_success']  = 'Address created successfully'; # Translate
+	$lang['firesale:addresses:add_error']    = 'Error creating address'; # Translate
+	$lang['firesale:addresses:edit_success'] = 'Address edited successfully'; # Translate
+	$lang['firesale:addresses:edit_error']   = 'Error editing address'; # Translate
+
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Availability"; # Translate
 	$lang['firesale:product:label_model'] = "Model"; # Translate
