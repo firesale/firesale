@@ -18,8 +18,7 @@
 	$lang['firesale:sections:gateways']		  = 'Gateways';
 	$lang['firesale:sections:settings'] 	  = 'Settings';
 	$lang['firesale:sections:routes']         = 'Routes';
-	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route';
-	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes';
+	$lang['firesale:sections:currency']       = 'Currency';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'General Options';
@@ -34,6 +33,8 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Create Category';
 	$lang['firesale:shortcuts:install_gateway']	= 'Install Gateway';
 	$lang['firesale:shortcuts:create_order']	= 'Create Order';
+	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route';
+	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Quick Overview';
@@ -175,41 +176,49 @@
 	$lang['firesale:label_translation'] = 'Translation';
 	$lang['firesale:label_table']       = 'Table';
 
+	$lang['firesale:label_cur_code']       = 'Currency Code';
+	$lang['firesale:label_cur_code_inst']  = 'ISO-4217 Format';
+	$lang['firesale:label_cur_tax']        = 'Tax Rate';
+	$lang['firesale:label_cur_mod']        = 'Currency Modifier';
+	$lang['firesale:label_cur_mod_inst']   = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region';
+	$lang['firesale:label_exch_rate']      = 'Exchange Rate';
+	$lang['firesale:label_exch_rate_inst'] = 'This will be automatically updated every hour';
+
 	// Orders
-	$lang['firesale:orders:title']				= 'Orders';
-	$lang['firesale:orders:no_orders']			= 'There are currently no orders';
-	$lang['firesale:orders:my_orders']			= 'My Orders';
-	$lang['firesale:orders:view_order']			= 'View Order #%s';
-	$lang['firesale:orders:title_create'] 		= 'Create Order';
-	$lang['firesale:orders:title_edit']	  		= 'Edit Order #%s';
-	$lang['firesale:orders:delete_success'] 	= 'Order deleted successfully';
-	$lang['firesale:orders:delete_error']		= 'Order was not deleted due to an issue';
-	$lang['firesale:orders:save_first']			= 'Please save the order before adding products';
-	$lang['firesale:orders:delete']				= 'Delete Orders';
-	$lang['firesale:orders:mark_as']			= 'Mark as ';
-	$lang['firesale:orders:status_unpaid'] 		= 'Unpaid';
-	$lang['firesale:orders:status_paid'] 		= 'Paid';
-	$lang['firesale:orders:status_dispatched']	= 'Dispatched';
-	$lang['firesale:orders:status_processing']	= 'Processing';
-	$lang['firesale:orders:status_refunded']	= 'Refunded';
-	$lang['firesale:orders:status_cancelled']	= 'Cancelled';
-	$lang['firesale:orders:status_failed']		= 'Failed';
-	$lang['firesale:orders:status_declined']	= 'Declined';
-	$lang['firesale:orders:status_mismatch']	= 'Mismatch';
-	$lang['firesale:orders:failed_message'] 	= 'There was an error processing your payment';
-	$lang['firesale:orders:declined_message']	= 'Your payment was declined, please try again.';
-	$lang['firesale:orders:mismatch_message']	= 'Your payment did not match the order.';
-	$lang['firesale:orders:logged_in']			= 'You must be logged in to view your order history.';
-	$lang['firesale:orders:label_view_order']	= 'View Order';
-	$lang['firesale:orders:label_products']		= 'Products';
-	$lang['firesale:orders:label_view_order']	= 'View Order';
-	$lang['firesale:orders:label_customer']		= 'Customer';
-	$lang['firesale:orders:label_date_placed']	= 'Date Placed';
-	$lang['firesale:orders:label_order_id'] 	= "Order ID";
+	$lang['firesale:orders:title']				   = 'Orders';
+	$lang['firesale:orders:no_orders']			   = 'There are currently no orders';
+	$lang['firesale:orders:my_orders']			   = 'My Orders';
+	$lang['firesale:orders:view_order']			   = 'View Order #%s';
+	$lang['firesale:orders:title_create'] 		   = 'Create Order';
+	$lang['firesale:orders:title_edit']	  		   = 'Edit Order #%s';
+	$lang['firesale:orders:delete_success'] 	   = 'Order deleted successfully';
+	$lang['firesale:orders:delete_error']		   = 'Order was not deleted due to an issue';
+	$lang['firesale:orders:save_first']			   = 'Please save the order before adding products';
+	$lang['firesale:orders:delete']				   = 'Delete Orders';
+	$lang['firesale:orders:mark_as']			   = 'Mark as ';
+	$lang['firesale:orders:status_unpaid'] 		   = 'Unpaid';
+	$lang['firesale:orders:status_paid'] 		   = 'Paid';
+	$lang['firesale:orders:status_dispatched']	   = 'Dispatched';
+	$lang['firesale:orders:status_processing']	   = 'Processing';
+	$lang['firesale:orders:status_refunded']	   = 'Refunded';
+	$lang['firesale:orders:status_cancelled']	   = 'Cancelled';
+	$lang['firesale:orders:status_failed']		   = 'Failed';
+	$lang['firesale:orders:status_declined']	   = 'Declined';
+	$lang['firesale:orders:status_mismatch']	   = 'Mismatch';
+	$lang['firesale:orders:failed_message'] 	   = 'There was an error processing your payment';
+	$lang['firesale:orders:declined_message']	   = 'Your payment was declined, please try again.';
+	$lang['firesale:orders:mismatch_message']	   = 'Your payment did not match the order.';
+	$lang['firesale:orders:logged_in']			   = 'You must be logged in to view your order history.';
+	$lang['firesale:orders:label_view_order']	   = 'View Order';
+	$lang['firesale:orders:label_products']		   = 'Products';
+	$lang['firesale:orders:label_view_order']	   = 'View Order';
+	$lang['firesale:orders:label_customer']		   = 'Customer';
+	$lang['firesale:orders:label_date_placed']	   = 'Date Placed';
+	$lang['firesale:orders:label_order_id'] 	   = "Order ID";
 	$lang['firesale:orders:labe_shipping_address'] = 'Shipping Address';
-	$lang['firesale:orders:labe_payment_address'] = 'Payment Address';
-	$lang['firesale:orders:label_order_status']	= 'Order Status';
-	$lang['firesale:orders:label_message']	= 'Message';
+	$lang['firesale:orders:labe_payment_address']  = 'Payment Address';
+	$lang['firesale:orders:label_order_status']	   = 'Order Status';
+	$lang['firesale:orders:label_message']	       = 'Message';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Payment Gateways';
@@ -272,6 +281,10 @@
 	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file';
 	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file';
 
+	// Currency
+	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency';
+
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
 	$lang['firesale:addresses:edit_address'] = 'Edit Address';
@@ -317,6 +330,7 @@
 	$lang['firesale:payment:btn_continue'] = 'Continue';
 	
 	// Install errors
-	$lang['firesale:install:wrong_version'] = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above';
+	$lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';
 	$lang['firesale:install:missing_multiple'] = 'FireSale requires the Multiple Relationships field type to operate. You can download this from <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">here</a>';
-	$lang['firesale:install:not_installed'] = 'Please install the FireSale module before installing additional FireSale addons';
+	$lang['firesale:install:not_installed']    = 'Please install the FireSale module before installing additional FireSale addons';
+	$lang['firesale:install:no_route_access']  = 'FireSale requires access to the system/cms/config/routes.php file. Please set the appropriate permissions and try again';

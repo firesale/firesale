@@ -33,7 +33,7 @@ class Module_Firesale extends Module {
 			'menu'	   => 'FireSale',
 			'author'   => 'Jamie Holdroyd & Chris Harvey',
 			'roles' => array(
-				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways'
+				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways', 'install_uninstall_currency'
 			),
 			'sections' => array(
 				'dashboard' => array(
@@ -141,13 +141,25 @@ class Module_Firesale extends Module {
 				)
 			);
 		}
+
+		if (group_has_role('firesale', 'install_uninstall_currency') AND isset($info['sections']['currency']))
+		{
+			$info['sections']['gateways']['shortcuts'] = array(
+				array(
+					'name' 	=> 'firesale:shortcuts:install_currency',
+					'uri'	=> 'admin/firesale/currency/add',
+					'class' => 'add'
+				)
+			);
+		}
 		
 		return $info;
 	}
 	
 	public function install()
 	{
-		if (CMS_VERSION < "2.1.4")
+
+		if (CMS_VERSION < "2.1.5")
 		{
 			$this->session->set_flashdata('error', lang('firesale:install:wrong_version'));
 			redirect('admin/modules');
@@ -158,6 +170,12 @@ class Module_Firesale extends Module {
 			AND ! is_dir(APPPATH . 'modules/streams_core/field_types/multiple'))
 		{
 			$this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
+			redirect('admin/modules');
+			return FALSE;
+		}
+		elseif ( ! is_writable(APPPATH . 'config/routes.php') )
+		{
+			$this->session->set_flashdata('error', lang('firesale:install:no_route_access'));
 			redirect('admin/modules');
 			return FALSE;
 		}
@@ -198,7 +216,7 @@ class Module_Firesale extends Module {
 		$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_categories` CHANGE `parent` `parent` INT( 11 ) NULL DEFAULT '0';");
 		
 		// Add an initial category
-		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => 1, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => 'Uncategorised', 'slug' => 'uncategorised', 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
+		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => 'Uncategorised', 'slug' => 'uncategorised', 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
 		$this->db->insert('firesale_categories', $cat);
 	
 		##############
@@ -400,6 +418,34 @@ class Module_Firesale extends Module {
 
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
+
+		##############
+		## CURRENCY ##
+		##############
+
+		// Create currency stream
+		if( !$this->streams->streams->add_stream(lang('firesale:sections:currency'), 'firesale_currency', 'firesale_currency', NULL, NULL) ) return FALSE;
+
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_currency', 'assign' => 'firesale_currency', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_cur_code', 'slug' => 'cur_code', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_code_inst', 'title_column' => TRUE, 'extra' => array('max_length' => 3), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
+		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0));
+		$fields[] = array('name' => 'lang:firesale:label_cur_tax', 'slug' => 'cur_tax', 'type' => 'text', 'extra' => array('max_length' => 10));
+		$fields[] = array('name' => 'lang:firesale:label_cur_mod', 'slug' => 'cur_mod', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_mod_inst', 'extra' => array('max_length' => 10));
+		$fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exch_rate', 'type' => 'text', 'instructions' => 'lang:firesale:label_exch_rate_inst', 'extra' => array('max_length' => 10));
+
+		// Combine
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
+
+		// Add an initial currency
+		$currency = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'cur_code' => 'GBP', 'title' => 'Default', 'slug' => 'default', 'enabled' => 1, 'cur_tax' => '20', 'cur_mod' => '+0', 'exch_rate' => '1');
+		$this->db->insert('firesale_currency', $currency);
 
 		##################
 		## TRANSACTIONS ##
