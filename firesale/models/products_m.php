@@ -232,7 +232,7 @@ class Products_m extends MY_Model {
 			// Remove files folder
 			if( $product !== FALSE )
 			{
-				$folder = $this->get_file_folder_by_slug($product->slug);
+				$folder = $this->get_file_folder_by_slug($product['slug']);
 				if( $folder != FALSE ) {
 					$images = Files::folder_contents($folder->id);
 					$images = $images['data']['file'];
