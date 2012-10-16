@@ -182,7 +182,8 @@
 	$lang['firesale:label_cur_mod']        = 'Currency Modifier';
 	$lang['firesale:label_cur_mod_inst']   = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region';
 	$lang['firesale:label_exch_rate']      = 'Exchange Rate';
-	$lang['firesale:label_exch_rate_inst'] = 'This will be automatically updated every hour';
+	$lang['firesale:label_exch_rate_inst'] = 'This will be automatically updated every hour and can be left blank as it will be updated on save';
+	$lang['firesale:label_cur_flag']       = 'Related Image';
 
 	// Orders
 	$lang['firesale:orders:title']				   = 'Orders';
@@ -283,7 +284,18 @@
 
 	// Currency
 	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency';
-
+	$lang['firesale:currency:enable']            = 'Enable';
+	$lang['firesale:currency:disable']           = 'Disable';
+	$lang['firesale:currency:disable_warn']      = 'Disabling this may cause issues for customers and previous orders';
+	$lang['firesale:currency:delete']            = 'Delete';
+	$lang['firesale:currency:delete_warn']       = 'Deleting this may cause issues for customers and previous orders';
+	$lang['firesale:currency:create']            = 'Create New Currency';
+	$lang['firesale:currency:edit']              = 'Edit Currency';
+	$lang['firesale:currency:not_found']         = 'Selected currency not found';
+	$lang['firesale:currency:add_success']       = 'New currency added successfully';
+	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency';
+	$lang['firesale:currency:edit_success']      = 'Currency updated successfully';
+	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';

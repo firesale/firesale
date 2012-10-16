@@ -16,16 +16,22 @@
 			$this->ci =& get_instance();
 
 			// Add to settings soon
-			$this->app_id = '8fc03975a2324ca4b20cae70e987b706';// $this->ci->settings->get('firesale_exchange_key');
+			$this->app_id = $this->ci->settings->get('firesale_currency_key');
 			$this->url    = $this->url.$this->app_id;
 			
-			// Get data
-			$json = $this->get($this->url);
-			
-			// Check data
-			if( $json !== FALSE )
+			// Check key
+			if( !empty($this->app_id) )
 			{
-				$this->process($json);
+
+				// Get data
+				$json = $this->get($this->url);
+				
+				// Check data
+				if( $json !== FALSE )
+				{
+					$this->process($json);
+				}
+
 			}
 
 		}
@@ -58,24 +64,31 @@
 			// Variables
 			$base = $this->ci->settings->get('firesale_currency') or $this->base;
 
-			// Loop all currencies
-			foreach( $json->rates AS $cur => $rate )
+			// Get all currency options
+			$currencies = $this->ci->db->get('firesale_currency')->result_array();
+
+			// Loop them
+			foreach( $currencies AS $currency )
 			{
 
 				// Do we need to cross-convert?
 				if( $json->base != $this->base )
 				{
-					$new  = ( $json->rates->$cur * ( 1 / $json->rates->$base ) );
+					$new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$base ) );
 					$rate = round($new, 6);
 				}
 
-				// Insert or update settings
+				// Perform modifications
+				list($op, $value) = explode('|', $currency['cur_mod']);
+				$rate             = eval('return ('.$rate.$op.$value.');');
 
-
-				// Debug
-				// echo $cur.' - '.$rate.'<br />';
+				// Update it
+				$this->ci->db->where('id', $currency['id'])->update('firesale_currency', array('exch_rate' => $rate));
 
 			}
+
+			// Update last checked time
+			$this->ci->settings->set('firesale_currency_updated', $json->timestamp);
 
 		}
 

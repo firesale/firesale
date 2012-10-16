@@ -18,14 +18,12 @@ class Events_Firesale
 	public function public_controller()
 	{
 
-		// Just testing at the moment
-		/*if( isset($this->ci->current_user->id) AND $this->ci->current_user->id == 1 )
+		// Update currency after an hour has passed since last update to api
+		if( ( time() - $this->ci->settings->get('firesale_currency_updated') ) > 3600 )
 		{
-
 			// Load required items
 			$this->ci->load->library('firesale/exchange');
-
-		}*/
+		}
 
 	}
 

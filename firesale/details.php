@@ -33,7 +33,7 @@ class Module_Firesale extends Module {
 			'menu'	   => 'FireSale',
 			'author'   => 'Jamie Holdroyd & Chris Harvey',
 			'roles' => array(
-				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways', 'install_uninstall_currency'
+				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways', 'access_currency', 'install_uninstall_currency'
 			),
 			'sections' => array(
 				'dashboard' => array(
@@ -142,12 +142,21 @@ class Module_Firesale extends Module {
 			);
 		}
 
+		if (group_has_role('firesale', 'access_currency'))
+		{
+			$info['sections']['currency'] = array(
+				'name' => 'firesale:sections:currency',
+				'uri'  => 'admin/firesale/currency',
+				'shortcuts' => array()
+			);
+		}
+
 		if (group_has_role('firesale', 'install_uninstall_currency') AND isset($info['sections']['currency']))
 		{
-			$info['sections']['gateways']['shortcuts'] = array(
+			$info['sections']['currency']['shortcuts'] = array(
 				array(
-					'name' 	=> 'firesale:shortcuts:install_currency',
-					'uri'	=> 'admin/firesale/currency/add',
+					'name' 	=> 'firesale:currency:create',
+					'uri'	=> 'admin/firesale/currency/create',
 					'class' => 'add'
 				)
 			);
@@ -159,7 +168,7 @@ class Module_Firesale extends Module {
 	public function install()
 	{
 
-		if (CMS_VERSION < "2.1.5")
+		if (CMS_VERSION < "2.1.4")
 		{
 			$this->session->set_flashdata('error', lang('firesale:install:wrong_version'));
 			redirect('admin/modules');
@@ -426,17 +435,21 @@ class Module_Firesale extends Module {
 		// Create currency stream
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:currency'), 'firesale_currency', 'firesale_currency', NULL, NULL) ) return FALSE;
 
+		// Create currency folder
+		$currency = Files::create_folder(0, 'Currency Images');
+
 		// Add fields
 		$fields   = array();
 		$template = array('namespace' => 'firesale_currency', 'assign' => 'firesale_currency', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_cur_code', 'slug' => 'cur_code', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_code_inst', 'title_column' => TRUE, 'extra' => array('max_length' => 3), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_cur_code', 'slug' => 'cur_code', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_code_inst', 'extra' => array('max_length' => 3));
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
 		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0));
 		$fields[] = array('name' => 'lang:firesale:label_cur_tax', 'slug' => 'cur_tax', 'type' => 'text', 'extra' => array('max_length' => 10));
 		$fields[] = array('name' => 'lang:firesale:label_cur_mod', 'slug' => 'cur_mod', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_mod_inst', 'extra' => array('max_length' => 10));
-		$fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exch_rate', 'type' => 'text', 'instructions' => 'lang:firesale:label_exch_rate_inst', 'extra' => array('max_length' => 10));
-
+		$fields[] = array('name' => 'lang:firesale:label_cur_flag', 'slug' => 'image', 'type' => 'image', 'extra' => array('folder' => $currency['data']['id']), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exch_rate', 'type' => 'text', 'instructions' => 'lang:firesale:label_exch_rate_inst', 'extra' => array('max_length' => 10), 'required' => FALSE);
+		
 		// Combine
 		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 
@@ -444,7 +457,7 @@ class Module_Firesale extends Module {
 		$this->streams->fields->add_fields($fields);
 
 		// Add an initial currency
-		$currency = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'cur_code' => 'GBP', 'title' => 'Default', 'slug' => 'default', 'enabled' => 1, 'cur_tax' => '20', 'cur_mod' => '+0', 'exch_rate' => '1');
+		$currency = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'cur_code' => 'GBP', 'title' => 'Default', 'slug' => 'default', 'enabled' => 1, 'cur_tax' => '20', 'cur_mod' => '+|0', 'exch_rate' => '1');
 		$this->db->insert('firesale_currency', $currency);
 
 		##################
@@ -496,18 +509,28 @@ class Module_Firesale extends Module {
 		$this->settings('remove');
 
 		// Remove routes
-		$this->routes('remove');
+		if( $this->db->where('stream_namespace', 'firesale_routes')->where('stream_slug', 'firesale_routes')->get('data_streams')->num_rows() )
+		{
+			$this->routes('remove');
+		}
 
 		// Remove email templates
 		$this->templates('remove');
 		
 		// Remove products
-		$this->products_m->delete_all_products();
+		if( $this->db->where('stream_namespace', 'firesale_products')->where('stream_slug', 'firesale_products')->get('data_streams')->num_rows() )
+		{
+			$this->products_m->delete_all_products();
+		}
 		
 		// Remove files folder
-		$folder = $this->products_m->get_file_folder_by_slug('product-images');
-		if( $folder != FALSE ) { Files::delete_folder($folder->id); }
+		$product_folder = $this->products_m->get_file_folder_by_slug('product-images');
+		if( $product_folder != FALSE ) { Files::delete_folder($product_folder->id); }
 		
+		// Remove currency folder
+		$currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');
+		if( $currency_folder != FALSE ) { Files::delete_folder($currency_folder->id); }
+
 		// Remove streams
 		$this->streams->utilities->remove_namespace('firesale_categories');
 		$this->streams->utilities->remove_namespace('firesale_products');
@@ -516,6 +539,7 @@ class Module_Firesale extends Module {
 		$this->streams->utilities->remove_namespace('firesale_orders');
 		$this->streams->utilities->remove_namespace('firesale_orders_items');
 		$this->streams->utilities->remove_namespace('firesale_routes');
+		$this->streams->utilities->remove_namespace('firesale_currency');
 		
 		// Drop the payment gateway tables
 		$this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it =/
@@ -581,7 +605,7 @@ class Module_Firesale extends Module {
 		// Currency Code
 		$settings[] = array(
 			'slug' 		  	=> 'firesale_currency',
-			'title' 	  	=> 'Currency Code',
+			'title' 	  	=> 'Default Currency Code',
 			'description' 	=> 'The currency you accept (ISO-4217 format)',
 			'default'		=> 'GBP',
 			'value'			=> 'GBP',
@@ -589,6 +613,48 @@ class Module_Firesale extends Module {
 			'options'		=> '',
 			'is_required' 	=> 1,
 			'is_gui'		=> 1,
+			'module' 		=> 'firesale'
+		);
+
+		// Currency Key
+		$settings[] = array(
+			'slug' 		  	=> 'firesale_currency_key',
+			'title' 	  	=> 'Currency API Key',
+			'description' 	=> 'API Key from <a href="https://openexchangerates.org">Open Exchange Rates</a>',
+			'default'		=> '',
+			'value'			=> '',
+			'type' 			=> 'text',
+			'options'		=> '',
+			'is_required' 	=> 0,
+			'is_gui'		=> 1,
+			'module' 		=> 'firesale'
+		);
+
+		// Current Currency
+		$settings[] = array(
+			'slug' 		  	=> 'firesale_current_currency',
+			'title' 	  	=> 'Current Currency',
+			'description' 	=> 'The current currency in use, used to update existing values if default currency is changed',
+			'default'		=> 'GBP',
+			'value'			=> 'GBP',
+			'type' 			=> 'text',
+			'options'		=> '',
+			'is_required' 	=> 0,
+			'is_gui'		=> 0,
+			'module' 		=> 'firesale'
+		);
+
+		// Current Currency
+		$settings[] = array(
+			'slug' 		  	=> 'firesale_currency_updated',
+			'title' 	  	=> 'Currency last update time',
+			'description' 	=> 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that',
+			'default'		=> '',
+			'value'			=> '',
+			'type' 			=> 'text',
+			'options'		=> '',
+			'is_required' 	=> 0,
+			'is_gui'		=> 0,
 			'module' 		=> 'firesale'
 		);
 
