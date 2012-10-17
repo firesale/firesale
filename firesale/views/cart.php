@@ -22,8 +22,8 @@
 					<td class="name"><a href="{{ firesale:url route="product" id=id }}">{{ name }}</a></td>
 					<td class="model">{{ code }}</td>
 					<td><input type="text" name="item[{{ rowid }}][qty]" value="{{ qty }}" /></td>
-					<td>{{ settings:currency }} {{ helper:number_format string=price decimals="2" }}</td>
-					<td>{{ settings:currency }} {{ helper:number_format string=subtotal decimals="2" }}</td>
+					<td>{{ price }}</td>
+					<td>{{ subtotal }}</td>
 				</tr>
 {{ /contents }}
 {{ else }}
@@ -41,9 +41,9 @@
 
 		<section id="cart-totals">
 			<ul>
-				<li><label><?php echo lang('firesale:cart:label_sub_total'); ?>:</label><span>{{ settings:currency }} {{ subtotal }}</span></li>
-				<li><label><?php echo lang('firesale:cart:label_tax'); ?> ({{ tax_percent }}%):</label><span>{{ settings:currency }} {{ tax }}</span></li>
-				<li class="large"><label><?php echo lang('firesale:cart:label_total'); ?>:</label><span>{{ settings:currency }} {{ total }}</li>
+				<li><label><?php echo lang('firesale:cart:label_sub_total'); ?>:</label><span>{{ subtotal }}</span></li>
+				<li><label><?php echo lang('firesale:cart:label_tax'); ?> ({{ currency.cur_tax }}%):</label><span>{{ tax }}</span></li>
+				<li class="large"><label><?php echo lang('firesale:cart:label_total'); ?>:</label><span>{{ total }}</li>
 			</ul>
 			<br class="clear" />
 		</section>

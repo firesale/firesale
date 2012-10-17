@@ -39,13 +39,21 @@ class Currency_m extends MY_Model
 		$stream = $this->streams->streams->get_stream('firesale_currency', 'firesale_currency');
 		$row    = $this->row_m->get_row($id, $stream, false);
 
-		// Format price, just incase
-		$row->cur_format = str_replace(array('&#123;', '&#125;'), array('{', '}'), $row->cur_format);
+		// Check it's valid
+		if( $row )
+		{
 
-		// Add to cache
-		$this->cache[$id] = $row;
+			// Format price, just incase
+			$row->cur_format = str_replace(array('&#123;', '&#125;'), array('{', '}'), $row->cur_format);
 
-		return $row;
+			// Add to cache
+			$this->cache[$id] = $row;
+
+			return $row;
+		}
+
+		// Nothing?
+		return FALSE;
 	}
 
 	public function format_price($price, $rrp, $currency = 1)
@@ -75,10 +83,10 @@ class Currency_m extends MY_Model
 		$price_tax = ( $price * $currency->exch_rate );
 
 		// Format prices
-		$rrp_f       = $this->_format_price($rrp, $currency);       // RRP With tax
-		$rrp_tax_f   = $this->_format_price($rrp_tax, $currency);   // RRP Without tax
-		$price_f     = $this->_format_price($price, $currency);     // With tax
-		$price_tax_f = $this->_format_price($price_tax, $currency); // Without tax
+		$rrp_f       = $this->format_string($rrp, $currency);       // RRP With tax
+		$rrp_tax_f   = $this->format_string($rrp_tax, $currency);   // RRP Without tax
+		$price_f     = $this->format_string($price, $currency);     // With tax
+		$price_tax_f = $this->format_string($price_tax, $currency); // Without tax
 
 		// Prepare return
 		$return = array(
@@ -96,11 +104,11 @@ class Currency_m extends MY_Model
 		return $return;
 	}
 
-	public function _format_price($price, $currency)
+	public function format_string($price, $currency, $fix = TRUE)
 	{
 
 		// Stop random values
-		if( $currency->id != 1 )
+		if( $fix AND $currency->id != 1 )
 		{
 			$price = ( ceil($price) - 0.01 );
 		}
