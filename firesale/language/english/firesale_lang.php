@@ -23,6 +23,7 @@
 	// Tabs
 	$lang['firesale:tabs:general']		= 'General Options';
 	$lang['firesale:tabs:description'] 	= 'Description';
+	$lang['firesale:tabs:formatting'] 	= 'Formatting';
 	$lang['firesale:tabs:shipping']		= 'Shipping';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributes';
@@ -176,14 +177,20 @@
 	$lang['firesale:label_translation'] = 'Translation';
 	$lang['firesale:label_table']       = 'Table';
 
-	$lang['firesale:label_cur_code']       = 'Currency Code';
-	$lang['firesale:label_cur_code_inst']  = 'ISO-4217 Format';
-	$lang['firesale:label_cur_tax']        = 'Tax Rate';
-	$lang['firesale:label_cur_mod']        = 'Currency Modifier';
-	$lang['firesale:label_cur_mod_inst']   = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region';
-	$lang['firesale:label_exch_rate']      = 'Exchange Rate';
-	$lang['firesale:label_exch_rate_inst'] = 'This will be automatically updated every hour and can be left blank as it will be updated on save';
-	$lang['firesale:label_cur_flag']       = 'Related Image';
+	$lang['firesale:label_cur_code']        = 'Currency Code';
+	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format';
+	$lang['firesale:label_cur_tax']         = 'Tax Rate';
+	$lang['firesale:label_cur_mod']         = 'Currency Modifier';
+	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region';
+	$lang['firesale:label_exch_rate']       = 'Exchange Rate';
+	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save';
+	$lang['firesale:label_cur_flag']        = 'Related Image';
+	$lang['firesale:label_enabled']         = 'Enabled';
+	$lang['firesale:label_disabled']        = 'Disabled';
+	$lang['firesale:label_cur_format']      = 'Currency Format';
+	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}';
+	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol';
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol';
 
 	// Orders
 	$lang['firesale:orders:title']				   = 'Orders';

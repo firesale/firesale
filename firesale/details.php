@@ -444,8 +444,11 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_cur_code', 'slug' => 'cur_code', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_code_inst', 'extra' => array('max_length' => 3));
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
-		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0));
+		$fields[] = array('name' => 'lang:firesale:label_enabled', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_disabled\n1 : lang:firesale:label_enabled", 'choice_type' => 'dropdown', 'default_value' => 1));
 		$fields[] = array('name' => 'lang:firesale:label_cur_tax', 'slug' => 'cur_tax', 'type' => 'text', 'extra' => array('max_length' => 10));
+		$fields[] = array('name' => 'lang:firesale:label_cur_format', 'slug' => 'cur_format', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_format_inst', 'extra' => array('max_length' => 32));
+		$fields[] = array('name' => 'lang:firesale:label_cur_format_dec', 'slug' => 'cur_format_dec', 'type' => 'text', 'extra' => array('max_length' => 1));
+		$fields[] = array('name' => 'lang:firesale:label_cur_format_sep', 'slug' => 'cur_format_sep', 'type' => 'text', 'extra' => array('max_length' => 1));
 		$fields[] = array('name' => 'lang:firesale:label_cur_mod', 'slug' => 'cur_mod', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_mod_inst', 'extra' => array('max_length' => 10));
 		$fields[] = array('name' => 'lang:firesale:label_cur_flag', 'slug' => 'image', 'type' => 'image', 'extra' => array('folder' => $currency['data']['id']), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exch_rate', 'type' => 'text', 'instructions' => 'lang:firesale:label_exch_rate_inst', 'extra' => array('max_length' => 10), 'required' => FALSE);
@@ -457,8 +460,22 @@ class Module_Firesale extends Module {
 		$this->streams->fields->add_fields($fields);
 
 		// Add an initial currency
-		$currency = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'cur_code' => 'GBP', 'title' => 'Default', 'slug' => 'default', 'enabled' => 1, 'cur_tax' => '20', 'cur_mod' => '+|0', 'exch_rate' => '1');
-		$this->db->insert('firesale_currency', $currency);
+		$this->db->insert('firesale_currency', array(
+						  	'id' => 1,
+						  	'created' => date("Y-m-d H:i:s"),
+						  	'created_by' => $this->current_user->id,
+						  	'ordering_count' => 0,
+						  	'cur_code' => 'GBP',
+						  	'title' => 'Default',
+						  	'slug' => 'default',
+						  	'enabled' => 1,
+						  	'cur_tax' => '20',
+						  	'cur_format' => '£{{ price }}',
+						  	'cur_format_dec' => '.',
+						  	'cur_format_sep' => ',',
+						  	'cur_mod' => '+|0',
+						  	'exch_rate' => '1'
+						));
 
 		##################
 		## TRANSACTIONS ##

@@ -12,6 +12,7 @@ class Admin_currency extends Admin_Controller
 {
 
 	public $section = 'currency';
+	public $tabs    = array('formatting' => array('cur_format', 'cur_format_dec', 'cur_format_sep'));
 
 	public function __construct()
 	{
@@ -21,6 +22,7 @@ class Admin_currency extends Admin_Controller
 		// Load libraries, drivers & models
 		$this->load->driver('Streams');
 		$this->load->model('currency_m');
+		$this->load->helper('general');
 
 		// Initialise data
 		$this->data = new stdClass();
@@ -117,7 +119,8 @@ class Admin_currency extends Admin_Controller
 		}
 
 		// Assign data
-		$this->data->fields = $fields;
+		$this->data->fields = fields_to_tabs($fields, $this->tabs);
+		$this->data->tabs	= array_keys($this->data->fields);
 		$this->data->type   = ( $row == NULL ? 'create' : 'edit' );
 
 		// Build the page
@@ -133,7 +136,7 @@ class Admin_currency extends Admin_Controller
 	{
 
 		// Get row
-		if( $row = $this->row_m->get_row($id, $this->stream, FALSE) )
+		if( $row = $this->currency_m->get($id) )
 		{
 			// Load form
 			$this->create($row);

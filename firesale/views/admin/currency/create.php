@@ -1,30 +1,44 @@
 
-	<section class="title">
-		<h4><?php echo lang('firesale:currency:'.$type); ?></h4>
-	</section>
+	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
 
-	<section class="item form_inputs">
+		<section class="title">
+			<h4><?php echo lang('firesale:currency:'.$type); ?></h4>
+		</section>
 
-		<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
+		<section class="item form_inputs">
 
-			<fieldset>
-				<ul>
-				<?php foreach( $fields AS $input ): ?>
-					<li class="<?php echo alternator('even', ''); ?>">
-						<label for="<?php echo $input['input_slug']; ?>">
-							<?php echo lang(substr($input['input_title'], 5)); ?>  <?php echo $input['required']; ?>
-							<small><?php echo lang(substr($input['instructions'], 5)); ?></small>
-						</label>
-						<div class="input"><?php echo $input['input']; ?></div>
-					</li>
+			<div class="tabs">
+
+				<ul class="tab-menu">
+				<?php foreach( $tabs AS $tab ): ?>
+					<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><span><?php echo lang('firesale:tabs:'.$tab); ?></span></a></li>
 				<?php endforeach; ?>
 				</ul>
-			</fieldset>
+
+			<?php foreach( $fields AS $slug => $field ): ?>
+				<div id="<?php echo strtolower(str_replace(' ', '', $slug)); ?>" class="form_inputs">
+					<fieldset>
+						<ul>
+						<?php foreach( $field AS $input ): ?>
+							<li class="<?php echo alternator('even', ''); ?>">
+								<label for="<?php echo $input['input_slug']; ?>">
+									<?php echo lang(substr($input['input_title'], 5)); ?>  <?php echo $input['required']; ?>
+									<small><?php echo lang(substr($input['instructions'], 5)); ?></small>
+								</label>
+								<div class="input"><?php echo $input['input']; ?></div>
+							</li>
+						<?php endforeach; ?>
+						</ul>
+					</fieldset>
+				</div>
+			<?php endforeach; ?>
+
+			</div>
 
 			<div class="buttons">
 				<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'save_exit', 'cancel') )); ?>
 			</div>
 
-		<?php echo form_close(); ?>
+		</section>
 
-	</section>
+	<?php echo form_close(); ?>

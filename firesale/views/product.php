@@ -31,7 +31,7 @@
             <li class="model"><strong><?php echo lang('firesale:product:label_model'); ?></strong>{{ product.title }}</li>
             <li class="prodid"><strong><?php echo lang('firesale:product:label_product_code'); ?></strong><span><?php echo $product['code']; ?></span></li>
           </ul>
-          <section class="price-round large"><span class="rrp">{{ if product.rrp > product.price }}{{ product.rrp }}{{ endif }}</span><span class="price">{{ product.price }}</span><span class="currency">{{ settings:currency }}</span></section>
+          <section class="price-round large"><span class="rrp">{{ if product.rrp > product.price }}{{ product.rrp_formatted }}{{ endif }}</span><span class="price">{{ product.price_formatted }}</span><span class="currency">{{ settings:currency }}</span></section>
           <br class="clear" />
         </section>
 		    <section class="product-buy">

@@ -52,6 +52,7 @@ class Products_m extends MY_Model {
 	{
 		parent::__construct();
 		$this->load->helper('firesale/general');
+		$this->load->model('firesale/currency_m');
 	}
 	
 	/**
@@ -184,6 +185,15 @@ class Products_m extends MY_Model {
 				$product['snippet']  = truncate_words($product['description']);
 				$product['category'] = $this->get_categories($product['id']);
 				$product['image']    = $this->get_single_image($product['id']);
+
+				// Format product pricing
+				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax']);
+
+				// Assign pricing
+				foreach( $pricing AS $key => $val )
+				{
+					$product[$key] = $val;
+				}
 
 				// Add to cache
 				$this->cache['id'][$product['id']]     = $product;
