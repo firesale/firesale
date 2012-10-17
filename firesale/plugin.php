@@ -8,6 +8,7 @@ class Plugin_Firesale extends Plugin
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->model('routes_m');
+		$this->load->model('currency_m');
 	}
 
 	public function url()
@@ -213,6 +214,22 @@ class Plugin_Firesale extends Plugin
 		$data->total = number_format($data->total, 2);
 
 		return array($data);
+	}
+
+	public function currencies()
+	{
+
+		// Select all currencies
+		$results = $this->db->select('id')->get('firesale_currency')->result_array();
+
+		// Loop them
+		foreach( $results AS &$currency )
+		{
+			// Retrieve data
+			$currency = $this->currency_m->get($currency['id']);
+		}
+
+		return $results;
 	}
 
 	public function prevoius_next()
