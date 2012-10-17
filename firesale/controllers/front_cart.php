@@ -24,6 +24,7 @@ class Front_cart extends Public_Controller
 		
 		// Load the required models
 		$this->load->driver('Streams');
+		$this->load->model('firesale/currency_m');
 		$this->load->model('firesale/cart_m');
 		$this->load->model('firesale/orders_m');
 		$this->load->model('firesale/address_m');
@@ -56,13 +57,15 @@ class Front_cart extends Public_Controller
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
 		
 		// Set the tax percentage
+		$this->fs_cart->active_tax  = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
 		$this->fs_cart->tax_percent = $this->settings->get('firesale_tax');
 		
 		// Set the pricing vars
 		if ($this->fs_cart->total() > 0)
 		{
+			$this->fs_cart->tax_mod  = 1 - ( $this->fs_cart->active_tax->cur_tax / 100 );
 			$this->fs_cart->total	 = $this->fs_cart->total();
-			$this->fs_cart->tax		 = $this->fs_cart->total / (( $this->fs_cart->tax_percent / 100 ) + 1 ) * ( $this->fs_cart->tax_percent / 100 );
+			$this->fs_cart->tax		 = $this->fs_cart->total / (( $this->fs_cart->tax_percent / 100 ) + 1 ) * $this->fs_cart->tax_mod;
 			$this->fs_cart->subtotal = ( $this->fs_cart->total - $this->fs_cart->tax );
 		}
 		else
@@ -92,7 +95,7 @@ class Front_cart extends Public_Controller
 		$data['subtotal']    = $this->fs_cart->format_number($this->fs_cart->subtotal);
 		$data['tax']   		 = $this->fs_cart->format_number($this->fs_cart->tax);
 		$data['total']   	 = $this->fs_cart->format_number($this->fs_cart->total);
-		$data['tax_percent'] = $this->fs_cart->tax_percent;
+		$data['tax_percent'] = $this->fs_cart->active_tax->cur_tax;
 		$data['contents']    = $this->fs_cart->contents();
 
 		// Add item id

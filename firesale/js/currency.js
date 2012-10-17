@@ -3,7 +3,6 @@ $(function() {
 	// Create/Edit
 	$('<span>&nbsp;%</span>').insertAfter($('input[name=cur_tax]').css('cssText', 'min-width: 60px !important; width: 60px !important'));
 	$('<input type="hidden" name="cur_mod_type" value="+" /><button name="cur_mod_type_btn" value="+" class="btn gray mod">+</button> ').insertBefore($('input[name=cur_mod]').css('cssText', 'min-width: 60px !important; width: 60px !important'));
-	$('#exch_rate').parents('li').hide();
 	$('button[name=cur_mod_type_btn]').click(function(e) { 
 		e.preventDefault();
 		var h = $('input[name=cur_mod_type]'), b = $('button[name=cur_mod_type_btn]');

@@ -22,15 +22,11 @@ class Currency_m extends MY_Model
 	 */
 	public function __construct()
 	{
-
 		parent::__construct();
 		$this->load->driver('Streams');
-
-		// TEST
-		$this->session->set_userdata('currency', 2);
 	}
 
-	public function get($id)
+	public function get($id = 1)
 	{
 
 		// Check cache
@@ -64,39 +60,40 @@ class Currency_m extends MY_Model
 		// Get currency data
 		$currency = $this->get($currency);
 
-		// Check valid row
-		if( is_object($currency) )
+		// Check valid option
+		if( ! is_object($currency) )
 		{
-
-			// Perform conversion
-			$tax_mod   = 1 + ( $currency->cur_tax / 100 );
-			$rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
-			$rrp_tax   = ( $rrp   * $currency->exch_rate );
-			$price     = ( $price * $currency->exch_rate ) * $tax_mod;
-			$price_tax = ( $price * $currency->exch_rate );
-
-			// Format prices
-			$rrp_f       = $this->_format_price($rrp, $currency);       // RRP With tax
-			$rrp_tax_f   = $this->_format_price($rrp_tax, $currency);   // RRP Without tax
-			$price_f     = $this->_format_price($price, $currency);     // With tax
-			$price_tax_f = $this->_format_price($price_tax, $currency); // Without tax
-
-			// Prepare return
-			$return = array(
-						'rrp_tax'             => $rrp_tax,
-						'rrp_tax_formatted'   => $rrp_tax_f,
-						'rrp'                 => $rrp,
-						'rrp_formatted'       => $rrp_f,
-						'price_tax'           => $price_tax,
-						'price_tax_formatted' => $price_tax_f,
-						'price'               => $price,
-						'price_formatted'     => $price_f
-					  );
-
-			// return array
-			return $return;
+			// Get default
+			$currency = $this->get();
 		}
 
+		// Perform conversion
+		$tax_mod   = 1 + ( $currency->cur_tax / 100 );
+		$rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
+		$rrp_tax   = ( $rrp   * $currency->exch_rate );
+		$price     = ( $price * $currency->exch_rate ) * $tax_mod;
+		$price_tax = ( $price * $currency->exch_rate );
+
+		// Format prices
+		$rrp_f       = $this->_format_price($rrp, $currency);       // RRP With tax
+		$rrp_tax_f   = $this->_format_price($rrp_tax, $currency);   // RRP Without tax
+		$price_f     = $this->_format_price($price, $currency);     // With tax
+		$price_tax_f = $this->_format_price($price_tax, $currency); // Without tax
+
+		// Prepare return
+		$return = array(
+					'currency'            => $currency,
+					'rrp_tax'             => $rrp_tax,
+					'rrp_tax_formatted'   => $rrp_tax_f,
+					'rrp'                 => $rrp,
+					'rrp_formatted'       => $rrp_f,
+					'price_tax'           => $price_tax,
+					'price_tax_formatted' => $price_tax_f,
+					'price'               => $price,
+					'price_formatted'     => $price_f
+				  );
+
+		return $return;
 	}
 
 	public function _format_price($price, $currency)
