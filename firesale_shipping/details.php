@@ -19,11 +19,13 @@ class Module_Firesale_shipping extends Module {
 		$info = array(
 			'name' => array(
 				'en' => 'FireSale Shipping',
-				'fr' => 'FireSale Expédition'
+				'fr' => 'FireSale Expédition',
+				'it' => 'FireSale Spedizioni'
 			),
 			'description' => array(
 				'en' => 'Basic band-based shipping options',
-				'fr' => 'Gestionnaire de modes d\'expédition'
+				'fr' => 'Gestionnaire de modes d\'expédition',
+				'it' => 'Gestione base delle spedizioni'
 			),
 			'frontend'		=> FALSE,
 			'backend'		=> FALSE,
