@@ -637,7 +637,7 @@ class Module_Firesale extends Module {
 		$settings[] = array(
 			'slug' 		  	=> 'firesale_currency_key',
 			'title' 	  	=> 'Currency API Key',
-			'description' 	=> 'API Key from <a href="https://openexchangerates.org">Open Exchange Rates</a>',
+			'description' 	=> 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>',
 			'default'		=> '',
 			'value'			=> '',
 			'type' 			=> 'text',
