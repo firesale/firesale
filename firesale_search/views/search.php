@@ -1,4 +1,3 @@
-
 	<form id="search" method="post" action="">
 	
 		<input type="text" name="search" placeholder="Search term..." <?php echo ( isset($current) ? 'value="' . urldecode($current) . '" ' : '' ); ?>/>
@@ -7,7 +6,7 @@
 		<br class="clear" />
 
 	</form>
-
+<?php $total=0;?>
 <?php if( isset($pagination) ): ?>
 	<?php echo $pagination['links']; ?>
 <?php endif; ?>
@@ -17,7 +16,7 @@
 
 		<h2><?php echo lang('firesale:search:label_nothing_found'); ?></h2>
 
-<?php elseif( isset($current) AND $total > 0 ): ?>
+<?php elseif( isset($current) AND $total == 0 ): ?>
 <?php foreach( $results as $product ): ?>
 
 		<a href="<?php echo BASE_URI . "product/{$product['slug']}"; ?>"><?php echo $product['title']; ?></a>
