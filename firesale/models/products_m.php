@@ -51,6 +51,7 @@ class Products_m extends MY_Model {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('firesale/categories_m');
 		$this->load->helper('firesale/general');
 		$this->load->model('firesale/currency_m');
 	}
