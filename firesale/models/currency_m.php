@@ -75,6 +75,9 @@ class Currency_m extends MY_Model
 			$currency = $this->get();
 		}
 
+		// Add symbol
+		$currency->symbol = str_replace('&Acirc;', '', htmlentities(str_replace('{{ price }}', '', $currency->cur_format)));
+
 		// Perform conversion
 		$tax_mod   = 1 + ( $currency->cur_tax / 100 );
 		$rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
@@ -116,6 +119,7 @@ class Currency_m extends MY_Model
 		// Format
 		$formatted = number_format($price, 2, $currency->cur_format_dec, $currency->cur_format_sep);
 		$formatted = str_replace('{{ price }}', $formatted, $currency->cur_format);
+		$formatted = str_replace('&Acirc;', '', htmlentities(trim($formatted)));
 
 		// Return
 		return $formatted;
