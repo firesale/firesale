@@ -15,7 +15,7 @@ class Events_Firesale_shipping
 	
 	}
 
-    public function form_build(&$controller)
+    public function form_build($controller)
     {
 
 		// Remove images (needs to be last)

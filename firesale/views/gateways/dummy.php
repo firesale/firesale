@@ -1,5 +1,5 @@
 <?php echo form_open(); ?>
-	<label>Name on Card: </label> <?php echo form_input('card_name'); ?>
+	<label>Name on Card: </label> <?php echo form_input('name'); ?>
 	<label>Card Type: </label> <?php echo form_dropdown('card_type', array('visa' => 'Visa')); ?>
 	<label>Card No: </label> <?php echo form_input('card_no'); ?><br><strong>(Test card no: 4111111111111111)</strong>
 	<label>Expiry date: </label> <?php echo form_dropdown('exp_month', $months); ?>

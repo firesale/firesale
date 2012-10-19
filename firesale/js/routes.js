@@ -48,6 +48,12 @@ function build_buttons()
 		html += '<button class="btn blue route-action" data-route="{{ title }}" data-translation=".+?"><span>Add Title</span></button>';
 	}
 
+	// Category specific
+	if( id == '1' || slug == 'category' )
+	{
+		html += '<button class="btn blue route-action" data-route="{{ parent_slug }}" data-translation="[0-9a-z-/]+"><span>Add Parent Slugs</span></button>';
+	}
+
 	// Product specific
 	if( id == '2' || slug == 'product' )
 	{

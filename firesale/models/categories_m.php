@@ -138,13 +138,13 @@ class Categories_m extends MY_Model
     						 ->group_by('firesale_products.slug');
 
     	// Has children?
-    	if( !empty($children) )
+    	if( !empty($children) AND $category != NULL )
 		{
 			// Then get the count including child products
 			$children[] = $category;
 			$query->where_in('firesale_categories_id', $children);
 		}
-		else
+		else if( $category != NULL )
 		{
 			// Otherwise just this categories
 			$query->where('firesale_categories_id', (int)$category);

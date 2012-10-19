@@ -325,28 +325,15 @@ class Merchant
 	 */
 	public static function post_redirect($url, $data, $message = NULL)
 	{
-		if (empty($message))
-		{
-			$message = lang('merchant_payment_redirect');
-		}
+		$_CI =& get_instance();
 
-		?><!DOCTYPE html>
-<html>
-<head><title>Redirecting...</title></head>
-<body onload="document.forms[0].submit();">
-	<form name="payment" action="<?php echo htmlspecialchars($url); ?>" method="post">
-		<p><?php echo htmlspecialchars($message); ?></p>
-		<p>
-			<?php foreach ($data as $key => $value): ?>
-				<input type="hidden" name="<?php echo htmlspecialchars($key); ?>" value="<?php echo htmlspecialchars($value); ?>" />
-			<?php endforeach ?>
-			<input type="submit" value="Continue" />
-		</p>
-	</form>
-</body>
-</html>
-<?php
-		exit();
+		$template = $_CI->template->append_js('module::payment_redirection.js')
+								  ->set('data', $data)
+								  ->set('post_url', $url)
+								  ->set('message', $message)
+								  ->build('payment_redirection');
+
+		exit($template);
 	}
 }
 
@@ -626,13 +613,17 @@ abstract class Merchant_driver
 	 */
 	protected function secure_request()
 	{
-		if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) AND $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+		// CH: Only check for SSL if we're in a production environment
+		if (ENVIRONMENT === PYRO_PRODUCTION)
 		{
-			return TRUE;
-		}
-		if (empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) == 'off')
-		{
-			return FALSE;
+			if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) AND $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+			{
+				return TRUE;
+			}
+			if (empty($_SERVER['HTTPS']) OR strtolower($_SERVER['HTTPS']) == 'off')
+			{
+				return FALSE;
+			}
 		}
 
 		return TRUE;

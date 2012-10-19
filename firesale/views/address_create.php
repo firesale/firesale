@@ -9,7 +9,7 @@
 		<?php foreach( $fields as $field ) { ?>
 
 			<li>
-				<label for="<?php echo $field['input_slug'];?>"><?php echo $this->fields->translate_label($field['input_title']);?> <?php echo $field['required'];?>
+				<label for="<?php echo $field['input_slug'];?>"><?php echo $this->fields->translate_label($field['input_title']); ?> <?php echo $field['required'];?>
 				
 				<?php if( $field['instructions'] != '' ): ?>
 					<br /><small><?php echo $field['instructions']; ?></small>
@@ -26,6 +26,6 @@
 	</div>
 
 	<button type="submit" name="btnAction" value="save" class="btn blue"><span><?php echo lang('firesale:addresses:save'); ?></span></button>	
-	<a href="/users/addresses" class="btn"><span><?php echo lang('firesale:addresses:cancel'); ?></span></a>
+	<a href="{{ firesale:url route="addresses" }}" class="btn"><span><?php echo lang('firesale:addresses:cancel'); ?></span></a>
 
 <?php echo form_close();?>

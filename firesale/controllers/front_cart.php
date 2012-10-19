@@ -24,6 +24,7 @@ class Front_cart extends Public_Controller
 		
 		// Load the required models
 		$this->load->driver('Streams');
+		$this->load->model('firesale/currency_m');
 		$this->load->model('firesale/cart_m');
 		$this->load->model('firesale/orders_m');
 		$this->load->model('firesale/address_m');
@@ -56,20 +57,22 @@ class Front_cart extends Public_Controller
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
 		
 		// Set the tax percentage
+		$this->fs_cart->currency    = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
 		$this->fs_cart->tax_percent = $this->settings->get('firesale_tax');
 		
 		// Set the pricing vars
 		if ($this->fs_cart->total() > 0)
 		{
-			$this->fs_cart->total		= $this->fs_cart->total();
-			$this->fs_cart->tax			= ( $this->fs_cart->total / 100 ) * $this->fs_cart->tax_percent;
-			$this->fs_cart->subtotal	= ( $this->fs_cart->total - $this->fs_cart->tax );
+			$this->fs_cart->tax_mod  = 1 - ( $this->fs_cart->currency->cur_tax / 100 );
+			$this->fs_cart->total	 = $this->fs_cart->total();
+			$this->fs_cart->tax		 = $this->fs_cart->total / (( $this->fs_cart->tax_percent / 100 ) + 1 ) * ( 1 - $this->fs_cart->tax_mod );
+			$this->fs_cart->subtotal = ( $this->fs_cart->total - $this->fs_cart->tax );
 		}
 		else
 		{
-			$this->fs_cart->total		= '0.00';
-			$this->fs_cart->tax			= '0.00';
-			$this->fs_cart->subtotal	= '0.00';
+			$this->fs_cart->total	 = '0.00';
+			$this->fs_cart->tax		 = '0.00';
+			$this->fs_cart->subtotal = '0.00';
 		}
 
 		// Load shipping model
@@ -89,17 +92,21 @@ class Front_cart extends Public_Controller
 	{
 	
 		// Assign Variables
-		$data['subtotal']    = $this->fs_cart->format_number($this->fs_cart->subtotal);
-		$data['tax']   		 = $this->fs_cart->format_number($this->fs_cart->tax);
-		$data['total']   	 = $this->fs_cart->format_number($this->fs_cart->total);
-		$data['tax_percent'] = $this->fs_cart->tax_percent;
+		$data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal, $this->fs_cart->currency, false);
+		$data['tax']   		 = $this->currency_m->format_string($this->fs_cart->tax, $this->fs_cart->currency, false);
+		$data['total']   	 = $this->currency_m->format_string($this->fs_cart->total, $this->fs_cart->currency, false);
+		$data['currency']    = $this->fs_cart->currency;
 		$data['contents']    = $this->fs_cart->contents();
 
 		// Add item id
 		$i = 1;
-		foreach ($data['contents'] AS $key => $product)
+		foreach ($data['contents'] AS &$product)
 		{
-			$data['contents'][$key]['no'] = $i;
+
+			$product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency, false);
+			$product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency, false);
+			$product['no']       = $i;
+
 			$i++;
 		}
 
@@ -513,13 +520,13 @@ class Front_cart extends Public_Controller
 					'amount'        => $this->fs_cart->total,
 					'reference'     => 'Order #' . $this->session->userdata('order_id')
 				));
-				$process = $this->merchant->process($params);
-				$status = '_order_' . $process->status;
+				$process = $this->merchant->purchase($params);
+				$status = '_order_' . $process->status();
 
 				// Check status
-				if ($process->status == 'authorized')
+				if ($process->status() == 'authorized')
 				{
-					if ((float)$process->amount == (float)$order['price_total'])
+					if ((float)$process->amount() == (float)$order['price_total'])
 					{
 						// Remove ID & Shipping option
 						$this->session->unset_userdata('order_id');
@@ -529,6 +536,11 @@ class Front_cart extends Public_Controller
 					{
 						$status = '_order_mismatch';
 					}
+				}
+
+				if ( ! method_exists($this, $status))
+				{
+					$status = '_order_processing';
 				}
 
 				// Run status function
@@ -670,6 +682,11 @@ class Front_cart extends Public_Controller
 			$this->template->build('payment_complete', $order);
 		}
 
+	}
+
+	private function _order_complete()
+	{
+		call_user_func_array(array($this, '_order_authorized'), func_get_args());
 	}
 
 	public function success()

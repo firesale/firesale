@@ -52,6 +52,7 @@ class Products_m extends MY_Model {
 	{
 		parent::__construct();
 		$this->load->helper('firesale/general');
+		$this->load->model('firesale/currency_m');
 	}
 	
 	/**
@@ -70,7 +71,7 @@ class Products_m extends MY_Model {
 	{
 	
 		$_products = $this->db->select('id, slug, title')->order_by('title')->get($this->_table)->result_array();
-		$products  = array();
+		$products  = array('-1' => lang('firesale:label_filterprod'));
 		
 		foreach( $_products AS $product )
 		{
@@ -78,6 +79,58 @@ class Products_m extends MY_Model {
 		}
 	
 		return $products;	
+	}
+
+	/**
+	 * Builds a dropdown of the available product status' for products and returns
+	 * the dropdown string with the optionally passed ID preselected.
+	 *
+	 * @param integer $id (Optional) Pre-selected key in the dropdown
+	 * @return string The HTML dropdown string
+	 * @access public
+	 */
+	public function status_dropdown($id = NULL)
+	{
+
+		// Variables
+		$list       = array();
+		$list['-1'] = lang('firesale:label_filterstatus');
+		$list['0']  = lang('firesale:label_draft');
+		$list['1']  = lang('firesale:label_live');
+
+		// Build the dropbown
+		$drop = form_dropdown('status', $list, $id);
+
+		// Return it
+		return $drop;
+	}
+
+	/**
+	 * Builds a dropdown of the available stock status' for products and returns
+	 * the dropdown string with the optionally passed ID preselected.
+	 *
+	 * @param integer $id (Optional) Pre-selected key in the dropdown
+	 * @return string The HTML dropdown string
+	 * @access public
+	 */
+	public function stock_status_dropdown($id = NULL)
+	{
+
+		// Variables
+		$list = array('-1' => lang('firesale:label_filtersstatus'));
+		$drop = '';
+
+		// Loop products
+		foreach( $this->_stockstatus AS $key => $status )
+		{
+			$list[$key] = lang($status);
+		}
+
+		// Build the dropbown
+		$drop = form_dropdown('stock_status', $list, $id);
+
+		// Return it
+		return $drop;
 	}
 	
 	/**
@@ -133,6 +186,15 @@ class Products_m extends MY_Model {
 				$product['category'] = $this->get_categories($product['id']);
 				$product['image']    = $this->get_single_image($product['id']);
 
+				// Format product pricing
+				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax']);
+
+				// Assign pricing
+				foreach( $pricing AS $key => $val )
+				{
+					$product[$key] = $val;
+				}
+
 				// Add to cache
 				$this->cache['id'][$product['id']]     = $product;
 				$this->cache['slug'][$product['slug']] = $product;
@@ -178,6 +240,17 @@ class Products_m extends MY_Model {
 				$query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
 					  ->where('pc.firesale_categories_id', $value);
 			}
+			else if( $key == 'search' )
+			{
+				$query->like('title', $value)
+					  ->or_like('code', $value);
+			}
+			else if( $key == 'price' )
+			{
+				list($from, $to) = explode('-', $value);
+				$query->where('p.price >=', $from)
+				      ->where('p.price <=', $to);
+			}
 			else
 			{
 				$query->where($key, $value);
@@ -195,6 +268,41 @@ class Products_m extends MY_Model {
 
 		// Nothing?
 		return FALSE;
+	}
+
+	/**
+	 * Generates the minimum and maximum available pricing for products.
+	 *
+	 * @return array The min and max price
+	 * @access public
+	 */
+	public function price_min_max()
+	{
+
+		// Variables
+		$return = array('min' => '0.00', 'max' => '0.00');
+
+		// Run min query
+		$query = $this->db->select('price')->order_by('price', 'asc')->limit('1')->get('firesale_products');
+
+		// Check for min
+		if( $query->num_rows() )
+		{
+			$results = current($query->result_array());
+			$return['min'] = $results['price'];
+		}
+
+		// Run max query
+		$query = $this->db->select('price')->order_by('price', 'desc')->limit('1')->get('firesale_products');
+
+		// Check for max
+		if( $query->num_rows() )
+		{
+			$results = current($query->result_array());
+			$return['max'] = $results['price'];
+		}
+
+		return $return;
 	}
 	
 	/**
@@ -266,7 +374,7 @@ class Products_m extends MY_Model {
 			// Remove files folder
 			if( $product !== FALSE )
 			{
-				$folder = $this->get_file_folder_by_slug($product->slug);
+				$folder = $this->get_file_folder_by_slug($product['slug']);
 				if( $folder != FALSE ) {
 					$images = Files::folder_contents($folder->id);
 					$images = $images['data']['file'];
@@ -723,12 +831,20 @@ class Products_m extends MY_Model {
 	{
 
 		// Variables
-		$bg    = array(255, 255, 255);
 		$id    = $status['data']['id'];
 		$w     = $status['data']['width'];
 		$h	   = $status['data']['height'];
 		$mime  = str_replace('image/', '', $status['data']['mimetype']);
 		$path  = $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . SITE_REF . '/files/' . $status['data']['filename'];
+
+		// Build background colour
+		$colour = str_replace('#', '', $this->settings->get('image_background', 'ffffff'));
+		$colour = ( strlen($colour) == 3 ? $colour : '' ) . $colour;
+  		$bg     = array(
+  					'r' => hexdec(substr($colour, 0, 2)),
+   					'g' => hexdec(substr($colour, 2, 2)),
+   					'b' => hexdec(substr($colour, 4, 2))
+  				  );
 
 		// Is it required?
 		if( $w != $h AND in_array($mime, $allow) )
@@ -737,7 +853,7 @@ class Products_m extends MY_Model {
 			// Settings
 			$size = ( $w > $h ? $w : $h );
 			$img  = imagecreatetruecolor($size, $size);
-			$bg   = imagecolorallocate($img, $bg[0], $bg[1], $bg[2]);
+			$bg   = imagecolorallocate($img, $bg['r'], $bg['g'], $bg['b']);
 			$copy = 'imagecreatefrom' . $mime;
 			$save = 'image' . $mime;
 			$orig = $copy($path);

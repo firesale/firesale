@@ -1,9 +1,10 @@
 $(function() {
 	
 	// Index
-	$('#filters select[name=created_by]').change(function() { window.location = '/admin/firesale/orders/created_by/' + $(this).val(); });
-
+	$('#filters select').change(function() { window.location = '/admin/firesale/orders'+( parseInt($(this).val()) > 0 ? '/'+$(this).attr('name')+'/' + $(this).val() : '' ); });
 	$('#price_sub, #price_ship, #price_total').before('<span>' + currency + '&nbsp;</span>');
+	$('#order_table').tablesorter({headers:{0:{sorter:false},8:{sorter:false}}, widgets:["saveSort"]});
+	$('a.show-filter').click(function() { $('#filters').slideToggle(500); });
 
 	// Change address
 	$('#ship_to, #bill_to').change(function() {

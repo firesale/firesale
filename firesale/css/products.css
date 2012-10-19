@@ -1,17 +1,31 @@
-#product_search{width:430px;height:56px;float:right;margin:23px -20px 0 0;padding:0;}
-#product_search fieldset{border:none;padding:0;}
-#product_search label{width:230px;display:inline-block;text-align:right;}
-#product_search div.input{width:270px;display:inline-block;}
+/* Gneral */
 .chzn-container .chzn-single span,.chzn-container li{color:#666;font-weight:400;}
-tbody tr:last-child{border:none;}
-tfoot th{border:none;border-top:2px solid #ddd;}
+.loading{min-height:22px;background:url(img/loading.gif) no-repeat 50% 50%!important;}
+a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-repeat; float: right; cursor: pointer; margin: 7px 0 0 0; }
+#filters > ul { width: 100%; display: block; }
+#filters > ul > li:first-child { margin-top: 0 !important; }
+#filters > ul > li > center > input[type="text"] { width: 220px !important; }
+#filters > ul > li > center .chzn-single li span { text-align: left !important; }
+.chzn-container .chzn-single span, .chzn-container li { text-align: left !important; }
+
+/* Product Table */
 #product_table #id{width:100px!important;margin:0;}
-#product_table #title{width:330px!important;margin:0;}
+#product_table #title{width:95%!important;margin:0;}
 #product_table .chzn-container{width:170px!important;margin:0;}
 #product_table .chzn-container .chzn-drop{width:168px!important;}
-#product_table .actions{width:200px!important;}
+#product_table .actions{width:100px!important;}
 #product_table .item-img{width:40px!important;}
 #product_table img{width:32px;height:32px;float:left;display:block;background:url(img/none.jpg) no-repeat;background-size:32px 32px;overflow:hidden;text-indent:-1000px;}
+#product_table .chzn-container .chzn-search,#product_table .chzn-container .chzn-search input{width:133px!important;}
+#product_table thead tr .tablesorter-header{background-image:url(img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer;}
+#product_table thead tr .tablesorter-headerSortUp{background-image:url(img/asc.gif);}
+#product_table thead tr .tablesorter-headerSortDown{background-image:url(img/desc.gif);}
+#product_table thead tr .tablesorter-headerSortDown, table.tablesorter thead tr .tablesorter-headerSortUp{background-color:#f3f3f3;color:#000;}
+#product_table input[type=search] { width: 100% !important; min-width: 100% !important; }
+#product_table tbody tr td { position: relative; }
+#product_table tbody tr.loading td { width: 100%; height: 200px; background:url(img/loading.gif) no-repeat 50% 50%; }
+
+/* Image Dropbox */
 #dropbox{position:relative;min-height:290px;border-radius:15px;padding:4px 4px 44px;}
 #dropbox.dragging{background:rgba(100,100,100,0.05);border:4px dashed rgba(100,100,100,0.2);padding:0 0 40px;}
 #dropbox .message{font-size:30px;text-align:center;padding-top:147px;display:block;text-transform:uppercase;color:rgba(100,100,100,0.2);font-weight:700;}
@@ -28,8 +42,10 @@ tfoot th{border:none;border-top:2px solid #ddd;}
 #dropbox .preview.done .progress{width:100%!important;}
 #dropbox .imageHolder:hover{cursor:move;}
 #dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(img/delete.png) no-repeat;}
+
+/* Form */
 #title,#slug{width:350px!important;}
-#rrp,#rrp_tax,#price,#price_tax,#stock{width:70px;min-width:40px!important;}
+#cost,#cost_tax,#rrp,#rrp_tax,#price,#price_tax,#stock{width:70px;min-width:40px!important;}
 #tabs textarea{width:100%;}
 span.discount strong{color:#0C3;}
 .clear{clear:both;height:0;line-height:0;}
@@ -39,5 +55,74 @@ button.link.unlinked{background-position:-40px 0;}
 .mult_lists tbody{border:1px solid #eee;}
 .mult_lists td{border-left:none!important;padding:1px 0 0!important;}
 .mult_lists ul{overflow-x:hidden;width:260px;padding:5px!important;}
-.loading{min-height:22px;background:url(img/loading.gif) no-repeat 50% 50%!important;}
-#product_table .chzn-container .chzn-search,#product_table .chzn-container .chzn-search input{width:133px!important;}
+
+/* Split Buttons */
+.split-button { width: 80px; margin-top: -13px !important; padding-right: 30px; position: absolute; -webkit-appearance: none; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; background: #dddddd; background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#dddddd)); background-image: -moz-linear-gradient(#ffffff, #dddddd); background-image: -ms-linear-gradient(#ffffff, #dddddd); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dddddd)); background-image: -webkit-linear-gradient(#ffffff, #dddddd); background-image: -o-linear-gradient(#ffffff, #dddddd); background-image: linear-gradient(#ffffff, #dddddd); border: 1px solid; line-height: 14px; border-color: #dddddd #bbbbbb #999999; cursor: pointer; color: #333333; font-weight: bold; font-size: 13px; outline: 0; overflow: visible; padding: 3px 10px; text-shadow: #ffffff 0 1px 1px; width: auto; }
+.split-button li { width: 80px; padding-right: 30px; display: none; line-height: 22px; text-align: right !important; }
+.split-button li:first-child { display: block; background: url(img/split.bg.png) no-repeat 100% 0; }
+.split-button:hover { z-index: 100; }
+.split-button:hover li { display: block; }
+
+/* Slider */
+.ui-slider-cont { width: 550px; padding: 20px 0 0 0; }
+.ui-slider-cont label { width: 100px; height: 14px; line-height: 14px; padding: 0 0 10px 0; }
+.ui-slider-cont label.left { float: left; text-align: left; }
+.ui-slider-cont label.right { float: right; text-align: right; }
+.ui-slider { position: relative; text-align: left; width: 100%; clear: both; border: 1px solid #d8d8d8; background: #f1f1f1; border-radius: 4px; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 1; width: 1.2em; height: 1.2em; cursor: default; border: 1px solid #aaa; background: #fff; border-radius: 4px; }
+.ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; background: #F08E28; }
+.ui-slider-horizontal { height: .8em; }
+.ui-slider-horizontal .ui-slider-handle { height: 1.2em; top: -.3em; margin-left: -.6em; transition: 0s; -moz-transition: 0s; -webkit-transition: 0s; -o-transition: 0s; }
+.ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
+.ui-slider-horizontal .ui-slider-range-min { left: 0; }
+.ui-slider-horizontal .ui-slider-range-max { right: 0; }
+
+/* Responsive */
+@media only screen and (min-width: 281px) {
+	/* Filters */
+	#filters > ul > li { display: block; float: left; width: 100%; padding: 0; margin: 0; }
+	#filters > ul > li.wide { width: 100%; }
+	.ui-slider-cont { padding: 2px 0 10px 0; width: 230px; }
+	/* Table */
+	#product_table tr th:nth-child(4), #product_table tr td:nth-child(4) { width: 40%; }
+	#product_table tr th:nth-child(2), #product_table tr td:nth-child(2),
+	#product_table tr th:nth-child(3), #product_table tr td:nth-child(3),
+	#product_table tr th:nth-child(5), #product_table tr td:nth-child(5),
+	#product_table tr th:nth-child(6), #product_table tr td:nth-child(6),
+	#product_table tr th:nth-child(7), #product_table tr td:nth-child(7)
+	{ display: none; }
+}
+
+@media only screen and (min-width: 481px) {
+	/* Filters */
+	.ui-slider-cont { width: 400px; }
+	/* Table */
+	#product_table tr th:nth-child(6), #product_table tr td:nth-child(6)
+	{ display: table-cell; }
+}
+
+@media only screen and (min-width: 767px) {
+	/* Filters */
+	.ui-slider-cont { width: 650px; }
+	/* Table */
+	#product_table tr th:nth-child(4), #product_table tr td:nth-child(4) { width: 30%; }
+	#product_table tr th:nth-child(2), #product_table tr td:nth-child(2),
+	#product_table tr th:nth-child(7), #product_table tr td:nth-child(7)
+	{ display: table-cell; }
+}
+
+@media only screen and (min-width: 1025px) {
+	/* Filters */
+	#filters > ul > li { width: 33%; }
+	#filters > ul > li.wide { width: 66%; }
+	#filters > ul > li:nth-child(3n+1) { margin-top: 20px; }
+	.ui-slider-cont { padding: 15px 0 0 0; width: 530px; }
+	/* Table */
+	#product_table tr th:nth-child(4), #product_table tr td:nth-child(4) { width: 20%; }
+	#product_table tr th, #product_table tr td { display: table-cell!important;}
+}
+
+@media only screen and (min-width: 1281px) {
+	/* Filters */
+	.ui-slider-cont { width: 630px; }
+}
