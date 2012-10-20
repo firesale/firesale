@@ -178,9 +178,17 @@ class Module_Firesale extends Module {
 			AND ! is_dir(ADDONPATH . 'field_types/multiple')
 			AND ! is_dir(APPPATH . 'modules/streams_core/field_types/multiple'))
 		{
-			$this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
-			redirect('admin/modules');
-			return FALSE;
+			if( ! $this->install_multiple() )
+			{
+				$this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
+				redirect('admin/modules');
+				return FALSE;
+			}
+			else
+			{
+				// Redirect so Pyro recognises the field type is installed
+				redirect('admin/modules/install/firesale');
+			}
 		}
 		elseif ( ! is_writable(APPPATH . 'config/routes.php') )
 		{
@@ -810,6 +818,56 @@ class Module_Firesale extends Module {
 			$this->db->where_in('slug', $templates)->delete('email_templates');
 		}
 
+	}
+
+	public function install_multiple()
+	{
+
+		// Variables
+		$url    = 'https://github.com/parse19/PyroStreams-Multiple-Relationships/zipball/master';
+		$path   = SHARED_ADDONPATH . 'field_types/';
+		$before = scandir($path);
+
+		// Perform checks before continuing
+		if( class_exists('ZipArchive') AND
+			function_exists('copy') AND
+			function_exists('rename') AND
+			function_exists('unlink') AND
+			is_writable($path) )
+		{
+
+			// Download to temp folder
+			$temp = tempnam(sys_get_temp_dir(), 'multiple');
+			copy($url, $temp);
+
+			// Unzip
+			$zip    = new ZipArchive;
+			$zipped = $zip->open($temp);
+			if( $zipped )
+			{
+			  	$zip->extractTo($path);
+			  	$zip->close();
+			}
+
+			// Rename folder
+			$after  = scandir($path);
+			$new    = array_diff($after, $before);
+			$folder = current($new);
+			rename($path.$folder, $path.'multiple');
+
+			// Remove temp file
+			@unlink($temp);
+
+			// Check it all went well
+			if( is_dir($path.'multiple') )
+			{
+				return TRUE;
+			}
+
+		}
+
+		// Something went wrong
+		return FALSE;
 	}
 
 	public function info()
