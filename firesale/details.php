@@ -559,11 +559,26 @@ class Module_Firesale extends Module {
 		
 		// Remove files folder
 		$product_folder = $this->products_m->get_file_folder_by_slug('product-images');
-		if( $product_folder != FALSE ) { Files::delete_folder($product_folder->id); }
+		if( $product_folder != FALSE )
+		{
+			Files::delete_folder($product_folder->id);
+		}
 		
 		// Remove currency folder
 		$currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');
-		if( $currency_folder != FALSE ) { Files::delete_folder($currency_folder->id); }
+		if( $currency_folder != FALSE )
+		{
+
+			// Get files in folder
+			$files = Files::folder_contents($currency_folder->id);
+			foreach( $files['data']['file'] AS $file )
+			{
+				Files::delete_file($file->id);
+			}
+
+			// Delete folder
+			Files::delete_folder($currency_folder->id);
+		}
 
 		// Remove streams
 		$this->streams->utilities->remove_namespace('firesale_categories');
