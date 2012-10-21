@@ -561,6 +561,10 @@ class Front_cart extends Public_Controller
 				$currentMonth  = (int)date('m');
 				for( $x = $currentMonth; $x < $currentMonth+12; $x++ ) { $var['months'][$x] = date('F', mktime(0, 0, 0, $x, 1)); }
 
+				$current_year = date('Y');
+				for ($i = $current_year; $i < $current_year + 15; $i++)
+					$var['years'][$i] = $i;
+
 				// Format order
 				foreach( $order['items'] AS $key => $item )
 				{
