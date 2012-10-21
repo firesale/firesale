@@ -514,8 +514,15 @@ class Front_cart extends Public_Controller
 			// Begin payment processing
 			if ($this->input->post())
 			{
+				// Load the routes model
+				$this->load->model('routes_m');
+
 				// Run payment
-				$params = array_merge($this->input->post(NULL, TRUE), array(
+				$params = array_merge(array(
+					'notify_url' => $this->routes_m->build_url('cart') . '/callback',
+					'return_url' => $this->routes_m->build_url('cart') . '/success',
+					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
+				), $this->input->post(NULL, TRUE), array(
 					'currency_code' => $this->settings->get('firesale_currency'),
 					'amount'        => $this->fs_cart->total,
 					'reference'     => 'Order #' . $this->session->userdata('order_id')
@@ -554,6 +561,17 @@ class Front_cart extends Public_Controller
 				$currentMonth  = (int)date('m');
 				for( $x = $currentMonth; $x < $currentMonth+12; $x++ ) { $var['months'][$x] = date('F', mktime(0, 0, 0, $x, 1)); }
 
+				$current_year = date('Y');
+				for ($i = $current_year; $i < $current_year + 15; $i++)
+					$var['years'][$i] = $i;
+
+				$var['default_cards'] = array(
+					'visa'       => 'Visa',
+					'maestro'    => 'Maestro',
+					'mastercard' => 'MasterCard',
+					'discover'   => 'Discover'
+				);
+
 				// Format order
 				foreach( $order['items'] AS $key => $item )
 				{
@@ -561,12 +579,15 @@ class Front_cart extends Public_Controller
 					$order['items'][$key]['total'] = number_format(( $item['price'] * $item['qty']), 2);
 				}
 
+				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
+
 				// Build page
-				$this->template->title(lang('firesale:payment:title'))
+				$this->template->set_layout('default.html')
+							   ->title(lang('firesale:payment:title'))
 							   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart').'/payment')
 							   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
 							   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
-							   ->set('payment', $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE))
+							   ->set('payment', $gateway_view)
 							   ->build('payment', $order);
 
 			}
@@ -590,15 +611,15 @@ class Front_cart extends Public_Controller
 			$response = $this->merchant->process_return();
 			$status = '_order_' . $process->status;
 
-			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
-			$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
+			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->reference(), 'status' => $response->status()))->num_rows();
+			$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->reference(), 'amount' => $response->amount(), 'message' => $response->message(), 'status' => $response->status()));
 
 			if ( ! $processed)
 			{
 				// Check status
-				if ($process->status == 'authorized')
+				if ($process->status() == 'authorized')
 				{
-					if ($process->amount != $order['price_total'])
+					if ($process->amount() != $order['price_total'])
 					{
 						$status = '_order_mismatch';
 					}

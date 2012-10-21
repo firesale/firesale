@@ -303,6 +303,11 @@
 	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency';
 	$lang['firesale:currency:edit_success']      = 'Currency updated successfully';
 	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency';
+	$lang['firesale:label_cur_format_num']       = 'Number Formatting';
+	$lang['firesale:currency:format_none']       = 'None';
+	$lang['firesale:currency:format_00']         = 'Round up to next full number';
+	$lang['firesale:currency:format_50']         = 'Round to closest .50';
+	$lang['firesale:currency:format_99']         = 'Round up to closest .99';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
@@ -347,6 +352,26 @@
 	$lang['firesale:payment:cancelled'] = 'Order Cancelled';
 	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...';
 	$lang['firesale:payment:btn_continue'] = 'Continue';
+
+	// Settings
+	$lang['firesale:settings_tax']                   = 'Tax Percentage';
+	$lang['firesale:settings_tax_inst']              = 'The percentage of tax to be applied to the products';
+	$lang['firesale:settings_currency']              = 'Default Currency Code';
+	$lang['firesale:settings_currency_inst']         = 'The currency you accept (ISO-4217 format)';
+	$lang['firesale:settings_currency_key']          = 'Currency API Key';
+	$lang['firesale:settings_currency_key_inst']     = 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>';
+	$lang['firesale:settings_current_currency']      = 'Current Currency';
+	$lang['firesale:settings_current_currency_inst'] = 'The current currency in use, used to update existing values if default currency is changed';
+	$lang['firesale:settings_currency_updated']      = 'Currency last update time';
+	$lang['firesale:settings_currency_updated_inst'] = 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that';
+	$lang['firesale:settings_perpage']               = 'Products per Page';
+	$lang['firesale:settings_perpage_inst']          = 'The number of products to be displayed on category and search result pages';
+	$lang['firesale:settings_image_square']          = 'Make Images Square';
+	$lang['firesale:settings_image_square_inst']     = 'Some themes may require square images to keep layouts consistent';
+	$lang['firesale:settings_image_background']      = 'Image Background Colour';
+	$lang['firesale:settings_image_background_inst'] = 'Hexcode (without #) colour you wish resized image backgrounds to be';
+	$lang['firesale:settings_login']                 = 'Require login to purchase';
+	$lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products';
 	
 	// Install errors
 	$lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';

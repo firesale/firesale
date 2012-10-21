@@ -51,6 +51,7 @@ class Products_m extends MY_Model {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('firesale/categories_m');
 		$this->load->helper('firesale/general');
 		$this->load->model('firesale/currency_m');
 	}
@@ -235,7 +236,7 @@ class Products_m extends MY_Model {
 		// Add filtering
 		foreach( $filter AS $key => $value )
 		{
-			if( $key == 'category' )
+			if( $key == 'category' AND (int)$value > 0 )
 			{
 				$query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
 					  ->where('pc.firesale_categories_id', $value);
@@ -244,6 +245,10 @@ class Products_m extends MY_Model {
 			{
 				$query->like('title', $value)
 					  ->or_like('code', $value);
+			}
+			else if( $key == 'sale' AND $value == '1' )
+			{
+				$query->where('p.price <', 'p.rrp');
 			}
 			else if( $key == 'price' )
 			{

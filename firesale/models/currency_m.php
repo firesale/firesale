@@ -75,6 +75,9 @@ class Currency_m extends MY_Model
 			$currency = $this->get();
 		}
 
+		// Add symbol
+		$currency->symbol = str_replace('&Acirc;', '', htmlentities(str_replace('{{ price }}', '', $currency->cur_format)));
+
 		// Perform conversion
 		$tax_mod   = 1 + ( $currency->cur_tax / 100 );
 		$rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
@@ -107,15 +110,29 @@ class Currency_m extends MY_Model
 	public function format_string($price, $currency, $fix = TRUE)
 	{
 
-		// Stop random values
-		if( $fix AND $currency->id != 1 )
+		// Format initial value
+		if( $fix )
 		{
-			$price = ( ceil($price) - 0.01 );
+			switch($currency->cur_format_num)
+			{
+				case '1':
+					$price = ceil($price).'.00';
+				break;
+				
+				case '2':
+					$price = round(($price*2), 0)/2;
+				break;
+
+				case '3':
+					$price = round($price).'.99';
+				break;
+			}
 		}
 
 		// Format
 		$formatted = number_format($price, 2, $currency->cur_format_dec, $currency->cur_format_sep);
 		$formatted = str_replace('{{ price }}', $formatted, $currency->cur_format);
+		$formatted = str_replace('&Acirc;', '', htmlentities(trim($formatted)));
 
 		// Return
 		return $formatted;
