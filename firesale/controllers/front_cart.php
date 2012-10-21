@@ -572,12 +572,15 @@ class Front_cart extends Public_Controller
 					$order['items'][$key]['total'] = number_format(( $item['price'] * $item['qty']), 2);
 				}
 
+				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
+
 				// Build page
-				$this->template->title(lang('firesale:payment:title'))
+				$this->template->set_layout('default.html')
+							   ->title(lang('firesale:payment:title'))
 							   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart').'/payment')
 							   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
 							   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
-							   ->set('payment', $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE))
+							   ->set('payment', $gateway_view)
 							   ->build('payment', $order);
 
 			}
