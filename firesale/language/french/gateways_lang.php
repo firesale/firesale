@@ -35,7 +35,7 @@ $lang['firesale:gateways:dps_pxpost:name'] = 'DPS (PX Post)';
 $lang['firesale:gateways:dps_pxpost:desc'] = 'PX POST is designed to handle transactions using a HTTPS Post Request.';
 
 // Dummy
-$lang['firesale:gateways:dummy:name'] = 'FireSALE Dummy';
+$lang['firesale:gateways:dummy:name'] = 'Mannequin FireSale';
 $lang['firesale:gateways:dummy:desc'] = 'The FireSALE dummy gateway. Handles sample payment processing (authorizes when using the test credit card number only).';
 
 // eWAY Shared
