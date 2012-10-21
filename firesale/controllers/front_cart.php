@@ -565,6 +565,13 @@ class Front_cart extends Public_Controller
 				for ($i = $current_year; $i < $current_year + 15; $i++)
 					$var['years'][$i] = $i;
 
+				$var['default_cards'] = array(
+					'visa'       => 'Visa',
+					'maestro'    => 'Maestro',
+					'mastercard' => 'MasterCard',
+					'discover'   => 'Discover'
+				);
+
 				// Format order
 				foreach( $order['items'] AS $key => $item )
 				{
