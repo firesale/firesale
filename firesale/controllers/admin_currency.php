@@ -12,7 +12,7 @@ class Admin_currency extends Admin_Controller
 {
 
 	public $section = 'currency';
-	public $tabs    = array('formatting' => array('cur_format', 'cur_format_dec', 'cur_format_sep'));
+	public $tabs    = array('formatting' => array('cur_format', 'cur_format_num', 'cur_format_dec', 'cur_format_sep'));
 
 	public function __construct()
 	{

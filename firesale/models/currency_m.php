@@ -110,10 +110,23 @@ class Currency_m extends MY_Model
 	public function format_string($price, $currency, $fix = TRUE)
 	{
 
-		// Stop random values
-		if( $fix AND $currency->id != 1 )
+		// Format initial value
+		if( $fix )
 		{
-			$price = ( ceil($price) - 0.01 );
+			switch($currency->cur_format_num)
+			{
+				case '1':
+					$price = ceil($price).'.00';
+				break;
+				
+				case '2':
+					$price = round(($price*2), 0)/2;
+				break;
+
+				case '3':
+					$price = round($price).'.99';
+				break;
+			}
 		}
 
 		// Format
