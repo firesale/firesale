@@ -269,6 +269,26 @@
 	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
 	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
 
+	// Currency
+	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency'; # translate
+	$lang['firesale:currency:enable']            = 'Enable'; # translate
+	$lang['firesale:currency:disable']           = 'Disable'; # translate
+	$lang['firesale:currency:disable_warn']      = 'Disabling this may cause issues for customers and previous orders'; # translate
+	$lang['firesale:currency:delete']            = 'Delete'; # translate
+	$lang['firesale:currency:delete_warn']       = 'Deleting this may cause issues for customers and previous orders'; # translate
+	$lang['firesale:currency:create']            = 'Create New Currency'; # translate
+	$lang['firesale:currency:edit']              = 'Edit Currency'; # translate
+	$lang['firesale:currency:not_found']         = 'Selected currency not found'; # translate
+	$lang['firesale:currency:add_success']       = 'New currency added successfully'; # translate
+	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency'; # translate
+	$lang['firesale:currency:edit_success']      = 'Currency updated successfully'; # translate
+	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency'; # translate
+	$lang['firesale:label_cur_format_num']       = 'Number Formatting'; # translate
+	$lang['firesale:currency:format_none']       = 'None'; # translate
+	$lang['firesale:currency:format_00']         = 'Round up to next full number'; # translate
+	$lang['firesale:currency:format_50']         = 'Round to closest .50'; # translate
+	$lang['firesale:currency:format_99']         = 'Round up to closest .99'; # translate
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mes adresses';
 	$lang['firesale:addresses:edit_address'] = 'Modifier adresse';
