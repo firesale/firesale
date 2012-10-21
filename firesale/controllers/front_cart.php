@@ -514,8 +514,15 @@ class Front_cart extends Public_Controller
 			// Begin payment processing
 			if ($this->input->post())
 			{
+				// Load the routes model
+				$this->load->model('routes_m');
+
 				// Run payment
-				$params = array_merge($this->input->post(NULL, TRUE), array(
+				$params = array_merge(array(
+					'notify_url' => $this->routes_m->build_url('cart') . '/callback',
+					'return_url' => $this->routes_m->build_url('cart') . '/success',
+					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
+				), $this->input->post(NULL, TRUE), array(
 					'currency_code' => $this->settings->get('firesale_currency'),
 					'amount'        => $this->fs_cart->total,
 					'reference'     => 'Order #' . $this->session->userdata('order_id')
