@@ -622,133 +622,18 @@ class Module_Firesale extends Module {
 		$return     = TRUE;
 		$settings   = array();
 		
-		// Tax
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_tax',
-			'title' 	  	=> 'Tax Percentage',
-			'description' 	=> 'The percentage of tax to be applied to the products',
-			'default'		=> '20',
-			'value'			=> '20',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
+		// Settings
+		$settings[] = array('slug' => 'firesale_tax', 'title' => lang('firesale:settings_tax'), 'description' => lang('firesale:settings_tax_inst'), 'default' => '20', 'value' => '20', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale' );
+		$settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'firesale_currency_key', 'title' => lang('firesale:settings_currency_key'), 'description' => lang('firesale:settings_currency_key_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 1, 'module' => 'firesale' );
+		$settings[] = array('slug' => 'firesale_current_currency', 'title' => lang('firesale:settings_current_currency'), 'description' => lang('firesale:settings_current_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale' );
+		$settings[] = array('slug' => 'firesale_currency_updated', 'title' => lang('firesale:settings_currency_updated'), 'description' => lang('firesale:settings_currency_updated_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale');
+		$settings[] = array('slug' => 'firesale_perpage', 'title' => lang('firesale:settings_perpage'), 'description' => lang('firesale:settings_perpage_inst'), 'default' => '15', 'value' => '15', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'image_square', 'title' => lang('firesale:settings_image_square'), 'description' => lang('firesale:settings_image_square_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'image_background', 'title' => lang('firesale:settings_image_background'), 'description' => lang('firesale:settings_image_background_inst'), 'default' => 'ffffff', 'value' => 'ffffff', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
-		// Currency Code
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_currency',
-			'title' 	  	=> 'Default Currency Code',
-			'description' 	=> 'The currency you accept (ISO-4217 format)',
-			'default'		=> 'GBP',
-			'value'			=> 'GBP',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Currency Key
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_currency_key',
-			'title' 	  	=> 'Currency API Key',
-			'description' 	=> 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>',
-			'default'		=> '',
-			'value'			=> '',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 0,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Current Currency
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_current_currency',
-			'title' 	  	=> 'Current Currency',
-			'description' 	=> 'The current currency in use, used to update existing values if default currency is changed',
-			'default'		=> 'GBP',
-			'value'			=> 'GBP',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 0,
-			'is_gui'		=> 0,
-			'module' 		=> 'firesale'
-		);
-
-		// Current Currency
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_currency_updated',
-			'title' 	  	=> 'Currency last update time',
-			'description' 	=> 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that',
-			'default'		=> '',
-			'value'			=> '',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 0,
-			'is_gui'		=> 0,
-			'module' 		=> 'firesale'
-		);
-
-		// Products Per Page
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_perpage',
-			'title' 	  	=> 'Products per Page',
-			'description' 	=> 'The number of products to be displayed on category and search result pages',
-			'default'		=> '15',
-			'value'			=> '15',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-		
-		// Make images square
-		$settings[] = array(
-			'slug' 		  	=> 'image_square',
-			'title' 	  	=> 'Make Images Square?',
-			'description' 	=> 'Some themes may require square images to keep layouts consistent',
-			'default'		=> '0',
-			'value'			=> '0',
-			'type' 			=> 'select',
-			'options'		=> '1=Yes|0=No',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Image background colour
-		$settings[] = array(
-			'slug' 		  	=> 'image_background',
-			'title' 	  	=> 'Image Background Colour',
-			'description' 	=> 'Hexcode (without #) colour you wish resized image backgrounds to be',
-			'default'		=> 'ffffff',
-			'value'			=> 'ffffff',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Require login to purchase
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_login',
-			'title' 	  	=> 'Require login to purchase?',
-			'description' 	=> 'Ensure a user is logged in before allowing them to buy products',
-			'default' 		=> '0',
-			'value' 		=> '0',
-			'type' 			=> 'select',
-			'options' 		=> '1=Yes|0=No',
-			'is_required' 	=> 1,
-			'is_gui' 		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Perform	
+		// Perform
 		if( $action == 'add' )
 		{
 			if( !$this->db->insert_batch('settings', $settings) )

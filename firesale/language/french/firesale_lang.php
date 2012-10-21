@@ -332,6 +332,26 @@
 	$lang['firesale:payment:cancelled'] = 'Paiement annulé';
 	$lang['firesale:payment:wait_redirect'] = 'Merci de patienter le temps que nous vous redirigions vers la plateforme de paiement...';
 	$lang['firesale:payment:btn_continue'] = 'Continuer';
+
+	// Settings
+	$lang['firesale:settings_tax']                   = 'Tax Percentage'; # translate
+	$lang['firesale:settings_tax_inst']              = 'The percentage of tax to be applied to the products'; # translate
+	$lang['firesale:settings_currency']              = 'Default Currency Code'; # translate
+	$lang['firesale:settings_currency_inst']         = 'The currency you accept (ISO-4217 format)'; # translate
+	$lang['firesale:settings_currency_key']          = 'Currency API Key'; # translate
+	$lang['firesale:settings_currency_key_inst']     = 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>'; # translate
+	$lang['firesale:settings_current_currency']      = 'Current Currency'; # translate
+	$lang['firesale:settings_current_currency_inst'] = 'The current currency in use, used to update existing values if default currency is changed'; # translate
+	$lang['firesale:settings_currency_updated']      = 'Currency last update time'; # translate
+	$lang['firesale:settings_currency_updated_inst'] = 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that'; # translate
+	$lang['firesale:settings_perpage']               = 'Products per Page'; # translate
+	$lang['firesale:settings_perpage_inst']          = 'The number of products to be displayed on category and search result pages'; # translate
+	$lang['firesale:settings_image_square']          = 'Make Images Square'; # translate
+	$lang['firesale:settings_image_square_inst']     = 'Some themes may require square images to keep layouts consistent'; # translate
+	$lang['firesale:settings_image_background']      = 'Image Background Colour'; # translate
+	$lang['firesale:settings_image_background_inst'] = 'Hexcode (without #) colour you wish resized image backgrounds to be'; # translate
+	$lang['firesale:settings_login']                 = 'Require login to purchase'; # translate
+	$lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products'; # translate
 	
 	// Install errors
 	$lang['firesale:install:wrong_version'] = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above'; #Translate
