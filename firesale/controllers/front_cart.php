@@ -604,15 +604,15 @@ class Front_cart extends Public_Controller
 			$response = $this->merchant->process_return();
 			$status = '_order_' . $process->status;
 
-			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->txn_id, 'status' => $response->status))->num_rows();
-			$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->txn_id, 'amount' => $response->amount, 'message' => $response->message, 'status' => $response->status));
+			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->reference(), 'status' => $response->status()))->num_rows();
+			$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->reference(), 'amount' => $response->amount(), 'message' => $response->message(), 'status' => $response->status()));
 
 			if ( ! $processed)
 			{
 				// Check status
-				if ($process->status == 'authorized')
+				if ($process->status() == 'authorized')
 				{
-					if ($process->amount != $order['price_total'])
+					if ($process->amount() != $order['price_total'])
 					{
 						$status = '_order_mismatch';
 					}
