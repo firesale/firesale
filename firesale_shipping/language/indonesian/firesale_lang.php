@@ -25,5 +25,5 @@
 	$lang['firesale:label_height_cm']	= 'Panjang Produk (cm)';
 	$lang['firesale:label_width_cm']	= 'Lebar Produk (cm)';
 	$lang['firesale:label_depth_cm']	= 'Kedalaman Produk (cm)';
-	$lang['firesale:label_up_to']		= 'Up to'; # Translate
+	$lang['firesale:label_up_to']		= 'Di atas';
 
