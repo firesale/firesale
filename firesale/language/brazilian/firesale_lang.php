@@ -9,21 +9,21 @@
 	$lang['firesale:title:ship']		= 'Detalhes para Entrega';
 
 	// Sections
-	$lang['firesale:sections:dashboard'] 	= 'Painel de Controle';
-	$lang['firesale:sections:categories'] 	= 'Categorias';
-	$lang['firesale:sections:products'] 	= 'Produtos';
-	$lang['firesale:sections:orders'] 		= 'Pedidos';
-	$lang['firesale:sections:addresses'] 	= 'Endereços';
-	$lang['firesale:sections:orders_items']	= 'Items adquiridos';
-	$lang['firesale:sections:gateways']		= 'Meios de Pagamento';
-	$lang['firesale:sections:settings'] 	= 'Configurações';
+	$lang['firesale:sections:dashboard'] 	  = 'Painel de Controle';
+	$lang['firesale:sections:categories'] 	  = 'Categorias';
+	$lang['firesale:sections:products'] 	  = 'Produtos';
+	$lang['firesale:sections:orders'] 		  = 'Pedidos';
+	$lang['firesale:sections:addresses'] 	  = 'Endereços';
+	$lang['firesale:sections:orders_items']	  = 'Items adquiridos';
+	$lang['firesale:sections:gateways']		  = 'Meios de Pagamento';
+	$lang['firesale:sections:settings'] 	  = 'Configurações';
 	$lang['firesale:sections:routes']         = 'Routes'; # Translate
-	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
-	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
+	$lang['firesale:sections:currency']       = 'Currency'; # translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opções Gerais';
 	$lang['firesale:tabs:description'] 	= 'Descrições';
+	$lang['firesale:tabs:formatting'] 	= 'Formatting'; # translate
 	$lang['firesale:tabs:shipping']		= 'Envio';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Atributos';
@@ -34,6 +34,8 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Criar Categoria';
 	$lang['firesale:shortcuts:install_gateway']	= 'Instalar Meio de Pagamento';
 	$lang['firesale:shortcuts:create_order']	= 'Criar Pedido';
+	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route'; # Translate
+	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes'; # Translate
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Visualização Rápida';
@@ -103,6 +105,9 @@
 	$lang['firesale:label_parent']		= 'Categoria Pai';
 	$lang['firesale:label_filtercat']	= 'Filtrar por Categoria';
 	$lang['firesale:label_filtersel']	= 'Selecionar Categoria';
+	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
+	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
+	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
 	$lang['firesale:label_rrp']			= 'Preço de Venda Recomendado';
 	$lang['firesale:label_rrp_tax']		= 'Preço de Venda Recomendado (sem impostos)';
 	$lang['firesale:label_rrp_short']	= 'PVR';

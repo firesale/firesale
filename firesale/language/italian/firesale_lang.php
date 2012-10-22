@@ -18,12 +18,12 @@
 	$lang['firesale:sections:gateways']		  = 'Metodi di pagamento';
 	$lang['firesale:sections:settings'] 	  = 'Impostazioni';
 	$lang['firesale:sections:routes']         = 'Reindirizzamenti';
-	$lang['firesale:shortcuts:create_routes'] = 'Aggiungi un nuovo Reindirizzamento';
-	$lang['firesale:shortcuts:build_routes']  = 'Ricrea Reindirizzamenti';
+	$lang['firesale:sections:currency']       = 'Currency'; # translate
 	
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opzioni generali';
 	$lang['firesale:tabs:description'] 	= 'Descrizione';
+	$lang['firesale:tabs:formatting'] 	= 'Formatting'; # translate
 	$lang['firesale:tabs:shipping']		= 'Spedizione';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributi';
@@ -34,6 +34,8 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Aggiungi Categoria';
 	$lang['firesale:shortcuts:install_gateway']	= 'Installa Gateway';
 	$lang['firesale:shortcuts:create_order']	= 'Crea Ordine';
+	$lang['firesale:shortcuts:create_routes']   = 'Aggiungi un nuovo Reindirizzamento';
+	$lang['firesale:shortcuts:build_routes']    = 'Ricrea Reindirizzamenti';
 
 	// Dashboard
 	$lang['firesale:dash_overview']				= 'Veloce anteprima';
@@ -92,26 +94,29 @@
 	$lang['firesale:inst_price'] = 'Prezzo di vendita corrente prima e dopo le tasse (Se è più basso del prezzo di vendita utilizzare il campo come prezzo del prodotto)';
 
 	// Labels
-	$lang['firesale:label_draft']		= 'Bozza';
-	$lang['firesale:label_live'] 		= 'Pubblicati';
-	$lang['firesale:label_id'] 			= 'Codice prodotto';
-	$lang['firesale:label_title'] 		= 'Titolo';
-	$lang['firesale:label_slug'] 		= 'Link';
-	$lang['firesale:label_status'] 		= 'Stato';
-	$lang['firesale:label_description']	= 'Descrizione';
-	$lang['firesale:label_category']	= 'Categoria';
-	$lang['firesale:label_parent']		= 'Categoria padre';
-	$lang['firesale:label_filtercat']	= 'Filtra per categoria';
-	$lang['firesale:label_filtersel']	= 'Seleziona una categoria';
-	$lang['firesale:label_rrp']			= 'Prezzo di vendita raccomandato';
-	$lang['firesale:label_rrp_tax']		= 'Prezzo di vendita raccomandato (tasse escluse)';
-	$lang['firesale:label_rrp_short']	= 'RRP';
-	$lang['firesale:label_price']		= 'Prezzo di vendita';
-	$lang['firesale:label_price_tax']	= 'Prezzo di vendita (tasse escluse)';
-	$lang['firesale:label_stock']		= 'Quantità in magazzino';
-	$lang['firesale:label_drop_images'] = 'Trascina qui le immagini da caricare';
-	$lang['firesale:label_duplicate']   = 'Duplica';
-	$lang['firesale:label_showfilter']  = 'Mostra filtri';
+	$lang['firesale:label_draft']		  = 'Bozza';
+	$lang['firesale:label_live'] 		  = 'Pubblicati';
+	$lang['firesale:label_id'] 			  = 'Codice prodotto';
+	$lang['firesale:label_title'] 		  = 'Titolo';
+	$lang['firesale:label_slug'] 		  = 'Link';
+	$lang['firesale:label_status'] 		  = 'Stato';
+	$lang['firesale:label_description']	  = 'Descrizione';
+	$lang['firesale:label_category']	  = 'Categoria';
+	$lang['firesale:label_parent']		  = 'Categoria padre';
+	$lang['firesale:label_filtercat']	  = 'Filtra per categoria';
+	$lang['firesale:label_filtersel']	  = 'Seleziona una categoria';
+	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
+	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
+	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
+	$lang['firesale:label_rrp']			  = 'Prezzo di vendita raccomandato';
+	$lang['firesale:label_rrp_tax']		  = 'Prezzo di vendita raccomandato (tasse escluse)';
+	$lang['firesale:label_rrp_short']	  = 'RRP';
+	$lang['firesale:label_price']		  = 'Prezzo di vendita';
+	$lang['firesale:label_price_tax']	  = 'Prezzo di vendita (tasse escluse)';
+	$lang['firesale:label_stock']		  = 'Quantità in magazzino';
+	$lang['firesale:label_drop_images']   = 'Trascina qui le immagini da caricare';
+	$lang['firesale:label_duplicate']     = 'Duplica';
+	$lang['firesale:label_showfilter']    = 'Mostra filtri';
 
 	$lang['firesale:label_stock_short']		= 'Livello scorte';
 	$lang['firesale:label_stock_status']	= 'Stato delle scorte';
@@ -227,6 +232,7 @@
 	// Gateways
 	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
 	$lang['firesale:gateways:install_title']			= 'Install a Gateway';
+	$lang['firesale:gateways:edit_title']			    = 'Edit Gateway'; # translate
 	$lang['firesale:gateways:installed_title']			= 'Installed Gateways';
 	$lang['firesale:gateways:no_gateways']				= 'There are currently no payment gateways installed.';
 	$lang['firesale:gateways:no_uninstalled_gateways']	= 'All available gateways are currently installed.';

@@ -23,6 +23,7 @@
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Options générales';
 	$lang['firesale:tabs:description'] 	= 'Description';
+	$lang['firesale:tabs:formatting'] 	= 'Formatting'; # Translate
 	$lang['firesale:tabs:shipping']		= 'Expédition';
 	$lang['firesale:tabs:metadata']		= 'Méta-données';
 	$lang['firesale:tabs:attributes']	= 'Attributs';
@@ -93,26 +94,29 @@
 	$lang['firesale:inst_price'] = 'Prix de vente avant et après taxation';
 
 	// Labels
-	$lang['firesale:label_draft']		= 'Brouillon';
-	$lang['firesale:label_live'] 		= 'En ligne';
-	$lang['firesale:label_id'] 			= 'Code produit';
-	$lang['firesale:label_title'] 		= 'Titre';
-	$lang['firesale:label_slug'] 		= 'Slug';
-	$lang['firesale:label_status'] 		= 'Statut';
-	$lang['firesale:label_description']	= 'Description';
-	$lang['firesale:label_category']	= 'Catégorie';
-	$lang['firesale:label_parent']		= 'Catégorie parente';
-	$lang['firesale:label_filtercat']	= 'Filtrer par catégorie';
-	$lang['firesale:label_filtersel']	= 'Sélectionnez une catégorie';
-	$lang['firesale:label_rrp']			= 'Prix de vente conseillé';
-	$lang['firesale:label_rrp_tax']		= 'Prix de vente conseillé (avant taxes)';
-	$lang['firesale:label_rrp_short']	= 'PVC';
-	$lang['firesale:label_price']		= 'Prix actuel';
-	$lang['firesale:label_price_tax']	= 'Prix actuel (avant taxes)';
-	$lang['firesale:label_stock']		= 'Niveau des stocks';
-	$lang['firesale:label_drop_images'] = 'Glissez les images ici';
-	$lang['firesale:label_duplicate']   = 'Dupliquer';
-	$lang['firesale:label_showfilter']  = 'Voir les filtres';
+	$lang['firesale:label_draft']		  = 'Brouillon';
+	$lang['firesale:label_live'] 		  = 'En ligne';
+	$lang['firesale:label_id'] 			  = 'Code produit';
+	$lang['firesale:label_title'] 		  = 'Titre';
+	$lang['firesale:label_slug'] 		  = 'Slug';
+	$lang['firesale:label_status'] 		  = 'Statut';
+	$lang['firesale:label_description']	  = 'Description';
+	$lang['firesale:label_category']	  = 'Catégorie';
+	$lang['firesale:label_parent']		  = 'Catégorie parente';
+	$lang['firesale:label_filtercat']	  = 'Filtrer par catégorie';
+	$lang['firesale:label_filtersel']	  = 'Sélectionnez une catégorie';
+	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
+	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
+	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
+	$lang['firesale:label_rrp']			  = 'Prix de vente conseillé';
+	$lang['firesale:label_rrp_tax']		  = 'Prix de vente conseillé (avant taxes)';
+	$lang['firesale:label_rrp_short']	  = 'PVC';
+	$lang['firesale:label_price']		  = 'Prix actuel';
+	$lang['firesale:label_price_tax']	  = 'Prix actuel (avant taxes)';
+	$lang['firesale:label_stock']		  = 'Niveau des stocks';
+	$lang['firesale:label_drop_images']   = 'Glissez les images ici';
+	$lang['firesale:label_duplicate']     = 'Dupliquer';
+	$lang['firesale:label_showfilter']    = 'Voir les filtres';
 
 	$lang['firesale:label_stock_short']		= 'Niveau des stocks';
 	$lang['firesale:label_stock_status']	= 'Stocks';
