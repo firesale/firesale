@@ -58,11 +58,11 @@ class Routes_m extends MY_Model
 				{
 
 					// Get type
-					$query = $this->db->select('id, slug, title')->where('id', $id)->get($route->table);
+					$query = $this->db->select('id' . ( $route->table != 'firesale_orders' ? ', slug, title' : '' ))->where('id', $id)->get($route->table);
 					$type  = $query->row();
 
 					// Perform replacements
-					$formatted = str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
+					$formatted = @str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
 
 					// Check for product and category slug
 					if( $route->table == 'firesale_products' AND ( strpos($formatted, '{{ category_slug }}') !== FALSE OR strpos($formatted, '{{ category_id }}') !== FALSE ) )

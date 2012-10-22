@@ -84,7 +84,7 @@ class Front_orders extends Public_Controller
 		{
 			// Must be logged in
 			$this->session->set_flashdata('error', lang('firesale:orders:logged_in'));
-			redirect('/users/login');
+			redirect('users/login');
 		}
 	
 	}
@@ -129,7 +129,7 @@ class Front_orders extends Public_Controller
 		{
 			// Must be logged in
 			$this->set_flashdata('error', lang('firesale:orders:logged_in'));
-			redirect('/users/login');
+			redirect('users/login');
 		}
 	
 	}
