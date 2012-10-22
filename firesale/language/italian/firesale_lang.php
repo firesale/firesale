@@ -172,6 +172,22 @@
 	$lang['firesale:label_translation'] = 'Translation'; # Translate
 	$lang['firesale:label_table']       = 'Table'; # Translate
 
+	$lang['firesale:label_cur_code']        = 'Currency Code'; # translate
+	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format'; # translate
+	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
+	$lang['firesale:label_cur_mod']         = 'Currency Modifier'; # translate
+	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
+	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
+	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save'; # translate
+	$lang['firesale:label_cur_flag']        = 'Related Image'; # translate
+	$lang['firesale:label_enabled']         = 'Enabled'; # translate
+	$lang['firesale:label_disabled']        = 'Disabled'; # translate
+	$lang['firesale:label_cur_format']      = 'Currency Format'; # translate
+	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}'; # translate
+	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
+
 	// Orders
 	$lang['firesale:orders:title']			= 'Ordini';
 	$lang['firesale:orders:no_orders']		= 'NOn ci sono ordini al momento';

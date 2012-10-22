@@ -160,11 +160,6 @@
 	$lang['firesale:label_modelaz']		= 'Modèle A - Z';
 	$lang['firesale:label_modelza']		= 'Modèle Z - A';
 
-	$lang['firesale:label_map']         = 'Carte';
-	$lang['firesale:label_route']       = 'Route';
-	$lang['firesale:label_translation'] = 'Traduction';
-	$lang['firesale:label_table']       = 'Table';
-
 	$lang['firesale:label_time_now']	= 'il y a moins d\'une minute.';
 	$lang['firesale:label_time_min']	= 'il y a une minute.';
 	$lang['firesale:label_time_mins']	= 'il y a %s minutes.';
@@ -172,6 +167,27 @@
 	$lang['firesale:label_time_hours']	= 'il y a %s heures.';
 	$lang['firesale:label_time_day']	= 'il y a un jour.';
 	$lang['firesale:label_time_days'] 	= 'il y a %s jours.';
+
+	$lang['firesale:label_map']         = 'Carte';
+	$lang['firesale:label_route']       = 'Route';
+	$lang['firesale:label_translation'] = 'Traduction';
+	$lang['firesale:label_table']       = 'Table';
+
+	$lang['firesale:label_cur_code']        = 'Currency Code'; # translate
+	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format'; # translate
+	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
+	$lang['firesale:label_cur_mod']         = 'Currency Modifier'; # translate
+	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
+	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
+	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save'; # translate
+	$lang['firesale:label_cur_flag']        = 'Related Image'; # translate
+	$lang['firesale:label_enabled']         = 'Enabled'; # translate
+	$lang['firesale:label_disabled']        = 'Disabled'; # translate
+	$lang['firesale:label_cur_format']      = 'Currency Format'; # translate
+	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}'; # translate
+	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
 
 	// Orders
 	$lang['firesale:orders:title']				= 'Commandes';
@@ -284,7 +300,6 @@
 	$lang['firesale:currency:add_error']         = 'Impossible d\'ajouter la nouvelle monnaie';
 	$lang['firesale:currency:edit_success']      = 'Monnaie modifiée';
 	$lang['firesale:currency:edit_error']        = 'Impossible de modifier la monnaie';
-	$lang['firesale:label_cur_format_num']       = 'Format de la monnaie';
 	$lang['firesale:currency:format_none']       = 'Aucun';
 	$lang['firesale:currency:format_00']         = 'Arrondir à l\'entier supérieur';
 	$lang['firesale:currency:format_50']         = 'Arrondir au format .50 le plus proche';

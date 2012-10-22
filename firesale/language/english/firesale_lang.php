@@ -191,6 +191,7 @@
 	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}';
 	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol';
 	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol';
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting';
 
 	// Orders
 	$lang['firesale:orders:title']				   = 'Orders';
@@ -303,7 +304,6 @@
 	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency';
 	$lang['firesale:currency:edit_success']      = 'Currency updated successfully';
 	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency';
-	$lang['firesale:label_cur_format_num']       = 'Number Formatting';
 	$lang['firesale:currency:format_none']       = 'None';
 	$lang['firesale:currency:format_00']         = 'Round up to next full number';
 	$lang['firesale:currency:format_50']         = 'Round to closest .50';
