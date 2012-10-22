@@ -97,6 +97,11 @@ class Admin_gateways extends Admin_Controller
 					$field_data['rules'] = 'required|callback__valid_bool';
 					$field_data['type'] = 'boolean';
 				}
+				elseif ($field['type'] == 'array')
+				{
+					$field_data['rules'] = 'required|callback__valid_array[' . $field['slug'] . ']';
+					$field_data['type'] = 'array';
+				}
 				else
 				{
 					$field_data['rules'] = 'required|xss_clean|trim';
@@ -166,6 +171,28 @@ class Admin_gateways extends Admin_Controller
 		
 		$this->form_validation->set_message('_valid_bool', lang('firesale:gateways:errors:invalid_bool'));
 		return FALSE;
+	}
+
+	public function _valid_array($value, $field)
+	{
+		$this->load->library('merchant');
+		$this->merchant->load($this->uri->rsegment(3));
+
+		// CH: Can't use PHP 5.4's function array dereferencing, so we'll have to assign it to a variable
+		$settings = $this->merchant->default_settings();
+
+		if (isset($settings[$field]['options']) AND is_array($settings[$field]['options']))
+		{
+			if (array_key_exists($value, $settings[$field]['options']))
+			{
+				return TRUE;
+			}
+			else
+			{
+				$this->form_validation->set_message('_valid_array', sprintf(lang('firesale:gateways:invalid_option'), ucwords(str_replace('_', ' ', $field))));
+				return FALSE;
+			}
+		}
 	}
 	
 	public function enable($id = NULL)

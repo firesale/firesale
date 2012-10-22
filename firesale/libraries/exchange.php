@@ -1,0 +1,95 @@
+<?php
+
+	class Exchange
+	{
+
+		// Variables
+		protected $ci     = NULL;
+		protected $base   = 'GBP';
+		protected $app_id = '';
+		protected $url    = 'http://openexchangerates.org/api/latest.json?app_id=';
+
+		public function __construct()
+		{
+
+			// Get CI Instance
+			$this->ci =& get_instance();
+
+			// Add to settings soon
+			$this->app_id = $this->ci->settings->get('firesale_currency_key');
+			$this->url    = $this->url.$this->app_id;
+			
+			// Check key
+			if( !empty($this->app_id) )
+			{
+
+				// Get data
+				$json = $this->get($this->url);
+				
+				// Check data
+				if( $json !== FALSE )
+				{
+					$this->process($json);
+				}
+
+			}
+
+		}
+
+		public function get($url)
+		{
+
+			// Get data
+			$ch = curl_init($url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+			$data = curl_exec($ch);
+			curl_close($ch);
+
+			// Convert
+			$json = json_decode($data);
+
+			// Check data
+			if( ! isset($json->error) )
+			{
+				return $json;
+			}
+
+			// Problem
+			return FALSE;
+		}
+
+		public function process($json)
+		{
+
+			// Variables
+			$base = $this->ci->settings->get('firesale_currency') or $this->base;
+
+			// Get all currency options
+			$currencies = $this->ci->db->get('firesale_currency')->result_array();
+
+			// Loop them
+			foreach( $currencies AS $currency )
+			{
+
+				// Do we need to cross-convert?
+				if( $json->base != $this->base )
+				{
+					$new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$base ) );
+					$rate = round($new, 6);
+				}
+
+				// Perform modifications
+				list($op, $value) = explode('|', $currency['cur_mod']);
+				$rate             = eval('return ('.$rate.$op.$value.');');
+
+				// Update it
+				$this->ci->db->where('id', $currency['id'])->update('firesale_currency', array('exch_rate' => $rate));
+
+			}
+
+			// Update last checked time
+			$this->ci->settings->set('firesale_currency_updated', $json->timestamp);
+
+		}
+
+	}

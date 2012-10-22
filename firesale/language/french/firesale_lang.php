@@ -1,7 +1,5 @@
 <?php
 	
-	// FireSale 1.0.4
-
 	// General Titles
 	$lang['firesale:title']				= 'FireSale';
 	$lang['firesale:title:general']		= 'Général';
@@ -11,14 +9,16 @@
 	$lang['firesale:title:ship']		= 'Information d\'expédition';
 
 	// Sections
-	$lang['firesale:sections:dashboard'] 	= 'Tableau de bord';
-	$lang['firesale:sections:categories'] 	= 'Catégories';
-	$lang['firesale:sections:products'] 	= 'Produits';
-	$lang['firesale:sections:orders'] 		= 'Commandes';
-	$lang['firesale:sections:addresses'] 	= 'Addresses';
-	$lang['firesale:sections:orders_items']	= 'Eléments de la commande';
-	$lang['firesale:sections:gateways']		= 'Paiements';
-	$lang['firesale:sections:settings'] 	= 'Paramètres';
+	$lang['firesale:sections:dashboard'] 	  = 'Tableau de bord';
+	$lang['firesale:sections:categories'] 	  = 'Catégories';
+	$lang['firesale:sections:products'] 	  = 'Produits';
+	$lang['firesale:sections:orders'] 		  = 'Commandes';
+	$lang['firesale:sections:addresses'] 	  = 'Addresses';
+	$lang['firesale:sections:orders_items']	  = 'Eléments de la commande';
+	$lang['firesale:sections:gateways']		  = 'Paiements';
+	$lang['firesale:sections:settings'] 	  = 'Paramètres';
+	$lang['firesale:sections:routes']         = 'Routes';
+	$lang['firesale:sections:currency']       = 'Currency'; # Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Options générales';
@@ -33,6 +33,8 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Créer une catégorie';
 	$lang['firesale:shortcuts:install_gateway']	= 'Installer une plateforme de paiement';
 	$lang['firesale:shortcuts:create_order']	= 'Créer une commande';
+	$lang['firesale:shortcuts:create_routes']   = 'Ajouter une nouvelle route';
+	$lang['firesale:shortcuts:build_routes']    = 'Reconstruire les routes';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Vue d\'ensemble';
@@ -64,6 +66,7 @@
 	$lang['firesale:cats_edit_error'] 		= 'Impossible de modifier la catégorie';
 	$lang['firesale:cats_delete_success'] 	= 'Catégorie supprimée';
 	$lang['firesale:cats_delete_error'] 	= 'Impossible de supprimer la catégorie';
+	$lang['firesale:cats_all_products']     = 'Tous les produits';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Aucun produit trouvé';
@@ -84,7 +87,6 @@
 	$lang['firesale:prod_delimg_success']   = 'Image supprimée';
 	$lang['firesale:prod_delimg_error']     = 'Impossible de supprimer l\'image';
 	$lang['firesale:prod_button_quick_edit']= 'Modification rapide';
-
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Prix de vente conseillé avant et après taxation';
@@ -110,6 +112,7 @@
 	$lang['firesale:label_stock']		= 'Niveau des stocks';
 	$lang['firesale:label_drop_images'] = 'Glissez les images ici';
 	$lang['firesale:label_duplicate']   = 'Dupliquer';
+	$lang['firesale:label_showfilter']  = 'Voir les filtres';
 
 	$lang['firesale:label_stock_short']		= 'Niveau des stocks';
 	$lang['firesale:label_stock_status']	= 'Stocks';
@@ -128,7 +131,7 @@
 	$lang['firesale:label_shipping']	= 'Mode d\'expédition';
 	$lang['firesale:label_quantity']	= 'Quantité';
 	$lang['firesale:label_price_total'] = 'Prix total';
-	$lang['firesale:label_price_ship']	= 'Frais de por';
+	$lang['firesale:label_price_ship']	= 'Frais de port';
 	$lang['firesale:label_price_sub']	= 'Sous-total';
 	$lang['firesale:label_ship_to']		= 'Expédié à';
 	$lang['firesale:label_bill_to']		= 'Facturé à';
@@ -156,6 +159,11 @@
 	$lang['firesale:label_pricehigh']	= 'Prix Haut &gt; Bas';
 	$lang['firesale:label_modelaz']		= 'Modèle A - Z';
 	$lang['firesale:label_modelza']		= 'Modèle Z - A';
+
+	$lang['firesale:label_map']         = 'Carte';
+	$lang['firesale:label_route']       = 'Route';
+	$lang['firesale:label_translation'] = 'Traduction';
+	$lang['firesale:label_table']       = 'Table';
 
 	$lang['firesale:label_time_now']	= 'il y a moins d\'une minute.';
 	$lang['firesale:label_time_min']	= 'il y a une minute.';
@@ -247,6 +255,41 @@
 	$lang['firesale:checkout:title:ship_method']	= 'Mode d\'expédition';
 	$lang['firesale:checkout:title:payment_method']	= 'Mode de paiement';
 
+	// Routes
+	$lang['firesale:routes:title']          = 'Routes';
+	$lang['firesale:routes:new']            = 'Ajouter une nouvelle route';
+	$lang['firesale:routes:add_success']    = 'Nouvelle route ajoutée';
+	$lang['firesale:routes:add_error']      = 'Impossible d\'ajouter la nouvelle route';
+	$lang['firesale:routes:edit']           = 'Modifier %s route';
+	$lang['firesale:routes:edit_success']   = 'Route modifiée';
+	$lang['firesale:routes:edit_error']     = 'Impossible de modifier la route';
+	$lang['firesale:routes:not_found']      = 'La route sélectionnée est introuvable';
+	$lang['firesale:routes:none']           = 'Aucune route trouvée';
+	$lang['firesale:routes:delete_success'] = 'Route supprimée';
+	$lang['firesale:routes:delete_error']   = 'Impossible de supprimer la route';
+	$lang['firesale:routes:build_success']  = 'Routes reconstruites';
+	$lang['firesale:routes:build_error']    = 'Impossible de reconstruire les routes';
+
+	// Currency
+	$lang['firesale:shortcuts:install_currency'] = 'Installer une monnaie';
+	$lang['firesale:currency:enable']            = 'Activer';
+	$lang['firesale:currency:disable']           = 'Désactiver';
+	$lang['firesale:currency:disable_warn']      = 'Désactiver une monnaie peut causer des problèmes avec d\'éventuelles précédentes commandes';
+	$lang['firesale:currency:delete']            = 'Supprimer';
+	$lang['firesale:currency:delete_warn']       = 'Supprimer une monnaie peut causer des problèmes avec d\'éventuelles précédentes commandes';
+	$lang['firesale:currency:create']            = 'Ajouter une nouvelle monnaie';
+	$lang['firesale:currency:edit']              = 'Modifier monnaie';
+	$lang['firesale:currency:not_found']         = 'Monnaie sélectionnée introuvable';
+	$lang['firesale:currency:add_success']       = 'Nouvelle monnaie ajoutée';
+	$lang['firesale:currency:add_error']         = 'Impossible d\'ajouter la nouvelle monnaie';
+	$lang['firesale:currency:edit_success']      = 'Monnaie modifiée';
+	$lang['firesale:currency:edit_error']        = 'Impossible de modifier la monnaie';
+	$lang['firesale:label_cur_format_num']       = 'Format de la monnaie';
+	$lang['firesale:currency:format_none']       = 'Aucun';
+	$lang['firesale:currency:format_00']         = 'Arrondir à l\'entier supérieur';
+	$lang['firesale:currency:format_50']         = 'Arrondir au format .50 le plus proche';
+	$lang['firesale:currency:format_99']         = 'Arrondir au format .99 le plus proche';
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mes adresses';
 	$lang['firesale:addresses:edit_address'] = 'Modifier adresse';
@@ -254,6 +297,10 @@
 	$lang['firesale:addresses:save']	     = 'Sauvegarder';
 	$lang['firesale:addresses:cancel']       = 'Annuler';
 	$lang['firesale:addresses:no_user']      = 'Vous devez être connecté pour gèrer vos adresses';
+	$lang['firesale:addresses:add_success']  = 'Adresse créée avec succès';
+	$lang['firesale:addresses:add_error']    = 'Impossible de créer l\'adresse';
+	$lang['firesale:addresses:edit_success'] = 'Adresse modifiée avec succès';
+	$lang['firesale:addresses:edit_error']   = 'Impossible de modifier l\'adresse';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Disponibilité";
@@ -286,3 +333,30 @@
 	$lang['firesale:payment:cancelled'] = 'Paiement annulé';
 	$lang['firesale:payment:wait_redirect'] = 'Merci de patienter le temps que nous vous redirigions vers la plateforme de paiement...';
 	$lang['firesale:payment:btn_continue'] = 'Continuer';
+
+	// Settings
+	$lang['firesale:settings_tax']                   = 'Valeur de la taxe';
+	$lang['firesale:settings_tax_inst']              = 'Le pourcentage de taxe à appliquer à chaque produit';
+	$lang['firesale:settings_currency']              = 'Code monnaitaire par défaut';
+	$lang['firesale:settings_currency_inst']         = 'Code de monnaie à appliquer (au format ISO-4217, ex : EUR, USD, GBP, ...)';
+	$lang['firesale:settings_currency_key']          = 'Clé API de la monnaie';
+	$lang['firesale:settings_currency_key_inst']     = 'Clé API obtenue depuis <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates.org</a> (Pour obtenir le taux de change officiel)';
+	$lang['firesale:settings_current_currency']      = 'Monnaie courante';
+	$lang['firesale:settings_current_currency_inst'] = 'La monnaie courante utilisée, utilisée pour mettre à jour les monnaies existantes si la devise par défaut est changée';
+	$lang['firesale:settings_currency_updated']      = 'Dernière mise à jour';
+	$lang['firesale:settings_currency_updated_inst'] = 'Dernière mise à jour de la monnaie, l\'API met à jour les devises une seule fois par heure';
+	$lang['firesale:settings_perpage']               = 'Produits par page';
+	$lang['firesale:settings_perpage_inst']          = 'Le nombre de produit affiché par page et dans les résultats d\'une recherche';
+	$lang['firesale:settings_image_square']          = 'Adapter les images';
+	$lang['firesale:settings_image_square_inst']     = 'Rendre les images des produits carrées pour préserver l\'homogénéité de l\'affichage';
+	$lang['firesale:settings_image_background']      = 'Couleur de fond';
+	$lang['firesale:settings_image_background_inst'] = 'Code héxadécimal de la couleur (sans le #) à appliquer en fond des images lors d\'un redimmensionnement';
+	$lang['firesale:settings_login']                 = 'Connexion obligatoire';
+	$lang['firesale:settings_login_inst']            = 'Permet de s\'assurer qu\'un utilisateur est connecté pour pouvoir commander';
+	
+	// Install errors
+	$lang['firesale:install:wrong_version'] = 'Impossible d\'installer le module, FireSale requiert la version 2.1.4 (ou supérieur) du CMS';
+	$lang['firesale:install:missing_multiple'] = 'FireSale requiert le type de champs "Relation multiple" pour fonctionner. Vous pouvez le télécharger <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">ici</a>';
+	$lang['firesale:install:not_installed'] = 'Merci d\'installer le module FireSale avant d\'installer ses modules additionnels';
+	$lang['firesale:install:no_route_access']  = 'Le module n\'a pas accès au fichier de routes (application/config/routes.php), merci d\'autoriser l\'écriture de ce fichier';
+	

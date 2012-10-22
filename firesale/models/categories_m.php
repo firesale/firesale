@@ -1,6 +1,15 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Categories_m extends MY_Model {
+/**
+ * Categories model
+ *
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Models
+ *
+ */
+class Categories_m extends MY_Model
+{
 
 	/**
 	 * Contains the current database table name
@@ -9,6 +18,14 @@ class Categories_m extends MY_Model {
 	 * @access public
 	 */
     public $_table = 'firesale_categories';
+
+    /**
+     * Caches all category queries by slug or id
+     *
+     * @var array
+     * @access protected
+     */
+    protected $cache = array('id' => array(), 'slug' => array());
 
 	/**
 	 * Gets the category via id or slug via streams
@@ -20,29 +37,52 @@ class Categories_m extends MY_Model {
 	public function get_category($id_slug)
 	{
 
-		// Set params
-		$params	 = array(
-					'stream' 	=> 'firesale_categories',
-					'namespace'	=> 'firesale_categories',
-					'where'		=> ( ( 0 + $id_slug ) > 0 ? 'id = ' : 'slug = ' ) . "'{$id_slug}'",
-					'limit'		=> '1',
-					'order_by'	=> 'id',
-					'sort'		=> 'desc'
-				   );
+		// Variables
+		$type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
 
-		// Add to params if required
-		if( $this->uri->segment('1') != 'admin' )
+		// Check cache
+		if( array_key_exists($id_slug, $this->cache[$type]) )
 		{
-			$params['where'] .= ' AND status = 1';
+			// Return cached version
+			return $this->cache[$type][$id_slug];
 		}
-		
-		// Get entries		
-		$category = $this->streams->entries->get_entries($params);
-
-		// Check exists
-		if( $category['total'] > 0 )
+		else
 		{
-			return current($category['entries']);
+
+			// Set params
+			$params	 = array(
+						'stream' 	=> 'firesale_categories',
+						'namespace'	=> 'firesale_categories',
+						'where'		=> "{$type} = '{$id_slug}'",
+						'limit'		=> '1',
+						'order_by'	=> 'id',
+						'sort'		=> 'desc'
+					   );
+
+			// Add to params if required
+			if( $this->uri->segment('1') != 'admin' )
+			{
+				$params['where'] .= ' AND status = 1';
+			}
+			
+			// Get entries		
+			$category = $this->streams->entries->get_entries($params);
+
+			// Check exists
+			if( $category['total'] > 0 )
+			{
+
+				// Get category
+				$category = current($category['entries']);
+
+				// Add to cache
+				$this->cache['id'][$category['id']]     = $category;
+				$this->cache['slug'][$category['slug']] = $category;
+
+				// Return it
+				return $category;
+			}
+
 		}
 		
 		// Nothing?
@@ -98,13 +138,13 @@ class Categories_m extends MY_Model {
     						 ->group_by('firesale_products.slug');
 
     	// Has children?
-    	if( !empty($children) )
+    	if( !empty($children) AND $category != NULL )
 		{
 			// Then get the count including child products
 			$children[] = $category;
 			$query->where_in('firesale_categories_id', $children);
 		}
-		else
+		else if( $category != NULL )
 		{
 			// Otherwise just this categories
 			$query->where('firesale_categories_id', (int)$category);

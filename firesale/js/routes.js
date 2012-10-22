@@ -2,11 +2,22 @@ $(function() {
 	
 	// Variables
 	var section = $('input#slug').val();
-	var html    = '<br />';
-	var id      = $('form.crud').attr('action').split('/');
-	    id      = id[(id.length-1)];
 
-	// Bind to route
+
+	// Add target
+	$('<div class="btntar"></div>').insertAfter($('#map'));
+
+	// Fix map value
+	$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
+
+	// Initial load
+	build_buttons();
+
+	// Bind events
+	$('#slug, #title').bind('keyup keydown change update blur focus', function() {
+		build_buttons();
+	});
+
 	$('#map').bind('keyup keydown change delete paste update', function() {
 		var val = $('#map').val();
 		$('.route-action').each(function() {
@@ -16,26 +27,48 @@ $(function() {
 		$('#route').val(val);
 	});
 
-	// Fix map value
-	$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
 
-	// Section specific
-	if( id == '1' || id == '2' )
+
+});
+
+function build_buttons()
+{
+
+	// Variables
+	var html = '<button class="btn blue route-action" data-route="{{ any }}" data-translation="(:any)"><span>Add Any</span></button>';
+	var slug = $('#slug').val();
+	var id   = $('form.crud').attr('action').split('/');
+	    id   = id[(id.length-1)];
+
+	// Category and product
+	if( id == '1' || slug == 'category' || id == '2' || slug == 'product' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="([0-9]+)"><span>Add ID</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z0-9-]+)"><span>Add Slug</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ title }}" data-translation=".+?"><span>Add Title</span></button>';
 	}
 
-	// Add to document
-	$(html).insertAfter($('#map'));
+	// Category specific
+	if( id == '1' || slug == 'category' )
+	{
+		html += '<button class="btn blue route-action" data-route="{{ parent_slug }}" data-translation="[0-9a-z-/]+"><span>Add Parent Slugs</span></button>';
+	}
 
-	// Bind events
+	// Product specific
+	if( id == '2' || slug == 'product' )
+	{
+		html += '<button class="btn blue route-action" data-route="{{ category_id }}" data-translation="[0-9]+"><span>Add Category ID</span></button>';
+		html += '<button class="btn blue route-action" data-route="{{ category_slug }}" data-translation="[a-z0-9-]+"><span>Add Category Slug</span></button>';
+	}
+
+	// Insert
+	$('.btntar').html(html);
+
+	// Bind action
 	$('button.route-action').click(function(e) {
 		e.preventDefault();
-		$('#map').val($('#map').val()+$(this).data('route')).focus();
-		$('#route').val($('#route').val()+$(this).data('translation'));
+		$('#map').atCaret('insert', $(this).data('route'));
+		$('#map').change().focus();
 	});
 
-
-});
+}

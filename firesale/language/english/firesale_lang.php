@@ -18,11 +18,12 @@
 	$lang['firesale:sections:gateways']		  = 'Gateways';
 	$lang['firesale:sections:settings'] 	  = 'Settings';
 	$lang['firesale:sections:routes']         = 'Routes';
-	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route';
+	$lang['firesale:sections:currency']       = 'Currency';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'General Options';
 	$lang['firesale:tabs:description'] 	= 'Description';
+	$lang['firesale:tabs:formatting'] 	= 'Formatting';
 	$lang['firesale:tabs:shipping']		= 'Shipping';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributes';
@@ -33,6 +34,8 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Create Category';
 	$lang['firesale:shortcuts:install_gateway']	= 'Install Gateway';
 	$lang['firesale:shortcuts:create_order']	= 'Create Order';
+	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route';
+	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Quick Overview';
@@ -64,6 +67,7 @@
 	$lang['firesale:cats_edit_error'] 		= 'There was a problem editing the category';
 	$lang['firesale:cats_delete_success'] 	= 'Category was deleted successfully';
 	$lang['firesale:cats_delete_error'] 	= 'There was a problem deleting that category';
+	$lang['firesale:cats_all_products']     = 'All Products';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'No Products Found';
@@ -85,31 +89,34 @@
 	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified';
 	$lang['firesale:prod_button_quick_edit']= 'Quick Edit';
 
-
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';
 	$lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)';
 
 	// Labels
-	$lang['firesale:label_draft']		= 'Draft';
-	$lang['firesale:label_live'] 		= 'Live';
-	$lang['firesale:label_id'] 			= 'Product Code';
-	$lang['firesale:label_title'] 		= 'Title';
-	$lang['firesale:label_slug'] 		= 'Slug';
-	$lang['firesale:label_status'] 		= 'Status';
-	$lang['firesale:label_description']	= 'Description';
-	$lang['firesale:label_category']	= 'Category';
-	$lang['firesale:label_parent']		= 'Parent Category';
-	$lang['firesale:label_filtercat']	= 'Filter by Category';
-	$lang['firesale:label_filtersel']	= 'Select a Category';
-	$lang['firesale:label_rrp']			= 'Recommended Retail Price';
-	$lang['firesale:label_rrp_tax']		= 'Recommended Retail Price (before tax)';
-	$lang['firesale:label_rrp_short']	= 'RRP';
-	$lang['firesale:label_price']		= 'Current Price';
-	$lang['firesale:label_price_tax']	= 'Current Price (before tax)';
-	$lang['firesale:label_stock']		= 'Current Stock Level';
-	$lang['firesale:label_drop_images'] = 'Drop images here to upload';
-	$lang['firesale:label_duplicate']   = 'Duplicate';
+	$lang['firesale:label_draft']		  = 'Draft';
+	$lang['firesale:label_live'] 		  = 'Live';
+	$lang['firesale:label_id'] 			  = 'Product Code';
+	$lang['firesale:label_title'] 		  = 'Title';
+	$lang['firesale:label_slug'] 		  = 'Slug';
+	$lang['firesale:label_status'] 		  = 'Status';
+	$lang['firesale:label_description']	  = 'Description';
+	$lang['firesale:label_category']	  = 'Category';
+	$lang['firesale:label_parent']		  = 'Parent Category';
+	$lang['firesale:label_filtercat']	  = 'Filter by Category';
+	$lang['firesale:label_filtersel']	  = 'Select a Category';
+	$lang['firesale:label_filterprod']    = 'Select a Product';
+	$lang['firesale:label_filterstatus']  = 'Select a Product Status';
+	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status';
+	$lang['firesale:label_rrp']			  = 'Recommended Retail Price';
+	$lang['firesale:label_rrp_tax']		  = 'Recommended Retail Price (before tax)';
+	$lang['firesale:label_rrp_short']	  = 'RRP';
+	$lang['firesale:label_price']		  = 'Current Price';
+	$lang['firesale:label_price_tax']	  = 'Current Price (before tax)';
+	$lang['firesale:label_stock']		  = 'Current Stock Level';
+	$lang['firesale:label_drop_images']   = 'Drop images here to upload';
+	$lang['firesale:label_duplicate']     = 'Duplicate';
+	$lang['firesale:label_showfilter']    = 'Show Filters';
 
 	$lang['firesale:label_stock_short']		= 'Stock Level';
 	$lang['firesale:label_stock_status']	= 'Stock Status';
@@ -168,42 +175,58 @@
 	$lang['firesale:label_map']         = 'Map';
 	$lang['firesale:label_route']       = 'Route';
 	$lang['firesale:label_translation'] = 'Translation';
+	$lang['firesale:label_table']       = 'Table';
+
+	$lang['firesale:label_cur_code']        = 'Currency Code';
+	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format';
+	$lang['firesale:label_cur_tax']         = 'Tax Rate';
+	$lang['firesale:label_cur_mod']         = 'Currency Modifier';
+	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region';
+	$lang['firesale:label_exch_rate']       = 'Exchange Rate';
+	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save';
+	$lang['firesale:label_cur_flag']        = 'Related Image';
+	$lang['firesale:label_enabled']         = 'Enabled';
+	$lang['firesale:label_disabled']        = 'Disabled';
+	$lang['firesale:label_cur_format']      = 'Currency Format';
+	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}';
+	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol';
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol';
 
 	// Orders
-	$lang['firesale:orders:title']				= 'Orders';
-	$lang['firesale:orders:no_orders']			= 'There are currently no orders';
-	$lang['firesale:orders:my_orders']			= 'My Orders';
-	$lang['firesale:orders:view_order']			= 'View Order #%s';
-	$lang['firesale:orders:title_create'] 		= 'Create Order';
-	$lang['firesale:orders:title_edit']	  		= 'Edit Order #%s';
-	$lang['firesale:orders:delete_success'] 	= 'Order deleted successfully';
-	$lang['firesale:orders:delete_error']		= 'Order was not deleted due to an issue';
-	$lang['firesale:orders:save_first']			= 'Please save the order before adding products';
-	$lang['firesale:orders:delete']				= 'Delete Orders';
-	$lang['firesale:orders:mark_as']			= 'Mark as ';
-	$lang['firesale:orders:status_unpaid'] 		= 'Unpaid';
-	$lang['firesale:orders:status_paid'] 		= 'Paid';
-	$lang['firesale:orders:status_dispatched']	= 'Dispatched';
-	$lang['firesale:orders:status_processing']	= 'Processing';
-	$lang['firesale:orders:status_refunded']	= 'Refunded';
-	$lang['firesale:orders:status_cancelled']	= 'Cancelled';
-	$lang['firesale:orders:status_failed']		= 'Failed';
-	$lang['firesale:orders:status_declined']	= 'Declined';
-	$lang['firesale:orders:status_mismatch']	= 'Mismatch';
-	$lang['firesale:orders:failed_message'] 	= 'There was an error processing your payment';
-	$lang['firesale:orders:declined_message']	= 'Your payment was declined, please try again.';
-	$lang['firesale:orders:mismatch_message']	= 'Your payment did not match the order.';
-	$lang['firesale:orders:logged_in']			= 'You must be logged in to view your order history.';
-	$lang['firesale:orders:label_view_order']	= 'View Order';
-	$lang['firesale:orders:label_products']		= 'Products';
-	$lang['firesale:orders:label_view_order']	= 'View Order';
-	$lang['firesale:orders:label_customer']		= 'Customer';
-	$lang['firesale:orders:label_date_placed']	= 'Date Placed';
-	$lang['firesale:orders:label_order_id'] 	= "Order ID";
+	$lang['firesale:orders:title']				   = 'Orders';
+	$lang['firesale:orders:no_orders']			   = 'There are currently no orders';
+	$lang['firesale:orders:my_orders']			   = 'My Orders';
+	$lang['firesale:orders:view_order']			   = 'View Order #%s';
+	$lang['firesale:orders:title_create'] 		   = 'Create Order';
+	$lang['firesale:orders:title_edit']	  		   = 'Edit Order #%s';
+	$lang['firesale:orders:delete_success'] 	   = 'Order deleted successfully';
+	$lang['firesale:orders:delete_error']		   = 'Order was not deleted due to an issue';
+	$lang['firesale:orders:save_first']			   = 'Please save the order before adding products';
+	$lang['firesale:orders:delete']				   = 'Delete Orders';
+	$lang['firesale:orders:mark_as']			   = 'Mark as ';
+	$lang['firesale:orders:status_unpaid'] 		   = 'Unpaid';
+	$lang['firesale:orders:status_paid'] 		   = 'Paid';
+	$lang['firesale:orders:status_dispatched']	   = 'Dispatched';
+	$lang['firesale:orders:status_processing']	   = 'Processing';
+	$lang['firesale:orders:status_refunded']	   = 'Refunded';
+	$lang['firesale:orders:status_cancelled']	   = 'Cancelled';
+	$lang['firesale:orders:status_failed']		   = 'Failed';
+	$lang['firesale:orders:status_declined']	   = 'Declined';
+	$lang['firesale:orders:status_mismatch']	   = 'Mismatch';
+	$lang['firesale:orders:failed_message'] 	   = 'There was an error processing your payment';
+	$lang['firesale:orders:declined_message']	   = 'Your payment was declined, please try again.';
+	$lang['firesale:orders:mismatch_message']	   = 'Your payment did not match the order.';
+	$lang['firesale:orders:logged_in']			   = 'You must be logged in to view your order history.';
+	$lang['firesale:orders:label_view_order']	   = 'View Order';
+	$lang['firesale:orders:label_products']		   = 'Products';
+	$lang['firesale:orders:label_view_order']	   = 'View Order';
+	$lang['firesale:orders:label_customer']		   = 'Customer';
+	$lang['firesale:orders:label_date_placed']	   = 'Date Placed';
+	$lang['firesale:orders:label_order_id'] 	   = "Order ID";
 	$lang['firesale:orders:labe_shipping_address'] = 'Shipping Address';
-	$lang['firesale:orders:labe_payment_address'] = 'Payment Address';
-	$lang['firesale:orders:label_order_status']	= 'Order Status';
-	$lang['firesale:orders:label_message']	= 'Message';
+	$lang['firesale:orders:labe_payment_address']  = 'Payment Address';
+	$lang['firesale:orders:label_order_status']	   = 'Order Status';
+	$lang['firesale:orders:label_message']	       = 'Message';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Payment Gateways';
@@ -263,6 +286,28 @@
 	$lang['firesale:routes:none']           = 'No routes found';
 	$lang['firesale:routes:delete_success'] = 'Route removed successfully';
 	$lang['firesale:routes:delete_error']   = 'Error removing route';
+	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file';
+	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file';
+
+	// Currency
+	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency';
+	$lang['firesale:currency:enable']            = 'Enable';
+	$lang['firesale:currency:disable']           = 'Disable';
+	$lang['firesale:currency:disable_warn']      = 'Disabling this may cause issues for customers and previous orders';
+	$lang['firesale:currency:delete']            = 'Delete';
+	$lang['firesale:currency:delete_warn']       = 'Deleting this may cause issues for customers and previous orders';
+	$lang['firesale:currency:create']            = 'Create New Currency';
+	$lang['firesale:currency:edit']              = 'Edit Currency';
+	$lang['firesale:currency:not_found']         = 'Selected currency not found';
+	$lang['firesale:currency:add_success']       = 'New currency added successfully';
+	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency';
+	$lang['firesale:currency:edit_success']      = 'Currency updated successfully';
+	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency';
+	$lang['firesale:label_cur_format_num']       = 'Number Formatting';
+	$lang['firesale:currency:format_none']       = 'None';
+	$lang['firesale:currency:format_00']         = 'Round up to next full number';
+	$lang['firesale:currency:format_50']         = 'Round to closest .50';
+	$lang['firesale:currency:format_99']         = 'Round up to closest .99';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
@@ -271,6 +316,10 @@
 	$lang['firesale:addresses:save']	     = 'Save';
 	$lang['firesale:addresses:cancel']       = 'Cancel';
 	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book';
+	$lang['firesale:addresses:add_success']  = 'Address created successfully';
+	$lang['firesale:addresses:add_error']    = 'Error creating address';
+	$lang['firesale:addresses:edit_success'] = 'Address edited successfully';
+	$lang['firesale:addresses:edit_error']   = 'Error editing address';
 	
 	// Products Frontend
 	$lang['firesale:product:label_availability'] = "Availability";
@@ -294,12 +343,38 @@
 	$lang['firesale:cart:label_tax'] = "Tax";
 	$lang['firesale:cart:label_total'] = "Total";
 	
-	//Categories Frontend
+	// Categories Frontend
 	$lang['firesale:categories:grid'] = 'Grid';
 	$lang['firesale:categories:list'] = 'List';
 	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';
 	
-	//Payment Frontend
+	// Payment Frontend
 	$lang['firesale:payment:cancelled'] = 'Order Cancelled';
 	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...';
 	$lang['firesale:payment:btn_continue'] = 'Continue';
+
+	// Settings
+	$lang['firesale:settings_tax']                   = 'Tax Percentage';
+	$lang['firesale:settings_tax_inst']              = 'The percentage of tax to be applied to the products';
+	$lang['firesale:settings_currency']              = 'Default Currency Code';
+	$lang['firesale:settings_currency_inst']         = 'The currency you accept (ISO-4217 format)';
+	$lang['firesale:settings_currency_key']          = 'Currency API Key';
+	$lang['firesale:settings_currency_key_inst']     = 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>';
+	$lang['firesale:settings_current_currency']      = 'Current Currency';
+	$lang['firesale:settings_current_currency_inst'] = 'The current currency in use, used to update existing values if default currency is changed';
+	$lang['firesale:settings_currency_updated']      = 'Currency last update time';
+	$lang['firesale:settings_currency_updated_inst'] = 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that';
+	$lang['firesale:settings_perpage']               = 'Products per Page';
+	$lang['firesale:settings_perpage_inst']          = 'The number of products to be displayed on category and search result pages';
+	$lang['firesale:settings_image_square']          = 'Make Images Square';
+	$lang['firesale:settings_image_square_inst']     = 'Some themes may require square images to keep layouts consistent';
+	$lang['firesale:settings_image_background']      = 'Image Background Colour';
+	$lang['firesale:settings_image_background_inst'] = 'Hexcode (without #) colour you wish resized image backgrounds to be';
+	$lang['firesale:settings_login']                 = 'Require login to purchase';
+	$lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products';
+	
+	// Install errors
+	$lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';
+	$lang['firesale:install:missing_multiple'] = 'FireSale requires the Multiple Relationships field type to operate. You can download this from <a href="https://github.com/parse19/PyroStreams-Multiple-Relationships/zipball/master">here</a>';
+	$lang['firesale:install:not_installed']    = 'Please install the FireSale module before installing additional FireSale addons';
+	$lang['firesale:install:no_route_access']  = 'FireSale requires access to the system/cms/config/routes.php file. Please set the appropriate permissions and try again';

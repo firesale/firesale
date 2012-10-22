@@ -22,6 +22,9 @@ class Admin_routes extends Admin_Controller
 		$this->load->driver('Streams');
 		$this->load->model('routes_m');
 
+		// Initialise data
+		$this->data = new stdClass();
+
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_routes', 'firesale_routes');
 
@@ -99,6 +102,7 @@ class Admin_routes extends Admin_Controller
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:new'))
         			   ->set($this->data)
         			   ->append_css('module::routes.css')
+        			   ->append_js('module::jquery.caret.js')
 					   ->append_js('module::routes.js')
         			   ->build('admin/routes/create');
 	
@@ -128,6 +132,7 @@ class Admin_routes extends Admin_Controller
         // Don't allow title and slug to be changed
         $_POST['title'] = $row->title;
         $_POST['slug']  = $row->slug;
+        $_POST['table'] = $row->table;
 
 		// Build the form
 		$fields = $this->fields->build_form($this->stream, 'edit', $row, false, false, $skip, $extra);
@@ -135,9 +140,10 @@ class Admin_routes extends Admin_Controller
 		// Remove title and slug
 		if( is_array($fields) )
 		{
-			// Remove title and slug
+			// Remove title, slug and table
 			unset($fields[0]);
 			unset($fields[1]);
+			unset($fields[2]);
 		}
 		
 		// Posted
@@ -171,9 +177,36 @@ class Admin_routes extends Admin_Controller
         $this->template->title(lang('firesale:title').' '.sprintf(lang('firesale:routes:edit'), $row->title))
         			   ->set($this->data)
         			   ->append_css('module::routes.css')
+        			   ->append_js('module::jquery.caret.js')
 					   ->append_js('module::routes.js')
         			   ->build('admin/routes/edit');
 	
+	}
+
+	public function rebuild()
+	{
+
+		// Variables
+        $params = array(
+            'stream'       => 'firesale_routes',
+            'namespace'    => 'firesale_routes',
+            'paginate'     => 'yes',
+            'page_segment' => 4
+        );
+
+        // Get routes
+        $routes = $this->streams->entries->get_entries($params);
+
+        // Loop routes
+        foreach( $routes['entries'] AS $route )
+        {
+        	// Rebuild
+        	$this->routes_m->write($route['title'], $route['route'], $route['translation']);
+        }
+
+        // Flash and redirect
+        $this->session->set_flashdata('success', lang('firesale:routes:build_success'));
+        redirect('admin/firesale/routes');
 	}
 
 }

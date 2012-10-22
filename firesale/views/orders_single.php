@@ -4,12 +4,12 @@
         <div class="width-half">
           <h2><?php echo lang('firesale:orders:labe_shipping_address'); ?></h2>
           <ul>
-            {{ if { helper:str_word_count string=ship_to.firstname } > 0 }}<li>{{ ship_to.fistname }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=ship_to.address1 } > 0 }}<li>{{ ship_to.address1 }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=ship_to.address2 } > 0 }}<li>{{ ship_to.address2 }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=ship_to.city } > 0 }}<li>{{ ship_to.city }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=ship_to.county } > 0 }}<li>{{ ship_to.county }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=ship_to.postcode } > 0 }}<li>{{ ship_to.postcode }}</li> {{ endif }}
+            {{ if ship_to.firstname }}<li>{{ ship_to.fistname }}</li> {{ endif }}
+            {{ if ship_to.address1 }}<li>{{ ship_to.address1 }}</li> {{ endif }}
+            {{ if ship_to.address2 }}<li>{{ ship_to.address2 }}</li> {{ endif }}
+            {{ if ship_to.city }}<li>{{ ship_to.city }}</li> {{ endif }}
+            {{ if ship_to.county }}<li>{{ ship_to.county }}</li> {{ endif }}
+            {{ if ship_to.postcode }}<li>{{ ship_to.postcode }}</li> {{ endif }}
             <li>{{ ship_to.country.name }}</li>
           </ul>
         </div>
@@ -17,12 +17,12 @@
         <div class="width-half">
           <h2><?php echo lang('firesale:orders:labe_payment_address'); ?></h2>
           <ul>
-            {{ if { helper:str_word_count string=bill_to.firstname } > 0 }}<li>{{ bill_to.fistname }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=bill_to.address1 } > 0 }}<li>{{ bill_to.address1 }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=bill_to.address2 } > 0 }}<li>{{ bill_to.address2 }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=bill_to.city } > 0 }}<li>{{ bill_to.city }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=bill_to.county } > 0 }}<li>{{ bill_to.county }}</li> {{ endif }}
-            {{ if { helper:str_word_count string=bill_to.postcode } > 0 }}<li>{{ bill_to.postcode }}</li> {{ endif }}
+            {{ if bill_to.firstname }}<li>{{ bill_to.fistname }}</li> {{ endif }}
+            {{ if bill_to.address1 }}<li>{{ bill_to.address1 }}</li> {{ endif }}
+            {{ if bill_to.address2 }}<li>{{ bill_to.address2 }}</li> {{ endif }}
+            {{ if bill_to.city }}<li>{{ bill_to.city }}</li> {{ endif }}
+            {{ if bill_to.county }}<li>{{ bill_to.county }}</li> {{ endif }}
+            {{ if bill_to.postcode }}<li>{{ bill_to.postcode }}</li> {{ endif }}
             <li>{{ bill_to.country.name }}</li>
           </ul>
         </div>

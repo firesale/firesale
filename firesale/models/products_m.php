@@ -1,5 +1,13 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+ * Products model
+ *
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Models
+ *
+ */
 class Products_m extends MY_Model {
 	
 	/**
@@ -9,6 +17,14 @@ class Products_m extends MY_Model {
 	 * @access public
 	 */
 	public $_table = 'firesale_products';
+
+    /**
+     * Caches all product queries by slug or id
+     *
+     * @var array
+     * @access protected
+     */
+    protected $cache = array('id' => array(), 'slug' => array());
 
 	/**
 	 * Contains an array of the possible stock status options
@@ -35,7 +51,9 @@ class Products_m extends MY_Model {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('firesale/categories_m');
 		$this->load->helper('firesale/general');
+		$this->load->model('firesale/currency_m');
 	}
 	
 	/**
@@ -54,7 +72,7 @@ class Products_m extends MY_Model {
 	{
 	
 		$_products = $this->db->select('id, slug, title')->order_by('title')->get($this->_table)->result_array();
-		$products  = array();
+		$products  = array('-1' => lang('firesale:label_filterprod'));
 		
 		foreach( $_products AS $product )
 		{
@@ -62,6 +80,58 @@ class Products_m extends MY_Model {
 		}
 	
 		return $products;	
+	}
+
+	/**
+	 * Builds a dropdown of the available product status' for products and returns
+	 * the dropdown string with the optionally passed ID preselected.
+	 *
+	 * @param integer $id (Optional) Pre-selected key in the dropdown
+	 * @return string The HTML dropdown string
+	 * @access public
+	 */
+	public function status_dropdown($id = NULL)
+	{
+
+		// Variables
+		$list       = array();
+		$list['-1'] = lang('firesale:label_filterstatus');
+		$list['0']  = lang('firesale:label_draft');
+		$list['1']  = lang('firesale:label_live');
+
+		// Build the dropbown
+		$drop = form_dropdown('status', $list, $id);
+
+		// Return it
+		return $drop;
+	}
+
+	/**
+	 * Builds a dropdown of the available stock status' for products and returns
+	 * the dropdown string with the optionally passed ID preselected.
+	 *
+	 * @param integer $id (Optional) Pre-selected key in the dropdown
+	 * @return string The HTML dropdown string
+	 * @access public
+	 */
+	public function stock_status_dropdown($id = NULL)
+	{
+
+		// Variables
+		$list = array('-1' => lang('firesale:label_filtersstatus'));
+		$drop = '';
+
+		// Loop products
+		foreach( $this->_stockstatus AS $key => $status )
+		{
+			$list[$key] = lang($status);
+		}
+
+		// Build the dropbown
+		$drop = form_dropdown('stock_status', $list, $id);
+
+		// Return it
+		return $drop;
 	}
 	
 	/**
@@ -76,37 +146,64 @@ class Products_m extends MY_Model {
 	public function get_product($id_slug)
 	{
 
-		// Set params
-		$params	 = array(
-					'stream' 	=> 'firesale_products',
-					'namespace'	=> 'firesale_products',
-					'where'		=> ( is_numeric($id_slug) ? 'id = ' : 'slug = ' ) . "'{$id_slug}'",
-					'limit'		=> '1',
-					'order_by'	=> 'id',
-					'sort'		=> 'desc'
-				   );
+		// Variables
+		$type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
 
-		// Add to params if required
-		if( $this->uri->segment('1') != 'admin' )
+		// Check cache
+		if( array_key_exists($id_slug, $this->cache[$type]) )
 		{
-			$params['where'] .= ' AND status = 1';
+			// Return cached version
+			return $this->cache[$type][$id_slug];
 		}
-		
-		// Get entries		
-		$product = $this->streams->entries->get_entries($params);
-
-		// Check exists
-		if( $product['total'] > 0 )
+		else
 		{
 
-			// Get and format product data
-			$product 			 = current($product['entries']);
-			$product['snippet']  = truncate_words($product['description']);
-			$product['category'] = $this->get_categories($product['id']);
-			$product['image']    = $this->get_single_image($product['id']);
+			// Set params
+			$params	 = array(
+						'stream' 	=> 'firesale_products',
+						'namespace'	=> 'firesale_products',
+						'where'		=> "{$type} = '{$id_slug}'",
+						'limit'		=> '1',
+						'order_by'	=> 'id',
+						'sort'		=> 'desc'
+					   );
 
-			// Return
-			return $product;
+			// Add to params if required
+			if( $this->uri->segment('1') != 'admin' )
+			{
+				$params['where'] .= ' AND status = 1';
+			}
+			
+			// Get entries		
+			$product = $this->streams->entries->get_entries($params);
+
+			// Check exists
+			if( $product['total'] > 0 )
+			{
+
+				// Get and format product data
+				$product 			 = current($product['entries']);
+				$product['snippet']  = truncate_words($product['description']);
+				$product['category'] = $this->get_categories($product['id']);
+				$product['image']    = $this->get_single_image($product['id']);
+
+				// Format product pricing
+				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax']);
+
+				// Assign pricing
+				foreach( $pricing AS $key => $val )
+				{
+					$product[$key] = $val;
+				}
+
+				// Add to cache
+				$this->cache['id'][$product['id']]     = $product;
+				$this->cache['slug'][$product['slug']] = $product;
+
+				// Return
+				return $product;
+			}
+
 		}
 		
 		// Nothing?
@@ -139,10 +236,25 @@ class Products_m extends MY_Model {
 		// Add filtering
 		foreach( $filter AS $key => $value )
 		{
-			if( $key == 'category' )
+			if( $key == 'category' AND (int)$value > 0 )
 			{
 				$query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
 					  ->where('pc.firesale_categories_id', $value);
+			}
+			else if( $key == 'search' )
+			{
+				$query->like('title', $value)
+					  ->or_like('code', $value);
+			}
+			else if( $key == 'sale' AND $value == '1' )
+			{
+				$query->where('p.price <', 'p.rrp');
+			}
+			else if( $key == 'price' )
+			{
+				list($from, $to) = explode('-', $value);
+				$query->where('p.price >=', $from)
+				      ->where('p.price <=', $to);
 			}
 			else
 			{
@@ -161,6 +273,41 @@ class Products_m extends MY_Model {
 
 		// Nothing?
 		return FALSE;
+	}
+
+	/**
+	 * Generates the minimum and maximum available pricing for products.
+	 *
+	 * @return array The min and max price
+	 * @access public
+	 */
+	public function price_min_max()
+	{
+
+		// Variables
+		$return = array('min' => '0.00', 'max' => '0.00');
+
+		// Run min query
+		$query = $this->db->select('price')->order_by('price', 'asc')->limit('1')->get('firesale_products');
+
+		// Check for min
+		if( $query->num_rows() )
+		{
+			$results = current($query->result_array());
+			$return['min'] = $results['price'];
+		}
+
+		// Run max query
+		$query = $this->db->select('price')->order_by('price', 'desc')->limit('1')->get('firesale_products');
+
+		// Check for max
+		if( $query->num_rows() )
+		{
+			$results = current($query->result_array());
+			$return['max'] = $results['price'];
+		}
+
+		return $return;
 	}
 	
 	/**
@@ -571,6 +718,57 @@ class Products_m extends MY_Model {
 		
 		return FALSE;
 	}
+
+	/**
+	 * Creates a new file folder within a given parent ID, Title and Slug.
+	 *
+	 * @param integer $parent The parent folder ID
+	 * @param string $title The title of the new folder
+	 * @param string $slug The folder slug
+	 * @return array or boolean
+	 * @access public
+	 */
+	public function create_file_folder($parent, $title, $slug)
+	{
+
+		// Variables
+		$return         = array();
+		$original_slug  = $slug;
+		$original_title = $title;
+
+		// Append title name if required
+		while( $this->db->where('slug', $slug)->get('file_folders')->num_rows() )
+		{
+			$i++;
+			$slug  = $original_slug.'-'.$i;
+			$title = $original_title.'-'.$i;
+		}
+
+		// Build insert data
+		$insert = array(
+						'parent_id'        => $parent, 
+						'slug'             => $slug, 
+						'name'             => $title,
+						'location'         => 'local',
+						'remote_container' => '',
+						'date_added'       => now(), 
+						'sort'             => now()
+					);
+
+		// Insert it
+		if( $this->db->insert('file_folders', $insert) )
+		{
+
+			// Build return data
+			$return['id'] = $this->db->insert_id();
+
+			// Return
+			return $return;
+		}
+
+		// Failed
+		return FALSE;
+	}
 	
 	/**
 	 * Gets the first image ID available for a product to be used with Files.
@@ -582,10 +780,11 @@ class Products_m extends MY_Model {
 	public function get_single_image($product)
 	{
 		$query = $this->db->select('files.id')
-						  ->join('file_folders', 'firesale_products.slug = file_folders.slug', 'left')
-						  ->join('files', 'file_folders.id = files.folder_id', 'left')
+						  ->join('file_folders', 'firesale_products.slug = file_folders.slug', 'inner')
+						  ->join('files', 'file_folders.id = files.folder_id', 'inner')
 						  ->where('firesale_products.id', $product)
 						  ->or_where('code', $product)
+						  ->order_by('files.sort', 'asc')
 						  ->get('firesale_products', 1);
 		
 		if ($query->num_rows())
@@ -637,12 +836,20 @@ class Products_m extends MY_Model {
 	{
 
 		// Variables
-		$bg    = array(255, 255, 255);
 		$id    = $status['data']['id'];
 		$w     = $status['data']['width'];
 		$h	   = $status['data']['height'];
 		$mime  = str_replace('image/', '', $status['data']['mimetype']);
 		$path  = $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . SITE_REF . '/files/' . $status['data']['filename'];
+
+		// Build background colour
+		$colour = str_replace('#', '', $this->settings->get('image_background', 'ffffff'));
+		$colour = ( strlen($colour) == 3 ? $colour : '' ) . $colour;
+  		$bg     = array(
+  					'r' => hexdec(substr($colour, 0, 2)),
+   					'g' => hexdec(substr($colour, 2, 2)),
+   					'b' => hexdec(substr($colour, 4, 2))
+  				  );
 
 		// Is it required?
 		if( $w != $h AND in_array($mime, $allow) )
@@ -651,7 +858,7 @@ class Products_m extends MY_Model {
 			// Settings
 			$size = ( $w > $h ? $w : $h );
 			$img  = imagecreatetruecolor($size, $size);
-			$bg   = imagecolorallocate($img, $bg[0], $bg[1], $bg[2]);
+			$bg   = imagecolorallocate($img, $bg['r'], $bg['g'], $bg['b']);
 			$copy = 'imagecreatefrom' . $mime;
 			$save = 'image' . $mime;
 			$orig = $copy($path);

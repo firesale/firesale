@@ -7,6 +7,19 @@ class Plugin_Firesale extends Plugin
     {
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
+		$this->load->model('routes_m');
+		$this->load->model('currency_m');
+	}
+
+	public function url()
+	{
+
+		// Variables
+		$route = $this->attribute('route');
+		$id    = $this->attribute('id');
+
+		// Get the URL
+		return BASE_URL.$this->routes_m->build_url($route, $id);
 	}
 
 	public function module_installed()
@@ -87,6 +100,13 @@ class Plugin_Firesale extends Plugin
 		// Return
 		return $this->categories();
 	}
+	
+	public function sub_sub_categories()
+	{
+	
+		// Return
+		return $this->categories();
+	}
 
 	public function products()
 	{
@@ -157,7 +177,7 @@ class Plugin_Firesale extends Plugin
 		$this->load->model('products_m');
 		$this->load->library('fs_cart');
 
-		$tax  		 	= 0.2; // add to settings later
+		$tax  		 	= round(( 100 - $this->settings->get('firesale_tax') ) / 100, 3);
 		$data 		 	= new stdClass;
 		$data->sub 	 	= 0;
 		$data->tax 	 	= 0;
@@ -194,6 +214,43 @@ class Plugin_Firesale extends Plugin
 		$data->total = number_format($data->total, 2);
 
 		return array($data);
+	}
+
+	public function currencies()
+	{
+
+		// Select all currencies
+		$results = $this->db->select('id')->get('firesale_currency')->result_array();
+
+		// Loop them
+		foreach( $results AS &$currency )
+		{
+			// Retrieve data
+			$currency = $this->currency_m->get($currency['id']);
+		}
+
+		return $results;
+	}
+
+	public function prevoius_next()
+	{
+
+		// Variables
+		$id   = $this->attribute('id');
+		$type = $this->attribute('type', 'next');
+
+		// Check ID for previous
+		if( $type == 'previous' AND $id != 1 )
+		{
+			return $this->products_m->get_product(( $id - 1 ));
+		}
+		else if( $type == 'next' )
+		{
+			return $this->products_m->get_product(( $id + 1 ));
+		}
+
+		// Otherwise
+		return FALSE;
 	}
 
 	#######################

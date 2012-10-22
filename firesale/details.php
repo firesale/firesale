@@ -33,7 +33,8 @@ class Module_Firesale extends Module {
 			'menu'	   => 'FireSale',
 			'author'   => 'Jamie Holdroyd & Chris Harvey',
 			'roles' => array(
-				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways', 'enable_disable_gateways', 'edit_gateways'
+				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways',
+				'enable_disable_gateways', 'edit_gateways', 'access_currency', 'install_uninstall_currency'
 			),
 			'sections' => array(
 				'dashboard' => array(
@@ -113,6 +114,11 @@ class Module_Firesale extends Module {
 					'name' 	=> 'firesale:shortcuts:create_routes',
 					'uri'	=> 'admin/firesale/routes/create',
 					'class' => 'add'
+				),
+				array(
+					'name' 	=> 'firesale:shortcuts:build_routes',
+					'uri'	=> 'admin/firesale/routes/rebuild',
+					'class' => ''
 				)
 			);
 		}
@@ -136,13 +142,62 @@ class Module_Firesale extends Module {
 				)
 			);
 		}
+
+		if (group_has_role('firesale', 'access_currency'))
+		{
+			$info['sections']['currency'] = array(
+				'name' => 'firesale:sections:currency',
+				'uri'  => 'admin/firesale/currency',
+				'shortcuts' => array()
+			);
+		}
+
+		if (group_has_role('firesale', 'install_uninstall_currency') AND isset($info['sections']['currency']))
+		{
+			$info['sections']['currency']['shortcuts'] = array(
+				array(
+					'name' 	=> 'firesale:currency:create',
+					'uri'	=> 'admin/firesale/currency/create',
+					'class' => 'add'
+				)
+			);
+		}
 		
 		return $info;
 	}
 	
 	public function install()
 	{
-		
+
+		if (CMS_VERSION < "2.1.4")
+		{
+			$this->session->set_flashdata('error', lang('firesale:install:wrong_version'));
+			redirect('admin/modules');
+			return FALSE;
+		}
+		elseif ( ! is_dir(SHARED_ADDONPATH . 'field_types/multiple')
+			AND ! is_dir(ADDONPATH . 'field_types/multiple')
+			AND ! is_dir(APPPATH . 'modules/streams_core/field_types/multiple'))
+		{
+			if( ! $this->install_multiple() )
+			{
+				$this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
+				redirect('admin/modules');
+				return FALSE;
+			}
+			else
+			{
+				// Redirect so Pyro recognises the field type is installed
+				redirect('admin/modules/install/firesale');
+			}
+		}
+		elseif ( ! is_writable(APPPATH . 'config/routes.php') )
+		{
+			$this->session->set_flashdata('error', lang('firesale:install:no_route_access'));
+			redirect('admin/modules');
+			return FALSE;
+		}
+
 		// Load required items
 		$this->load->driver('Streams');
 		$this->load->language($this->language_file);
@@ -179,7 +234,7 @@ class Module_Firesale extends Module {
 		$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_categories` CHANGE `parent` `parent` INT( 11 ) NULL DEFAULT '0';");
 		
 		// Add an initial category
-		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => 1, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => 'Uncategorised', 'slug' => 'uncategorised', 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
+		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => 'Uncategorised', 'slug' => 'uncategorised', 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
 		$this->db->insert('firesale_categories', $cat);
 	
 		##############
@@ -202,7 +257,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_id', 'slug' => 'code', 'extra' => array('max_length' => 64), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
-		$fields[] = array('name' => 'lang:firesale:label_category', 'slug' => 'category', 'type' => 'multiple', 'extra' => array('choose_stream' => $categories->id), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_category', 'slug' => 'category', 'type' => 'multiple', 'extra' => array('choose_stream' => $categories->id));
 		$fields[] = array('name' => 'lang:firesale:label_rrp', 'slug' => 'rrp', 'type' => 'text', 'instructions' => 'lang:firesale:inst_rrp', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_rrp_tax', 'slug' => 'rrp_tax', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'instructions' => 'lang:firesale:inst_price', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
@@ -371,8 +426,9 @@ class Module_Firesale extends Module {
 		$template = array('namespace' => 'firesale_routes', 'assign' => 'firesale_routes', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
-		$fields[] = array('name' => 'lang:firesale:label_map', 'slug' => 'map', 'extra' => array('max_length' => 128), 'unique' => TRUE);
-		$fields[] = array('name' => 'lang:firesale:label_route', 'slug' => 'route', 'extra' => array('max_length' => 128), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_table', 'slug' => 'table', 'type' => 'text', 'extra' => array('max_length' => 255), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_map', 'slug' => 'map', 'extra' => array('max_length' => 255), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_route', 'slug' => 'route', 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_translation', 'slug' => 'translation', 'extra' => array('max_length' => 128), 'unique' => TRUE);
 
 		// Combine
@@ -380,6 +436,63 @@ class Module_Firesale extends Module {
 
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
+
+		##############
+		## CURRENCY ##
+		##############
+
+		// Create currency stream
+		if( !$this->streams->streams->add_stream(lang('firesale:sections:currency'), 'firesale_currency', 'firesale_currency', NULL, NULL) ) return FALSE;
+
+		// Create currency folder
+		$currency = Files::create_folder(0, 'Currency Images');
+
+		// Format order status options
+		$cur_format = "0 : lang:firesale:currency:format_none\n" .
+					  "1 : lang:firesale:currency:format_00\n" .
+					  "2 : lang:firesale:currency:format_50\n" .
+					  "3 : lang:firesale:currency:format_99\n";
+
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_currency', 'assign' => 'firesale_currency', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_cur_code', 'slug' => 'cur_code', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_code_inst', 'extra' => array('max_length' => 3));
+		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
+		$fields[] = array('name' => 'lang:firesale:label_enabled', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_disabled\n1 : lang:firesale:label_enabled", 'choice_type' => 'dropdown', 'default_value' => 1));
+		$fields[] = array('name' => 'lang:firesale:label_cur_tax', 'slug' => 'cur_tax', 'type' => 'text', 'extra' => array('max_length' => 10));
+		$fields[] = array('name' => 'lang:firesale:label_cur_format', 'slug' => 'cur_format', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_format_inst', 'extra' => array('max_length' => 32));
+		$fields[] = array('name' => 'lang:firesale:label_cur_format_dec', 'slug' => 'cur_format_dec', 'type' => 'text', 'extra' => array('max_length' => 1), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_cur_format_sep', 'slug' => 'cur_format_sep', 'type' => 'text', 'extra' => array('max_length' => 1));
+		$fields[] = array('name' => 'lang:firesale:label_cur_format_num', 'slug' => 'cur_format_num', 'type' => 'choice', 'extra' => array('choice_data' => $cur_format, 'choice_type' => 'dropdown', 'default_value' => '1'));
+		$fields[] = array('name' => 'lang:firesale:label_cur_mod', 'slug' => 'cur_mod', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_mod_inst', 'extra' => array('max_length' => 10));
+		$fields[] = array('name' => 'lang:firesale:label_cur_flag', 'slug' => 'image', 'type' => 'image', 'extra' => array('folder' => $currency['data']['id']), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exch_rate', 'type' => 'text', 'instructions' => 'lang:firesale:label_exch_rate_inst', 'extra' => array('max_length' => 10), 'required' => FALSE);
+		
+		// Combine
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
+
+		// Add an initial currency
+		$this->db->insert('firesale_currency', array(
+						  	'id' => 1,
+						  	'created' => date("Y-m-d H:i:s"),
+						  	'created_by' => $this->current_user->id,
+						  	'ordering_count' => 0,
+						  	'cur_code' => 'GBP',
+						  	'title' => 'Default',
+						  	'slug' => 'default',
+						  	'enabled' => 1,
+						  	'cur_tax' => '20',
+						  	'cur_format' => '£{{ price }}',
+						  	'cur_format_num' => '0',
+						  	'cur_format_dec' => '.',
+						  	'cur_format_sep' => ',',
+						  	'cur_mod' => '+|0',
+						  	'exch_rate' => '1'
+						));
 
 		##################
 		## TRANSACTIONS ##
@@ -404,6 +517,9 @@ class Module_Firesale extends Module {
 		// Add settings
 		$this->settings('add');
 
+		// Ass routes
+		$this->routes('add');
+
 		// Add email templates
 		$this->templates('add');
 		
@@ -426,16 +542,44 @@ class Module_Firesale extends Module {
 		// Remove settings
 		$this->settings('remove');
 
+		// Remove routes
+		if( $this->db->where('stream_namespace', 'firesale_routes')->where('stream_slug', 'firesale_routes')->get('data_streams')->num_rows() )
+		{
+			$this->routes('remove');
+		}
+
 		// Remove email templates
 		$this->templates('remove');
 		
 		// Remove products
-		$this->products_m->delete_all_products();
+		if( $this->db->where('stream_namespace', 'firesale_products')->where('stream_slug', 'firesale_products')->get('data_streams')->num_rows() )
+		{
+			$this->products_m->delete_all_products();
+		}
 		
 		// Remove files folder
-		$folder = $this->products_m->get_file_folder_by_slug('product-images');
-		if( $folder != FALSE ) { Files::delete_folder($folder->id); }
+		$product_folder = $this->products_m->get_file_folder_by_slug('product-images');
+		if( $product_folder != FALSE )
+		{
+			Files::delete_folder($product_folder->id);
+		}
 		
+		// Remove currency folder
+		$currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');
+		if( $currency_folder != FALSE )
+		{
+
+			// Get files in folder
+			$files = Files::folder_contents($currency_folder->id);
+			foreach( $files['data']['file'] AS $file )
+			{
+				Files::delete_file($file->id);
+			}
+
+			// Delete folder
+			Files::delete_folder($currency_folder->id);
+		}
+
 		// Remove streams
 		$this->streams->utilities->remove_namespace('firesale_categories');
 		$this->streams->utilities->remove_namespace('firesale_products');
@@ -444,6 +588,7 @@ class Module_Firesale extends Module {
 		$this->streams->utilities->remove_namespace('firesale_orders');
 		$this->streams->utilities->remove_namespace('firesale_orders_items');
 		$this->streams->utilities->remove_namespace('firesale_routes');
+		$this->streams->utilities->remove_namespace('firesale_currency');
 		
 		// Drop the payment gateway tables
 		$this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it =/
@@ -492,77 +637,18 @@ class Module_Firesale extends Module {
 		$return     = TRUE;
 		$settings   = array();
 		
-		// Tax
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_tax',
-			'title' 	  	=> 'Tax Percentage',
-			'description' 	=> 'The percentage of tax to be applied to the products',
-			'default'		=> '20',
-			'value'			=> '20',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
+		// Settings
+		$settings[] = array('slug' => 'firesale_tax', 'title' => lang('firesale:settings_tax'), 'description' => lang('firesale:settings_tax_inst'), 'default' => '20', 'value' => '20', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale' );
+		$settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'firesale_currency_key', 'title' => lang('firesale:settings_currency_key'), 'description' => lang('firesale:settings_currency_key_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 1, 'module' => 'firesale' );
+		$settings[] = array('slug' => 'firesale_current_currency', 'title' => lang('firesale:settings_current_currency'), 'description' => lang('firesale:settings_current_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale' );
+		$settings[] = array('slug' => 'firesale_currency_updated', 'title' => lang('firesale:settings_currency_updated'), 'description' => lang('firesale:settings_currency_updated_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale');
+		$settings[] = array('slug' => 'firesale_perpage', 'title' => lang('firesale:settings_perpage'), 'description' => lang('firesale:settings_perpage_inst'), 'default' => '15', 'value' => '15', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'image_square', 'title' => lang('firesale:settings_image_square'), 'description' => lang('firesale:settings_image_square_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'image_background', 'title' => lang('firesale:settings_image_background'), 'description' => lang('firesale:settings_image_background_inst'), 'default' => 'ffffff', 'value' => 'ffffff', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+		$settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
-		// Currency Code
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_currency',
-			'title' 	  	=> 'Currency Code',
-			'description' 	=> 'The currency you accept (ISO-4217 format)',
-			'default'		=> 'GBP',
-			'value'			=> 'GBP',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Products Per Page
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_perpage',
-			'title' 	  	=> 'Products per Page',
-			'description' 	=> 'The number of products to be displayed on category and search result pages',
-			'default'		=> '15',
-			'value'			=> '15',
-			'type' 			=> 'text',
-			'options'		=> '',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-		
-		// Make images square
-		$settings[] = array(
-			'slug' 		  	=> 'image_square',
-			'title' 	  	=> 'Make Images Square?',
-			'description' 	=> 'Some themes may require square images to keep layouts consistent',
-			'default'		=> '0',
-			'value'			=> '0',
-			'type' 			=> 'select',
-			'options'		=> '1=Yes|0=No',
-			'is_required' 	=> 1,
-			'is_gui'		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Require login to purchase
-		$settings[] = array(
-			'slug' 		  	=> 'firesale_login',
-			'title' 	  	=> 'Require login to purchase?',
-			'description' 	=> 'Ensure a user is logged in before allowing them to buy products',
-			'default' 		=> '0',
-			'value' 		=> '0',
-			'type' 			=> 'select',
-			'options' 		=> '1=Yes|0=No',
-			'is_required' 	=> 1,
-			'is_gui' 		=> 1,
-			'module' 		=> 'firesale'
-		);
-
-		// Perform	
+		// Perform
 		if( $action == 'add' )
 		{
 			if( !$this->db->insert_batch('settings', $settings) )
@@ -584,6 +670,44 @@ class Module_Firesale extends Module {
 		return $return;	
 	}
 
+	public function routes($action)
+	{
+
+		// Load model
+		$this->load->model('firesale/routes_m');
+
+		// Routes
+		$routes   = array();
+		$routes[] = array('id' => '7', 'title' => 'Category (Customisation)', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
+		$routes[] = array('id' => '1', 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category{{ any }}', 'route' => 'category(/:any)?', 'translation' => 'firesale/front_category/index$1');
+		$routes[] = array('id' => '2', 'title' => 'Product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ any }}', 'route' => 'product/(:any)', 'translation' => 'firesale/front_product/index/$1');
+		$routes[] = array('id' => '3', 'title' => 'Cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
+		$routes[] = array('id' => '5', 'title' => 'Orders (Single)', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
+		$routes[] = array('id' => '4', 'title' => 'Orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
+		$routes[] = array('id' => '6', 'title' => 'Addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
+
+		// Perform
+		foreach( $routes AS $route )
+		{
+
+			// Check action
+			if( $action == 'add' )
+			{
+				// Add
+				$this->routes_m->create($route);
+			}
+			else if( $action == 'remove' )
+			{
+				// Remove
+				$this->routes_m->delete($route['id']);
+			}
+
+		}
+
+		// Return
+		return TRUE;
+	}
+
 	public function templates($action)
 	{
 
@@ -603,6 +727,56 @@ class Module_Firesale extends Module {
 			$this->db->where_in('slug', $templates)->delete('email_templates');
 		}
 
+	}
+
+	public function install_multiple()
+	{
+
+		// Variables
+		$url    = 'https://github.com/parse19/PyroStreams-Multiple-Relationships/zipball/master';
+		$path   = SHARED_ADDONPATH . 'field_types/';
+		$before = scandir($path);
+
+		// Perform checks before continuing
+		if( class_exists('ZipArchive') AND
+			function_exists('copy') AND
+			function_exists('rename') AND
+			function_exists('unlink') AND
+			is_writable($path) )
+		{
+
+			// Download to temp folder
+			$temp = tempnam(sys_get_temp_dir(), 'multiple');
+			copy($url, $temp);
+
+			// Unzip
+			$zip    = new ZipArchive;
+			$zipped = $zip->open($temp);
+			if( $zipped )
+			{
+			  	$zip->extractTo($path);
+			  	$zip->close();
+			}
+
+			// Rename folder
+			$after  = scandir($path);
+			$new    = array_diff($after, $before);
+			$folder = current($new);
+			rename($path.$folder, $path.'multiple');
+
+			// Remove temp file
+			@unlink($temp);
+
+			// Check it all went well
+			if( is_dir($path.'multiple') )
+			{
+				return TRUE;
+			}
+
+		}
+
+		// Something went wrong
+		return FALSE;
 	}
 
 	public function info()

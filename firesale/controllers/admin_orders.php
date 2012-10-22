@@ -33,6 +33,9 @@ class Admin_orders extends Admin_Controller
 
 		// Add metadata
 		$this->template->append_css('module::orders.css')
+					   ->append_js('module::jquery.tablesort.js')
+					   ->append_js('module::jquery.metadata.js')
+					   ->append_js('module::jquery.tablesort.plugins.js')
 					   ->append_js('module::orders.js')
 					   ->append_metadata('<script type="text/javascript">' .
 										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
@@ -56,12 +59,34 @@ class Admin_orders extends Admin_Controller
 		// Get by category if set
 		if( $type != NULL AND $query != NULL )
 		{
-			$params['where'] = $type . '=' . $query;
+
+			if( $type == 'product' )
+			{
+
+				// Get possible IDs
+				$query = $this->db->select('order_id')->where('product_id', $query)->group_by('order_id')->get('firesale_orders_items')->result_array();
+				$ids   = array();
+
+				// Loop IDs
+				foreach( $query AS $order )
+				{
+					$ids[] = $order['order_id'];
+				}
+
+				// Add to query
+				$params['where'] = 'id IN ('.implode(',',$ids).') ';
+
+			}
+			else
+			{
+				$params['where'] = $type . '=' . $query;
+			}
+
 		}
 		
 		// Get entries
 		$orders = $this->streams->entries->get_entries($params);
-
+		
 		// Get product count
 		foreach( $orders['entries'] AS $key => $order )
 		{
@@ -74,7 +99,7 @@ class Admin_orders extends Admin_Controller
 
 		// Assign filtering
 		$users = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
-		$prods = $this->products_m->build_dropdown();
+		$prods = $this->products_m->build_dropdown(( $type == 'product' ? $query : NULL));
 		$this->data->filter_users = $users['input'];
 		$this->data->filter_prods = form_dropdown('product', $prods, ( $type == 'product' ? $query : NULL ));
 		

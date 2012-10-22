@@ -24,6 +24,7 @@ class Admin_products extends Admin_Controller
 
 		// Load libraries, drivers & models
 		$this->load->driver('Streams');
+		$this->load->model('routes_m');
 		$this->load->model('products_m');
 		$this->load->model('categories_m');
 		$this->load->model('streams_core/row_m');
@@ -33,6 +34,9 @@ class Admin_products extends Admin_Controller
 
 		// Add metadata
 		$this->template->append_css('module::products.css')
+					   ->append_js('module::jquery.tablesort.js')
+					   ->append_js('module::jquery.metadata.js')
+					   ->append_js('module::jquery.tablesort.plugins.js')
 					   ->append_js('module::products.js')
 					   ->append_metadata('<script type="text/javascript">' .
 										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
@@ -72,21 +76,34 @@ class Admin_products extends Admin_Controller
 		}
 			
 		// Assign variables
-		$this->data->products 	= $products;
-		$this->data->count      = $this->products_m->get_products(( isset($filter) ? $filter : array() ), 0, 0);
-		$this->data->count		= ( $this->data->count ? count($this->data->count) : 0 );
-		$this->data->pagination = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
-		$this->data->categories = array(0 => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
+		$this->data->products 	  = $products;
+		$this->data->count        = $this->products_m->get_products(( isset($filter) ? $filter : array() ), 0, 0);
+		$this->data->count		  = ( $this->data->count ? count($this->data->count) : 0 );
+		$this->data->pagination   = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
+		$this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
+		$this->data->status       = $this->products_m->status_dropdown(( $type == 'status' ? $value : -1 ));
+		$this->data->stock_status = $this->products_m->stock_status_dropdown(( $type == 'stock_status' ? $value : -1 ));
+		$this->data->min_max      = $this->products_m->price_min_max();
 
-		// Add page data
-		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
-					   ->set($this->data);
+		// Ajax request?
+		if( $this->input->is_ajax_request() )
+		{
+			echo json_encode($this->data->products);
+			exit();
+		}
+		else
+		{
+			// Add page data
+			$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
+						   ->set($this->data);
 
-		// Fire events
-		Events::trigger('page_build', $this->template);
+			// Fire events
+			Events::trigger('page_build', $this->template);
 
-		// Build page
-		$this->template->build('admin/products/index');
+			// Build page
+			$this->template->build('admin/products/index');
+		}
+
 	}
 	
 	public function create($id = NULL, $row = NULL)
@@ -100,25 +117,39 @@ class Admin_products extends Admin_Controller
 			$input 	= $this->input->post();
 			$skip	= array('btnAction');
 			$extra 	= array(
-						'return' 			=> '/admin/firesale/products/edit/-id-?' . time(),
-						'success_message'	=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-						'error_message'		=> lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+						'return'          => FALSE,
+						'success_message' => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
+						'error_message'   => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
 
-			// Check button action for return location
-			if( $this->input->post('btnAction') == 'save_exit' )
-			{
-				$extra['return'] = '/admin/firesale/products';
-			}
-
-			// Perform additional tasks to existing products
+			// Temporary until we move to grid
+			// Remove duplicate entries before updating categories
+			// Also deletes all existing categories from a product
 			if( $id !== NULL )
 			{
-
-				// Temporary until we move to grid
-				// Remove duplicate entries before updating categories
-				// Also deletes all existing categories from a product
 				$input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
+			}
+		
+		}
+		else
+		{
+			$input = FALSE;
+			$skip  = array();
+			$extra = array();
+		}
+	
+		// Get the stream fields
+		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
+
+		// Posted
+		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
+		{
+
+			// Got an ID back
+			if( is_numeric($fields) AND ! empty($row) )
+			{
+				// Assign ID
+				$id = $fields;
 
 				// Update duplicates
 				$this->products_m->update_duplicates($id, $row->slug, $input);
@@ -132,19 +163,19 @@ class Admin_products extends Admin_Controller
 				// Fire event
 				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
 				Events::trigger('product_updated', $data);
-
 			}
-		
+
+			// Redirect
+			if( $input['btnAction'] == 'save_exit' AND ! is_object($fields) )
+			{
+				redirect('admin/firesale/products');
+			}
+			else if( is_string($fields) OR is_integer($fields) )
+			{
+				redirect('admin/firesale/products/edit/'.$fields);
+			}
+
 		}
-		else
-		{
-			$input = FALSE;
-			$skip  = array();
-			$extra = array();
-		}
-	
-		// Get the stream fields
-		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
 
 		// Fire build event
 		Events::trigger('form_build', $this);
@@ -304,12 +335,12 @@ class Admin_products extends Admin_Controller
 		if( !$folder )
 		{
 			$parent = $this->products_m->get_file_folder_by_slug('product-images');
-			$folder = Files::create_folder($parent->id, $row->title);
+			$folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
 			$folder = (object)$folder['data'];
 		}
 
 		// Check for folder
-		if( is_object($folder) )
+		if( is_object($folder) AND ! empty($folder) )
 		{
 
 			// Upload it
@@ -406,6 +437,33 @@ class Admin_products extends Admin_Controller
 
 		echo 'error';
 		exit();
+	}
+
+	public function ajax_filter()
+	{
+		if( $this->input->is_ajax_request() )
+		{
+			echo json_encode($this->products_m->get_product($id));
+			exit();
+		}
+	}
+
+	public function _remap($method, $args)
+	{
+
+		// Capture
+		$remap = array('search', 'price');
+
+		// Check for search
+		if( in_array($method, $remap) )
+		{
+			call_user_func_array(array($this, 'index'), array_merge(array($method), $args));
+		}
+		else
+		{
+			call_user_func_array(array($this, $method), $args);
+		}
+
 	}
 	
 }

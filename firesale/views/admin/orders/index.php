@@ -1,6 +1,7 @@
 		
 	<section class="title">
 		<h4><?php echo lang('firesale:orders:title'); ?></h4>
+		<a class="tooltip-s show-filter" original-title="<?php echo lang('firesale:label_showfilter'); ?>"></a>
 	</section>
 
 	<?php echo form_open_multipart($this->uri->uri_string() . '/status', 'class="crud" id="tabs"'); ?>
@@ -8,12 +9,14 @@
 		<section class="item">
 <?php if( !empty($orders)): ?>
 
-			<fieldset id="filters">
+			<fieldset id="filters" style="display: none">
 			    <legend><?php echo lang('global:filters'); ?></legend>
 			    <ul>  
 			        <li>
-			            <label><?php echo lang('firesale:filters:user'); ?></label>
 			            <?php echo $filter_users; ?>
+			        </li>
+			        <li>
+			            <?php echo $filter_prods; ?>
 			        </li>
 			    </ul>
 			</fieldset>
@@ -22,21 +25,26 @@
 				<thead>
 					<tr>
 						<th><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
-						<th><?php echo lang('firesale:label_date'); ?></th>
+						<th class="{sorter: 'date'}"><?php echo lang('firesale:label_date'); ?></th>
 						<th><?php echo lang('firesale:label_ship_to'); ?></th>
 						<th><?php echo lang('firesale:label_status'); ?></th>
 						<th><?php echo lang('firesale:label_products'); ?></th>
 						<th><?php echo lang('firesale:label_country'); ?></th>
-						<th><?php echo lang('firesale:label_price_total'); ?></th>
-						<th><?php echo lang('firesale:label_price_ship'); ?></th>
+						<th class="{sorter: 'currency'}"><?php echo lang('firesale:label_price_total'); ?></th>
+						<th class="{sorter: 'currency'}"><?php echo lang('firesale:label_price_ship'); ?></th>
 						<th></th>
 					</tr>
 				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="9"></td>
+					</tr>
+				</tfoot>
 				<tbody>
 <?php foreach( $orders AS $order ): ?>
-					<tr>
+					<tr class="status-<?php echo $order['order_status']['key']; ?>">
 						<td><input type="checkbox" name="action_to[]" value="<?php echo $order['id']; ?>"  /></td>
-						<td><?php echo date('H:i:s d-m-Y', $order['created']); ?></td>
+						<td><?php echo date('Y-m-d H:i:s', $order['created']); ?></td>
 						<td><?php echo $order['ship_to']['firstname'] . ' ' . $order['ship_to']['lastname']; ?></td>
 						<td><?php echo $order['order_status']['value']; ?></td>
 						<td><?php echo $order['products']; ?></td>

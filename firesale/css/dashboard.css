@@ -1,5 +1,7 @@
 
 #sortable .one_half:nth-child(2n) { margin-right: 0 !important; float: right !important; }
+#sortable .one_half:nth-child(2n+1) { clear: both; }
+
 .legend table { width: auto !important; }
 .legend table tr { border-bottom: none !important; }
 .legend table td { padding: 3px !important; }
