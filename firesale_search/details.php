@@ -20,12 +20,14 @@ class Module_Firesale_Search extends Module {
 			'name' => array(
 				'en' => 'FireSALE Search (Basic)',
 				'fr' => 'FireSale Recherche (Basique)',
-				'it' => 'FireSale Ricerca (Base)'
+				'it' => 'FireSale Ricerca (Base)',
+				'id' => 'FireSale Pencarian (Dasar)'
 			),
 			'description' => array(
 				'en' => 'Product and category search with ajax capabilities', 
 				'fr' => 'Recherche dans les produits et la catégories, dynamisée par AJAX',
-				'it' => 'Ricerca di prodotti e categorie, compatibile con AJAX'
+				'it' => 'Ricerca di prodotti e categorie, compatibile con AJAX',
+				'id' => 'Pencarian produk dan kategori menggunakan AJAX'
 			),
 			'frontend' 		=> TRUE,
 			'backend' 		=> FALSE,

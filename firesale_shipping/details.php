@@ -20,12 +20,14 @@ class Module_Firesale_shipping extends Module {
 			'name' => array(
 				'en' => 'FireSale Shipping',
 				'fr' => 'FireSale Expédition',
-				'it' => 'FireSale Spedizioni'
+				'it' => 'FireSale Spedizioni',
+				'id' => 'FireSale Pengiriman'
 			),
 			'description' => array(
 				'en' => 'Basic band-based shipping options',
 				'fr' => 'Gestionnaire de modes d\'expédition',
-				'it' => 'Gestione base delle spedizioni'
+				'it' => 'Gestione base delle spedizioni',
+				'id' => 'Opsi pengiriman dasar berbasis berkas'
 			),
 			'frontend'		=> FALSE,
 			'backend'		=> FALSE,

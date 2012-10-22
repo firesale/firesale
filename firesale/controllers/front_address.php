@@ -63,7 +63,12 @@ class Front_address extends Public_Controller
 		
 		// Add page content
 		$this->template->title(lang('firesale:addresses:title'))
+<<<<<<< HEAD
+					   ->set_breadcrumb('Home', 'home')
+					   ->set_breadcrumb(lang('firesale:addresses:title'), 'users/addresses')
+=======
 					   ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+>>>>>>> b3ad7d60c53e6b8bfe87b745fbff9d858f5c222f
 					   ->set($this->data);
 
 		// Fire events
@@ -93,7 +98,12 @@ class Front_address extends Public_Controller
 		
 		// Add page content
 		$this->template->title(lang('firesale:addresses:title'))
+<<<<<<< HEAD
+					   ->set_breadcrumb('Home', 'home')
+					   ->set_breadcrumb(lang('firesale:addresses:title'), 'users/addresses')
+=======
 					   ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+>>>>>>> b3ad7d60c53e6b8bfe87b745fbff9d858f5c222f
 					   ->set($this->data);
 
 		// Fire events
@@ -130,7 +140,12 @@ class Front_address extends Public_Controller
 
 			// Build page
 			$this->template->title(lang('firesale:addresses:title'))
+<<<<<<< HEAD
+						   ->set_breadcrumb('Home', 'home')
+						   ->set_breadcrumb(lang('firesale:addresses:title'), 'users/addresses')
+=======
 						   ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+>>>>>>> b3ad7d60c53e6b8bfe87b745fbff9d858f5c222f
 						   ->build('address_create', $this->data);
 
 		}
