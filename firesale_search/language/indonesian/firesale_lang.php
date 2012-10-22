@@ -11,5 +11,5 @@
 	$lang['firesale:search:no_terms']		= 'Tidak ada daftar istilah pada pencarian';	
 	
 	//Search Frontend
-	$lang['firesale:search:label_search'] 			= 'Search';	# Translate
-	$lang['firesale:search:label_nothing_found'] 	= 'Nothing found!';	# Translate
+	$lang['firesale:search:label_search'] 			= 'Cari';
+	$lang['firesale:search:label_nothing_found'] 	= 'Tidak ditemukan!';
