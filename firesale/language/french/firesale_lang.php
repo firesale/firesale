@@ -18,8 +18,7 @@
 	$lang['firesale:sections:gateways']		  = 'Paiements';
 	$lang['firesale:sections:settings'] 	  = 'Paramètres';
 	$lang['firesale:sections:routes']         = 'Routes';
-	$lang['firesale:shortcuts:create_routes'] = 'Ajouter une nouvelle route';
-	$lang['firesale:shortcuts:build_routes']  = 'Reconstruire les routes';
+	$lang['firesale:sections:currency']       = 'Currency'; # Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Options générales';
@@ -34,6 +33,8 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Créer une catégorie';
 	$lang['firesale:shortcuts:install_gateway']	= 'Installer une plateforme de paiement';
 	$lang['firesale:shortcuts:create_order']	= 'Créer une commande';
+	$lang['firesale:shortcuts:create_routes']   = 'Ajouter une nouvelle route';
+	$lang['firesale:shortcuts:build_routes']    = 'Reconstruire les routes';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Vue d\'ensemble';
