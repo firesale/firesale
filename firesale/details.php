@@ -169,10 +169,13 @@ class Module_Firesale extends Module {
 	public function install()
 	{
 
+		// For 2.2 compatibility
+		$redirect = ( substr(CMS_VERSION, 0, 3) == '2.2' ? 'addons/' : '' ).'modules';
+
 		if (CMS_VERSION < "2.1.4")
 		{
 			$this->session->set_flashdata('error', lang('firesale:install:wrong_version'));
-			redirect('admin/modules');
+			redirect('admin/'.$redirect);
 			return FALSE;
 		}
 		elseif ( ! is_dir(SHARED_ADDONPATH . 'field_types/multiple')
@@ -182,19 +185,19 @@ class Module_Firesale extends Module {
 			if( ! $this->install_multiple() )
 			{
 				$this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
-				redirect('admin/modules');
+				redirect('admin/'.$redirect);
 				return FALSE;
 			}
 			else
 			{
 				// Redirect so Pyro recognises the field type is installed
-				redirect('admin/modules/install/firesale');
+				redirect('admin/'.$redirect.'/install/firesale');
 			}
 		}
 		elseif ( ! is_writable(APPPATH . 'config/routes.php') )
 		{
 			$this->session->set_flashdata('error', lang('firesale:install:no_route_access'));
-			redirect('admin/modules');
+			redirect('admin/'.$redirect);
 			return FALSE;
 		}
 
@@ -558,14 +561,14 @@ class Module_Firesale extends Module {
 		}
 		
 		// Remove files folder
-		$product_folder = $this->products_m->get_file_folder_by_slug('product-images');
+		/*$product_folder = $this->products_m->get_file_folder_by_slug('product-images');
 		if( $product_folder != FALSE )
 		{
 			Files::delete_folder($product_folder->id);
-		}
+		}*/
 		
 		// Remove currency folder
-		$currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');
+		/*$currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');
 		if( $currency_folder != FALSE )
 		{
 
@@ -578,7 +581,7 @@ class Module_Firesale extends Module {
 
 			// Delete folder
 			Files::delete_folder($currency_folder->id);
-		}
+		}*/
 
 		// Remove streams
 		$this->streams->utilities->remove_namespace('firesale_categories');
