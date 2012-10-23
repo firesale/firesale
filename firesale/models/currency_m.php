@@ -80,10 +80,10 @@ class Currency_m extends MY_Model
 
 		// Perform conversion
 		$tax_mod   = 1 + ( $currency->cur_tax / 100 );
-		$rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
 		$rrp_tax   = ( $rrp   * $currency->exch_rate );
-		$price     = ( $price * $currency->exch_rate ) * $tax_mod;
+		$rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
 		$price_tax = ( $price * $currency->exch_rate );
+		$price     = ( $price * $currency->exch_rate ) * $tax_mod;
 
 		// Format prices
 		$rrp_f       = $this->format_string($rrp, $currency);       // RRP With tax

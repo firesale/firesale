@@ -46,9 +46,12 @@ class Widget_FireSale_Products extends Widgets
         $products = $this->products_m->get_products($params, $start, $limit);
 
         // Assign products
-        foreach( $products AS &$product )
+        if( !empty($products) )
         {
-            $product = $this->products_m->get_product($product['id']);
+            foreach( $products AS &$product )
+            {
+                $product = $this->products_m->get_product($product['id']);
+            }
         }
 
         // Store the feed items

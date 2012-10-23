@@ -707,7 +707,8 @@ class Front_cart extends Public_Controller
 
 	private function _order_complete()
 	{
-		call_user_func_array(array($this, '_order_authorized'), func_get_args());
+		$args = func_get_args();
+		call_user_func_array(array($this, '_order_authorized'), $args);
 	}
 
 	public function success()

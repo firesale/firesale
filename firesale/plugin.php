@@ -174,10 +174,14 @@ class Plugin_Firesale extends Plugin
 	{
 	
 		// Load libraries
-		$this->load->model('products_m');
 		$this->load->library('fs_cart');
 
-		$tax  		 	= round(( 100 - $this->settings->get('firesale_tax') ) / 100, 3);
+		// Get currency
+		$currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
+
+
+		// Variables
+		$tax  		 	= round(( 100 - $currency->cur_tax ) / 100, 3);
 		$data 		 	= new stdClass;
 		$data->sub 	 	= 0;
 		$data->tax 	 	= 0;
@@ -189,30 +193,32 @@ class Plugin_Firesale extends Plugin
 		foreach( $this->fs_cart->contents() as $id => $item )
 		{
 		
-			$product = $this->products_m->get_product($item['id']);
-			
+			$product = $this->products_m->get($item['id']);
+
 			if( $product !== FALSE )
 			{
 			
 				$data->products[] = array(
 					'id'		=> $id,
-					'code' 		=> $product['code'],
-					'slug'		=> $product['slug'],
+					'code' 		=> $product->code,
+					'slug'		=> $product->slug,
 					'quantity'	=> $item['qty'],
 					'name'		=> $item['name']
 				);
 				
-				$data->total += $item['subtotal'];
+				$data->sub   += ( $product->price_tax * $item['qty'] );
+				$data->total += ( $product->price * $item['qty'] );
 				$data->count += $item['qty'];
 			}
 		
 		}
 		
 		// Calculate prices
-		$data->tax   = number_format(( $data->total * $tax ), 2);
-		$data->sub   = number_format(( $data->total - $data->tax ), 2);
-		$data->total = number_format($data->total, 2);
+		$data->tax   = $this->currency_m->format_string(( $data->total - $data->sub ), $currency, false);
+		$data->sub   = $this->currency_m->format_string($data->sub, $currency, false);
+		$data->total = $this->currency_m->format_string($data->total, $currency, false);
 
+		// Retrun data
 		return array($data);
 	}
 

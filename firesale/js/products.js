@@ -85,7 +85,7 @@ $(function(){
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
 		price.change(function() {
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
-			if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() * ( 1 - ( tax_rate / 100 ) ) )); }
+			if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ) )); }
 		}).blur(function() { $(this).val(( $(this).val().length > 0 ? decimal($(this).val()) : '0.00' )); });
 		$('#' + tmp.attr('id')).change(function() {
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
