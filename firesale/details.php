@@ -531,7 +531,7 @@ class Module_Firesale extends Module {
 			$this->currency('add');
 
 			// Add settings
-			$this->settings('add', array('firesale_currency_key', 'firesale_current_currency', 'firesale_currency_updated', 'image_background', 'firesale_login'));
+			$this->settings('add', array('firesale_currency_key', 'firesale_current_currency', 'firesale_currency_updated', 'image_background'));
 
 		}
 
