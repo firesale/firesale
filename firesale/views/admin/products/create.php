@@ -29,7 +29,7 @@
 							<div class="preview" id="image-<?php echo $image->id; ?>">
 								<span class="imageHolder">
 									<a href="{{ site:url }}admin/firesale/products/delete_image/<?php echo $image->id; ?>" class="delete">x</a>
-									<img src="/files/thumb/<?php echo $image->id; ?>/480/360" />
+									<img src="{{ site:url }}files/thumb/<?php echo $image->id; ?>/480/360" />
 								</span>
 								<span class="imageTitle"><?php echo $image->name; ?></span>
 							</div>
