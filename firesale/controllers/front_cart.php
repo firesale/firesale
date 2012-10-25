@@ -345,7 +345,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// No checkout without items
-		if ( ! $this->fs_cart->total())
+		if ( ! $this->fs_cart->total_items())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
 			redirect($this->routes_m->build_url('cart'));
