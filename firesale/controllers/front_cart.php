@@ -693,10 +693,17 @@ class Front_cart extends Public_Controller
 			// Clear cart
 			$this->fs_cart->destroy();
 
-			// Format order for display
-			$order['price_sub']   = number_format($order['price_sub'], 2);
-			$order['price_ship']  = number_format($order['price_ship'], 2);
-			$order['price_total'] = number_format($order['price_total'], 2);
+			// Format order
+			foreach ($order['items'] as &$item)
+			{
+				$item['price'] = $this->currency_m->format_string($item['price'], $this->currency);
+				$item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->currency);
+			}
+
+			// Format currency
+			$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency);
+			$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency);
+			$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency);
 
 			// Build page
 			$this->template->title(lang('firesale:payment:title_success'))
