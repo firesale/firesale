@@ -156,6 +156,7 @@
 	$lang['firesale:label_details'] 	= 'My Billing and Shipping addresses are the same';
 	$lang['firesale:label_user_order']	= 'User';
 	$lang['firesale:label_ip']			= 'IP Address';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping';
 
 	$lang['firesale:label_nameaz']		= 'Name A - Z';
 	$lang['firesale:label_nameza']		= 'Name Z - A';

@@ -156,6 +156,7 @@
 	$lang['firesale:label_details'] 	= 'Mano užsakymo ir pristatymo adresai vienodi';
 	$lang['firesale:label_user_order']	= 'Vartotojas';
 	$lang['firesale:label_ip']			= 'IP adresas';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping'; # Translate
 
 	$lang['firesale:label_nameaz']		= 'Vardas A - Z';
 	$lang['firesale:label_nameza']		= 'Vardas Z - A';

@@ -156,6 +156,7 @@
 	$lang['firesale:label_details'] 	= 'Meu Endereço de Cobrança e Entrega são os mesmos';
 	$lang['firesale:label_user_order']	= 'Usuário';
 	$lang['firesale:label_ip']			= 'Endereço IP';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping'; # Translate
 
 	$lang['firesale:label_nameaz']		= 'Nome A - Z';
 	$lang['firesale:label_nameza']		= 'Nome Z - A';

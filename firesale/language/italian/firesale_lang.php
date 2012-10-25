@@ -156,6 +156,7 @@
 	$lang['firesale:label_details'] 	= 'L\'indirizzo di fatturazione e di spedizione coincidono.';
 	$lang['firesale:label_user_order']	= 'Utente';
 	$lang['firesale:label_ip']			= 'Indirizzo IP';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping'; # Translate
 
 	$lang['firesale:label_nameaz']		= 'Nome A - Z';
 	$lang['firesale:label_nameza']		= 'Nome Z - A';

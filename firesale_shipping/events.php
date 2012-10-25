@@ -22,7 +22,7 @@ class Events_Firesale_shipping
 	    unset($controller->tabs['_images']);
 
 	    // Add metadata to tabs
-	    $controller->tabs['shipping'] = array('shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth');
+	    $controller->tabs['shipping'] = array('ship_req', 'shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth');
 
 	    // Add images back in
 	    $controller->tabs['_images'] = array();

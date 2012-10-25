@@ -156,6 +156,7 @@
 	$lang['firesale:label_details'] 	= 'Alamat tagihan dan pengiriman sama';
 	$lang['firesale:label_user_order']	= 'Pengguna';
 	$lang['firesale:label_ip']			= 'Alamat IP';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping'; # Translate
 
 	$lang['firesale:label_nameaz']		= 'Nama A - Z';
 	$lang['firesale:label_nameza']		= 'Nama Z - A';
