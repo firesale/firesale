@@ -5,6 +5,7 @@
 	  
         <div id="checkout" class="firesale">
 
+<?php if( $ship_req ): ?>
           <h3 id="shipping_details"><a href="#shipping"><?php echo lang('firesale:title:ship'); ?></a></h3>
           <fieldset>
 <?php if( isset($addresses) && !empty($addresses) ): ?>
@@ -46,6 +47,7 @@
             <a href="#billing_details" class="next btn"><span>Next</span></a>
             <br class="clear" />
           </fieldset>
+<?php endif; ?>
 
           <h3 id="billing_details"><a href="#billing"><?php echo lang('firesale:title:bill'); ?></a></h3>
           <fieldset>
@@ -90,7 +92,7 @@
             <br class="clear" />
           </fieldset>
 
-<?php if( isset($shipping) && is_array($shipping) ): ?>
+<?php if( $ship_req && isset($shipping) && is_array($shipping) ): ?>
           <h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:checkout:title:ship_method'); ?></a></h3>
           <fieldset>
             <p>Please select your preferred shipping method below before continuing</p>
@@ -109,7 +111,7 @@
             <br class="clear" />
           </fieldset>
 
-<?php elseif( isset($shipping) && (0 + $shipping ) > 0 ): ?>
+<?php elseif( $ship_req && isset($shipping) && (0 + $shipping ) > 0 ): ?>
           <input type="hidden" name="shipping" value="<?php echo $shipping; ?>" />
 
 <?php endif; ?>

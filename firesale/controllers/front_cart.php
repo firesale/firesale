@@ -359,7 +359,16 @@ class Front_cart extends Public_Controller
 			$this->load->helper('form');
 
 			// Variables
-			$data = array();
+			$data = array('ship_req' => FALSE);
+
+			// Check for shipping requirements
+			foreach ($this->fs_cart->contents() as $item)
+			{
+				if( $item['ship'] == 1 )
+				{
+					$data['ship_req'] = TRUE;
+				}
+			}
 			
 			// Check for post data
 			if ($this->input->post('btnAction') == 'pay')
@@ -372,7 +381,7 @@ class Front_cart extends Public_Controller
 				$extra 	= array('return' => 'cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
 
 				// Shipping option
-				if (isset($this->firesale->roles['shipping']) AND isset($input['shipping']))
+				if ( $data['ship_req'] AND isset($this->firesale->roles['shipping']) AND isset($input['shipping']))
 				{
 					$role = $this->firesale->roles['shipping'];
 					$shipping = $this->$role['model']->get_option_by_id($input['shipping']);
@@ -392,7 +401,7 @@ class Front_cart extends Public_Controller
 				$_POST 				   = $input;
 
 				// Generate validation
-				$rules = $this->cart_m->build_validation();
+				$rules = $this->cart_m->build_validation($data['ship_req']);
 				$this->form_validation->set_rules($rules);
 
 				// Run validation
@@ -456,7 +465,7 @@ class Front_cart extends Public_Controller
 			$data['fields'] = $this->address_m->get_address_form();
 			
 			// Get available shipping methods
-			if( isset($this->firesale->roles['shipping']) )
+			if( isset($this->firesale->roles['shipping']) AND $data['ship_req'] )
 			{
 				$role = $this->firesale->roles['shipping'];
 				$data['shipping'] = $this->$role['model']->calculate_methods($this->fs_cart->contents());

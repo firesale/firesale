@@ -50,10 +50,11 @@ class Cart_m extends MY_Model
 	 * for the correct user or if a new address has been submitted that it contains
 	 * all of the necissary data.
 	 *
+	 * @param boolean $ship Do we require shipping?
 	 * @return array An array containing the rules to be added to validation
 	 * @access public
 	 */
-	public function build_validation()
+	public function build_validation($ship = TRUE)
 	{
 
 		// Variables
@@ -70,7 +71,7 @@ class Cart_m extends MY_Model
 		{
 
 			// Shipping
-			if( !isset($input['ship_to']) OR ( isset($input['ship_to']) AND $input['ship_to'] == 'new' ) )
+			if( $ship AND ( !isset($input['ship_to']) OR ( isset($input['ship_to']) AND $input['ship_to'] == 'new' ) ) )
 			{
 				$_rule   		= $rule;
 				$_rule['field'] = 'ship_' . $_rule['field'];
@@ -90,7 +91,7 @@ class Cart_m extends MY_Model
 		// Set callbacks
 		$rules[] = array('field' => 'gateway', 'label' => 'lang:firesale:label_gateway', 'rules' => 'callback__validate_gateway');
 		$rules[] = array('field' => 'shipping', 'label' => 'lang:firesale:label_shipping', 'rules' => 'callback__validate_shipping');
-		if( isset($input['ship_to']) )
+		if( $ship AND isset($input['ship_to']) )
 		{
 			$rules[] = array('field' => 'ship_to', 'label' => 'lang:firesale:label_ship_to', 'rules' => 'callback__validate_address');
 		}
@@ -160,6 +161,7 @@ class Cart_m extends MY_Model
 					'price'	=> $product['price'],
 					'name'	=> $product['title'],
 					'slug'	=> $product['slug'],
+					'ship'  => $product['ship_req']['key'],
 					'weight'=> ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
 					'image'	=> $this->products_m->get_single_image($product['id'])
 				);
