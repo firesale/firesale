@@ -584,9 +584,9 @@ class Front_cart extends Public_Controller
 				}
 
 				// Format currency
-				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency);
-				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency);
-				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency);
+				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency, FALSE);
+				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency, FALSE);
+				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency, FALSE);
 
 				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
@@ -701,9 +701,9 @@ class Front_cart extends Public_Controller
 			}
 
 			// Format currency
-			$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency);
-			$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency);
-			$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency);
+			$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency, FALSE);
+			$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency, FALSE);
+			$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency, FALSE);
 
 			// Build page
 			$this->template->title(lang('firesale:payment:title_success'))
