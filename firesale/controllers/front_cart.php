@@ -408,7 +408,7 @@ class Front_cart extends Public_Controller
 				if ($this->form_validation->run() === TRUE)
 				{
 					// Check for addresses
-					if ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new')
+					if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' ) )
 					{
 						$input['ship_to'] = $this->address_m->add_address($input, 'ship');
 					}
