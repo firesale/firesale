@@ -79,8 +79,7 @@ class Front_product extends Public_Controller {
 		}
 		else
 		{
-			set_status_header(404);
-			echo Modules::run('pages/_remap', '404');
+			show_404();
 		}
 
 	}
