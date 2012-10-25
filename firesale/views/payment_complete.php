@@ -46,7 +46,7 @@
             <td>{{ code }}</td>
             <td>{{ qty }}</td>
             <td>{{ price }}</td>
-            <td>{{ total }}</td>
+            <td>{{ subtotal }}</td>
           </tr>
 {{ /items }}
           <tr>
