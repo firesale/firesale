@@ -364,7 +364,7 @@ class Front_cart extends Public_Controller
 			// Check for shipping requirements
 			foreach ($this->fs_cart->contents() as $item)
 			{
-				if( $item['ship'] == 1 )
+				if( ! isset($item['ship']) OR $item['ship'] == 1 )
 				{
 					$data['ship_req'] = TRUE;
 				}
