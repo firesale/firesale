@@ -52,6 +52,10 @@ class Front_cart extends Public_Controller
 			$this->session->set_userdata('redirect_to', $url);
 			redirect('users/login');		
 		}
+
+		// Grab the currency
+		$user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+		$this->currency = $this->currency_m->get($user_currency);
 		
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
@@ -523,7 +527,7 @@ class Front_cart extends Public_Controller
 					'return_url' => $this->routes_m->build_url('cart') . '/success',
 					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
 				), $this->input->post(NULL, TRUE), array(
-					'currency_code' => $this->settings->get('firesale_currency'),
+					'currency_code' => $this->currency->cur_code,
 					'amount'        => $this->fs_cart->total,
 					'reference'     => 'Order #' . $this->session->userdata('order_id')
 				));
@@ -575,9 +579,14 @@ class Front_cart extends Public_Controller
 				// Format order
 				foreach( $order['items'] AS $key => $item )
 				{
-					$order['items'][$key]['price'] = number_format($item['price'], 2);
-					$order['items'][$key]['total'] = number_format(( $item['price'] * $item['qty']), 2);
+					$order['items'][$key]['price'] = $this->currency_m->format_string($item['price'], $this->currency);
+					$order['items'][$key]['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->currency);
 				}
+
+				// Format currency
+				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency);
+				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency);
+				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency);
 
 				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
@@ -587,6 +596,7 @@ class Front_cart extends Public_Controller
 							   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart').'/payment')
 							   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
 							   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
+							   ->set('currency', $this->currency)
 							   ->set('payment', $gateway_view)
 							   ->build('payment', $order);
 
