@@ -24,9 +24,7 @@ $(function(){
 		$a.addClass('selected');
 		$details_id.val(cat_id);
 
-		$('li a[href=#images]').parents('li').remove();
-		$('#images').remove();
-		tabs.tabs('refresh');
+		tabs.tabs('remove', 1, 0);
 		
 		$.getJSON(SITE_URL+'admin/firesale/categories/ajax_cat_details/' + $details_id.val(), function(data) {
 

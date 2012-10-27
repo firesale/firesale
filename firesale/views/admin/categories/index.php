@@ -50,7 +50,7 @@
 					</ul>
 					<?php endif; ?>				
 
-					<input type="hidden" name="id" value="<?php echo ( isset($input->id) ? $input->id : '' ); ?>" />
+					<input type="hidden" name="id" id="id" value="<?php echo ( isset($input->id) ? $input->id : '' ); ?>" />
 
 					<?php foreach( $fields AS $slug => $field ): ?>
 					<div class="form_inputs" id="<?php echo strtolower(str_replace(' ', '', $slug)); ?>">
