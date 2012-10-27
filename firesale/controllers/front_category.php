@@ -116,11 +116,6 @@ class Front_category extends Public_Controller {
 			$this->data->products = $products;
 			$this->data->ordering = get_order();
 
-			// Assign images
-			$folder = $this->products_m->get_file_folder_by_slug($category['slug']);
-			$images = Files::folder_contents($folder->id);
-			$this->data->images = $images['data']['file'];
-
 			// Assign pagination
 			if( !empty($products) )
 			{

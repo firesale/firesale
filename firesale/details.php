@@ -538,6 +538,12 @@ class Module_Firesale extends Module {
 	public function upgrade($old_version)
 	{
 
+		// Load requirements
+		$this->load->driver('Streams');
+		$this->load->model('firesale/categories_m');
+		$this->load->model('firesale/products_m');
+		$this->load->library('files/files');
+
 		// Pre 1.1.0
 		if( $old_version < '1.1.0' )
 		{

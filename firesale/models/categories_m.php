@@ -75,6 +75,11 @@ class Categories_m extends MY_Model
 				// Get category
 				$category = current($category['entries']);
 
+				// Get images
+				$folder = $this->products_m->get_file_folder_by_slug($category['slug']);
+				$images = Files::folder_contents($folder->id);
+				$category['images'] = $images['data']['file'];
+
 				// Add to cache
 				$this->cache['id'][$category['id']]     = $category;
 				$this->cache['slug'][$category['slug']] = $category;
