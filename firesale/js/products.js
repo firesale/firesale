@@ -53,6 +53,9 @@ $(function(){
 	tax_link($('#price'), $('#price_tax'));
 	$('#cost, #cost_tax, #rrp, #rrp_tax, #price, #price_tax');
 
+	// Add upload
+	bind_upload('admin/firesale/products/upload/'+$('#id').val());
+
 	// Image reordering
 	$('#dropbox').sortable({
 		cursor: 'move',
@@ -60,7 +63,7 @@ $(function(){
 		stop: function(event, ui) {
 			var o = '';
 			$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });
-			$.post('/admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
+			$.post(SITE_URL+'admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
 				if( data != 'ok' ) { alert(data); }
 			});
 		}
@@ -151,7 +154,7 @@ $(function(){
 	function update_products(data)
 	{
 
-		$.post('/admin/firesale/products' + ( parseInt(data.value) != -1 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
+		$.post(SITE_URL+'admin/firesale/products' + ( parseInt(data.value) != -1 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
 			
 			// Variables
 			var products = $.parseJSON(p), tar = $('#product_table tbody'), row = '';

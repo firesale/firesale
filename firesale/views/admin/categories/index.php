@@ -40,15 +40,15 @@
 
 			<div class="tabs">
 
-				<?php if( !empty($tabs) ): ?>
-				<ul class="tab-menu">
-				<?php foreach( $tabs AS $tab ): ?>
-					<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><?php echo lang('firesale:tabs:' . $tab); ?></a></li>
-				<?php endforeach; ?>
-				</ul>
-				<?php endif; ?>
-
 				<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud" id="tabs"'); ?>
+
+					<?php if( !empty($tabs) ): ?>
+					<ul class="tab-menu">
+					<?php foreach( $tabs AS $tab ): ?>
+						<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><span><?php echo lang('firesale:tabs:' . $tab); ?></span></a></li>
+					<?php endforeach; ?>
+					</ul>
+					<?php endif; ?>				
 
 					<input type="hidden" name="id" value="<?php echo ( isset($input->id) ? $input->id : '' ); ?>" />
 

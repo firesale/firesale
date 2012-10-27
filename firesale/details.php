@@ -456,7 +456,8 @@ class Module_Firesale extends Module {
 		// Add email templates
 		$this->templates('add');
 		
-		// Create files folder
+		// Create files folders
+		Files::create_folder(0, 'Category Images');
 		Files::create_folder(0, 'Product Images');
 
 		// Return
@@ -472,13 +473,29 @@ class Module_Firesale extends Module {
 		$this->load->model('firesale/products_m');
 		$this->load->library('files/files');
 	
+		// Remove category images
+		$category_folder = $this->products_m->get_file_folder_by_slug('category-images');
+		if( $category_folder != FALSE )
+		{
+
+			// Get files in folder
+			$files = Files::folder_contents($category_folder->id);
+			foreach( $files['data']['file'] AS $file )
+			{
+				Files::delete_file($file->id);
+			}
+
+			// Delete folder
+			Files::delete_folder($category_folder->id);
+		}
+
 		// Remove products
 		if( $this->db->where('stream_namespace', 'firesale_products')->where('stream_slug', 'firesale_products')->get('data_streams')->num_rows() )
 		{
 			$this->products_m->delete_all_products();
 		}
 		
-		// Remove files folder
+		// Remove products folder
 		$product_folder = $this->products_m->get_file_folder_by_slug('product-images');
 		if( $product_folder != FALSE )
 		{
@@ -533,6 +550,9 @@ class Module_Firesale extends Module {
 
 			// Add settings
 			$this->settings('add', array('firesale_currency_key', 'firesale_current_currency', 'firesale_currency_updated', 'image_background'));
+
+			// Add category images folder
+			Files::create_folder(0, 'Category Images');
 
 			// Products
 			$fields   = array();
