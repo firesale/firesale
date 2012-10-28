@@ -24,6 +24,7 @@ class Front_cart extends Public_Controller
 		
 		// Load the required models
 		$this->load->driver('Streams');
+		$this->load->library('files/files');
 		$this->load->model('firesale/currency_m');
 		$this->load->model('firesale/cart_m');
 		$this->load->model('firesale/orders_m');
