@@ -23,6 +23,7 @@ class Admin_orders extends Admin_Controller
 		$this->data = new StdClass;
 		
 		// Load the models
+		$this->load->library('files/files');
 		$this->load->model('orders_m');
 		$this->load->model('currency_m');
 		$this->load->model('categories_m');
