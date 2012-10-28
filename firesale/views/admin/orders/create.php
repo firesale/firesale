@@ -62,8 +62,8 @@
                     <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                     <td class="model"><?php echo $product['code']; ?></td>
                     <td><input type="text" name="item[<?php echo $product['id']; ?>][qty]" value="<?php echo $product['qty']; ?>" /></td>
-                    <td class="price"><?php echo $this->settings->get('currency') . '<span>' . number_format($product['price'], 2) . '</span>'; ?></td>
-                    <td class="total"><?php echo $this->settings->get('currency') . '<span>' . number_format(( $product['price'] * $product['qty'] ), 2) . '</span>'; ?></td>
+                    <td class="price"><?php echo str_replace($currency->symbol, $currency->symbol.'<span>', $product['price']) . '</span>'; ?></td>
+                    <td class="total"><?php echo str_replace($currency->symbol, $currency->symbol.'<span>', $product['total']) . '</span>'; ?></td>
                   </tr>
               <?php endforeach; ?>
               <?php endif; ?>

@@ -49,8 +49,8 @@
 						<td><?php echo $order['order_status']['value']; ?></td>
 						<td><?php echo $order['products']; ?></td>
 						<td><?php echo $order['ship_to']['country']['name']; ?></td>
-						<td><?php echo $this->settings->get('currency') . $order['price_total']; ?></td>
-						<td><?php echo $this->settings->get('currency') . $order['price_ship']; ?></td>
+						<td><?php echo $order['price_total']; ?></td>
+						<td><?php echo $order['price_ship']; ?></td>
 						<td class="actions">
 							<?php if (group_has_role('firesale', 'edit_orders')): ?>
 								<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>

@@ -44,7 +44,8 @@ class Currency_m extends MY_Model
 		{
 
 			// Format price, just incase
-			$row->cur_format = str_replace(array('&#123;', '&#125;'), array('{', '}'), $row->cur_format);
+			$row->cur_format = html_entity_decode($row->cur_format);
+			$row->symbol     = str_replace('&Acirc;', '', htmlentities(str_replace('{{ price }}', '', $row->cur_format)));
 
 			// Add to cache
 			$this->cache[$id] = $row;
@@ -131,7 +132,7 @@ class Currency_m extends MY_Model
 
 		// Format
 		$formatted = number_format($price, 2, $currency->cur_format_dec, $currency->cur_format_sep);
-		$formatted = str_replace('{{ price }}', $formatted, $currency->cur_format);
+		$formatted = str_replace('{{ price }}', $formatted, html_entity_decode($currency->cur_format));
 		$formatted = str_replace('&Acirc;', '', htmlentities(trim($formatted)));
 
 		// Return

@@ -165,6 +165,10 @@ class Orders_m extends MY_Model
 			$input['shipping'] = 0;
 		}
 
+		// Get currency
+		$user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+		$currency      = $this->currency_m->get($user_currency);
+
 		// Append input
 		$input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
 		$input['price_ship']   	 = str_replace(',', '', $input['price_ship']);
@@ -172,6 +176,8 @@ class Orders_m extends MY_Model
 		$input['ip']			 = $_SERVER['REMOTE_ADDR'];
 		$input['created'] 		 = date("Y-m-d H:i:s");
 		$input['ordering_count'] = 0;
+		$input['currency']       = $user_currency;
+		$input['exchange_rate']  = $currency->exch_rate;
 		unset($input['btnAction']);
 		unset($input['bill_details_same']);
 
