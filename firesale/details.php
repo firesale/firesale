@@ -667,6 +667,7 @@ class Module_Firesale extends Module {
 		$routes[] = array('id' => '5', 'title' => 'Orders (Single)', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
 		$routes[] = array('id' => '4', 'title' => 'Orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
 		$routes[] = array('id' => '6', 'title' => 'Addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
+		$routes[] = array('id' => '8', 'title' => 'Currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1');
 
 
 		// Perform
