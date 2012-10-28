@@ -89,11 +89,13 @@ class Admin_currency extends Admin_Controller
  		// Posted
 		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
+
 			// Format modifier
 			$modifier         = $this->input->post('cur_mod_type');
 			$modifier         = ( in_array($modifier, array('+', '-', '*')) ? $modifier : '+' );
 			$value            = preg_replace('/[^0-9,.]/', '', $this->input->post('cur_mod'));
 			$_POST['cur_mod'] = $modifier.'|'.$value;
+
 		}
 
 		// Build the form
