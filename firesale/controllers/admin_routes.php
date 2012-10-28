@@ -18,6 +18,9 @@ class Admin_routes extends Admin_Controller
 
 		parent::__construct();
 
+		// Does the user have access?
+		role_or_die('firesale', 'access_routes');
+
 		// Load libraries, drivers & models
 		$this->load->driver('Streams');
 		$this->load->model('routes_m');
@@ -73,8 +76,11 @@ class Admin_routes extends Admin_Controller
 		$fields = $this->fields->build_form($this->stream, 'new', $input, false, false, $skip, $extra);
 		
 		// Posted
-		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
+		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
+
+			// Check access
+			role_or_die('firesale', 'create_edit_routes');
 
 			// Got an ID back
 			if( is_numeric($fields) )
@@ -147,8 +153,11 @@ class Admin_routes extends Admin_Controller
 		}
 		
 		// Posted
-		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
+		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
+
+			// Check access
+			role_or_die('firesale', 'create_edit_routes');
 
 			// Got an ID back
 			if( is_numeric($fields) )

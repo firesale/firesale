@@ -19,6 +19,9 @@ class Admin_currency extends Admin_Controller
 
 		parent::__construct();
 
+		// Does the user have access?
+		role_or_die('firesale', 'access_currency');
+
 		// Load libraries, drivers & models
 		$this->load->driver('Streams');
 		$this->load->model('currency_m');
@@ -90,6 +93,12 @@ class Admin_currency extends Admin_Controller
 		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
 
+			// Check access
+			if( $this->input->post('enabled') == '1' )
+			{
+				role_or_die('firesale', 'install_uninstall_currency');
+			}
+
 			// Format modifier
 			$modifier         = $this->input->post('cur_mod_type');
 			$modifier         = ( in_array($modifier, array('+', '-', '*')) ? $modifier : '+' );
@@ -154,6 +163,9 @@ class Admin_currency extends Admin_Controller
 	public function enable($id, $redirect = TRUE)
 	{
 
+		// Check access
+		role_or_die('firesale', 'install_uninstall_currency');
+
 		// Variables
 		$status = TRUE;
 
@@ -177,6 +189,9 @@ class Admin_currency extends Admin_Controller
 
 	public function disable($id, $redirect = TRUE)
 	{
+
+		// Check access
+		role_or_die('firesale', 'install_uninstall_currency');
 
 		// Variables
 		$status = TRUE;
@@ -210,6 +225,8 @@ class Admin_currency extends Admin_Controller
 	public function delete($id, $redirect = TRUE)
 	{
 
+		// Check access
+		role_or_die('firesale', 'install_uninstall_currency');
 
 	}
 
