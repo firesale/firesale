@@ -12,6 +12,38 @@ class Cart_m extends MY_Model
 {
 
 	/**
+	*/
+	public function update_currency($currency)
+	{
+
+		// Variables
+		$contents = $this->fs_cart->contents();
+
+		// Destroy the cart
+		$this->fs_cart->destroy();
+
+		// Loop products
+		foreach( $contents AS $row_id => $product )
+		{
+
+			// Get original price
+			$query = $this->db->select('price_tax, rrp_tax')->where('id', $product['id'])->get('firesale_products')->result_array();
+			$price = current($query);
+
+			// Build new price
+			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], $currency->id);
+
+			// Assign to data
+			$product['price']    = $price['price'];
+			$product['subtotal'] = ( $price['price'] * $product['qty'] );
+
+			// insert
+			$this->fs_cart->insert($product);
+		}
+
+	}
+
+	/**
 	 * Ensures that the product quanities that have been added to a cart are within
 	 * the allowed limits of what is currently in stock.
 	 *

@@ -18,6 +18,9 @@ class Front_currency extends Public_Controller
 		
 		// Load libraries
 		$this->lang->load('firesale');
+		$this->load->library('fs_cart');
+		$this->load->model('cart_m');
+		$this->load->model('orders_m');
 		$this->load->model('currency_m');
 
 	}
@@ -29,22 +32,33 @@ class Front_currency extends Public_Controller
 		$currency = $this->currency_m->get($id);
 
 		// Check it's valid
-		if( $currency )
+		if( ! $currency )
 		{
+			$currency = $this->currency_m->get($id);
+		}
 
-			// Set it into session
-			$this->session->set_userdata('currency', $id);
+		// Update currency of cart
+		if( $this->fs_cart->total_items() AND ( !isset($this->fs_cart->currency) OR $currency->id != $this->fs_cart->currency->id ) )
+		{
+			$this->cart_m->update_currency($currency);
+		}
 
-			// Add flashdata
+		// Set it into session
+		$this->session->set_userdata('currency', $id);
+
+		// Order in progress?
+		if( $order_id = $this->session->userdata('order_id') )
+		{
+			$this->orders_m->update_order_cost($order_id);
+		}
+
+		// Successful?
+		if( $id == $currency->id )
+		{
 			$this->session->set_flashdata('success', 'Currency changed successfully');
 		}
 		else
 		{
-
-			// Set default into session
-			$this->session->set_userdata('currency', 1);
-
-			// Add flashdata
 			$this->session->set_flashdata('error', 'Error changing currency');
 		}
 

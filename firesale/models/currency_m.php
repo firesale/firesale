@@ -57,17 +57,17 @@ class Currency_m extends MY_Model
 		return FALSE;
 	}
 
-	public function format_price($price, $rrp, $currency = 1)
+	public function format_price($price, $rrp, $currency = NULL)
 	{
 
 		// Get currency ID
-		if( $this->session->userdata('currency') )
+		if( $this->session->userdata('currency') AND $currency == NULL )
 		{
 			$currency = $this->session->userdata('currency');
 		}
 
 		// Get currency data
-		$currency = $this->get($currency);
+		$currency = $this->get(( $currency != NULL ? $currency : 1 ));
 
 		// Check valid option
 		if( ! is_object($currency) )

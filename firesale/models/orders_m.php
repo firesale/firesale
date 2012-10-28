@@ -257,9 +257,13 @@ class Orders_m extends MY_Model
 	public function update_order_cost($order_id, $update = TRUE, $cart = TRUE)
 	{
 
+		// Get tax rate
+		$user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+		$currency      = $this->currency_m->get($user_currency);
+
 		// Variables
 		$total = 0;
-		$tax   = $this->settings->get('firesale_tax');
+		$tax   = $currency->cur_tax;
 
 		// Run through cart items
 		if( $cart == TRUE )
@@ -288,7 +292,7 @@ class Orders_m extends MY_Model
 		{
 			$this->fs_cart->total    = number_format($total, 2);
 			$this->fs_cart->subtotal = number_format($sub, 2);
-			$this->fs_cart->tax 	  = number_format(( $total - $sub), 2);
+			$this->fs_cart->tax 	 = number_format(( $total - $sub), 2);
 		}
 
 		// Update?
