@@ -5,6 +5,7 @@ class Plugin_Firesale extends Plugin
 
     public function __construct()
     {
+		$this->load->library('files/files');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->model('routes_m');
