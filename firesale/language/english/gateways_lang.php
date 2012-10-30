@@ -83,3 +83,11 @@ $lang['firesale:gateways:netaxept:desc'] = 'Norwegian payment gateway.';
 // Gocardless
 $lang['firesale:gateways:gocardless:name'] = 'GoCardless';
 $lang['firesale:gateways:gocardless:desc'] = 'GoCardless makes it simple and cheap to take payments online. No merchant account. No credit card fees. No hassle.';
+
+// Cardsave
+$lang['firesale:gateways:netaxept:name'] = 'CardSave';
+$lang['firesale:gateways:netaxept:desc'] = 'CardSave makes card processing easy with a wide range of cost effective solutions.';
+
+// Rabo OmniKassa
+$lang['firesale:gateways:netaxept:name'] = 'Rabo OmniKassa';
+$lang['firesale:gateways:netaxept:desc'] = 'Duch payment gateway.';
