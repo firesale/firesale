@@ -49,6 +49,8 @@ class Categories_m extends MY_Model
 		else
 		{
 
+			$this->load->library('files/files');
+
 			// Set params
 			$params	 = array(
 						'stream' 	=> 'firesale_categories',
