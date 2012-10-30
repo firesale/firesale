@@ -7,5 +7,5 @@ $lang['firesale.role_enable_disable_gateways']    = 'Abilita/Disabilita Gateways
 $lang['firesale.role_edit_gateways']              = 'Modifica Gateways';
 $lang['firesale.role_access_routes']              = 'Accesso Reindirizzamenti';
 $lang['firesale.role_create_edit_routes']         = 'Crea/Modifica Reindirizzamenti';
-$lang['firesale.role_access_currency']            = 'Access Currency'; # Translate
-$lang['firesale.role_install_uninstall_currency'] = 'Install/Uninstall Currency'; # Translate
+$lang['firesale.role_access_currency']            = 'Accesso Valute';
+$lang['firesale.role_install_uninstall_currency'] = 'Installare/Disinstallare Valute';

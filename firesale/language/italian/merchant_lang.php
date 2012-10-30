@@ -97,7 +97,7 @@ $lang = array(
 	'merchant_invalid_response'				=> 'Risposta non valida dal Gateway.',
 	'merchant_payment_failed'				=> 'Pagamento fallito. Per favoro riprovare.',
 	'merchant_payment_redirect'				=> 'Per favore attendi mentre viene rimandato alla pagina di pagamento...',
-	'merchant_3dauth_redirect'				=> 'Please wait while we redirect you to your card issuer for authentication...'
+	'merchant_3dauth_redirect'				=> 'Attendi mentre ti reindirizziamo per verificare l\'autenticazione della carta...'
 );
 
 /* End of file ./language/english/merchant_lang.php */
