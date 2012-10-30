@@ -48,7 +48,7 @@ $lang['firesale:gateways:eway:desc'] = 'Accept credit cards on your website with
 $lang['firesale:gateways:paypal_pro:name'] = 'PayPal Payments Pro';
 $lang['firesale:gateways:paypal_pro:desc'] = 'PayPal Payments Pro is an affordable website payment processing solution for businesses with 100+ orders/month.';
 
-// PayPal Pro
+// PayPal Express Checkout
 $lang['firesale:gateways:paypal_express:name'] = 'PayPal Express Checkout';
 $lang['firesale:gateways:paypal_express:desc'] = 'Quick. Customers don’t need to enter their postage and billing information when making a purchase - PayPal already has the information stored.';
 
@@ -60,7 +60,7 @@ $lang['firesale:gateways:paypal:desc'] = 'Online credit card processing & websit
 $lang['firesale:gateways:payflow_ori:name'] = 'PayFlow';
 $lang['firesale:gateways:payflow_ori:desc'] = 'A payment gateway links your website to your processing network and merchant account. Like most gateways, Payflow payment gateway handles all major credit cards.';
 
-// Sage Pay Direct
+// Sage Pay Server
 $lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server';
 $lang['firesale:gateways:sagepay_server:desc'] = 'Sage Pay Go with Server integration is a winning combination of flexibility and ease of integration. You get the security of outsourcing your payments with the ability to manage transactions and reporting on your own servers.';
 
@@ -80,6 +80,6 @@ $lang['firesale:gateways:worldpay:desc'] = 'Online payment gateways, online merc
 $lang['firesale:gateways:netaxept:name'] = 'Netaxept';
 $lang['firesale:gateways:netaxept:desc'] = 'Norwegian payment gateway.';
 
-// Netaxept
+// Gocardless
 $lang['firesale:gateways:gocardless:name'] = 'GoCardless';
 $lang['firesale:gateways:gocardless:desc'] = 'GoCardless makes it simple and cheap to take payments online. No merchant account. No credit card fees. No hassle.';
