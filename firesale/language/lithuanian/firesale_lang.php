@@ -1,7 +1,7 @@
 <?php
 	
 	// General Titles
-	$lang['firesale:title']				= 'FireSale';
+	$lang['firesale:title']			= 'FireSale';
 	$lang['firesale:title:general']		= 'Bendrai';
 	$lang['firesale:title:details']		= 'Jūsų duomenys';
 	$lang['firesale:title:address']		= 'Jūsų adresas';
@@ -12,10 +12,10 @@
 	$lang['firesale:sections:dashboard'] 	  = 'Įrankių skydas';
 	$lang['firesale:sections:categories'] 	  = 'Kategorijos';
 	$lang['firesale:sections:products'] 	  = 'Prekės';
-	$lang['firesale:sections:orders'] 		  = 'Užsakymai';
+	$lang['firesale:sections:orders']         = 'Užsakymai';
 	$lang['firesale:sections:addresses'] 	  = 'Adresai';
 	$lang['firesale:sections:orders_items']	  = 'Užsakytos prekės';
-	$lang['firesale:sections:gateways']		  = 'Mokėjimo būdai';
+	$lang['firesale:sections:gateways']	  = 'Mokėjimo būdai';
 	$lang['firesale:sections:settings'] 	  = 'Nustatymai';
 	$lang['firesale:sections:routes']         = 'Routes'; # Translate
 	$lang['firesale:sections:currency']       = 'Currency'; # Translate
@@ -38,7 +38,7 @@
 	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes'; # Translate
 
 	// Dashboard
-	$lang['firesale:dash_overview']			 	= 'Bendras vaizdas';
+	$lang['firesale:dash_overview']			= 'Bendras vaizdas';
 	$lang['firesale:dash_categorytrack']	 	= 'Kategorijų stebėjimas';
 	$lang['firesale:elements:product_sales'] 	= 'Prekių pardavimai';
 	$lang['firesale:elements:low_stock']	 	= 'Atsargų įspėjimai';
@@ -48,17 +48,17 @@
 	$lang['firesale:dashboard:no_stock_low']	= 'Nėra prekių be minimalių atsargų';
 	$lang['firesale:dashboard:no_stock_out']	= 'Nėra prekių be atsargų';
 	$lang['firesale:dashboard:view_more']		= 'Peržiūrėti daugiau...';
-	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
-	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
+	$lang['firesale:dashbord:low_stock']		= 'Sandėlyje mažas kiekis';
+	$lang['firesale:dashbord:out_of_stock']		= 'Išparduota';
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Tvarkyti kategorijas';
-	$lang['firesale:cats_none']				= 'Kategorijų nerasta';
-	$lang['firesale:cats_new']				= 'Pridėti naują kategoriją';
+	$lang['firesale:cats_none']			= 'Kategorijų nerasta';
+	$lang['firesale:cats_new']			= 'Pridėti naują kategoriją';
 	$lang['firesale:cats_order']			= 'Rūšiuoti kategorijas';
 	$lang['firesale:cats_draft_label']		= 'Projektas';
 	$lang['firesale:cats_live_label']		= 'Gyvai';
-	$lang['firesale:cats_edit']				= 'Redaguoti kategoriją';
+	$lang['firesale:cats_edit']			= 'Redaguoti kategoriją';
 	$lang['firesale:cats_edit_title']		= 'Edit "%s"'; # Translate
 	$lang['firesale:cats_delete']			= 'Ištrinti';
 	$lang['firesale:cats_add_success'] 		= 'Nauja kategorija sukurta sėkmingai';
