@@ -537,9 +537,22 @@ class Front_cart extends Public_Controller
 					'return_url' => $this->routes_m->build_url('cart') . '/success',
 					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
 				), $this->input->post(NULL, TRUE), array(
-					'currency_code' => $this->currency->cur_code,
-					'amount'        => $this->fs_cart->total,
-					'reference'     => 'Order #' . $this->session->userdata('order_id')
+					'currency_code'  => $this->currency->cur_code,
+					'amount'         => $this->fs_cart->total,
+					'order_id'       => $this->session->userdata('order_id'),
+					'transaction_id' => $this->session->userdata('order_id'),
+					'reference'      => 'Order #' . $this->session->userdata('order_id'),
+					'description'    => 'Order #' . $this->session->userdata('order_id'),
+					'first_name'     => $order['bill_to']['firstname'],
+					'last_name'      => $order['bill_to']['lastname'],
+					'address1'       => $order['ship_to']['address1'],
+					'address2'       => $order['ship_to']['address2'],
+					'city'           => $order['ship_to']['city'],
+					'region'         => $order['ship_to']['county'],
+					'country'        => $order['ship_to']['country']['code'],
+					'postcode'       => $order['ship_to']['postcode'],
+					'phone'          => $order['ship_to']['phone'],
+					'email'          => $order['ship_to']['email'],
 				));
 				$process = $this->merchant->purchase($params);
 				$status = '_order_' . $process->status();
@@ -578,6 +591,10 @@ class Front_cart extends Public_Controller
 				$current_year = date('Y');
 				for ($i = $current_year; $i < $current_year + 15; $i++)
 					$var['years'][$i] = $i;
+
+				$current_year = date('Y');
+				for ($i = $current_year; $i > $current_year - 15; $i--)
+					$var['start_years'][$i] = $i;
 
 				$var['default_cards'] = array(
 					'visa'       => 'Visa',
