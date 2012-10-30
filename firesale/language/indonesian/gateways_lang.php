@@ -44,6 +44,10 @@ $lang['firesale:gateways:eway_shared:desc'] = 'Shared Payment memungkinkan pelan
 $lang['firesale:gateways:eway:name'] = 'eWAY';
 $lang['firesale:gateways:eway:desc'] = 'Menerima kartu kredit di website Anda dengan gateway pembayaran UK yang terdepan untuk terhubung dengan website secara langsing ke bank Anda untuk memproses pembayaran kartu kredit pelanggan Anda.';
 
+// PayPal Express Checkout
+$lang['firesale:gateways:paypal_express:name'] = 'PayPal Express Checkout'; #Translate
+$lang['firesale:gateways:paypal_express:desc'] = 'Quick. Customers don’t need to enter their postage and billing information when making a purchase - PayPal already has the information stored.'; #Translate
+
 // PayPal Pro
 $lang['firesale:gateways:paypal_pro:name'] = 'PayPal Payments Pro';
 $lang['firesale:gateways:paypal_pro:desc'] = 'PayPal Payments Pro adalah solusi pemrosesan pembayaran website yang terjangkau untuk bisnis dengan pemesanan lebih dari 100 pesanan per bulan.';
@@ -51,6 +55,10 @@ $lang['firesale:gateways:paypal_pro:desc'] = 'PayPal Payments Pro adalah solusi 
 // PayPal
 $lang['firesale:gateways:paypal:name'] = 'PayPal Payments Standard';
 $lang['firesale:gateways:paypal:desc'] = 'Pemrosesan kartu kredit online & pembayaran melalui website lebih mudah dengan PayPal Payments Standard.';
+
+// Sage Pay Server
+$lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server'; #Translate
+$lang['firesale:gateways:sagepay_server:desc'] = 'Sage Pay Go with Server integration is a winning combination of flexibility and ease of integration. You get the security of outsourcing your payments with the ability to manage transactions and reporting on your own servers.'; #Translate
 
 // Sage Pay Direct
 $lang['firesale:gateways:sagepay_direct:name'] = 'Sage Pay Direct';
@@ -63,3 +71,11 @@ $lang['firesale:gateways:stripe:desc'] = 'Stripe memudahkan pengembang aplikasi 
 // WorldPay
 $lang['firesale:gateways:worldpay:name'] = 'WorldPay';
 $lang['firesale:gateways:worldpay:desc'] = 'Gateway pembayaran online, akun merchant online dan pengaturan resiko produk untuk menumbuhkembangkan bisnis online Anda.';
+
+// Netaxept
+$lang['firesale:gateways:netaxept:name'] = 'Netaxept'; #Translate
+$lang['firesale:gateways:netaxept:desc'] = 'Norwegian payment gateway.'; #Translate
+
+// Gocardless
+$lang['firesale:gateways:gocardless:name'] = 'GoCardless'; #Translate
+$lang['firesale:gateways:gocardless:desc'] = 'GoCardless makes it simple and cheap to take payments online. No merchant account. No credit card fees. No hassle.'; #Translate
