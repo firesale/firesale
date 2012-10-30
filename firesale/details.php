@@ -355,6 +355,12 @@ class Module_Firesale extends Module {
 		
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
+		
+		##############
+		## CURRENCY ##
+		##############
+
+		$this->currency('add');
 
 		############################
 		## ORDERS & ORDER HISTORY ##
@@ -426,12 +432,6 @@ class Module_Firesale extends Module {
 		############
 
 		$this->routes('add');
-
-		##############
-		## CURRENCY ##
-		##############
-
-		$this->currency('add');
 
 		##################
 		## TRANSACTIONS ##
