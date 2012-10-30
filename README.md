@@ -30,20 +30,20 @@ Through a slightly modified version of the standard details file found in any Py
 * Drag and drop, files integrated, image uploading
 * Complete with shipping and search
 
-### Requirements
+## Requirements
 
 Before attempting installation please ensure you meet the following requirements and you have:
 
 1. PyroCMS Version 2.1.5 or greater
 2. The [Multiple Relationship](https://github.com/parse19/PyroStreams-Multiple-Relationships) field type pre-installed (we'll try and do this for you, but sometimes that's just not possible)
 
-### Installation Steps
+## Installation
 
 1. Upload the FireSale modules to your shared_addons or addons/default module folder
 2. Within your administration panel, navigate to Addons, find FireSale and press Install
 3. All done, easy wasn't it?!
 
-#### Optional Steps
+### Optional Steps
 
 After FireSale is installed you can also install the two additional modules provided with the core to enable Shipping and Search. These require no extra requirements and should just work after being enabled.
 
