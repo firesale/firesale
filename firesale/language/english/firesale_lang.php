@@ -11,6 +11,7 @@
 	// Sections
 	$lang['firesale:sections:dashboard'] 	  = 'Dashboard';
 	$lang['firesale:sections:categories'] 	  = 'Categories';
+	$lang['firesale:sections:brands'] 	      = 'Brands';
 	$lang['firesale:sections:products'] 	  = 'Products';
 	$lang['firesale:sections:orders'] 		  = 'Orders';
 	$lang['firesale:sections:addresses'] 	  = 'Addresses';
@@ -36,6 +37,7 @@
 	$lang['firesale:shortcuts:create_order']	= 'Create Order';
 	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route';
 	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes';
+	$lang['firesale:shortcuts:brand_create']    = 'Create Brand';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Quick Overview';
@@ -68,6 +70,19 @@
 	$lang['firesale:cats_delete_success'] 	= 'Category was deleted successfully';
 	$lang['firesale:cats_delete_error'] 	= 'There was a problem deleting that category';
 	$lang['firesale:cats_all_products']     = 'All Products';
+
+	// Brands
+	$lang['firesale:brands:title']          = 'Brands';
+	$lang['firesale:brands:new']            = 'Add a new Brand';
+	$lang['firesale:brands:add_success']    = 'New brand added successfully';
+	$lang['firesale:brands:add_error']      = 'Error adding a new brand';
+	$lang['firesale:brands:edit']           = 'Edit %s Brand';
+	$lang['firesale:brands:edit_success']   = 'Brand edited successfully';
+	$lang['firesale:brands:edit_error']     = 'Error editing the brand';
+	$lang['firesale:brands:not_found']      = 'The selected brand could not be found';
+	$lang['firesale:brands:none']           = 'No brands found';
+	$lang['firesale:brands:delete_success'] = 'Brand removed successfully';
+	$lang['firesale:brands:delete_error']   = 'Error removing brand';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'No Products Found';
@@ -102,6 +117,7 @@
 	$lang['firesale:label_status'] 		  = 'Status';
 	$lang['firesale:label_description']	  = 'Description';
 	$lang['firesale:label_category']	  = 'Category';
+	$lang['firesale:label_brand']	      = 'Brand';
 	$lang['firesale:label_parent']		  = 'Parent Category';
 	$lang['firesale:label_filtercat']	  = 'Filter by Category';
 	$lang['firesale:label_filtersel']	  = 'Select a Category';
