@@ -161,7 +161,7 @@
 	$lang['firesale:label_nameaz']		= 'Name A - Z';
 	$lang['firesale:label_nameza']		= 'Name Z - A';
 	$lang['firesale:label_pricelow']	= 'Price Low &gt; High';
-	$lang['firesale:label_pricehigh']	= 'Pirce High &gt; Low';
+	$lang['firesale:label_pricehigh']	= 'Price High &gt; Low';
 	$lang['firesale:label_modelaz']		= 'Model A - Z';
 	$lang['firesale:label_modelza']		= 'Model Z - A';
 
@@ -191,7 +191,7 @@
 	$lang['firesale:label_cur_format']      = 'Currency Format';
 	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}';
 	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol';
-	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol';
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Separator Symbol';
 	$lang['firesale:label_cur_format_num']  = 'Number Formatting';
 
 	// Orders
@@ -211,7 +211,7 @@
 	$lang['firesale:orders:status_dispatched']	   = 'Dispatched';
 	$lang['firesale:orders:status_processing']	   = 'Processing';
 	$lang['firesale:orders:status_refunded']	   = 'Refunded';
-	$lang['firesale:orders:status_cancelled']	   = 'Cancelled';
+	$lang['firesale:orders:status_cancelled']	   = 'Canceled';
 	$lang['firesale:orders:status_failed']		   = 'Failed';
 	$lang['firesale:orders:status_declined']	   = 'Declined';
 	$lang['firesale:orders:status_mismatch']	   = 'Mismatch';
@@ -350,7 +350,7 @@
 	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';
 	
 	// Payment Frontend
-	$lang['firesale:payment:cancelled'] = 'Order Cancelled';
+	$lang['firesale:payment:cancelled'] = 'Order Canceled';
 	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...';
 	$lang['firesale:payment:btn_continue'] = 'Continue';
 
@@ -377,5 +377,5 @@
 	// Install errors
 	$lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';
 	$lang['firesale:install:missing_multiple'] = 'FireSale requires the Multiple Relationships field type to operate. You can download this from <a href="https://github.com/parse19/PyroStreams-Multiple-Relationships/zipball/master">here</a>';
-	$lang['firesale:install:not_installed']    = 'Please install the FireSale module before installing additional FireSale addons';
+	$lang['firesale:install:not_installed']    = 'Please install the FireSale module before installing additional FireSale add-ons';
 	$lang['firesale:install:no_route_access']  = 'FireSale requires access to the system/cms/config/routes.php file. Please set the appropriate permissions and try again';
