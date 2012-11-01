@@ -57,8 +57,8 @@ $lang['firesale:gateways:paypal:name'] = 'PayPal Payments Standard';
 $lang['firesale:gateways:paypal:desc'] = 'Online credit card processing & website payments are simple with PayPal Payments Standard.';
 
 // Payflow Pro
-$lang['firesale:gateways:payflow_ori:name'] = 'PayFlow';
-$lang['firesale:gateways:payflow_ori:desc'] = 'A payment gateway links your website to your processing network and merchant account. Like most gateways, Payflow payment gateway handles all major credit cards.';
+$lang['firesale:gateways:payflow_pro:name'] = 'PayFlow';
+$lang['firesale:gateways:payflow_pro:desc'] = 'A payment gateway links your website to your processing network and merchant account. Like most gateways, Payflow payment gateway handles all major credit cards.';
 
 // Sage Pay Server
 $lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server';
@@ -85,9 +85,9 @@ $lang['firesale:gateways:gocardless:name'] = 'GoCardless';
 $lang['firesale:gateways:gocardless:desc'] = 'GoCardless makes it simple and cheap to take payments online. No merchant account. No credit card fees. No hassle.';
 
 // Cardsave
-$lang['firesale:gateways:netaxept:name'] = 'CardSave';
-$lang['firesale:gateways:netaxept:desc'] = 'CardSave makes card processing easy with a wide range of cost effective solutions.';
+$lang['firesale:gateways:cardsave:name'] = 'CardSave';
+$lang['firesale:gateways:cardsave:desc'] = 'CardSave makes card processing easy with a wide range of cost effective solutions.';
 
 // Rabo OmniKassa
-$lang['firesale:gateways:netaxept:name'] = 'Rabo OmniKassa';
-$lang['firesale:gateways:netaxept:desc'] = 'Duch payment gateway.';
+$lang['firesale:gateways:rabo_omnikassa:name'] = 'Rabo OmniKassa';
+$lang['firesale:gateways:rabo_omnikassa:desc'] = 'Duch payment gateway.';

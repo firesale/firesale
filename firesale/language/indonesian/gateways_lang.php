@@ -56,6 +56,10 @@ $lang['firesale:gateways:paypal_pro:desc'] = 'PayPal Payments Pro adalah solusi 
 $lang['firesale:gateways:paypal:name'] = 'PayPal Payments Standard';
 $lang['firesale:gateways:paypal:desc'] = 'Pemrosesan kartu kredit online & pembayaran melalui website lebih mudah dengan PayPal Payments Standard.';
 
+// Payflow Pro
+$lang['firesale:gateways:payflow_pro:name'] = 'PayFlow';
+$lang['firesale:gateways:payflow_pro:desc'] = 'A payment gateway links your website to your processing network and merchant account. Like most gateways, Payflow payment gateway handles all major credit cards.';
+
 // Sage Pay Server
 $lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server'; #Translate
 $lang['firesale:gateways:sagepay_server:desc'] = 'Sage Pay Go with Server integration is a winning combination of flexibility and ease of integration. You get the security of outsourcing your payments with the ability to manage transactions and reporting on your own servers.'; #Translate
@@ -81,9 +85,9 @@ $lang['firesale:gateways:gocardless:name'] = 'GoCardless'; #Translate
 $lang['firesale:gateways:gocardless:desc'] = 'GoCardless makes it simple and cheap to take payments online. No merchant account. No credit card fees. No hassle.'; #Translate
 
 // Cardsave
-$lang['firesale:gateways:netaxept:name'] = 'CardSave'; #Translate
-$lang['firesale:gateways:netaxept:desc'] = 'CardSave makes card processing easy with a wide range of cost effective solutions.'; #Translate
+$lang['firesale:gateways:cardsave:name'] = 'CardSave'; #Translate
+$lang['firesale:gateways:cardsave:desc'] = 'CardSave makes card processing easy with a wide range of cost effective solutions.'; #Translate
 
 // Rabo OmniKassa
-$lang['firesale:gateways:netaxept:name'] = 'Rabo OmniKassa'; #Translate
-$lang['firesale:gateways:netaxept:desc'] = 'Duch payment gateway.'; #Translate
+$lang['firesale:gateways:rabo_omnikassa:name'] = 'Rabo OmniKassa'; #Translate
+$lang['firesale:gateways:rabo_omnikassa:desc'] = 'Duch payment gateway.'; #Translate
