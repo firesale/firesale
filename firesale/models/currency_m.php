@@ -131,8 +131,8 @@ class Currency_m extends MY_Model
 
 		// Format
 		$formatted = number_format($price, 2, $currency->cur_format_dec, $currency->cur_format_sep);
-		$formatted = str_replace('{{ price }}', $formatted, html_entity_decode($currency->cur_format));
-		$formatted = str_replace('&Acirc;', '', htmlentities(trim($formatted)));
+		$formatted = str_replace('{{ price }}', $formatted, $currency->cur_format);
+		$formatted = trim($formatted);
 
 		// Return
 		return $formatted;

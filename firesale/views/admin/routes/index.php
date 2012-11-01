@@ -13,7 +13,7 @@
 					<th><?php echo lang('firesale:label_slug'); ?></th>
 					<th><?php echo lang('firesale:label_route'); ?></th>
 					<th><?php echo lang('firesale:label_translation'); ?></th>
-					<th style="width: 130px"></th>
+					<th style="min-width: 20px; max-width: 130px"></th>
 				</tr>
 			</thead>
 			<tfoot>
