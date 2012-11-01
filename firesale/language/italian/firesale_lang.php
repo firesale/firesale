@@ -19,12 +19,12 @@
 	$lang['firesale:sections:settings'] 	  = 'Impostazioni';
 	$lang['firesale:sections:routes']         = 'Reindirizzamenti';
 	$lang['firesale:sections:currency']       = 'Valuta';
-	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
+	$lang['firesale:sections:taxes']          = 'Tasse';
 	
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opzioni generali';
 	$lang['firesale:tabs:description'] 	= 'Descrizione';
-	$lang['firesale:tabs:formatting'] 	= 'Formatting'; # translate
+	$lang['firesale:tabs:formatting'] 	= 'Farmattazione';
 	$lang['firesale:tabs:shipping']		= 'Spedizione';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributi';
@@ -180,20 +180,20 @@
 	$lang['firesale:label_table']       = 'Tabella';
 
 	$lang['firesale:label_cur_code']        = 'Codice Valuta';
-	$lang['firesale:label_cur_code_inst']   = 'Formato ISO-4217'; # translate
+	$lang['firesale:label_cur_code_inst']   = 'Formato ISO-4217';
 	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
-	$lang['firesale:label_cur_mod']         = 'Currency Modifier'; # translate
+	$lang['firesale:label_cur_mod']         = 'Modificatore di valuta'; # translate
 	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
 	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
-	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save'; # translate
+	$lang['firesale:label_exch_rate_inst']  = 'Questo sarà automaticamente aggiornato ogni ora, se lasciato bianco sarò aggiornato al momento del salvataggio';
 	$lang['firesale:label_cur_flag']        = 'Related Image'; # translate
 	$lang['firesale:label_enabled']         = 'Abilita';
 	$lang['firesale:label_disabled']        = 'Disabilita';
 	$lang['firesale:label_cur_format']      = 'Formato Valuta';
-	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}'; # translate
-	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
-	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
-	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
+	$lang['firesale:label_cur_format_inst'] = 'Formattazione numerica che include il simbolo di valuta con "{{ price }}" che verrà sostituito dal prezzo da mostrare, es: £{{ price }}';
+	$lang['firesale:label_cur_format_dec']  = 'Simbolo per i decimali';
+	$lang['firesale:label_cur_format_sep']  = 'Simbolo separazione migliaia';
+	$lang['firesale:label_cur_format_num']  = 'Formattazione numerica'; 
 
 	// Orders
 	$lang['firesale:orders:title']			= 'Ordini';
@@ -232,12 +232,12 @@
 	$lang['firesale:orders:label_message']			= 'Messaggio';
 		
 	// Gateways
-	$lang['firesale:gateways:admin_title']				= 'Payment Gateways';
-	$lang['firesale:gateways:install_title']			= 'Install a Gateway';
-	$lang['firesale:gateways:edit_title']			    = 'Edit Gateway'; # translate
-	$lang['firesale:gateways:installed_title']			= 'Installed Gateways';
-	$lang['firesale:gateways:no_gateways']				= 'There are currently no payment gateways installed.';
-	$lang['firesale:gateways:no_uninstalled_gateways']	= 'All available gateways are currently installed.';
+	$lang['firesale:gateways:admin_title']				= 'Metodi di pagamento';
+	$lang['firesale:gateways:install_title']			= 'Installa un metodo di pagamento';
+	$lang['firesale:gateways:edit_title']			    = 'Modifica metodi di pagamento';
+	$lang['firesale:gateways:installed_title']			= 'Metodi di pagamento installati';
+	$lang['firesale:gateways:no_gateways']				= 'Attualmente non ci sono metodi di pagamento installati.';
+	$lang['firesale:gateways:no_uninstalled_gateways']	= 'Tutti i metodi di pagamento disponibili sono attualmente installati.';
 	$lang['firesale:gateways:errors:invalid_bool']		= 'The %s field must be a boolean value.';
 	$lang['firesale:gateways:warning'] 					= 'Tutte le impostazioni del pagamento andranno perse e il negozio potrebbe non essere più in grado di ricevere i pagamenti! Sicuro di voler rimuovere questo tipo di pagamento?';
 	$lang['firesale:gateways:multiple_warning'] 		= 'Tutte le impostazioni dei pagamenti andranno perse e il negozio potrebbe non essere più in grado di ricevere i pagamenti! Sicuro di voler rimuovere questi tipi di pagamento?';
