@@ -260,12 +260,6 @@ class Module_Firesale extends Module {
 		// Add an initial category
 		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => 'Uncategorised', 'slug' => 'uncategorised', 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
 		$this->db->insert('firesale_categories', $cat);
-
-
-		###########
-		## TAXES ##
-		###########
-		$this->taxes();
 	
 		##############
 		## PRODUCTS ##
@@ -311,6 +305,13 @@ class Module_Firesale extends Module {
 						  CHANGE `rrp_tax` `rrp_tax` DECIMAL( 10, 2 ) DEFAULT '0.00',
 						  CHANGE `price` `price` DECIMAL( 10, 2 ) DEFAULT '0.00',
 						  CHANGE `price_tax` `price_tax` DECIMAL( 10, 2 ) DEFAULT '0.00';");
+
+
+		###########
+		## TAXES ##
+		###########
+		$this->taxes();
+
 
 		######################
 		## PAYMENT GATEWAYS ##
@@ -848,14 +849,14 @@ class Module_Firesale extends Module {
 
 			$fields = array(
 				array(
-					'name'         => 'Name',
-					'slug'         => 'name',
+					'name'         => 'lang:firesale:label_title',
+					'slug'         => 'title',
 					'type'         => 'text',
 					'extra'        => array('max_length' => 200),
 					'title_column' => TRUE
 				),
 				array(
-					'name'  => 'Description',
+					'name'  => 'lang:firesale:label_description',
 					'slug'  => 'description',
 					'type'  => 'wysiwyg'
 				),
@@ -865,9 +866,30 @@ class Module_Firesale extends Module {
 				$field = array_merge($default, $field);
 
 			$this->streams->fields->add_fields($fields);
+
+			// We also need a field in products so we can select the tax band it applies to
+			$taxes = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
+
+			$field = array(
+				'name' => 'lang:firesale:label_tax_band',
+				'slug' => 'tax_band',
+				'type' => 'relationship',
+				'extra' => array(
+					'choose_stream' => $taxes->id
+				),
+				'namespace' => 'firesale_products',
+				'assign' => 'firesale_products',
+				'required' => TRUE
+			);
+
+			$this->streams->fields->add_field($field);
 		}
 		elseif ($method == 'remove')
 		{
+			// Remove the field from products if its still there
+			$this->streams->fields->delete_field('tax_band', 'firesale_products');
+
+			// Remove the taxes namespace
 			$this->streams->utilities->remove_namespace('firesale_taxes');
 		}
 	}

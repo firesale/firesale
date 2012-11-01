@@ -196,6 +196,8 @@
 	$lang['firesale:label_cur_format_sep']  = 'Thousand Separator Symbol';
 	$lang['firesale:label_cur_format_num']  = 'Number Formatting';
 
+	$lang['firesale:label_tax_band']  = 'Tax Band';
+
 	// Orders
 	$lang['firesale:orders:title']				   = 'Orders';
 	$lang['firesale:orders:no_orders']			   = 'There are currently no orders';
