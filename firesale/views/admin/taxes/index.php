@@ -22,7 +22,7 @@
 								<?php if ($tax['id'] != 1): ?>
 									<input type="checkbox" name="action_to[]" value="<?php echo $tax['id']; ?>" /></td>
 								<?php endif; ?>
-							<td><?php echo $tax['name']; ?></td>
+							<td><?php echo $tax['title']; ?></td>
 							<td>
 								<a href="<?php echo site_url('admin/firesale/taxes/edit/' . $tax['id']); ?>" class="button"><?php echo lang('global:edit'); ?></a>
 								
