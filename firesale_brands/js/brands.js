@@ -1,7 +1,7 @@
 $(function(){
 
 	// Add upload
-	bind_upload('admin/firesale/brands/upload/'+$('#id').val());
+	bind_upload('admin/firesale_brands/upload/'+$('#id').val());
 
 	// Image reordering
 	$('#dropbox').sortable({

@@ -95,7 +95,7 @@ class Module_Firesale_brands extends Module {
 
 			$fields   = array();
 			$template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
-			$fields[] = array('name' => 'lang:firesale:label_brand', 'slug' => 'brands', 'type' => 'relationship', 'extra' => array('choose_stream' => $brands->id), 'required' => FALSE);
+			$fields[] = array('name' => 'lang:firesale:label_brand', 'slug' => 'brand', 'type' => 'relationship', 'extra' => array('choose_stream' => $brands->id), 'required' => FALSE);
 			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 			$this->streams->fields->add_fields($fields);
 

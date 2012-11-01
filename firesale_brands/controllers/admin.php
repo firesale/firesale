@@ -34,6 +34,12 @@ class Admin extends Admin_Controller
 	public function index()
 	{
 
+		// Check for btnAction
+		if( $action = $this->input->post('btnAction') )
+		{
+			$this->$action();
+		}
+
 		// Variables
         $params = array(
             'stream'       => 'firesale_brands',
@@ -50,7 +56,7 @@ class Admin extends Admin_Controller
         {
 			$folder = $this->products_m->get_file_folder_by_slug($brand['slug']);
 			$images = Files::folder_contents($folder->id);
-			$brand['image'] = current($images['data']['file']);
+			$brand['image'] = $images['data']['file'][0];
         }
 
 		// Add page data
@@ -132,7 +138,7 @@ class Admin extends Admin_Controller
 		$folder = $this->products_m->get_file_folder_by_slug($row->slug);
 		$images = Files::folder_contents($folder->id);
 		$this->data->images = $images['data']['file'];
-	
+
 		// Build the template
         $this->template->title(lang('firesale:title').' '.sprintf(lang('firesale:brands:edit'), $row->title))
         			   ->set($this->data);
@@ -181,6 +187,79 @@ class Admin extends Admin_Controller
 		// Seems it was unsuccessful
 		echo json_encode(array('status' => FALSE, 'message' => 'Error uploading image'));
 		exit();
+	}
+
+	public function delete($id = NULL)
+	{
+
+		// Variables
+		$success = TRUE;
+
+		// Check for array
+		if( $id != NULL )
+		{
+			$brands = array($id);
+		}
+		else
+		{
+			$brands = $this->input->post('action_to');
+		}
+
+		// Loop brands
+		foreach( $brands AS $id )
+		{
+
+			// Get brand
+			$query = $this->db->where('id', $id)->get('firesale_brands');
+
+			// Check it exists
+			if( $query->num_rows() )
+			{
+
+				// Get the brand
+				$brand = current($query->result_array());
+
+				// Update products using this brand
+				$this->db->where('brand', $id)->update('firesale_products', array('brand' => NULL));
+
+				// Remove images
+				$folder = $this->products_m->get_file_folder_by_slug($brand['slug']);
+				if( $folder != FALSE )
+				{
+
+					// Get files in folder
+					$files = Files::folder_contents($folder->id);
+					foreach( $files['data']['file'] AS $file )
+					{
+						Files::delete_file($file->id);
+					}
+
+					// Delete folder
+					Files::delete_folder($folder->id);
+				}
+
+				// Delete the brand
+				if( ! $this->db->where('id', $id)->delete('firesale_brands') )
+				{
+					$success = FALSE;
+				}
+
+			}
+
+		}
+
+		// Result
+		if( $success )
+		{
+			$this->session->set_flashdata('success', lang('firesale:brands:delete_success'));
+		}
+		else
+		{
+			$this->session->set_flashdata('error', lang('firesale:brands:delete_error'));
+		}
+
+		// Send back to page
+		redirect('admin/firesale_brands');
 	}
 
 }

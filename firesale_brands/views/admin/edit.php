@@ -1,6 +1,6 @@
 
 	<section class="title">
-		<h4><?php echo lang('firesale:brands:edit'); ?></h4>
+		<h4><?php echo sprintf(lang('firesale:brands:edit'), $row->title); ?></h4>
 	</section>
 
 	<section class="item form_inputs">
