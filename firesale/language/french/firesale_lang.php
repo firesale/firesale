@@ -19,6 +19,7 @@
 	$lang['firesale:sections:settings'] 	  = 'Paramètres';
 	$lang['firesale:sections:routes']         = 'Routes';
 	$lang['firesale:sections:currency']       = 'Currency'; # Translate
+	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Options générales';

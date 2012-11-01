@@ -110,7 +110,6 @@ class Currency_m extends MY_Model
 
 	public function format_string($price, $currency, $fix = TRUE)
 	{
-
 		// Format initial value
 		if( $fix )
 		{

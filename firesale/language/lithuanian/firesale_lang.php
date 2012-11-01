@@ -19,6 +19,7 @@
 	$lang['firesale:sections:settings'] 	  = 'Nustatymai';
 	$lang['firesale:sections:routes']         = 'Routes'; # Translate
 	$lang['firesale:sections:currency']       = 'Currency'; # Translate
+	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Bendri nustatymai';

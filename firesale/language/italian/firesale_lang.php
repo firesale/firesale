@@ -12,7 +12,6 @@
 	$lang['firesale:sections:dashboard'] 	  = 'Dashboard';
 	$lang['firesale:sections:categories'] 	  = 'Categorie';
 	$lang['firesale:sections:products'] 	  = 'Prodotti';
-	$lang['firesale:sections:brands'] 	      = 'Marche';
 	$lang['firesale:sections:orders'] 		  = 'Ordini';
 	$lang['firesale:sections:addresses'] 	  = 'Indirizzi';
 	$lang['firesale:sections:orders_items']	  = 'Oggetti Ordinati';
@@ -20,6 +19,7 @@
 	$lang['firesale:sections:settings'] 	  = 'Impostazioni';
 	$lang['firesale:sections:routes']         = 'Reindirizzamenti';
 	$lang['firesale:sections:currency']       = 'Valuta';
+	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
 	
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opzioni generali';
@@ -37,7 +37,6 @@
 	$lang['firesale:shortcuts:create_order']	= 'Crea Ordine';
 	$lang['firesale:shortcuts:create_routes']   = 'Aggiungi un nuovo Reindirizzamento';
 	$lang['firesale:shortcuts:build_routes']    = 'Ricrea Reindirizzamenti';	
-	$lang['firesale:shortcuts:brand_create']    = 'Crea Marca';
 
 	// Dashboard
 	$lang['firesale:dash_overview']				= 'Veloce anteprima';
@@ -70,19 +69,6 @@
 	$lang['firesale:cats_delete_success'] 	= 'Categoria cancellata con successo';
 	$lang['firesale:cats_delete_error'] 	= 'Impossibile cancellare la categoria';
 	$lang['firesale:cats_all_products']     = 'Tutti i prodotti';
-
-	// Brands
-	$lang['firesale:brands:title']          = 'Brands';
-	$lang['firesale:brands:new']            = 'Add a new Brand';
-	$lang['firesale:brands:add_success']    = 'New brand added successfully';
-	$lang['firesale:brands:add_error']      = 'Error adding a new brand';
-	$lang['firesale:brands:edit']           = 'Edit %s Brand';
-	$lang['firesale:brands:edit_success']   = 'Brand edited successfully';
-	$lang['firesale:brands:edit_error']     = 'Error editing the brand';
-	$lang['firesale:brands:not_found']      = 'The selected brand could not be found';
-	$lang['firesale:brands:none']           = 'No brands found';
-	$lang['firesale:brands:delete_success'] = 'Brand removed successfully';
-	$lang['firesale:brands:delete_error']   = 'Error removing brand';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Non sono stati trovati Prodotti';
@@ -118,7 +104,6 @@
 	$lang['firesale:label_description']	  = 'Descrizione';
 	$lang['firesale:label_category']	  = 'Categoria';
 	$lang['firesale:label_parent']		  = 'Categoria padre';
-	$lang['firesale:label_brand']	      = 'Marca';
 	$lang['firesale:label_filtercat']	  = 'Filtra per categoria';
 	$lang['firesale:label_filtersel']	  = 'Seleziona una categoria';
 	$lang['firesale:label_filterprod']    = 'Seleziona un prodotto';

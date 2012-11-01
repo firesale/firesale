@@ -2,7 +2,7 @@
 
 $route['firesale/admin/products(?:(/[category|status|stock_status|na]+/[0-9na]+(?:(/[0-9]+)?)))?'] = 'admin_products/index$1'; // Fuck you pagination and filtering
 $route['firesale/admin/categories(/:any)?'] 		 	 = 'admin_categories$1';
-$route['firesale/admin/brands(/:any)?'] 		 	 	 = 'admin_brands$1';
+$route['firesale/admin/taxes(/:any)?'] 		 	 	 	 = 'admin_taxes$1';
 $route['firesale/admin/products(/:any)?'] 				 = 'admin_products$1';
 $route['firesale/admin/currency(/:any)?'] 				 = 'admin_currency$1';
 $route['firesale/admin/routes(/:any)?'] 				 = 'admin_routes$1';

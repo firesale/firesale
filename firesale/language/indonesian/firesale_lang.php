@@ -19,6 +19,7 @@
 	$lang['firesale:sections:settings'] 	= 'Pengaturan';
 	$lang['firesale:sections:routes']         = 'Rute'; 
 	$lang['firesale:sections:currency']       = 'Mata Uang';
+	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
 	
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opsi Umum';
