@@ -24,10 +24,10 @@
 								<?php endif; ?>
 							<td><?php echo $tax['title']; ?></td>
 							<td>
-								<a href="<?php echo site_url('admin/firesale/taxes/edit/' . $tax['id']); ?>" class="button"><?php echo lang('global:edit'); ?></a>
+								<a href="<?php echo site_url('admin/firesale/taxes/edit/' . $tax['id']); ?>" class="btn blue"><?php echo lang('global:edit'); ?></a>
 								
 								<?php if ($tax['id'] != 1): ?>
-									<a href="<?php echo site_url('admin/firesale/taxes/delete/' . $tax['id']); ?>" class="button confirm"><?php echo lang('global:delete'); ?></a>
+									<a href="<?php echo site_url('admin/firesale/taxes/delete/' . $tax['id']); ?>" class="btn red confirm"><?php echo lang('global:delete'); ?></a>
 								<?php endif; ?>
 							</td>
 						</tr>
