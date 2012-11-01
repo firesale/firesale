@@ -34,7 +34,8 @@ class Module_Firesale extends Module {
 			'author'   => 'Jamie Holdroyd & Chris Harvey',
 			'roles' => array(
 				'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways',
-				'enable_disable_gateways', 'edit_gateways', 'access_currency', 'install_uninstall_currency'
+				'enable_disable_gateways', 'edit_gateways', 'access_currency', 'install_uninstall_currency',
+				'access_taxes', 'add_edit_taxes'
 			),
 			'sections' => array(
 				'dashboard' => array(
@@ -190,7 +191,7 @@ class Module_Firesale extends Module {
 	{
 
 		// For 2.2 compatibility
-		$redirect = ( substr(CMS_VERSION, 0, 3) == '2.2' ? 'addons/' : '' ).'modules';
+		$redirect = (CMS_VERSION >= '2.2' ? 'addons/' : '') . 'modules';
 
 		if (CMS_VERSION < "2.1.4")
 		{
