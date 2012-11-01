@@ -920,13 +920,16 @@ class Module_Firesale extends Module {
 	public function install_multiple()
 	{
 
+		// Load required items
+		$this->load->library('unzip');
+
 		// Variables
 		$url    = 'https://github.com/parse19/PyroStreams-Multiple-Relationships/zipball/master';
 		$path   = SHARED_ADDONPATH . 'field_types/';
 		$before = scandir($path);
 
 		// Perform checks before continuing
-		if( class_exists('ZipArchive') AND
+		if( extension_loaded('zlib') AND
 			function_exists('copy') AND
 			function_exists('rename') AND
 			function_exists('unlink') AND
@@ -938,13 +941,7 @@ class Module_Firesale extends Module {
 			copy($url, $temp);
 
 			// Unzip
-			$zip    = new ZipArchive;
-			$zipped = $zip->open($temp);
-			if( $zipped )
-			{
-			  	$zip->extractTo($path);
-			  	$zip->close();
-			}
+			$this->unzip->extract($temp, $path);
 
 			// Rename folder
 			$after  = scandir($path);
