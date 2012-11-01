@@ -218,4 +218,37 @@ class Admin_routes extends Admin_Controller
         redirect('admin/firesale/routes');
 	}
 
+	public function delete($id)
+	{
+
+		// Get route
+		$query = $this->db->where('id', $id)->get('firesale_routes');
+
+		// Check if exists
+		if( $query->num_rows() )
+		{
+
+			// Get the route
+			$route = current($query->result_array());
+
+			// Check if it's core
+			if( $route['is_core'] != '1' )
+			{
+
+				// Remove it
+				if( $this->routes_m->delete($id) )
+				{
+					$this->session->set_flashdata('success', lang('firesale:routes:delete_success'));
+					redirect('admin/firesale/routes');
+				}
+
+			}
+
+		}
+
+		// Something went wrong
+		$this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
+		redirect('admin/firesale/routes');
+	}
+
 }

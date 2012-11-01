@@ -702,18 +702,21 @@ class Module_Firesale extends Module {
 			// Add fields to stream
 			$this->streams->fields->add_fields($fields);
 
+			// Add is_core
+			$this->db->query("ALTER TABLE `".SITE_REF."_firesale_routes` ADD `is_core` BOOLEAN NOT NULL DEFAULT '0'");
+
 		}
 
 		// Routes
 		$routes   = array();
-		$routes[] = array('id' => '7', 'title' => 'Category (Customisation)', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
-		$routes[] = array('id' => '1', 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}', 'route' => 'category(/[a-z0-9-]+)?', 'translation' => 'firesale/front_category/index$1');
-		$routes[] = array('id' => '2', 'title' => 'Product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-]+)', 'translation' => 'firesale/front_product/index/$1');
-		$routes[] = array('id' => '3', 'title' => 'Cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
-		$routes[] = array('id' => '5', 'title' => 'Orders (Single)', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
-		$routes[] = array('id' => '4', 'title' => 'Orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
-		$routes[] = array('id' => '6', 'title' => 'Addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
-		$routes[] = array('id' => '8', 'title' => 'Currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1');
+		$routes[] = array('id' => '7', 'is_core' => 1, 'title' => 'Category (Customisation)', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
+		$routes[] = array('id' => '1', 'is_core' => 1, 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}', 'route' => 'category(/[a-z0-9-]+)?', 'translation' => 'firesale/front_category/index$1');
+		$routes[] = array('id' => '2', 'is_core' => 1, 'title' => 'Product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-]+)', 'translation' => 'firesale/front_product/index/$1');
+		$routes[] = array('id' => '3', 'is_core' => 1, 'title' => 'Cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
+		$routes[] = array('id' => '5', 'is_core' => 1, 'title' => 'Orders (Single)', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
+		$routes[] = array('id' => '4', 'is_core' => 1, 'title' => 'Orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
+		$routes[] = array('id' => '6', 'is_core' => 1, 'title' => 'Addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
+		$routes[] = array('id' => '8', 'is_core' => 1, 'title' => 'Currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1');
 
 		// Perform
 		foreach( $routes AS $route )
