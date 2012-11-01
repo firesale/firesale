@@ -42,4 +42,24 @@ class Admin_taxes extends Admin_Controller
 			$this->streams->cp->entry_form('firesale_taxes', 'firesale_taxes', 'edit', $id, TRUE);
 		}
 	}
+
+	public function delete($id = NULL, $redirect = TRUE)
+	{
+		if (is_null($id) AND $this->input->post('action_to'))
+		{
+			foreach ($this->input->post('action_to') as $id)
+			{
+				$this->delete($id, FALSE);
+			}
+		}
+		elseif ($id != 1)
+		{
+			$this->streams->entries->delete_entry($id, 'firesale_taxes', 'firesale_taxes');
+		}
+
+		if ($redirect)
+		{
+			redirect('admin/firesale/taxes');
+		}
+	}
 }

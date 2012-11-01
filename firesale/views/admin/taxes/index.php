@@ -5,7 +5,7 @@
 <section class="item">
 	<?php if ($taxes['total'] > 0): ?>
 	
-		<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
+		<?php echo form_open('admin/firesale/taxes/delete', 'class="crud"'); ?>
 
 			<table>
 				<thead>
