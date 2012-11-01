@@ -9,7 +9,7 @@ class Module_Firesale extends Module {
 	{
 		parent::__construct();
 		
-		// Load in the FireSALE library
+		// Load in the FireSale library
 		$this->load->library('firesale/firesale');
 	}
 
@@ -48,17 +48,6 @@ class Module_Firesale extends Module {
 						array(
 						    'name' 	=> 'firesale:shortcuts:cat_create',
 						    'uri'	=> 'admin/firesale/categories',
-						    'class' => 'add'
-						)
-				    )
-				),
-				'brands' => array(
-					'name'   => 'firesale:sections:brands',
-					'uri' 	 => 'admin/firesale/brands',
-					'shortcuts' => array(
-						array(
-						    'name' 	=> 'firesale:shortcuts:brand_create',
-						    'uri'	=> 'admin/firesale/brands/create',
 						    'class' => 'add'
 						)
 				    )
@@ -163,6 +152,26 @@ class Module_Firesale extends Module {
 			);
 		}
 
+		if (group_has_role('firesale', 'access_taxes'))
+		{
+			$info['sections']['taxes'] = array(
+				'name' => 'firesale:sections:taxes',
+				'uri'  => 'admin/firesale/taxes',
+				'shortcuts' => array()
+			);
+		}
+
+		if (group_has_role('firesale', 'add_edit_taxes'))
+		{
+			$info['sections']['taxes']['shortcuts'] = array(
+				array(
+					'name' 	=> 'firesale:shortcuts:add_tax_band',
+					'uri'	=> 'admin/firesale/taxes/create',
+					'class' => 'add'
+				)
+			);
+		}
+
 		if (group_has_role('firesale', 'install_uninstall_currency') AND isset($info['sections']['currency']))
 		{
 			$info['sections']['currency']['shortcuts'] = array(
@@ -251,15 +260,11 @@ class Module_Firesale extends Module {
 		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => 'Uncategorised', 'slug' => 'uncategorised', 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
 		$this->db->insert('firesale_categories', $cat);
 
-		############
-		## BRANDS ##
-		############
 
-		// Add brands
-		$this->brands();
-
-		// Get stream data
-		$brands = $this->streams->streams->get_stream('firesale_brands', 'firesale_brands');
+		###########
+		## TAXES ##
+		###########
+		$this->taxes();
 	
 		##############
 		## PRODUCTS ##
@@ -282,7 +287,6 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
 		$fields[] = array('name' => 'lang:firesale:label_category', 'slug' => 'category', 'type' => 'multiple', 'extra' => array('choose_stream' => $categories->id));
-		$fields[] = array('name' => 'lang:firesale:label_brand', 'slug' => 'brands', 'type' => 'relationship', 'extra' => array('choose_stream' => $brands->id), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_rrp', 'slug' => 'rrp', 'type' => 'text', 'instructions' => 'lang:firesale:inst_rrp', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_rrp_tax', 'slug' => 'rrp_tax', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'instructions' => 'lang:firesale:inst_price', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
@@ -515,22 +519,6 @@ class Module_Firesale extends Module {
 			Files::delete_folder($category_folder->id);
 		}
 
-		// Remove brand images
-		$brand_folder = $this->products_m->get_file_folder_by_slug('brand-images');
-		if( $brand_folder != FALSE )
-		{
-
-			// Get files in folder
-			$files = Files::folder_contents($brand_folder->id);
-			foreach( $files['data']['file'] AS $file )
-			{
-				Files::delete_file($file->id);
-			}
-
-			// Delete folder
-			Files::delete_folder($brand_folder->id);
-		}
-
 		// Remove products
 		if( $this->db->where('stream_namespace', 'firesale_products')->where('stream_slug', 'firesale_products')->get('data_streams')->num_rows() )
 		{
@@ -561,7 +549,6 @@ class Module_Firesale extends Module {
 		
 		// Remove streams
 		$this->streams->utilities->remove_namespace('firesale_categories');
-		$this->streams->utilities->remove_namespace('firesale_brands');
 		$this->streams->utilities->remove_namespace('firesale_products');
 		$this->streams->utilities->remove_namespace('firesale_gateways');
 		$this->streams->utilities->remove_namespace('firesale_addresses');
@@ -590,9 +577,6 @@ class Module_Firesale extends Module {
 		// Pre 1.1.0
 		if( $old_version < '1.1.0' )
 		{
-
-			// Add brands
-			$this->brands();
 
 			// Add routes
 			$this->routes('add');
@@ -678,36 +662,6 @@ class Module_Firesale extends Module {
 		}
 		
 		return $return;	
-	}
-
-	public function brands()
-	{
-
-		// Load model
-		$this->load->driver('Streams');
-		$this->load->library('files/files');
-
-		// Create categories stream
-		if( !$this->streams->streams->add_stream(lang('firesale:sections:brands'), 'firesale_brands', 'firesale_brands', NULL, NULL) ) return FALSE;
-		
-		// Get stream data
-		$brands = $this->streams->streams->get_stream('firesale_brands', 'firesale_brands');
-
-		// Add fields
-		$fields   = array();
-		$template = array('namespace' => 'firesale_brands', 'assign' => 'firesale_brands', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
-		$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
-		$fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 1));
-		$fields[] = array('name' => 'lang:firesale:label_description', 'slug' => 'description', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'));
-
-		// Combine
-		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
-	
-		// Add fields to stream
-		$this->streams->fields->add_fields($fields);
-
-		return TRUE;
 	}
 
 	public function routes($action)
@@ -875,6 +829,14 @@ class Module_Firesale extends Module {
 
 		}
 
+	}
+
+	public function taxes()
+	{
+		// Default settings for the fields
+		$default = array(
+
+		);
 	}
 
 	public function templates($action)
