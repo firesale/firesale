@@ -545,6 +545,9 @@ class Module_Firesale extends Module {
 		// Remove settings
 		$this->settings('remove');
 
+		// Remove taxes
+		$this->taxes('remove');
+
 		// Remove currency
 		$this->currency('remove');
 		
@@ -808,7 +811,6 @@ class Module_Firesale extends Module {
 		}
 		else
 		{
-
 			// Remove currency folder
 			$currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');
 			if( $currency_folder != FALSE )
@@ -827,17 +829,47 @@ class Module_Firesale extends Module {
 
 			// Remove stream
 			$this->streams->utilities->remove_namespace('firesale_currency');
-
 		}
 
 	}
 
-	public function taxes()
+	public function taxes($method = 'add')
 	{
-		// Default settings for the fields
-		$default = array(
+		if ($method == 'add')
+		{
+			$this->streams->streams->add_stream('lang:firesale:sections:taxes', 'firesale_taxes', 'firesale_taxes', NULL, NULL);
 
-		);
+			// Default settings for the fields
+			$default = array(
+				'namespace' => 'firesale_taxes',
+				'assign'    => 'firesale_taxes',
+				'required'  => TRUE
+			);
+
+			$fields = array(
+				array(
+					'name'         => 'Name',
+					'slug'         => 'name',
+					'type'         => 'text',
+					'extra'        => array('max_length' => 200),
+					'title_column' => TRUE
+				),
+				array(
+					'name'  => 'Description',
+					'slug'  => 'description',
+					'type'  => 'wysiwyg'
+				),
+			);
+
+			foreach ($fields as &$field)
+				$field = array_merge($default, $field);
+
+			$this->streams->fields->add_fields($fields);
+		}
+		elseif ($method == 'remove')
+		{
+			$this->streams->utilities->remove_namespace('firesale_taxes');
+		}
 	}
 
 	public function templates($action)
