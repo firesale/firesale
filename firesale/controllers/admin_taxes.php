@@ -25,4 +25,23 @@ class Admin_taxes extends Admin_Controller
 
         $this->template->build('admin/taxes/index', $data);
 	}
+
+	public function create()
+	{
+		$this->streams->cp->entry_form('firesale_taxes', 'firesale_taxes', 'new', NULL, TRUE);
+	}
+
+	public function edit($id = NULL)
+	{
+		if (is_null($id))
+		{
+			redirect('admin/firesale/taxes/create');
+		}
+		else
+		{
+			//$entry = (array) $this->streams->entries->get_entry($id, 'firesale_taxes', 'firesale_taxes');
+			//print_r($entry);
+			$this->streams->cp->entry_form('firesale_taxes', 'firesale_taxes', 'edit', $id, TRUE);
+		}
+	}
 }
