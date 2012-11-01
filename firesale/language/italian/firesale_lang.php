@@ -12,6 +12,7 @@
 	$lang['firesale:sections:dashboard'] 	  = 'Dashboard';
 	$lang['firesale:sections:categories'] 	  = 'Categorie';
 	$lang['firesale:sections:products'] 	  = 'Prodotti';
+	$lang['firesale:sections:brands'] 	      = 'Marche';
 	$lang['firesale:sections:orders'] 		  = 'Ordini';
 	$lang['firesale:sections:addresses'] 	  = 'Indirizzi';
 	$lang['firesale:sections:orders_items']	  = 'Oggetti Ordinati';
@@ -35,7 +36,8 @@
 	$lang['firesale:shortcuts:install_gateway']	= 'Installa Gateway';
 	$lang['firesale:shortcuts:create_order']	= 'Crea Ordine';
 	$lang['firesale:shortcuts:create_routes']   = 'Aggiungi un nuovo Reindirizzamento';
-	$lang['firesale:shortcuts:build_routes']    = 'Ricrea Reindirizzamenti';
+	$lang['firesale:shortcuts:build_routes']    = 'Ricrea Reindirizzamenti';	
+	$lang['firesale:shortcuts:brand_create']    = 'Crea Marca';
 
 	// Dashboard
 	$lang['firesale:dash_overview']				= 'Veloce anteprima';
@@ -67,6 +69,20 @@
 	$lang['firesale:cats_edit_error'] 		= 'Si è verificato un problema nel modificare la categoria';	
 	$lang['firesale:cats_delete_success'] 	= 'Categoria cancellata con successo';
 	$lang['firesale:cats_delete_error'] 	= 'Impossibile cancellare la categoria';
+	$lang['firesale:cats_all_products']     = 'Tutti i prodotti';
+
+	// Brands
+	$lang['firesale:brands:title']          = 'Brands';
+	$lang['firesale:brands:new']            = 'Add a new Brand';
+	$lang['firesale:brands:add_success']    = 'New brand added successfully';
+	$lang['firesale:brands:add_error']      = 'Error adding a new brand';
+	$lang['firesale:brands:edit']           = 'Edit %s Brand';
+	$lang['firesale:brands:edit_success']   = 'Brand edited successfully';
+	$lang['firesale:brands:edit_error']     = 'Error editing the brand';
+	$lang['firesale:brands:not_found']      = 'The selected brand could not be found';
+	$lang['firesale:brands:none']           = 'No brands found';
+	$lang['firesale:brands:delete_success'] = 'Brand removed successfully';
+	$lang['firesale:brands:delete_error']   = 'Error removing brand';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Non sono stati trovati Prodotti';
@@ -87,7 +103,6 @@
 	$lang['firesale:prod_delimg_success']   = 'Immagine cancellata con successo';
 	$lang['firesale:prod_delimg_error']     = 'Si è verificato un errore nel rimuovere l\'immagine selezionata';
 	$lang['firesale:prod_button_quick_edit']= 'Modifica Veloce';
-	$lang['firesale:cats_all_products']     = 'Tutti i prodotti';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Prezzo di vendita prima e dopo le tasse';
@@ -103,6 +118,7 @@
 	$lang['firesale:label_description']	  = 'Descrizione';
 	$lang['firesale:label_category']	  = 'Categoria';
 	$lang['firesale:label_parent']		  = 'Categoria padre';
+	$lang['firesale:label_brand']	      = 'Marca';
 	$lang['firesale:label_filtercat']	  = 'Filtra per categoria';
 	$lang['firesale:label_filtersel']	  = 'Seleziona una categoria';
 	$lang['firesale:label_filterprod']    = 'Seleziona un prodotto';
@@ -130,7 +146,7 @@
 	$lang['firesale:label_remove']		= 'Rimuovi';
 	$lang['firesale:label_image']		= 'Immagine';
 	$lang['firesale:label_images']		= 'Immagini';
-	$lang['firesale:label_order']		= 'Order';
+	$lang['firesale:label_order']		= 'Ordini';
 	$lang['firesale:label_gateway']		= 'Metodi di pagamento';
 	$lang['firesale:label_shipping']	= 'Metodi di spedizione';
 	$lang['firesale:label_quantity']	= 'Quantità';
@@ -262,14 +278,6 @@
 	$lang['firesale:gateways:updated_success'] 				= 'Metodo di Pagamento aggiornato con successo';
 	$lang['firesale:gateways:updated_fail'] 				= 'Il Metodo di Pagamento non può essere aggiornato';
 
-	// Orders
-	$lang['firesale:orders:status_unpaid'] 		= 'Non pagato';
-	$lang['firesale:orders:status_paid'] 		= 'Pagato';
-	$lang['firesale:orders:status_dispatched']	= 'Dispatched';
-	$lang['firesale:orders:status_processing']	= 'In progresso';
-	$lang['firesale:orders:status_refunded']	= 'Rimborso';
-	$lang['firesale:orders:status_cancelled']	= 'Cancellato';
-
 	// Checkout
 	$lang['firesale:gateways:labels:name']			= 'Nome';
 	$lang['firesale:gateways:labels:desc']			= 'Descrizione';
@@ -313,7 +321,6 @@
 	$lang['firesale:currency:add_error']         = 'Si è verificato un errore nell\'aggiungere la nuova Valuta';
 	$lang['firesale:currency:edit_success']      = 'Valuta aggiornata correttamente';
 	$lang['firesale:currency:edit_error']        = 'Si è verificato un errore nell\'aggiornare la nuova Valuta';
-	$lang['firesale:label_cur_format_num']       = 'Formattazione numerica';
 	$lang['firesale:currency:format_none']       = 'Nessuno';
 	$lang['firesale:currency:format_00']         = 'Arrotonda al numero intero più vicino'; 
 	$lang['firesale:currency:format_50']         = 'Arrotonda al più vicino .50'; 
