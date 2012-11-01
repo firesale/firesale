@@ -45,12 +45,14 @@ class Admin_currency extends Admin_Controller
 			$action = $this->input->post('btnAction');
 
 			// Loop IDs
-			foreach( $this->input->post('action_to') AS $id )
+			if ($this->input->post('action_to'))
 			{
-				// Perform action
-				$this->$action($id, FALSE);
+				foreach( $this->input->post('action_to') AS $id )
+				{
+					// Perform action
+					$this->$action($id, FALSE);
+				}
 			}
-
 		}
 
 		// Variables
