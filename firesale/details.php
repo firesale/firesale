@@ -690,7 +690,7 @@ class Module_Firesale extends Module {
 			$fields   = array();
 			$template = array('namespace' => 'firesale_routes', 'assign' => 'firesale_routes', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 			$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
-			$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
+			$fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'), 'unique' => TRUE);
 			$fields[] = array('name' => 'lang:firesale:label_table', 'slug' => 'table', 'type' => 'text', 'extra' => array('max_length' => 255), 'required' => FALSE);
 			$fields[] = array('name' => 'lang:firesale:label_map', 'slug' => 'map', 'extra' => array('max_length' => 255), 'unique' => TRUE);
 			$fields[] = array('name' => 'lang:firesale:label_route', 'slug' => 'route', 'extra' => array('max_length' => 255), 'unique' => TRUE);
@@ -714,7 +714,6 @@ class Module_Firesale extends Module {
 		$routes[] = array('id' => '4', 'title' => 'Orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
 		$routes[] = array('id' => '6', 'title' => 'Addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
 		$routes[] = array('id' => '8', 'title' => 'Currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1');
-		$routes[] = array('id' => '9', 'title' => 'Brand', 'slug' => 'brand', 'table' => 'firesale_brands', 'map' => 'brand/{{ slug }}', 'route' => 'brand/([a-z0-9-]+)?', 'translation' => 'firesale/front_brand/index/$1');
 
 		// Perform
 		foreach( $routes AS $route )
