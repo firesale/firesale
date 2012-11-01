@@ -39,8 +39,6 @@ class Admin_taxes extends Admin_Controller
 		}
 		else
 		{
-			//$entry = (array) $this->streams->entries->get_entry($id, 'firesale_taxes', 'firesale_taxes');
-			//print_r($entry);
 			$this->streams->cp->entry_form('firesale_taxes', 'firesale_taxes', 'edit', $id, TRUE);
 		}
 	}
