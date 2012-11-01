@@ -312,6 +312,9 @@
 	$lang['firesale:currency:format_50']         = 'Round to closest .50';
 	$lang['firesale:currency:format_99']         = 'Round up to closest .99';
 
+	// Taxes
+	$lang['firesale:taxes:none'] = 'There are currently no tax bands setup';
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
 	$lang['firesale:addresses:edit_address'] = 'Edit Address';
