@@ -25,7 +25,6 @@ class Front_cart extends Public_Controller
 		// Load the required models
 		$this->load->driver('Streams');
 		$this->load->library('files/files');
-		$this->load->model('firesale/currency_m');
 		$this->load->model('firesale/cart_m');
 		$this->load->model('firesale/orders_m');
 		$this->load->model('firesale/address_m');
@@ -53,32 +52,9 @@ class Front_cart extends Public_Controller
 			$this->session->set_userdata('redirect_to', $url);
 			redirect('users/login');		
 		}
-
-		// Grab the currency
-		$user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
-		$this->currency = $this->currency_m->get($user_currency);
 		
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
-		
-		// Set the tax percentage
-		$this->fs_cart->currency    = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
-		$this->fs_cart->tax_percent = $this->settings->get('firesale_tax');
-		
-		// Set the pricing vars
-		if ($this->fs_cart->total() > 0)
-		{
-			$this->fs_cart->tax_mod  = 1 - ( $this->fs_cart->currency->cur_tax / 100 );
-			$this->fs_cart->total	 = $this->fs_cart->total();
-			$this->fs_cart->tax		 = $this->fs_cart->total / (( $this->fs_cart->tax_percent / 100 ) + 1 ) * ( 1 - $this->fs_cart->tax_mod );
-			$this->fs_cart->subtotal = ( $this->fs_cart->total - $this->fs_cart->tax );
-		}
-		else
-		{
-			$this->fs_cart->total	 = '0.00';
-			$this->fs_cart->tax		 = '0.00';
-			$this->fs_cart->subtotal = '0.00';
-		}
 
 		// Load shipping model
 		if( isset($this->firesale->roles['shipping']) )
@@ -95,12 +71,11 @@ class Front_cart extends Public_Controller
 
 	public function index()
 	{
-	
 		// Assign Variables
-		$data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal, $this->fs_cart->currency, false);
-		$data['tax']   		 = $this->currency_m->format_string($this->fs_cart->tax, $this->fs_cart->currency, false);
-		$data['total']   	 = $this->currency_m->format_string($this->fs_cart->total, $this->fs_cart->currency, false);
-		$data['currency']    = $this->fs_cart->currency;
+		$data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
+		$data['tax']   		 = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
+		$data['total']   	 = $this->currency_m->format_string($this->fs_cart->total(), $this->fs_cart->currency(), false);
+		$data['currency']    = $this->fs_cart->currency();
 		$data['contents']    = $this->fs_cart->contents();
 
 		// Add item id
@@ -108,8 +83,8 @@ class Front_cart extends Public_Controller
 		foreach ($data['contents'] AS &$product)
 		{
 
-			$product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency, false);
-			$product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency, false);
+			$product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
+			$product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
 			$product['no']       = $i;
 
 			$i++;
@@ -537,7 +512,7 @@ class Front_cart extends Public_Controller
 					'return_url' => $this->routes_m->build_url('cart') . '/success',
 					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
 				), $this->input->post(NULL, TRUE), array(
-					'currency_code'  => $this->currency->cur_code,
+					'currency_code'  => $this->fs_cart->currency()->cur_code,
 					'amount'         => $this->fs_cart->total,
 					'order_id'       => $this->session->userdata('order_id'),
 					'transaction_id' => $this->session->userdata('order_id'),
@@ -606,14 +581,14 @@ class Front_cart extends Public_Controller
 				// Format order
 				foreach( $order['items'] AS $key => $item )
 				{
-					$order['items'][$key]['price'] = $this->currency_m->format_string($item['price'], $this->currency);
-					$order['items'][$key]['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->currency);
+					$order['items'][$key]['price'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
+					$order['items'][$key]['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
 				}
 
 				// Format currency
-				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency, FALSE);
-				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency, FALSE);
-				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency, FALSE);
+				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
 
 				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
@@ -623,7 +598,7 @@ class Front_cart extends Public_Controller
 							   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart').'/payment')
 							   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
 							   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
-							   ->set('currency', $this->currency)
+							   ->set('currency', $this->fs_cart->currency())
 							   ->set('payment', $gateway_view)
 							   ->build('payment', $order);
 
@@ -723,14 +698,14 @@ class Front_cart extends Public_Controller
 			// Format order
 			foreach ($order['items'] as &$item)
 			{
-				$item['price'] = $this->currency_m->format_string($item['price'], $this->currency);
-				$item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->currency);
+				$item['price'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
+				$item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
 			}
 
 			// Format currency
-			$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->currency, FALSE);
-			$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->currency, FALSE);
-			$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->currency, FALSE);
+			$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+			$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+			$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
 
 			// Build page
 			$this->template->title(lang('firesale:payment:title_success'))
