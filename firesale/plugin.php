@@ -18,19 +18,20 @@ class Plugin_Firesale extends Plugin
 		// Variables
 		$route = $this->attribute('route');
 		$id    = $this->attribute('id');
+		$after = $this->attribute('after');
 
 		// Get the URL
-		return BASE_URL.$this->routes_m->build_url($route, $id);
+		return BASE_URL.$this->routes_m->build_url($route, $id).$after;
 	}
 
 	public function module_installed()
 	{
 	
 		// Variables
-		$module = $this->attribute('name', 'firesale');
+		$module = $this->attribute('slug', 'firesale');
 
 		// Check
-		$query = $this->db->select('id')->where("slug = '{$module}' AND installed = 1")->get('modules');
+		$query = $this->db->select('id')->where('slug', $module)->where('installed', '1')->get('modules');
 
 		if( $query->num_rows() )
 		{
@@ -45,7 +46,7 @@ class Plugin_Firesale extends Plugin
 	
 		// Variables
 		$limit	   = $this->attribute('limit', 6);
-		$category  = $this->attribute('category', 0);
+		$parent    = $this->attribute('parent', 0);
 		$where     = $this->attribute('where', FALSE);
 		$order_by  = $this->attribute('order-by', 'ordering_count');
 		$order_dir = $this->attribute('order-dir', 'asc');
@@ -60,10 +61,10 @@ class Plugin_Firesale extends Plugin
 		}
 		
 		// Build query
-		$query = $this->db->select('id, title, parent, slug')
+		$query = $this->db->select('id')
 					  	  ->from('firesale_categories')
 						  ->where('status', '1')
-						  ->where('parent', $category)
+						  ->where('parent', $parent)
 						  ->order_by($order_by, $order_dir);
 						  
 		// Add where?
@@ -82,8 +83,8 @@ class Plugin_Firesale extends Plugin
 			$query->limit($limit);
 		}
 
-		// Category may be NULL
-		if( $category <= 0 )
+		// Parent may be NULL
+		if( $parent <= 0 )
 		{
 			$query->or_where('status', '1')
 				  ->where('parent', NULL);
@@ -91,6 +92,12 @@ class Plugin_Firesale extends Plugin
 
 		// Get categories
 		$categories = $query->get()->result_array();
+
+		// Loop and get objects
+		foreach( $categoires AS &$category )
+		{
+			$category = $this->categories_m->get($category['id']);
+		}
 		
 		return $categories;
 	}
@@ -237,27 +244,6 @@ class Plugin_Firesale extends Plugin
 		}
 
 		return $results;
-	}
-
-	public function prevoius_next()
-	{
-
-		// Variables
-		$id   = $this->attribute('id');
-		$type = $this->attribute('type', 'next');
-
-		// Check ID for previous
-		if( $type == 'previous' AND $id != 1 )
-		{
-			return $this->products_m->get_product(( $id - 1 ));
-		}
-		else if( $type == 'next' )
-		{
-			return $this->products_m->get_product(( $id + 1 ));
-		}
-
-		// Otherwise
-		return FALSE;
 	}
 
 	#######################
