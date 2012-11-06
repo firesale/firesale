@@ -27,8 +27,8 @@ class Cart_m extends MY_Model
 		{
 
 			// Get original price
-			$query = $this->db->select('price_tax, rrp_tax')->where('id', $product['id'])->get('firesale_products')->result_array();
-			$price = current($query);
+			$query = $this->db->select('price_tax, rrp_tax')->where('id', $product['id'])->get('firesale_products');
+			$price = $query->row_array();
 
 			// Build new price
 			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], NULL, $currency->id);
