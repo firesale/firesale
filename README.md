@@ -53,7 +53,7 @@ If you find any issues or want to provide feedback we'd appreciate it if you use
 
 ## Pull Requests
 
-If you would like to submit your bug fixes, enhancements and translations to the project then you are welcome to submit pull requests here on GitHub. We do however ask that you use the UNIX LF (\n) line endings.
+If you would like to submit your bug fixes, enhancements and translations to the project then you are welcome to submit pull requests here on GitHub. We do however ask that you use the UNIX LF (\n) line endings. Git can automatically do this for you. For more information about this see this [help page](https://help.github.com/articles/dealing-with-line-endings).
 
 # Contributors
 
