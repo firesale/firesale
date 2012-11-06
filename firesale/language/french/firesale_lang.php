@@ -29,6 +29,7 @@
 	$lang['firesale:tabs:metadata']		= 'Méta-données';
 	$lang['firesale:tabs:attributes']	= 'Attributs';
 	$lang['firesale:tabs:images']		= 'Images';
+	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Créer un produit';
@@ -37,6 +38,8 @@
 	$lang['firesale:shortcuts:create_order']	= 'Créer une commande';
 	$lang['firesale:shortcuts:create_routes']   = 'Ajouter une nouvelle route';
 	$lang['firesale:shortcuts:build_routes']    = 'Reconstruire les routes';
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band'; # Translate
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes'; # Translate
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Vue d\'ensemble';
@@ -195,6 +198,8 @@
 	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
 	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
 
+	$lang['firesale:label_tax_band']  = 'Tax Band';  # translate
+	
 	// Orders
 	$lang['firesale:orders:title']				= 'Commandes';
 	$lang['firesale:orders:no_orders']			= 'Il n\'y a actuellement aucune commande en cours';
@@ -311,6 +316,11 @@
 	$lang['firesale:currency:format_50']         = 'Arrondir au format .50 le plus proche';
 	$lang['firesale:currency:format_99']         = 'Arrondir au format .99 le plus proche';
 
+	// Taxes
+	$lang['firesale:taxes:none'] = 'There are currently no tax bands setup';   # translate
+	$lang['firesale:taxes:new']  = 'Add tax band'; # translate
+	$lang['firesale:taxes:edit'] = 'Edit tax band'; # translate
+	
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mes adresses';
 	$lang['firesale:addresses:edit_address'] = 'Modifier adresse';

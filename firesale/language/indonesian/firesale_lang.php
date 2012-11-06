@@ -29,6 +29,7 @@
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Atribut';
 	$lang['firesale:tabs:images']		= 'Gambar';
+	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Buat Produk';
@@ -37,6 +38,8 @@
 	$lang['firesale:shortcuts:create_order']	= 'Buat Pesanan';
 	$lang['firesale:shortcuts:create_routes'] = 'Tambah Route Baru';
 	$lang['firesale:shortcuts:build_routes']  = 'Bangun Ulang Rute';
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band'; #Translate
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes'; #Translate
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Ulasan Singkat';
@@ -193,22 +196,9 @@
 	$lang['firesale:label_cur_format_inst'] = 'Format termasuk simbol mata uang, dengan "{{ price }}" yang nilainya akan ditampilkan, mis: Rp {{ price }}';
 	$lang['firesale:label_cur_format_dec']  = 'Simbol Desimal';
 	$lang['firesale:label_cur_format_sep']  = 'Simbol Batas Ribuan';
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; #Translate
 
-	$lang['firesale:label_cur_code']        = 'Currency Code'; # translate
-	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format'; # translate
-	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
-	$lang['firesale:label_cur_mod']         = 'Currency Modifier'; # translate
-	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
-	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
-	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save'; # translate
-	$lang['firesale:label_cur_flag']        = 'Related Image'; # translate
-	$lang['firesale:label_enabled']         = 'Enabled'; # translate
-	$lang['firesale:label_disabled']        = 'Disabled'; # translate
-	$lang['firesale:label_cur_format']      = 'Currency Format'; # translate
-	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}'; # translate
-	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
-	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
-	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
+	$lang['firesale:label_tax_band']  = 'Tax Band'; #Translate
 
 	// Orders
 	$lang['firesale:orders:title']				= 'Pesanan';
@@ -237,6 +227,7 @@
 	$lang['firesale:orders:logged_in']			= 'Anda harus masuk terlebih dahulu untuk melihat riwayat pesanan Anda.';
 	$lang['firesale:orders:label_view_order']	= 'Lihat Pesanan';
 	$lang['firesale:orders:label_products']		= 'Produk';
+	$lang['firesale:orders:label_view_order']	   = 'View Order'; #Translate
 	$lang['firesale:orders:label_customer']		= 'Pelanggan';
 	$lang['firesale:orders:label_date_placed']	= 'Tanggal Ditempatkan';
 	$lang['firesale:orders:label_order_id'] 	= 'ID Pesanan';
@@ -325,6 +316,11 @@
 	$lang['firesale:currency:format_00']         = 'Bulatkan ke bilangan bulat selanjutnya';
 	$lang['firesale:currency:format_50']         = 'Bulatkan mendekati .50';
 	$lang['firesale:currency:format_99']         = 'Bulatkan mendekati .99';
+
+	// Taxes
+	$lang['firesale:taxes:none'] = 'There are currently no tax bands setup'; #Translate
+	$lang['firesale:taxes:new']  = 'Add tax band'; #Translate
+	$lang['firesale:taxes:edit'] = 'Edit tax band'; #Translate
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Alamat Saya';
