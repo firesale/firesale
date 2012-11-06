@@ -1,7 +1,7 @@
 <?php echo form_open(uri_string(), 'class="crud"'); ?>
 
 	<section class="title">
-		<h4><?php echo lang('firesale:taxes:'.$type); ?></h4>
+		<h4><?php echo lang('firesale:shortcuts:assign_taxes'); ?></h4>
 	</section>
 
 	<section class="item form_inputs">
