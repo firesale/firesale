@@ -69,63 +69,49 @@ class Admin_taxes extends Admin_Controller
 
 	public function assign()
 	{
-		/** 
-		 * @todo Move this to a model
-		 */
+		$action = $this->input->post('btnAction');
 
-		// Load streams
-		$this->load->driver('Streams');
-
-		// Get taxes
-		$params = array(
-			'stream'    => 'firesale_taxes',
-			'namespace' => 'firesale_taxes',
-			'paginate'  => 'no',
-			'sort'      => 'asc'
-		);
-
-		$taxes = $this->streams->entries->get_entries($params);
-		$data['taxes'] = $taxes['entries'];
-
-		// Get currencies
-		$params = array(
-			'stream'    => 'firesale_currency',
-			'namespace' => 'firesale_currency',
-			'paginate'  => 'no',
-			'sort'      => 'asc'
-		);
-
-		$currencies = $this->streams->entries->get_entries($params);
-		$data['currencies'] = $currencies['entries'];
-
-		// Get assignments
-		$query = $this->db->get('firesale_taxes_assignments')->result();
-
-		$assignments = array();
-
-		foreach ($query as $assignment)
+		if ($action == 'save' OR $action == 'save_exit')
 		{
-			$assignments[$assignment->currency_id][$assignment->tax_id] = $assignment->value;
-		}
-
-		foreach ($data['currencies'] as &$currency)
-		{
-			foreach ($data['taxes'] as $tax)
+			foreach ($this->input->post('assignment') as $currency_id => $taxes)
 			{
-				if (isset($assignments[$currency['id']][$tax['id']]))
+				foreach ($taxes as $tax_id => $value)
 				{
-					$currency['taxes'][] = array_merge(array(
-						'value' => $assignments[$currency['id']][$tax['id']]
-					), $tax);
-				}
-				else
-				{
-					$currency['taxes'][] = array_merge(array(
-						'value' => NULL
-					), $tax);
+					$query = $this->db->get_where('firesale_taxes_assignments', array(
+						'tax_id'      => $tax_id,
+						'currency_id' => $currency_id
+					));
+
+					if ($query->num_rows())
+					{
+						$this->db->update('firesale_taxes_assignments', array(
+							'value'       => $value
+						), array(
+							'tax_id'      => $tax_id,
+							'currency_id' => $currency_id
+						));
+					}
+					else
+					{
+						$this->db->insert('firesale_taxes_assignments', array(
+							'tax_id'      => $tax_id,
+							'currency_id' => $currency_id,
+							'value'       => $value
+						));
+					}
 				}
 			}
+
+			if ($action == 'save_exit')
+			{
+				redirect('admin/firesale/taxes');
+			}
 		}
+
+		// Load the taxes model
+		$this->load->model('firesale/taxes_m');
+
+		$data = $this->taxes_m->get_assignments();
 
 		$this->template->build('admin/taxes/assign', $data);
 	}
