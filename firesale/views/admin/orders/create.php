@@ -1,4 +1,4 @@
-	<?php echo form_open($this->uri->uri_string(), 'class="crud" id="tabs"'); ?>
+	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud" id="tabs"'); ?>
 
 		<section class="title">
 			<h4>
