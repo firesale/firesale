@@ -29,6 +29,7 @@
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributes';
 	$lang['firesale:tabs:images']		= 'Images';
+	$lang['firesale:tabs:assignments']  = 'Assignments';
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Create Product';
@@ -38,6 +39,7 @@
 	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route';
 	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes';
 	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band';
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Quick Overview';
@@ -316,6 +318,8 @@
 
 	// Taxes
 	$lang['firesale:taxes:none'] = 'There are currently no tax bands setup';
+	$lang['firesale:taxes:new']  = 'Add tax band';
+	$lang['firesale:taxes:edit'] = 'Edit tax band';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
