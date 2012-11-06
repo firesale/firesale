@@ -40,7 +40,7 @@
 
 			<div class="tabs">
 
-				<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud" id="tabs"'); ?>
+				<?php echo form_open($this->uri->uri_string(), 'class="crud" id="tabs"'); ?>
 
 					<?php if( !empty($tabs) ): ?>
 					<ul class="tab-menu">

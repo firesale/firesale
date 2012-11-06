@@ -1,5 +1,5 @@
 
-	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
+	<?php echo form_open($this->uri->uri_string(), 'class="crud"'); ?>
 
 		<section class="title">
 			<h4><?php echo lang('firesale:currency:'.$type); ?></h4>

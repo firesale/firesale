@@ -6,7 +6,7 @@
 	<section class="item">
 	<?php if ($currencies['total'] > 0 ): ?>
 	
-		<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
+		<?php echo form_open($this->uri->uri_string(), 'class="crud"'); ?>
 
 		<table>
 			<thead>

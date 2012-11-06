@@ -4,7 +4,7 @@
 		<a class="tooltip-s show-filter" original-title="<?php echo lang('firesale:label_showfilter'); ?>"></a>
 	</section>
 
-	<?php echo form_open_multipart($this->uri->uri_string() . '/status', 'class="crud" id="tabs"'); ?>
+	<?php echo form_open($this->uri->uri_string() . '/status', 'class="crud" id="tabs"'); ?>
 
 		<section class="item">
 <?php if( !empty($orders)): ?>
