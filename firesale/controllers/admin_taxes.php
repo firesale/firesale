@@ -140,6 +140,10 @@ class Admin_taxes extends Admin_Controller
 		elseif ($id != 1)
 		{
 			$this->streams->entries->delete_entry($id, 'firesale_taxes', 'firesale_taxes');
+			
+			$this->db->delete('firesale_taxes_assignments', array(
+				'tax_id' => $id
+			));
 		}
 
 		if ($redirect)
