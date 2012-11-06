@@ -27,15 +27,15 @@ class Cart_m extends MY_Model
 		{
 
 			// Get original price
-			$query = $this->db->select('price_tax, rrp_tax')->where('id', $product['id'])->get('firesale_products');
+			$query = $this->db->select('price_tax, rrp_tax, tax_band')->where('id', $product['id'])->get('firesale_products');
 			$price = $query->row_array();
 
 			// Build new price
-			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], NULL, $currency->id);
+			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], $price['tax_band'], $currency->id);
 
 			// Assign to data
-			$product['price']    = $price['price'];
-			$product['subtotal'] = ( $price['price'] * $product['qty'] );
+			$product['price']    = $price['price_tax'];
+			$product['subtotal'] = $price['price_tax'] * $product['qty'];
 
 			// insert
 			$this->fs_cart->insert($product);

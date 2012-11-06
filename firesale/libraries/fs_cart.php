@@ -92,7 +92,7 @@ class Fs_cart extends CI_Cart
 
 		return $total;
 	}
-	
+
 	public function subtotal()
 	{
 		return $this->subtotal = ($this->total() - $this->tax());
