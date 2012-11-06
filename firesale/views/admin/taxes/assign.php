@@ -19,7 +19,7 @@
 					<tbody>
 						<?php foreach ($currencies as $currency): ?>
 							<tr>
-								<td><strong><?php echo $currency['title']; ?></strong></td>
+								<td><strong><?php echo $currency['title']; ?> (<?php echo $currency['cur_code']; ?>)</strong></td>
 								<?php foreach ($currency['taxes'] as $tax): ?>
 									<td><?php echo form_input($currency['id'] . '[' . $tax['id'] . ']', $tax['value']); ?></td>
 								<?php endforeach; ?>
