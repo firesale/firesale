@@ -12,6 +12,8 @@ class Admin_taxes extends Admin_Controller
 {
 	public $section = 'taxes';
 
+	public $tabs = array('general' => array());
+
 	public function index()
 	{
 		$params = array(
@@ -26,21 +28,59 @@ class Admin_taxes extends Admin_Controller
         $this->template->build('admin/taxes/index', $data);
 	}
 
-	public function create()
+	public function form($row = FALSE)
 	{
-		$this->streams->cp->entry_form('firesale_taxes', 'firesale_taxes', 'new', NULL, TRUE);
+		$stream = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
+		$skip  = array('btnAction');
+		$extra = array(
+			'return'          => false,
+			'success_message' => lang('firesale:taxes:'.($row ? 'edit' : 'add').'_success'),
+			'failure_message' => lang('firesale:taxes:'.($row ? 'edit' : 'add').'_error'),
+			'title'           => lang('firesale:taxes:create')
+        );
+
+		$fields = $this->fields->build_form($stream, $row ? 'edit' : 'new', $row ? $row : $this->input->post(), FALSE, FALSE, $skip, $extra);
+
+        if ( ! is_array($fields))
+		{
+			// Redirect
+			if( $this->input->post('btnAction') == 'save_exit' )
+			{
+				redirect('admin/firesale/taxes');
+			}
+			else
+			{
+				redirect('admin/firesale/taxes/edit/' . $fields);
+			}
+
+		}
+
+		// Load helper
+		$this->load->helper('firesale/general');
+
+		// Pass some data to the view
+		$data['type'] = $row ? 'edit' : 'new';
+		$data['fields'] = fields_to_tabs($fields, $this->tabs);
+		$data['tabs'] = array_keys($data['fields']);
+
+		$this->template->build('admin/taxes/form', $data);
 	}
 
-	public function edit($id = NULL)
+	public function assign()
 	{
-		if (is_null($id))
-		{
-			redirect('admin/firesale/taxes/create');
-		}
-		else
-		{
-			$this->streams->cp->entry_form('firesale_taxes', 'firesale_taxes', 'edit', $id, TRUE);
-		}
+		exit('assign the taxes here');
+	}
+
+	public function create()
+	{
+		$this->form();
+	}
+
+	public function edit($id)
+	{
+		// Get the row
+		$row = $this->streams->entries->get_entry($id, 'firesale_taxes', 'firesale_taxes');
+		$this->form($row);
 	}
 
 	public function delete($id = NULL, $redirect = TRUE)
