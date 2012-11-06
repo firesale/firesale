@@ -304,7 +304,7 @@ class Front_cart extends Public_Controller
 		}
 		
 		// Update the cart
-		$this->fs_cart->update(array('rowid' => $row_id, 'qty' => 0));
+		$this->fs_cart->remove($row_id);
 		
 		if ($this->input->is_ajax_request())
 		{
@@ -312,7 +312,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect( ( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->routes_m->build_url('cart') ));
+			redirect(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->routes_m->build_url('cart'));
 		}
 
 	}
