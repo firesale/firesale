@@ -67,14 +67,32 @@ class Fs_cart extends CI_Cart
 
 	public function tax()
 	{
-		if ( ! isset($this->tax))
+		$this->tax = 0;
+
+		foreach ($this->contents() as $item)
 		{
-			$this->tax = $this->total() / (($this->tax_rate() / 100) + 1) * (1 - $this->tax_mod());
+			$this->ci->load->model('firesale/taxes_m');
+
+			$percentage = $this->ci->taxes_m->get_percentage($item['tax_band']);
+			$tax_mod = 1 - ($percentage / 100);
+
+			$tax = ($item['price'] * (($percentage / 100) + 1) - $item['price']);
+
+			$this->tax += $tax;
 		}
 
 		return $this->tax;
 	}
 
+	public function total()
+	{
+		$total = parent::total();
+
+		$total += $this->tax();
+
+		return $total;
+	}
+	
 	public function subtotal()
 	{
 		return $this->subtotal = ($this->total() - $this->tax());

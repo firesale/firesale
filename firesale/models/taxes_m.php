@@ -60,4 +60,26 @@ class Taxes_m extends MY_Model
 
 		return $data;
 	}
+
+	public function get_percentage($tax_band = 1, $currency = FALSE)
+	{
+		if ( ! $currency)
+			$currency = $this->session->userdata('currency');
+
+		$query = $this->db->get_where('firesale_taxes_assignments', array(
+			'tax_id'      => $tax_band,
+			'currency_id' => $currency
+		));
+
+		if ($query->num_rows())
+		{
+			return $query->row()->value;
+		}
+		else
+		{
+			$this->load->model('currency_m');
+			
+			return $this->currency_m->get($currency)->cur_tax;
+		}
+	}
 }

@@ -187,16 +187,17 @@ class Cart_m extends MY_Model
 	{
 
 		$data = array(
-					'id'	=> $product['id'],
-					'code'	=> $product['code'],
-					'qty'	=> ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
-					'price'	=> $product['price'],
-					'name'	=> $product['title'],
-					'slug'	=> $product['slug'],
-					'ship'  => $product['ship_req']['key'],
-					'weight'=> ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
-					'image'	=> $this->products_m->get_single_image($product['id'])
-				);
+			'id'	   => $product['id'],
+			'code'	   => $product['code'],
+			'qty'	   => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
+			'price'	   => $product['price_tax'],
+			'tax_band' => $product['tax_band']['id'],
+			'name'	   => $product['title'],
+			'slug'	   => $product['slug'],
+			'ship'     => $product['ship_req']['key'],
+			'weight'   => ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
+			'image'	   => $this->products_m->get_single_image($product['id'])
+		);
 
 		return $data;
 	}
