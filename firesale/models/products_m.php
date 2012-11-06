@@ -188,7 +188,7 @@ class Products_m extends MY_Model {
 				$product['image']    = $this->get_single_image($product['id']);
 
 				// Format product pricing
-				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax']);
+				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id']);
 
 				// Assign pricing
 				foreach( $pricing AS $key => $val )

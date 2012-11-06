@@ -57,9 +57,8 @@ class Currency_m extends MY_Model
 		return FALSE;
 	}
 
-	public function format_price($price, $rrp, $currency = NULL)
+	public function format_price($price, $rrp, $tax_id = NULL, $currency = NULL)
 	{
-
 		// Get currency ID
 		if( $this->session->userdata('currency') AND $currency == NULL )
 		{
@@ -74,6 +73,16 @@ class Currency_m extends MY_Model
 		{
 			// Get default
 			$currency = $this->get();
+		}
+
+		$query = $this->db->get_where('firesale_taxes_assignments', array(
+			'tax_id'      => $tax_id,
+			'currency_id' => $currency->id
+		));
+
+		if ($query->num_rows())
+		{
+			$currency->cur_tax = $query->row()->value;
 		}
 
 		// Add symbol

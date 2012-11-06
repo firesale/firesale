@@ -31,7 +31,7 @@ class Cart_m extends MY_Model
 			$price = current($query);
 
 			// Build new price
-			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], $currency->id);
+			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], NULL, $currency->id);
 
 			// Assign to data
 			$product['price']    = $price['price'];
