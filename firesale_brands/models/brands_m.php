@@ -67,7 +67,7 @@ class Brands_m extends MY_Model
 			foreach( $results AS &$product )
 			{
 				// Get product
-				$product = $this->products_m->get($product['id']);
+				$product = $this->products_m->get_product($product['id']);
 			}
 
 			// Return

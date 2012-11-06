@@ -626,7 +626,7 @@ class Module_Firesale extends Module {
 	public function help()
 	{
 
-		return '<iframe src="http://www.getfiresale.org/documentation" style="width: 1100px; height: 650px; border-radius: 4px 4px 0 0"></iframe>';
+		return '<iframe src="https://www.getfiresale.org/documentation" style="width: 1100px; height: 650px; border-radius: 4px 4px 0 0"></iframe>';
 	}
 	
 	public function settings($action, $add = array())

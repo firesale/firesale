@@ -21,6 +21,7 @@ class Front extends Public_Controller
 		$this->load->model('brands_m');
 		$this->load->model('firesale/categories_m');
 		$this->load->model('firesale/products_m');
+		$this->load->helper('firesale/general');
 
 		// Get perpage option
 		$this->perpage = $this->settings->get('firesale_perpage');
@@ -48,6 +49,9 @@ class Front extends Public_Controller
 			$pagination = create_pagination($route.'/',  $count, $this->perpage, 3);
 
 			// Assign data
+			$this->data->layout     = $this->input->cookie('firesale_listing_style') ? $this->input->cookie('firesale_listing_style') : 'grid';
+			$this->data->order      = get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1);
+			$this->data->ordering   = get_order();
 			$this->data->brand      = $brand;
 			$this->data->products   = $products;
 			$this->data->pagination = $pagination;
@@ -55,6 +59,8 @@ class Front extends Public_Controller
 			// Add page content
 			$this->template->title($brand['title'])
 						   ->set_breadcrumb($brand['title'], $this->routes_m->build_url('brand', $brand['id']))
+						   ->append_css('firesale::firesale.css')
+					       ->append_js('firesale::firesale.js')
 						   ->set($this->data);
 
 			// Fire events
