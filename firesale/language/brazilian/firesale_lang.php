@@ -29,6 +29,7 @@
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Atributos';
 	$lang['firesale:tabs:images']		= 'Imagens';
+	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Criar Produto';
@@ -37,6 +38,8 @@
 	$lang['firesale:shortcuts:create_order']	= 'Criar Pedido';
 	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route'; # Translate
 	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes'; # Translate
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band';  # Translate
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes'; # Translate
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Visualização Rápida';
@@ -194,6 +197,8 @@
 	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
 	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
 	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
+	
+	$lang['firesale:label_tax_band']  = 'Tax Band'; #Translate
 
 	// Orders
 	$lang['firesale:orders:title']				= 'Pedidos';
@@ -311,6 +316,11 @@
 	$lang['firesale:currency:format_00']         = 'Round up to next full number'; # translate
 	$lang['firesale:currency:format_50']         = 'Round to closest .50'; # translate
 	$lang['firesale:currency:format_99']         = 'Round up to closest .99'; # translate
+
+	// Taxes
+	$lang['firesale:taxes:none'] = 'There are currently no tax bands setup'; #Translate
+	$lang['firesale:taxes:new']  = 'Add tax band'; #Translate
+	$lang['firesale:taxes:edit'] = 'Edit tax band'; #Translate
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Meu Endereço';
