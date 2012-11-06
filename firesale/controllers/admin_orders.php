@@ -41,7 +41,6 @@ class Admin_orders extends Admin_Controller
 					   ->append_js('module::orders.js')
 					   ->append_metadata('<script type="text/javascript">' .
 										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
-										 "\n  var tax_rate = " . $this->settings->get('firesale_tax') . ";" .
 										 "\n</script>");
 	}
 
