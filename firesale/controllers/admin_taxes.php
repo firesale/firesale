@@ -14,13 +14,14 @@ class Admin_taxes extends Admin_Controller
 
 	public $tabs = array('general' => array());
 
-	public function index()
+	public function index($page = 1)
 	{
 		$params = array(
 			'stream'       => 'firesale_taxes',
 			'namespace'    => 'firesale_taxes',
 			'paginate'     => 'yes',
-			'page_segment' => 4
+			'page_segment' => 4,
+			'sort'         => 'asc'
 		);
 
         $data['taxes'] = $this->streams->entries->get_entries($params);
@@ -68,7 +69,63 @@ class Admin_taxes extends Admin_Controller
 
 	public function assign()
 	{
-		exit('assign the taxes here');
+		/** 
+		 * @todo Move this to a model
+		 */
+
+		// Load streams
+		$this->load->driver('Streams');
+
+		// Get taxes
+		$params = array(
+			'stream' => 'firesale_taxes',
+			'namespace' => 'firesale_taxes',
+			'paginate' => 'no'
+		);
+
+		$taxes = $this->streams->entries->get_entries($params);
+		$data['taxes'] = $taxes['entries'];
+
+		// Get currencies
+		$params = array(
+			'stream' => 'firesale_currency',
+			'namespace' => 'firesale_currency',
+			'paginate' => 'no'
+		);
+
+		$currencies = $this->streams->entries->get_entries($params);
+		$data['currencies'] = $currencies['entries'];
+
+		// Get assignments
+		$query = $this->db->get('firesale_taxes_assignments')->result();
+
+		$assignments = array();
+
+		foreach ($query as $assignment)
+		{
+			$assignments[$assignment->currency_id][$assignment->tax_id] = $assignment->value;
+		}
+
+		foreach ($data['currencies'] as &$currency)
+		{
+			foreach ($data['taxes'] as $tax)
+			{
+				if (isset($assignments[$currency['id']][$tax['id']]))
+				{
+					$currency['taxes'][] = array_merge(array(
+						'value' => $assignments[$currency['id']][$tax['id']]
+					), $tax);
+				}
+				else
+				{
+					$currency['taxes'][] = array_merge(array(
+						'value' => NULL
+					), $tax);
+				}
+			}
+		}
+
+		$this->template->build('admin/taxes/assign', $data);
 	}
 
 	public function create()

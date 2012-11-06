@@ -36,7 +36,7 @@
 				<tfoot>
 					<tr>
 						<td colspan="5">
-							<div class="inner"><?php $this->load->view('admin/partials/pagination'); ?></div>
+							<div class="inner"><?php echo $taxes['pagination']; ?></div>
 						</td>
 					</tr>
 				</tfoot>

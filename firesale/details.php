@@ -890,6 +890,15 @@ class Module_Firesale extends Module {
 			);
 
 			$this->streams->fields->add_field($field);
+
+			// Lets create the assignments table
+			$this->db->query('
+				CREATE TABLE `'.$this->db->dbprefix('firesale_taxes_assignments').'` (
+				  `tax_id` int(11) NOT NULL,
+				  `currency_id` int(11) NOT NULL,
+				  `value` decimal(5,2) default NULL
+				) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+			');
 		}
 		elseif ($method == 'remove')
 		{
@@ -898,6 +907,9 @@ class Module_Firesale extends Module {
 
 			// Remove the taxes namespace
 			$this->streams->utilities->remove_namespace('firesale_taxes');
+
+			// Drop the assignments table
+			$this->dbforge->drop_table('firesale_taxes_assignments');
 		}
 	}
 
