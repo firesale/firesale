@@ -78,9 +78,10 @@ class Admin_taxes extends Admin_Controller
 
 		// Get taxes
 		$params = array(
-			'stream' => 'firesale_taxes',
+			'stream'    => 'firesale_taxes',
 			'namespace' => 'firesale_taxes',
-			'paginate' => 'no'
+			'paginate'  => 'no',
+			'sort'      => 'asc'
 		);
 
 		$taxes = $this->streams->entries->get_entries($params);
@@ -88,9 +89,10 @@ class Admin_taxes extends Admin_Controller
 
 		// Get currencies
 		$params = array(
-			'stream' => 'firesale_currency',
+			'stream'    => 'firesale_currency',
 			'namespace' => 'firesale_currency',
-			'paginate' => 'no'
+			'paginate'  => 'no',
+			'sort'      => 'asc'
 		);
 
 		$currencies = $this->streams->entries->get_entries($params);
