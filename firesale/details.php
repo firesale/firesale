@@ -898,6 +898,16 @@ class Module_Firesale extends Module {
 				  `value` decimal(5,2) default NULL
 				) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 			');
+
+			// Add our default tax rate
+			$this->db->insert('firesale_taxes', array(
+				'id' => 1,
+				'created' => date("Y-m-d H:i:s"),
+				'created_by' => $this->current_user->id,
+				'ordering_count' => 0,
+				'title' => 'Default',
+				'description' => 'Default',
+			));
 		}
 		elseif ($method == 'remove')
 		{
