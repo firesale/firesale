@@ -201,7 +201,7 @@ class Orders_m extends MY_Model
 	 */
 	public function insert_update_order_item($order_id, $product, $qty)
 	{
-	
+		print_r($product); exit;
 		$this->db->from('firesale_orders_items')
 				 ->where("order_id", $order_id)
 				 ->where("product_id", $product['id']);
@@ -223,7 +223,8 @@ class Orders_m extends MY_Model
 				'code'			=> $product['code'],
 				'name'			=> ( isset($product['title']) ? $product['title'] : $product['name'] ),
 				'price'			=> $product['price'],
-				'qty'			=> $qty
+				'qty'			=> $qty,
+				'tax_band'      => $product['tax_band']
 		 	);
 
 		 	if( $this->db->insert('firesale_orders_items', $data) )
