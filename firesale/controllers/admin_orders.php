@@ -230,8 +230,8 @@ class Admin_orders extends Admin_Controller
 			foreach( $products['products'] AS &$product )
 			{
 				$price            = $product['price'];
-				$product['price'] = $this->currency_m->format_string($price, $this->data->currency, false);
-				$product['total'] = $this->currency_m->format_string(( $price * $product['qty'] ), $this->data->currency, false);
+				$product['price'] = $this->currency_m->format_string($price, $this->data->currency, false, $product['tax_band']);
+				$product['total'] = $this->currency_m->format_string($price * $product['qty'], $this->data->currency, false, $product['tax_band']);
 			}
 
 			// Assign products

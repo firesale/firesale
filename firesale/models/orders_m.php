@@ -22,7 +22,7 @@ class Orders_m extends MY_Model
 	{
 
 		$total = 0; 
-		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, p.`price`, p.`slug`, i.`qty`
+		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, p.`price`, p.`slug`, i.`qty`, i.`tax_band`
 								   FROM `' . SITE_REF . '_firesale_orders_items` AS i
 						  		   INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
 						 		   WHERE i.`order_id` = ' . $order_id . '
