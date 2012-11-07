@@ -281,6 +281,10 @@
 	$lang['firesale:payment:title_success'] 		= 'Pembayaran Lengkap';
 	$lang['firesale:checkout:title:ship_method']	= 'Metode Pengiriman';
 	$lang['firesale:checkout:title:payment_method']	= 'Metode Pembayaran';
+	$lang['firesale:checkout:next']					= 'Next'; #Translate
+	$lang['firesale:checkout:previous']				= 'Previous';#Translate
+	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';#Translate
+	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';#Translate
 
 	// Routes
 	$lang['firesale:routes:title']          = 'Rute';
@@ -387,7 +391,7 @@
 	$lang['firesale:settings_login_inst']            = 'Pastikan pengguna untuk login sebelum membolehkan mereka membeli produk';
 
 	// Install errors
-	$lang['firesale:install:wrong_version'] = 'Tidak dapat memasang modul FireSale, FireSale harus menggunakan PyroCMS versi 2.1.5 ke atas';
+	$lang['firesale:install:wrong_version'] = 'Tidak dapat memasang modul FireSale, FireSale harus menggunakan PyroCMS versi 2.1.4 ke atas';
 	$lang['firesale:install:missing_multiple'] = 'FireSale memerlukan tipe field Multiple Relationships untuk dapat berfungsi. Anda dapat mengunduhnya di <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">disini</a>';
 	$lang['firesale:install:not_installed'] = 'Silakan pasang modul FireSale sebelum memasang modul tambahan untuk FireSale';
 	$lang['firesale:install:no_route_access']  = 'FireSale memerlukan akses ke file system/cms/config/routes.php. Silakan set permission yang dibutuhkan kemudian coba lagi';

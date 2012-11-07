@@ -51,7 +51,7 @@
 			<?php endforeach; ?>
 
 				<br class="clear" />
-				<a href="#billing_details" class="next btn"><span>Next</span></a>
+				<a href="#billing_details" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
 				<br class="clear" />
 
 			</fieldset>
@@ -102,8 +102,8 @@
 				<?php endforeach; ?>
 
 				<br class="clear" />
-				<a href="#shipping_details" class="prev btn"><span>Previous</span></a>
-				<a href="#shipping" class="next btn"><span>Next</span></a>
+				<a href="#shipping_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+				<a href="#shipping" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
 				<br class="clear" />
 
 			</fieldset>
@@ -113,7 +113,7 @@
 			<h3 id="shipping"><a href="#shipping"><?php echo lang('firesale:checkout:title:ship_method'); ?></a></h3>
 			<fieldset>
 
-				<p>Please select your preferred shipping method below before continuing</p>
+				<p><?php echo lang('firesale:checkout:select_shipping_method'); ?></p>
 				<br />
 
 				<ul class="shipping">
@@ -126,8 +126,8 @@
 				</ul>
 
 				<br class="clear" />
-				<a href="#billing_details" class="prev btn"><span>Previous</span></a>
-				<a href="#payment" class="next btn"><span>Next</span></a>
+				<a href="#billing_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+				<a href="#payment" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
 				<br class="clear" />
 
 			</fieldset>
@@ -140,7 +140,7 @@
 			<h3 id="payment"><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>
 			<fieldset>
 
-				<p>Please select your preferred payment method below before continuing</p>
+				<p><?php echo lang('Please select your preferred payment method below before continuing'); ?></p>
 				<br />
 
 				<ul>
@@ -153,7 +153,7 @@
 				</ul>
 
 				<br class="clear" />
-				<a href="#shipping" class="prev btn"><span>Previous</span></a>
+				<a href="#shipping" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
 				<button type="submit" name="btnAction" value="pay" class="next btn"><span>Submit &amp; Pay</span></button>
 				<br class="clear" />
 

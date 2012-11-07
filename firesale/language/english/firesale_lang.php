@@ -281,6 +281,10 @@
 	$lang['firesale:payment:title_success'] 		= 'Payment Complete';
 	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';
 	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
+	$lang['firesale:checkout:next']					= 'Next';
+	$lang['firesale:checkout:previous']				= 'Previous';
+	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';
+	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';
 
 	// Routes
 	$lang['firesale:routes:title']          = 'Routes';
