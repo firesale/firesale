@@ -9,6 +9,7 @@ class Plugin_Firesale extends Plugin
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->model('routes_m');
+		$this->load->model('taxes_m');
 		$this->load->model('currency_m');
 	}
 
