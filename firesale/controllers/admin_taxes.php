@@ -113,7 +113,8 @@ class Admin_taxes extends Admin_Controller
 
 		$data = $this->taxes_m->get_assignments();
 
-		$this->template->build('admin/taxes/assign', $data);
+		$this->template->append_js('module::taxes.js')
+					   ->build('admin/taxes/assign', $data);
 	}
 
 	public function create()

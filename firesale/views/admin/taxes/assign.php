@@ -7,12 +7,12 @@
 	<section class="item form_inputs">
 
 			<div class="form_inputs">
-				<table>
+				<table id="tax_assignments">
 					<thead>
 						<tr>
-							<td style="width:100px">&nbsp;</td>
+							<td class="spacer" style="width:100px"></td>
 							<?php foreach ($taxes as $tax): ?>
-								<td><?php echo $tax['title']; ?></td>
+								<td id="<?php echo $tax['id']; ?>" title="<?php echo $tax['title']; ?>"><?php echo $tax['title']; ?></td>
 							<?php endforeach; ?>
 						</tr>
 					</thead>
