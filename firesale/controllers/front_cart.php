@@ -513,7 +513,7 @@ class Front_cart extends Public_Controller
 					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
 				), $this->input->post(NULL, TRUE), array(
 					'currency_code'  => $this->fs_cart->currency()->cur_code,
-					'amount'         => $this->fs_cart->total(),
+					'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
 					'order_id'       => $this->session->userdata('order_id'),
 					'transaction_id' => $this->session->userdata('order_id'),
 					'reference'      => 'Order #' . $this->session->userdata('order_id'),
