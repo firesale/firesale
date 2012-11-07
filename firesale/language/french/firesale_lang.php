@@ -281,6 +281,10 @@
 	$lang['firesale:payment:title_success'] 		= 'Paiement effectué';
 	$lang['firesale:checkout:title:ship_method']	= 'Mode d\'expédition';
 	$lang['firesale:checkout:title:payment_method']	= 'Mode de paiement';
+	$lang['firesale:checkout:next']					= 'Next'; #Translate
+	$lang['firesale:checkout:previous']				= 'Previous';#Translate
+	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';#Translate
+	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';#Translate
 
 	// Routes
 	$lang['firesale:routes:title']          = 'Routes';
@@ -386,7 +390,7 @@
 	$lang['firesale:settings_login_inst']            = 'Permet de s\'assurer qu\'un utilisateur est connecté pour pouvoir commander';
 	
 	// Install errors
-	$lang['firesale:install:wrong_version'] = 'Impossible d\'installer le module, FireSale requiert la version 2.1.5 (ou supérieur) du CMS';
+	$lang['firesale:install:wrong_version'] = 'Impossible d\'installer le module, FireSale requiert la version 2.1.4 (ou supérieur) du CMS';
 	$lang['firesale:install:missing_multiple'] = 'FireSale requiert le type de champs "Relation multiple" pour fonctionner. Vous pouvez le télécharger <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">ici</a>';
 	$lang['firesale:install:not_installed'] = 'Merci d\'installer le module FireSale avant d\'installer ses modules additionnels';
 	$lang['firesale:install:no_route_access']  = 'Le module n\'a pas accès au fichier de routes (application/config/routes.php), merci d\'autoriser l\'écriture de ce fichier';
