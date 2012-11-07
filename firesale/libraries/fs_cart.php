@@ -78,6 +78,7 @@ class Fs_cart extends CI_Cart
 			$tax_mod = 1 - ($percentage / 100);
 
 			$tax = ($item['price'] * (($percentage / 100) + 1) - $item['price']);
+			$tax = $tax * $item['qty'];
 
 			$this->tax += $tax;
 		}
@@ -94,8 +95,18 @@ class Fs_cart extends CI_Cart
 		return $total;
 	}
 
+	public function shipping()
+	{
+		return $this->_cart_contents['cart_ship'];
+	}
+
+	public function set_shipping($value)
+	{
+		$this->_cart_contents['cart_ship'] = (float)$value;
+	}
+
 	public function subtotal()
 	{
-		return $this->subtotal = ($this->total() - $this->tax());
+		return $this->subtotal = ($this->total(TRUE) - $this->tax());
 	}
 }
