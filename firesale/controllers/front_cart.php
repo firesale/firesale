@@ -371,9 +371,9 @@ class Front_cart extends Public_Controller
 				$input['shipping']	   = ( isset($input['shipping']) ? $input['shipping'] : 0 );
 				$input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
 				$input['order_status'] = '1'; // Unpaid
-				$input['price_sub']    = $this->fs_cart->subtotal;
+				$input['price_sub']    = $this->fs_cart->subtotal();
 				$input['price_ship']   = $shipping['price'];
-				$input['price_total']  = number_format(( $this->fs_cart->total + $shipping['price'] ), 2);
+				$input['price_total']  = number_format($this->fs_cart->total() + $shipping['price'], 2);
 				$_POST 				   = $input;
 
 				// Generate validation
@@ -513,7 +513,7 @@ class Front_cart extends Public_Controller
 					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
 				), $this->input->post(NULL, TRUE), array(
 					'currency_code'  => $this->fs_cart->currency()->cur_code,
-					'amount'         => $this->fs_cart->total,
+					'amount'         => $this->fs_cart->total(),
 					'order_id'       => $this->session->userdata('order_id'),
 					'transaction_id' => $this->session->userdata('order_id'),
 					'reference'      => 'Order #' . $this->session->userdata('order_id'),
@@ -529,7 +529,9 @@ class Front_cart extends Public_Controller
 					'phone'          => $order['ship_to']['phone'],
 					'email'          => $order['ship_to']['email'],
 				));
+
 				$process = $this->merchant->purchase($params);
+
 				$status = '_order_' . $process->status();
 
 				// Check status

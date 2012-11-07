@@ -74,6 +74,7 @@ class Fs_cart extends CI_Cart
 			$this->ci->load->model('firesale/taxes_m');
 
 			$percentage = $this->ci->taxes_m->get_percentage($item['tax_band']);
+
 			$tax_mod = 1 - ($percentage / 100);
 
 			$tax = ($item['price'] * (($percentage / 100) + 1) - $item['price']);
