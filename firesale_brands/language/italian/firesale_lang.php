@@ -7,17 +7,17 @@
 	$lang['firesale:shortcuts:brand_create'] = 'Crea Marca';
 
 	// Brands
-	$lang['firesale:brands:title']          = 'Brands';
-	$lang['firesale:brands:new']            = 'Add a new Brand';
-	$lang['firesale:brands:add_success']    = 'New brand added successfully';
-	$lang['firesale:brands:add_error']      = 'Error adding a new brand';
-	$lang['firesale:brands:edit']           = 'Edit %s Brand';
-	$lang['firesale:brands:edit_success']   = 'Brand edited successfully';
-	$lang['firesale:brands:edit_error']     = 'Error editing the brand';
-	$lang['firesale:brands:not_found']      = 'The selected brand could not be found';
-	$lang['firesale:brands:none']           = 'No brands found';
-	$lang['firesale:brands:delete_success'] = 'Brand removed successfully';
-	$lang['firesale:brands:delete_error']   = 'Error removing brand';
+	$lang['firesale:brands:title']          = 'Marche';
+	$lang['firesale:brands:new']            = 'Aggiungi una nuova marca';
+	$lang['firesale:brands:add_success']    = 'La nuova marca è stata aggiunta con successo';
+	$lang['firesale:brands:add_error']      = 'Si è verificato un errore nell\'inserire la nuova marca';
+	$lang['firesale:brands:edit']           = 'Modifica la marca %s';
+	$lang['firesale:brands:edit_success']   = 'Marca modificata con successo';
+	$lang['firesale:brands:edit_error']     = 'Si è verificato un errore nel modificare la marca';
+	$lang['firesale:brands:not_found']      = 'La marca selezionata non è stata trovata';
+	$lang['firesale:brands:none']           = 'Non ci sono marche';
+	$lang['firesale:brands:delete_success'] = 'Marca rimossa con successo';
+	$lang['firesale:brands:delete_error']   = 'Si è verificato un errore nel rimuovere la marca';
 
 	// Labels
 	$lang['firesale:label_brand'] = 'Marca';
