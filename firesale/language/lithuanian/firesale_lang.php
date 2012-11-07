@@ -388,7 +388,7 @@
 	$lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products'; # translate
 
 	// Install errors
-	$lang['firesale:install:wrong_version'] = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above'; #Translate
+	$lang['firesale:install:wrong_version'] = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above'; #Translate
 	$lang['firesale:install:missing_multiple'] = 'FireSale requires the Multiple Relationships field type to operate. You can download this from <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">here</a>'; #Translate
 	$lang['firesale:install:not_installed'] = 'Please install the FireSale module before installing additional FireSale addons'; #Translate
 	$lang['firesale:install:no_route_access']  = 'FireSale requires access to the system/cms/config/routes.php file. Please set the appropriate permissions and try again'; # Translate

@@ -198,7 +198,7 @@ class Module_Firesale extends Module {
 		// For 2.2 compatibility
 		$redirect = (CMS_VERSION >= '2.2' ? 'addons/' : '') . 'modules';
 
-		if (CMS_VERSION < "2.1.4")
+		if (CMS_VERSION < "2.1.5")
 		{
 			$this->session->set_flashdata('error', lang('firesale:install:wrong_version'));
 			redirect('admin/'.$redirect);

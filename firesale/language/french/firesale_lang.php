@@ -386,7 +386,7 @@
 	$lang['firesale:settings_login_inst']            = 'Permet de s\'assurer qu\'un utilisateur est connecté pour pouvoir commander';
 	
 	// Install errors
-	$lang['firesale:install:wrong_version'] = 'Impossible d\'installer le module, FireSale requiert la version 2.1.4 (ou supérieur) du CMS';
+	$lang['firesale:install:wrong_version'] = 'Impossible d\'installer le module, FireSale requiert la version 2.1.5 (ou supérieur) du CMS';
 	$lang['firesale:install:missing_multiple'] = 'FireSale requiert le type de champs "Relation multiple" pour fonctionner. Vous pouvez le télécharger <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">ici</a>';
 	$lang['firesale:install:not_installed'] = 'Merci d\'installer le module FireSale avant d\'installer ses modules additionnels';
 	$lang['firesale:install:no_route_access']  = 'Le module n\'a pas accès au fichier de routes (application/config/routes.php), merci d\'autoriser l\'écriture de ce fichier';
