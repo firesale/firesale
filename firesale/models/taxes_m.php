@@ -64,7 +64,7 @@ class Taxes_m extends MY_Model
 	public function get_percentage($tax_band = 1, $currency = FALSE)
 	{
 		if ( ! $currency)
-			$currency = $this->session->userdata('currency');
+			$currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
 
 		$query = $this->db->get_where('firesale_taxes_assignments', array(
 			'tax_id'      => $tax_band,
