@@ -72,7 +72,7 @@ class Admin_products extends Admin_Controller
 		// Build product data
 		foreach( $products AS &$product )
 		{
-			$product = $this->products_m->get_product($product['id']);
+			$product = $this->products_m->get_product($product['id'], 1);
 		}
 			
 		// Assign variables
