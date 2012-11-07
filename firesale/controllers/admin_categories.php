@@ -31,6 +31,8 @@ class Admin_categories extends Admin_Controller
 	 */
 	public $stream  = NULL;
 
+	public $section = 'categories';
+
 	/**
 	 * Loads the parent constructor and gets an
 	 * instance of CI. Also loads in the language
@@ -124,15 +126,24 @@ class Admin_categories extends Admin_Controller
 					'sort'		=> 'asc'
 				  );
 
+		// Fire build event
+		Events::trigger('form_build', $this);
+
 		// Assign variables
 		$this->data->controller =& $this;
 		$this->data->cats       =  $this->categories_m->generate_streams_tree($params);
 		$this->data->fields     =  fields_to_tabs($fields, $this->tabs);
 		$this->data->tabs	    =  array_keys($this->data->fields);
 	
-		// Build the page
+		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:categories'))
-					   ->build('admin/categories/index', $this->data);
+					   ->set($this->data);
+
+		// Fire events
+		Events::trigger('page_build', $this->template);
+
+		// Build the page
+		$this->template->build('admin/categories/index');
 	}
 	
 	/**

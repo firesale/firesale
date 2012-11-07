@@ -45,7 +45,9 @@
 					<?php if( !empty($tabs) ): ?>
 					<ul class="tab-menu">
 					<?php foreach( $tabs AS $tab ): ?>
-						<li><a href="#<?php echo strtolower(str_replace(' ', '', $tab)); ?>"><span><?php echo lang('firesale:tabs:' . $tab); ?></span></a></li>
+						<?php if( ( substr($tab, 0, 1) == '_' && isset($id) && $id > 0 ) || substr($tab, 0, 1) != '_' ): ?>
+						<li><a href="#<?php echo strtolower(str_replace(array(' ', '_'), '', $tab)); ?>"><span><?php echo lang('firesale:tabs:' . str_replace('_', '', $tab)); ?></span></a></li>
+						<?php endif; ?>
 					<?php endforeach; ?>
 					</ul>
 					<?php endif; ?>				
@@ -53,6 +55,7 @@
 					<input type="hidden" name="id" id="id" value="<?php echo ( isset($input->id) ? $input->id : '' ); ?>" />
 
 					<?php foreach( $fields AS $slug => $field ): ?>
+					<?php if( ( ! isset($input->id) && substr($slug, 0, 1) != '_' ) || isset($input->id) ): ?>
 					<div class="form_inputs" id="<?php echo strtolower(str_replace(' ', '', $slug)); ?>">
 						<fieldset>
 							<ul>
@@ -66,6 +69,7 @@
 							</ul>
 						</fieldset>
 					</div>
+					<?php endif; ?>
 					<?php endforeach; ?>
 
 		        	<div class="buttons">
