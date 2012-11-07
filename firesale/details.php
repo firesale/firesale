@@ -413,7 +413,7 @@ class Module_Firesale extends Module {
 		// Get stream data
 		$orders   = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
 		$currency = $this->streams->streams->get_stream('firesale_currency', 'firesale_currency');
-		
+
 		// Add fields
 		$fields   = array();
 		$template = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
@@ -444,6 +444,8 @@ class Module_Firesale extends Module {
 		// Create orders items stream
 		if( !$this->streams->streams->add_stream(lang('firesale:sections:orders_items'), 'firesale_orders_items', 'firesale_orders_items', NULL, NULL) ) return FALSE;
 		
+		$taxes = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
+
 		// Add fields
 		$fields   = array();
 		$template = array('namespace' => 'firesale_orders_items', 'assign' => 'firesale_orders_items', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
@@ -453,6 +455,7 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'name', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
 		$fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_quantity', 'slug' => 'qty', 'type' => 'integer', 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
 
 		// Combine
 		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
