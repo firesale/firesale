@@ -117,7 +117,7 @@ class Currency_m extends MY_Model
 		return $return;
 	}
 
-	public function format_string($price, $currency, $fix = TRUE)
+	public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE)
 	{
 		// Format initial value
 		if( $fix )
@@ -136,6 +136,17 @@ class Currency_m extends MY_Model
 					$price = round($price).'.99';
 				break;
 			}
+		}
+
+		// Apply tax if required
+		if ($apply_tax)
+		{
+			$this->load->model('taxes_m');
+			$percentage = $this->taxes_m->get_percentage($tax_band);
+
+			$tax_mod = 1 - ($percentage / 100);
+
+			$price = $price * (($percentage / 100) + 1);
 		}
 
 		// Format
