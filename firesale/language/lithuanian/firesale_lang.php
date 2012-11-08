@@ -323,9 +323,14 @@
 	$lang['firesale:currency:format_99']         = 'Round up to closest .99'; # translate
 
 	// Taxes
-	$lang['firesale:taxes:none'] = 'There are currently no tax bands setup'; # translate
-	$lang['firesale:taxes:new']  = 'Add tax band'; # translate
-	$lang['firesale:taxes:edit'] = 'Edit tax band'; # translate
+	$lang['firesale:taxes:none']                  = 'There are currently no tax bands setup'; # Translate
+	$lang['firesale:taxes:new']                   = 'Add tax band'; # Translate
+	$lang['firesale:taxes:edit']                  = 'Edit tax band'; # Translate
+	$lang['firesale:taxes:add_success']           = 'Tax band created successfully'; # Translate
+	$lang['firesale:taxes:add_error']             = 'There was an error whilst creating the tax band'; # Translate
+	$lang['firesale:taxes:edit_success']          = 'Tax band edited successfully'; # Translate
+	$lang['firesale:taxes:edit_error']            = 'There was an error whilst editing the tax band'; # Translate
+	$lang['firesale:taxes:assignments_updated']   = 'Tax band assignments were updated successfully'; # Translate
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mano adresai';

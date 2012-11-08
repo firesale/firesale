@@ -321,9 +321,14 @@
 	$lang['firesale:currency:format_99']         = 'Round up to closest .99';
 
 	// Taxes
-	$lang['firesale:taxes:none'] = 'There are currently no tax bands setup';
-	$lang['firesale:taxes:new']  = 'Add tax band';
-	$lang['firesale:taxes:edit'] = 'Edit tax band';
+	$lang['firesale:taxes:none']                  = 'There are currently no tax bands setup';
+	$lang['firesale:taxes:new']                   = 'Add tax band';
+	$lang['firesale:taxes:edit']                  = 'Edit tax band';
+	$lang['firesale:taxes:add_success']           = 'Tax band created successfully';
+	$lang['firesale:taxes:add_error']             = 'There was an error whilst creating the tax band';
+	$lang['firesale:taxes:edit_success']          = 'Tax band edited successfully';
+	$lang['firesale:taxes:edit_error']            = 'There was an error whilst editing the tax band';
+	$lang['firesale:taxes:assignments_updated']   = 'Tax band assignments were updated successfully';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
