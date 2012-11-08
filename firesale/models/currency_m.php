@@ -46,6 +46,7 @@ class Currency_m extends MY_Model
 			// Format price, just incase
 			$row->cur_format = html_entity_decode($row->cur_format);
 			$row->symbol     = str_replace('&Acirc;', '', htmlentities(str_replace('{{ price }}', '', $row->cur_format)));
+			$row->symbol     = html_entity_decode($row->symbol, ENT_COMPAT | ENT_HTML401, 'UTF-8');
 
 			// Add to cache
 			$this->cache[$id] = $row;

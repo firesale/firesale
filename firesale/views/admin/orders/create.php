@@ -62,8 +62,8 @@
                     <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                     <td class="model"><?php echo $product['code']; ?></td>
                     <td><input type="text" name="item[<?php echo $product['id']; ?>][qty]" value="<?php echo $product['qty']; ?>" /></td>
-                    <td class="price"><?php echo str_replace($currency->symbol, $currency->symbol.'<span>', $product['price']) . '</span>'; ?></td>
-                    <td class="total"><?php echo str_replace($currency->symbol, $currency->symbol.'<span>', $product['total']) . '</span>'; ?></td>
+                    <td class="price"><?php echo str_replace('{{ price }}', '<span>'.str_replace($currency->symbol, '', $product['price']).'</span>', $currency->cur_format); ?></td>
+                    <td class="total"><?php echo str_replace('{{ price }}', '<span>'.str_replace($currency->symbol, '', $product['total']).'</span>', $currency->cur_format); ?></td>
                   </tr>
               <?php endforeach; ?>
               <?php endif; ?>
