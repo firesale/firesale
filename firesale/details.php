@@ -592,6 +592,12 @@ class Module_Firesale extends Module {
 			// Add currency
 			$this->currency('add');
 
+			// Add taxes
+			$this->taxes('add');
+
+			// Remove old settings
+			$this->settings('remove', array('firesale_tax'));
+
 			// Add settings
 			$this->settings('add', array('firesale_currency_key', 'firesale_current_currency', 'firesale_currency_updated', 'image_background'));
 
