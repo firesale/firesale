@@ -52,7 +52,7 @@ class Taxes_m extends MY_Model
 				else
 				{
 					$currency['taxes'][] = array_merge(array(
-						'value' => NULL
+						'value' => number_format($currency['cur_tax'], 2)
 					), $tax);
 				}
 			}
