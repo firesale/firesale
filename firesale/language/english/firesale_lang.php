@@ -285,6 +285,7 @@
 	$lang['firesale:checkout:previous']				= 'Previous';
 	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';
 	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';
+	$lang['firesale:checkout:submit_and_pay']		= 'Submit &amp; Pay';
 
 	// Routes
 	$lang['firesale:routes:title']          = 'Routes';
