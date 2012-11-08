@@ -213,7 +213,6 @@ class Orders_m extends MY_Model
 					
 		if( $this->db->count_all_results() == 0 )
 		{
-
 			$data = array(
 				'created'		=> date("Y-m-d H:i:s"),
 				'ordering_count'=> 0,
@@ -223,7 +222,7 @@ class Orders_m extends MY_Model
 				'name'			=> ( isset($product['title']) ? $product['title'] : $product['name'] ),
 				'price'			=> $product['price'],
 				'qty'			=> $qty,
-				'tax_band'      => $product['tax_band']
+				'tax_band'      => $product['tax_band']['id']
 		 	);
 
 		 	if( $this->db->insert('firesale_orders_items', $data) )
