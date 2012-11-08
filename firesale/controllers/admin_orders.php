@@ -230,8 +230,8 @@ class Admin_orders extends Admin_Controller
 			foreach( $products['products'] AS &$product )
 			{
 				$price            = $product['price'];
-				$product['price'] = $this->currency_m->format_string($price, $this->data->currency, false, $product['tax_band']);
-				$product['total'] = $this->currency_m->format_string($price * $product['qty'], $this->data->currency, false, $product['tax_band']);
+				$product['price'] = $this->currency_m->format_string($price, $this->data->currency, false);
+				$product['total'] = $this->currency_m->format_string($price * $product['qty'], $this->data->currency, false);
 			}
 
 			// Assign products
@@ -328,8 +328,11 @@ class Admin_orders extends Admin_Controller
 
 		if( $this->input->is_ajax_request() )
 		{
+			// Get order
+			$order_info = $this->orders_m->get_order_by_id($order);
+
 			// Get product
-			$product = (array)$this->products_m->get_product($id);
+			$product = (array)$this->products_m->get_product($id, $order_info['currency']['id']);
 
 			// Insert/Update item
 			if( $this->orders_m->insert_update_order_item($order, $product, $qty) )
@@ -339,7 +342,7 @@ class Admin_orders extends Admin_Controller
 
 				// Return to the browser
 				$qty = ( $product['stock_status']['key'] != 6 && $qty > $product['stock'] ? $product['stock'] : $qty );
-				$data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format(( $qty * $product['price']), 2));
+				$data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format($qty * $product['price'], 2));
 				echo json_encode($data);
 				exit();
 			}
