@@ -89,7 +89,7 @@ $(function(){
 		{
 			tax_rate = taxes[selected_tax];
 
-			$('#rrp_tax, #price_tax').change();
+			$('#rrp, #price').change();
 		}
 	})
 	
