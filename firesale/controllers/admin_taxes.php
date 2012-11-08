@@ -14,21 +14,6 @@ class Admin_taxes extends Admin_Controller
 
 	public $tabs = array('general' => array());
 
-	public function index($page = 1)
-	{
-		$params = array(
-			'stream'       => 'firesale_taxes',
-			'namespace'    => 'firesale_taxes',
-			'paginate'     => 'yes',
-			'page_segment' => 4,
-			'sort'         => 'asc'
-		);
-
-        $data['taxes'] = $this->streams->entries->get_entries($params);
-
-        $this->template->build('admin/taxes/index', $data);
-	}
-
 	public function form($row = FALSE)
 	{
 		$stream = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
@@ -67,7 +52,7 @@ class Admin_taxes extends Admin_Controller
 		$this->template->build('admin/taxes/form', $data);
 	}
 
-	public function assign()
+	public function index()
 	{
 		$action = $this->input->post('btnAction');
 
@@ -114,6 +99,7 @@ class Admin_taxes extends Admin_Controller
 		$data = $this->taxes_m->get_assignments();
 
 		$this->template->append_js('module::taxes.js')
+					   ->append_css('module::taxes.css')
 					   ->build('admin/taxes/assign', $data);
 	}
 

@@ -169,11 +169,6 @@ class Module_Firesale extends Module {
 					'name' 	=> 'firesale:shortcuts:add_tax_band',
 					'uri'	=> 'admin/firesale/taxes/create',
 					'class' => 'add'
-				),
-				array(
-					'name' 	=> 'firesale:shortcuts:assign_taxes',
-					'uri'	=> 'admin/firesale/taxes/assign',
-					'class' => ''
 				)
 			);
 		}

@@ -12,7 +12,7 @@
 						<tr>
 							<td class="spacer" style="width:100px"></td>
 							<?php foreach ($taxes as $tax): ?>
-								<td id="<?php echo $tax['id']; ?>" title="<?php echo $tax['title']; ?>"><?php echo $tax['title']; ?></td>
+								<td id="<?php echo $tax['id']; ?>" data-title="<?php echo $tax['title']; ?>"><?php echo $tax['title']; ?></td>
 							<?php endforeach; ?>
 						</tr>
 					</thead>
@@ -30,7 +30,7 @@
 			</div>
 
 		<div class="buttons">
-			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'save_exit', 'cancel') )); ?>
+			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
 		</div>
 
 	</section>
