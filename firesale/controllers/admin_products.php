@@ -24,10 +24,14 @@ class Admin_products extends Admin_Controller
 
 		// Load libraries, drivers & models
 		$this->load->driver('Streams');
-		$this->load->model('routes_m');
-		$this->load->model('products_m');
-		$this->load->model('categories_m');
-		$this->load->model('streams_core/row_m');
+		$this->load->model(array(
+			'routes_m',
+			'products_m',
+			'categories_m',
+			'taxes_m',
+			'streams_core/row_m'
+		));
+
 		$this->load->library('streams_core/fields');
 		$this->load->library('files/files');
 		$this->load->helper('general');
@@ -41,6 +45,7 @@ class Admin_products extends Admin_Controller
 					   ->append_js('module::products.js')
 					   ->append_metadata('<script type="text/javascript">' .
 										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
+										 "\n  var tax_rate = '" . $this->taxes_m->get_percentage(1, 1) . "';" .
 										 "\n</script>");
 	
 		// Get the stream
