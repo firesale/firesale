@@ -48,13 +48,11 @@ $(function(){
 	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
 	// Tax link
-	tax_link($('#cost'), $('#cost_tax'));
 	tax_link($('#rrp'), $('#rrp_tax'));
 	tax_link($('#price'), $('#price_tax'));
-	$('#cost, #cost_tax, #rrp, #rrp_tax, #price, #price_tax');
 
 	// Add upload
-	bind_upload('admin/firesale/products/upload/'+$('#id').val());
+	if( $('#dropbox').length > 0 ) { bind_upload('admin/firesale/products/upload/'+$('#id').val()); }
 
 	// Image reordering
 	$('#dropbox').sortable({
