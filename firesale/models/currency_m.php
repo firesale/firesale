@@ -163,6 +163,9 @@ class Currency_m extends MY_Model
 		if ( ! $format)
 			return $price;
 
+		// Just in case streams has added any extra formatting
+		$currency->cur_format = html_entity_decode($currency->cur_format);
+
 		// Format
 		$formatted = number_format($price, 2, $currency->cur_format_dec, $currency->cur_format_sep);
 		$formatted = str_replace('{{ price }}', $formatted, $currency->cur_format);
