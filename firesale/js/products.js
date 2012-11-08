@@ -76,6 +76,22 @@ $(function(){
 
 	// Categories "fix"
 	$('#category_list_2 li').each(function() { if( $('#category').val().indexOf($(this).attr('id')) == -1 ) { $(this).remove(); }});
+
+	/*********************
+	** DYNAMIC TAX LINK **
+	*********************/
+
+	$('#tax_band').change(function()
+	{
+		var selected_tax = $(this).find('option:selected').val();
+
+		if (taxes[selected_tax] !== undefined)
+		{
+			tax_rate = taxes[selected_tax];
+
+			$('#rrp_tax, #price_tax').change();
+		}
+	})
 	
 });
 	

@@ -203,6 +203,19 @@ class Admin_products extends Admin_Controller
 		$this->template->append_js('module::jquery.filedrop.js')
 					   ->append_js('module::upload.js')
 					   ->append_metadata($this->load->view('fragments/wysiwyg', NULL, TRUE));
+
+		// Grab all the taxes
+		$taxes = $this->taxes_m->taxes_for_currency(1);
+
+		$tax_string = '<script type="text/javascript">' .
+					  "\n var taxes = new Array();\n";
+
+		foreach ($taxes as $tax)
+			$tax_string .= "taxes[" . $tax->id . "] = " . $tax->value . ";\n";
+
+		$tax_string .= '</script>';
+
+		$this->template->append_metadata($tax_string);
 	
 		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:prod_title_' . ( $id == NULL ? 'create' : 'edit' )))
