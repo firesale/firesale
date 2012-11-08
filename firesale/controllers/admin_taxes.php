@@ -100,7 +100,7 @@ class Admin_taxes extends Admin_Controller
 
 		$this->template->append_js('module::taxes.js')
 					   ->append_css('module::taxes.css')
-					   ->build('admin/taxes/assign', $data);
+					   ->build('admin/taxes/index', $data);
 	}
 
 	public function create()
