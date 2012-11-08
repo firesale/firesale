@@ -61,6 +61,47 @@ class Taxes_m extends MY_Model
 		return $data;
 	}
 
+	public function taxes_for_currency($currency = FALSE)
+	{
+		$user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+		$currency = is_numeric($currency) ? $currency : $user_currency;
+
+		$currency = $this->db->get_where('firesale_currency', array(
+			'id' => $currency
+		));
+
+		if ($currency->num_rows())
+		{
+			$default_tax = $currency->row()->cur_tax;
+
+			$taxes = $this->db->get('firesale_taxes')->result();
+			$tax_assignments = $this->db->get_where('firesale_taxes_assignments', array(
+				'currency_id' => $currency->row()->id
+			))->result();
+
+			foreach ($tax_assignments as $assignment)
+				$assignments[$assignment->tax_id] = $assignment->value;
+
+			foreach ($taxes as &$tax)
+			{
+				if (isset($assignments[$tax->id]))
+				{
+					$tax->value = $assignments[$tax->id];
+				}
+				else
+				{
+					$tax->value = $default_tax;
+				}
+			}
+
+			return $taxes;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
 	public function get_percentage($tax_band = 1, $currency = FALSE)
 	{
 		if ( ! $currency)
