@@ -102,23 +102,33 @@ class Currency_m extends MY_Model
 		$price_f     = $this->format_string($price, $currency);     // With tax
 		$price_tax_f = $this->format_string($price_tax, $currency); // Without tax
 
+		// Round prices (if required)
+		$rrp_r       = $this->format_string($rrp, $currency, TRUE, FALSE, FALSE);       // RRP With tax
+		$rrp_tax_r   = $this->format_string($rrp_tax, $currency, TRUE, FALSE, FALSE);   // RRP Without tax
+		$price_r     = $this->format_string($price, $currency, TRUE, FALSE, FALSE);     // With tax
+		$price_tax_r = $this->format_string($price_tax, $currency, TRUE, FALSE, FALSE); // Without tax
+
 		// Prepare return
 		$return = array(
 					'currency'            => $currency,
 					'rrp_tax'             => $rrp_tax,
 					'rrp_tax_formatted'   => $rrp_tax_f,
+					'rrp_tax_rounded'     => $rrp_tax_r,
 					'rrp'                 => $rrp,
 					'rrp_formatted'       => $rrp_f,
+					'rrp_rounded'         => $rrp_r,
 					'price_tax'           => $price_tax,
 					'price_tax_formatted' => $price_tax_f,
+					'price_tax_rounded'   => $price_tax_r,
 					'price'               => $price,
-					'price_formatted'     => $price_f
+					'price_formatted'     => $price_f,
+					'price_rounded'       => $price_r
 				  );
 
 		return $return;
 	}
 
-	public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE)
+	public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
 	{
 		// Format initial value
 		if( $fix )
@@ -150,6 +160,9 @@ class Currency_m extends MY_Model
 			$price = $price * (($percentage / 100) + 1);
 		}
 
+		if ( ! $format)
+			return $price;
+
 		// Format
 		$formatted = number_format($price, 2, $currency->cur_format_dec, $currency->cur_format_sep);
 		$formatted = str_replace('{{ price }}', $formatted, $currency->cur_format);
@@ -158,5 +171,4 @@ class Currency_m extends MY_Model
 		// Return
 		return $formatted;
 	}
-
 }

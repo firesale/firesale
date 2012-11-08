@@ -185,12 +185,11 @@ class Cart_m extends MY_Model
 	 */
 	public function build_data($product, $qty)
 	{
-
 		$data = array(
 			'id'	   => $product['id'],
 			'code'	   => $product['code'],
 			'qty'	   => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
-			'price'	   => $product['price_tax'],
+			'price'	   => $product['price_tax_rounded'],
 			'tax_band' => $product['tax_band']['id'],
 			'name'	   => $product['title'],
 			'slug'	   => $product['slug'],
