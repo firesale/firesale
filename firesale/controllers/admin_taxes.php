@@ -14,6 +14,56 @@ class Admin_taxes extends Admin_Controller
 
 	public $tabs = array('general' => array());
 
+	public function index()
+	{
+		$action = $this->input->post('btnAction');
+
+		if ($action == 'save')
+		{
+			foreach ($this->input->post('assignment') as $currency_id => $taxes)
+			{
+				foreach ($taxes as $tax_id => $value)
+				{
+					$query = $this->db->get_where('firesale_taxes_assignments', array(
+						'tax_id'      => $tax_id,
+						'currency_id' => $currency_id
+					));
+
+					if ($query->num_rows())
+					{
+						$this->db->update('firesale_taxes_assignments', array(
+							'value'       => $value
+						), array(
+							'tax_id'      => $tax_id,
+							'currency_id' => $currency_id
+						));
+					}
+					else
+					{
+						$this->db->insert('firesale_taxes_assignments', array(
+							'tax_id'      => $tax_id,
+							'currency_id' => $currency_id,
+							'value'       => $value
+						));
+					}
+				}
+			}
+
+			$this->session->set_flashdata('success', lang('firesale:taxes:assignments_updated'));
+
+			redirect('admin/firesale/taxes');
+		}
+
+		// Load the taxes model
+		$this->load->model('firesale/taxes_m');
+
+		$data = $this->taxes_m->get_assignments();
+
+		$this->template->append_js('module::taxes.js')
+					   ->append_css('module::taxes.css')
+					   ->build('admin/taxes/index', $data);
+	}
+
 	public function form($row = FALSE)
 	{
 		$stream = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
@@ -50,57 +100,6 @@ class Admin_taxes extends Admin_Controller
 		$data['tabs'] = array_keys($data['fields']);
 
 		$this->template->build('admin/taxes/form', $data);
-	}
-
-	public function index()
-	{
-		$action = $this->input->post('btnAction');
-
-		if ($action == 'save' OR $action == 'save_exit')
-		{
-			foreach ($this->input->post('assignment') as $currency_id => $taxes)
-			{
-				foreach ($taxes as $tax_id => $value)
-				{
-					$query = $this->db->get_where('firesale_taxes_assignments', array(
-						'tax_id'      => $tax_id,
-						'currency_id' => $currency_id
-					));
-
-					if ($query->num_rows())
-					{
-						$this->db->update('firesale_taxes_assignments', array(
-							'value'       => $value
-						), array(
-							'tax_id'      => $tax_id,
-							'currency_id' => $currency_id
-						));
-					}
-					else
-					{
-						$this->db->insert('firesale_taxes_assignments', array(
-							'tax_id'      => $tax_id,
-							'currency_id' => $currency_id,
-							'value'       => $value
-						));
-					}
-				}
-			}
-
-			if ($action == 'save_exit')
-			{
-				redirect('admin/firesale/taxes');
-			}
-		}
-
-		// Load the taxes model
-		$this->load->model('firesale/taxes_m');
-
-		$data = $this->taxes_m->get_assignments();
-
-		$this->template->append_js('module::taxes.js')
-					   ->append_css('module::taxes.css')
-					   ->build('admin/taxes/index', $data);
 	}
 
 	public function create()
