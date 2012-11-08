@@ -32,7 +32,7 @@
 
             	<br class="clear" />
       			<input name="ship_to" id="ship_to_new" type="radio" value="new" />
-      			<label for="ship_to_new">New Address</label>
+      			<label for="ship_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
       			<br class="clear" />
 
 			<?php endif; ?>
@@ -83,7 +83,7 @@
 
             	<br class="clear" />
 				<input name="bill_to" id="bill_to_new" type="radio" value="new" />
-				<label for="bill_to_new">New Address</label>
+				<label for="bill_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
 				<br class="clear" />
 
 			<?php endif; ?>
@@ -140,7 +140,7 @@
 			<h3 id="payment"><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>
 			<fieldset>
 
-				<p><?php echo lang('Please select your preferred payment method below before continuing'); ?></p>
+				<p><?php echo lang('firesale:checkout:select_payment_method'); ?></p>
 				<br />
 
 				<ul>
@@ -154,7 +154,7 @@
 
 				<br class="clear" />
 				<a href="#shipping" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
-				<button type="submit" name="btnAction" value="pay" class="next btn"><span>Submit &amp; Pay</span></button>
+				<button type="submit" name="btnAction" value="pay" class="next btn"><span><?php echo lang('firesale:checkout:submit_and_pay'); ?></span></button>
 				<br class="clear" />
 
 			</fieldset>
