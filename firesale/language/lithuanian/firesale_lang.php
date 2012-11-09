@@ -112,6 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Pasirinkti prekę';
 	$lang['firesale:label_filterstatus']  = 'Pasirinkti prekės būseną';
 	$lang['firesale:label_filtersstatus'] = 'Pasirinkti prekės būseną sandėlyje';
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
 	$lang['firesale:label_rrp']			  = 'Rekomenduojama mažmeninė kaina';
 	$lang['firesale:label_rrp_tax']		  = 'Rekomenduojama mažmeninė kaina (prieš mokesčius)';
 	$lang['firesale:label_rrp_short']	  = 'RMK';

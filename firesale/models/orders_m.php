@@ -22,7 +22,7 @@ class Orders_m extends MY_Model
 	{
 
 		$total = 0; 
-		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, p.`price`, p.`slug`, i.`qty`, i.`tax_band`
+		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`
 								   FROM `' . SITE_REF . '_firesale_orders_items` AS i
 						  		   INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
 						 		   WHERE i.`order_id` = ' . $order_id . '
@@ -107,6 +107,49 @@ class Orders_m extends MY_Model
 		// Return
 		return $array;
 	}
+
+	/**
+	 * Builds the status field used in the order administration section.
+	 *
+	 * @return array The status input to be turned into a dropdown
+	 * @access public
+	 */
+	public function status_field()
+	{
+
+		// Start building list
+		$list  = array('0' => lang('firesale:label_order_status'));
+
+		// Get data from streams
+		$query = $this->db->select('field_data')
+						  ->where('field_namespace', 'firesale_orders')
+						  ->where('field_slug', 'order_status')
+						  ->get('data_fields')
+						  ->result_array();
+
+		// Check for results
+		if( !empty($query) )
+		{
+
+			// Get field data
+			$result = current($query);
+			$data   = unserialize($result['field_data']);
+
+			// Get options
+			$options = explode("\n", $data['choice_data']);
+
+			// Loop and assign
+			foreach( $options AS $option )
+			{
+				list($key, $val) = explode(' : ', $option);
+				$list[$key]      = lang(substr($val, 5));
+			}
+
+		}
+
+		return $list;
+	}
+
 
 	/**
 	 * Builds the product field used in the order administration section.

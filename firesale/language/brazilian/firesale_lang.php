@@ -112,6 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
 	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
 	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
 	$lang['firesale:label_rrp']			= 'Preço de Venda Recomendado';
 	$lang['firesale:label_rrp_tax']		= 'Preço de Venda Recomendado (sem impostos)';
 	$lang['firesale:label_rrp_short']	= 'PVR';

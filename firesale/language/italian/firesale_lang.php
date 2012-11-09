@@ -112,6 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Seleziona un prodotto';
 	$lang['firesale:label_filterstatus']  = 'Seleziona lo stato di un prodotto';
 	$lang['firesale:label_filtersstatus'] = 'Seleziona uno stato di scorte'; 
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
 	$lang['firesale:label_rrp']			  = 'Prezzo di vendita raccomandato';
 	$lang['firesale:label_rrp_tax']		  = 'Prezzo di vendita raccomandato (tasse escluse)';
 	$lang['firesale:label_rrp_short']	  = 'RRP';

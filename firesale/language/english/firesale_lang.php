@@ -112,6 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Select a Product';
 	$lang['firesale:label_filterstatus']  = 'Select a Product Status';
 	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status';
+	$lang['firesale:label_order_status']  = 'Select an Order Status';
 	$lang['firesale:label_rrp']			  = 'Recommended Retail Price';
 	$lang['firesale:label_rrp_tax']		  = 'Recommended Retail Price (before tax)';
 	$lang['firesale:label_rrp_short']	  = 'RRP';

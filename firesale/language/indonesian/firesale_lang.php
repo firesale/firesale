@@ -112,6 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Pilih Produk';
 	$lang['firesale:label_filterstatus']  = 'Pilih Status Produk';
 	$lang['firesale:label_filtersstatus'] = 'Pilih Status Stok';
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
 	$lang['firesale:label_rrp']			= 'Harga Ecer yang Dianjurkan';
 	$lang['firesale:label_rrp_tax']		= 'Harga Ecer yang Dianjurkan (sebelum dikenai pajak)';
 	$lang['firesale:label_rrp_short']	= 'RRP';

@@ -13,10 +13,13 @@
 			    <legend><?php echo lang('global:filters'); ?></legend>
 			    <ul>  
 			        <li>
-			            <?php echo $filter_users; ?>
+			            <center><?php echo $filter_users; ?></center>
 			        </li>
 			        <li>
-			            <?php echo $filter_prods; ?>
+			            <center><?php echo $filter_status; ?></center>
+			        </li>
+			        <li>
+			            <center><?php echo $filter_prods; ?></center>
 			        </li>
 			    </ul>
 			</fieldset>

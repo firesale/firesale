@@ -112,6 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
 	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
 	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
 	$lang['firesale:label_rrp']			  = 'Prix de vente conseillé';
 	$lang['firesale:label_rrp_tax']		  = 'Prix de vente conseillé (avant taxes)';
 	$lang['firesale:label_rrp_short']	  = 'PVC';

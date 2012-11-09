@@ -112,10 +112,12 @@ class Admin_orders extends Admin_Controller
 		$this->data->pagination = $orders['pagination'];
 
 		// Assign filtering
-		$users = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
-		$prods = $this->products_m->build_dropdown(( $type == 'product' ? $query : NULL));
-		$this->data->filter_users = $users['input'];
-		$this->data->filter_prods = form_dropdown('product', $prods, ( $type == 'product' ? $query : NULL ));
+		$users  = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
+		$prods  = $this->products_m->build_dropdown(( $type == 'product' ? $query : NULL));
+		$status = $this->orders_m->status_field();
+		$this->data->filter_users  = $users['input'];
+		$this->data->filter_status = form_dropdown('order_status', $status, ( $type == 'order_status' ? $query : NULL ));
+		$this->data->filter_prods  = form_dropdown('product', $prods, ( $type == 'product' ? $query : NULL ));
 		
 		// Build template
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:orders'))
