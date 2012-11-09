@@ -18,18 +18,18 @@
 	$lang['firesale:sections:gateways']		  = 'Paiements';
 	$lang['firesale:sections:settings'] 	  = 'Paramètres';
 	$lang['firesale:sections:routes']         = 'Routes';
-	$lang['firesale:sections:currency']       = 'Currency'; # Translate
-	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
+	$lang['firesale:sections:currency']       = 'Monnaie';
+	$lang['firesale:sections:taxes']          = 'Taxes';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Options générales';
 	$lang['firesale:tabs:description'] 	= 'Description';
-	$lang['firesale:tabs:formatting'] 	= 'Formatting'; # Translate
+	$lang['firesale:tabs:formatting'] 	= 'Formatage';
 	$lang['firesale:tabs:shipping']		= 'Expédition';
 	$lang['firesale:tabs:metadata']		= 'Méta-données';
 	$lang['firesale:tabs:attributes']	= 'Attributs';
 	$lang['firesale:tabs:images']		= 'Images';
-	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
+	$lang['firesale:tabs:assignments']  = 'Assignements';
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Créer un produit';
@@ -38,8 +38,8 @@
 	$lang['firesale:shortcuts:create_order']	= 'Créer une commande';
 	$lang['firesale:shortcuts:create_routes']   = 'Ajouter une nouvelle route';
 	$lang['firesale:shortcuts:build_routes']    = 'Reconstruire les routes';
-	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band'; # Translate
-	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes'; # Translate
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band';
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Vue d\'ensemble';
@@ -109,10 +109,10 @@
 	$lang['firesale:label_parent']		  = 'Catégorie parente';
 	$lang['firesale:label_filtercat']	  = 'Filtrer par catégorie';
 	$lang['firesale:label_filtersel']	  = 'Sélectionnez une catégorie';
-	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
-	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
-	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
-	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
+	$lang['firesale:label_filterprod']    = 'Sélectionnez un produit';
+	$lang['firesale:label_filterstatus']  = 'Sélectionnez un statut de produit';
+	$lang['firesale:label_filtersstatus'] = 'Sélectionnez un statut de stock';
+	$lang['firesale:label_order_status']  = 'Sélectionnez un statut de commande';
 	$lang['firesale:label_rrp']			  = 'Prix de vente conseillé';
 	$lang['firesale:label_rrp_tax']		  = 'Prix de vente conseillé (avant taxes)';
 	$lang['firesale:label_rrp_short']	  = 'PVC';
@@ -161,7 +161,7 @@
 	$lang['firesale:label_details'] 	= 'Adresse de livraison et de facturation identiques';
 	$lang['firesale:label_user_order']	= 'Utilisateur';
 	$lang['firesale:label_ip']			= 'Adresse IP';
-	$lang['firesale:label_ship_req']    = 'Requires Shipping'; # Translate
+	$lang['firesale:label_ship_req']    = 'Livraison obligatoire';
 
 	$lang['firesale:label_nameaz']		= 'Nom A - Z';
 	$lang['firesale:label_nameza']		= 'Nom Z - A';
@@ -183,21 +183,21 @@
 	$lang['firesale:label_translation'] = 'Traduction';
 	$lang['firesale:label_table']       = 'Table';
 
-	$lang['firesale:label_cur_code']        = 'Currency Code'; # translate
-	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format'; # translate
-	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
-	$lang['firesale:label_cur_mod']         = 'Currency Modifier'; # translate
-	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
-	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
-	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save'; # translate
-	$lang['firesale:label_cur_flag']        = 'Related Image'; # translate
-	$lang['firesale:label_enabled']         = 'Enabled'; # translate
-	$lang['firesale:label_disabled']        = 'Disabled'; # translate
-	$lang['firesale:label_cur_format']      = 'Currency Format'; # translate
-	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}'; # translate
-	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
-	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
-	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
+	$lang['firesale:label_cur_code']        = 'Code monnaie';
+	$lang['firesale:label_cur_code_inst']   = 'Format ISO-4217';
+	$lang['firesale:label_cur_tax']         = 'Taux de taxe';
+	$lang['firesale:label_cur_mod']         = 'Modificateur de monnaie';
+	$lang['firesale:label_cur_mod_inst']    = 'Vous pouvez ajuster précisement le taux de change pour couvrir les éventuels frais de change';
+	$lang['firesale:label_exch_rate']       = 'Taux de change';
+	$lang['firesale:label_exch_rate_inst']  = 'Il sera mis à jour toutes les heures et peut être laissé vide car il sera tout de même mis à jour lors de la sauvegarde';
+	$lang['firesale:label_cur_flag']        = 'Image associée';
+	$lang['firesale:label_enabled']         = 'Activé';
+	$lang['firesale:label_disabled']        = 'Désactivé';
+	$lang['firesale:label_cur_format']      = 'Format de la monnaie';
+	$lang['firesale:label_cur_format_inst'] = 'Mettez en forme l\'affichage de la monnaie en incluant le symbole et le prix sous la forme "{{ price }}". Ex : {{ price }} € ou encore £ {{ price }}.';
+	$lang['firesale:label_cur_format_dec']  = 'Symbole décimal';
+	$lang['firesale:label_cur_format_sep']  = 'Séparateur des milliers';
+	$lang['firesale:label_cur_format_num']  = 'Formatage des nombres';
 
 	$lang['firesale:label_tax_band']  = 'Tax Band';  # translate
 	
