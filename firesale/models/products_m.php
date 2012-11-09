@@ -552,7 +552,7 @@ class Products_m extends MY_Model {
 				if( $this->db->where($data)->get('firesale_products_firesale_categories')->num_rows() == 0 )
 				{
 					// Insert it
-					$this->db->insert('default_firesale_products_firesale_categories', $data);
+					$this->db->insert('firesale_products_firesale_categories', $data);
 				}
 
 			}
