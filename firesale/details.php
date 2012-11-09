@@ -919,6 +919,10 @@ class Module_Firesale extends Module {
 				'currency_id' => 1,
 				'value' => '20.00'
 			));
+
+			// Add tax_rate to the order_items table
+			$this->db->query("ALTER TABLE `".$this->db->dbprefix('firesale_orders_items')."` ADD `tax_band` INT( 3 ) NOT NULL DEFAULT '0'");
+
 		}
 		elseif ($method == 'remove')
 		{
