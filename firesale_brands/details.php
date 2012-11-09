@@ -18,10 +18,12 @@ class Module_Firesale_brands extends Module {
 
 		$info = array(
 			'name' => array(
-				'en' => 'FireSale Brands'
+				'en' => 'FireSale Brands',
+				'fr' => 'FireSale Marques',
 			),
 			'description' => array(
 				'en' => 'Brand Management',
+				'fr' => 'Gestion des marques',
 			),
 			'frontend'		=> FALSE,
 			'backend'		=> FALSE,
