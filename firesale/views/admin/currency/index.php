@@ -45,7 +45,9 @@
 <?php else: ?>
 						<a href="<?php echo site_url(); ?>admin/firesale/currency/enable/<?php echo $currency['id']; ?>" class="btn green"><?php echo lang('firesale:currency:enable'); ?></a>
 <?php endif; ?>
+<?php if( $currency['id'] != '1' ): ?>
 						<a href="<?php echo site_url(); ?>admin/firesale/currency/delete/<?php echo $currency['id']; ?>" class="btn red confirm" title="<?php echo lang('firesale:currency:delete_warn'); ?>"><?php echo lang('global:delete'); ?></a>
+<?php endif; ?>
 					</td>
 				</tr>
 				<?php endforeach; ?>

@@ -312,7 +312,6 @@ class Module_Firesale extends Module {
 		###########
 		$this->taxes();
 
-
 		######################
 		## PAYMENT GATEWAYS ##
 		######################
@@ -566,7 +565,7 @@ class Module_Firesale extends Module {
 		// Drop the payment gateway tables
 		$this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it =/
 		$this->dbforge->drop_table('firesale_gateway_settings');
-		$this->dbforge->drop_table('firesale_order_items');
+		$this->dbforge->drop_table('firesale_orders_items');
 		$this->dbforge->drop_table('firesale_transactions');
 
 		// Return
@@ -605,10 +604,8 @@ class Module_Firesale extends Module {
 			Files::create_folder(0, 'Category Images');
 
 			// Products
-			$brands   = $this->streams->streams->get_stream('firesale_brands', 'firesale_brands');
 			$fields   = array();
 			$template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
-			$fields[] = array('name' => 'lang:firesale:label_brand', 'slug' => 'brands', 'type' => 'relationship', 'extra' => array('choose_stream' => $brands->id), 'required' => FALSE);
 			$fields[] = array('name' => 'lang:firesale:label_ship_req', 'slug' => 'ship_req', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 1));
 			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 			$this->streams->fields->add_fields($fields);
@@ -619,6 +616,14 @@ class Module_Firesale extends Module {
 			$template = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 			$fields[] = array('name' => 'lang:firesale:sections:currency', 'slug' => 'currency', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $currency->id));
 			$fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exchange_rate', 'extra' => array('default' => 1, 'max_length' => 10));
+			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+			$this->streams->fields->add_fields($fields);
+
+			// Orders Items
+			$taxes    = $this->streams->streams->get_stream('firesale_orders_items', 'firesale_orders_items');
+			$fields   = array();
+			$template = array('namespace' => 'firesale_orders_items', 'assign' => 'firesale_orders_items', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+			$fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
 			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 			$this->streams->fields->add_fields($fields);
 
@@ -791,7 +796,7 @@ class Module_Firesale extends Module {
 			$fields[] = array('name' => 'lang:firesale:label_cur_format_dec', 'slug' => 'cur_format_dec', 'type' => 'text', 'extra' => array('max_length' => 1), 'required' => FALSE);
 			$fields[] = array('name' => 'lang:firesale:label_cur_format_sep', 'slug' => 'cur_format_sep', 'type' => 'text', 'extra' => array('max_length' => 1));
 			$fields[] = array('name' => 'lang:firesale:label_cur_format_num', 'slug' => 'cur_format_num', 'type' => 'choice', 'extra' => array('choice_data' => $cur_format, 'choice_type' => 'dropdown', 'default_value' => '1'));
-			$fields[] = array('name' => 'lang:firesale:label_cur_mod', 'slug' => 'cur_mod', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_mod_inst', 'extra' => array('max_length' => 10));
+			$fields[] = array('name' => 'lang:firesale:label_cur_mod', 'slug' => 'cur_mod', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_mod_inst', 'extra' => array('default' => '0', 'max_length' => 10));
 			$fields[] = array('name' => 'lang:firesale:label_cur_flag', 'slug' => 'image', 'type' => 'image', 'extra' => array('folder' => $currency['data']['id']), 'required' => FALSE);
 			$fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exch_rate', 'type' => 'text', 'instructions' => 'lang:firesale:label_exch_rate_inst', 'extra' => array('max_length' => 10), 'required' => FALSE);
 			
@@ -919,9 +924,6 @@ class Module_Firesale extends Module {
 				'currency_id' => 1,
 				'value' => '20.00'
 			));
-
-			// Add tax_rate to the order_items table
-			$this->db->query("ALTER TABLE `".$this->db->dbprefix('firesale_orders_items')."` ADD `tax_band` INT( 3 ) NOT NULL DEFAULT '0'");
 
 		}
 		elseif ($method == 'remove')
