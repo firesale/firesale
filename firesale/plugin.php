@@ -95,9 +95,9 @@ class Plugin_Firesale extends Plugin
 		$categories = $query->get()->result_array();
 
 		// Loop and get objects
-		foreach( $categoires AS &$category )
+		foreach( $categories AS &$category )
 		{
-			$category = $this->categories_m->get($category['id']);
+			$category = $this->categories_m->get_category($category['id']);
 		}
 		
 		return $categories;
