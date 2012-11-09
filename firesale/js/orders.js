@@ -117,5 +117,5 @@ function calculatePrice()
 		}
 	});
 	$('input[name=price_total]').val(( t + parseFloat($('input[name=price_ship]').val()) ).toFixed(2));
-	$('input[name=price_sub]').val(( t * (( 100 - tax_rate ) / 100 )).toFixed(2));
+	$('input[name=price_sub]').val((t / ( 1 + ( 1 - (( 100 - tax_rate ) / 100 ).toFixed(2)))).toFixed(2));
 }

@@ -1,9 +1,9 @@
-# FireSale (Development)
+# FireSale
 
 * Website: http://www.getfiresale.org
-* Documentation: http://docs.getfiresale.org
+* Documentation: http://www.getfiresale.org/documentation
 * License: MIT License, a copy of which is included with this package
-* Version: 1.1.0 Development
+* Version: 1.1.0
 
 ## Team
 
@@ -23,43 +23,29 @@ Through a slightly modified version of the standard details file found in any Py
 * Available in 6 (and counting) Languages
 * Simple and intuative interface
 * 15 Payment Gateways, powered by CI-Merchant and easily extended
+* Complete route management and custom URLs
+* Multiple currency options via API
 * Almost fully extensible through modules
 * Totally streams powered for easy customisation
 * Drag and drop, files integrated, image uploading
 * Complete with shipping and search
 
 ## Requirements
-* PHP 5.2+
-* PyroCMS 2.1.4+
-* The suggested routes added to your system/cms/config/routes.php file ([see below](#routes))
-* Theme with jQuery
+
+Before attempting installation please ensure you meet the following requirements and you have:
+
+1. PyroCMS Version 2.1.5 or greater
+2. The [Multiple Relationship](https://github.com/parse19/PyroStreams-Multiple-Relationships) field type pre-installed (we'll try and do this for you, but sometimes that's just not possible)
 
 ## Installation
 
-1. Clone yourself a copy of the FireSale core
-2. Move everything to either your PyroCMS shared_addons or addons/default folder
-3. If you are using PyroCMS Community you need to install also the [Multiple Relationship](https://github.com/parse19/PyroStreams-Multiple-Relationships) field type
-4. Install the core via the admin modules panel
-5. Install the other two modules by the same method
-6. Go into settings and choose your preferred options, we strongly advise you to select yes for routes
-7. Below you'll find a number of routes we suggest you install; a number of features will not work without them
+1. Upload the FireSale modules to your shared_addons or addons/default module folder
+2. Within your administration panel, navigate to Addons, find FireSale and press Install
+3. All done, easy wasn't it?!
 
-## Routes
+### Optional Steps
 
-Either via the Routes Add-on or directly into the config we suggest you put the following items into your routes:
-	
-	$route['category/(order|style)/([a-z0-9]+)'] = 'firesale/front_category/$1/$2';
-	$route['category(:any)'] 		  			 = 'firesale/front_category/index$1';
-	$route['product(:any)']  		  			 = 'firesale/front_product/index$1';
-	$route['search(:any)?']  		  			 = 'firesale_search/search/index$1';
-	$route['cart(:any)?']    		  			 = 'firesale/front_cart$1';
-	$route['users/orders/([0-9]+)']   			 = 'firesale/front_orders/view_order/$1';
-	$route['users/orders']   		  			 = 'firesale/front_orders/index';
-	$route['users/addresses(/:any)?'] 			 = 'firesale/front_address$1';
-
-If you would like to replace the default PyroCMS dashboard with the FireSale dashboard then you can do so by adding the following route:
-
-	$route['admin'] = 'firesale/admin/index';
+After FireSale is installed you can also install the two additional modules provided with the core to enable Shipping and Search. These require no extra requirements and should just work after being enabled.
 
 ## Feedback and issues
 
@@ -67,7 +53,7 @@ If you find any issues or want to provide feedback we'd appreciate it if you use
 
 ## Pull Requests
 
-If you would like to submit your bug fixes, enhancements and translations to the project then you are welcome to submit pull requests here on GitHub. We do however ask that you use the UNIX LF (\n) line endings.
+If you would like to submit your bug fixes, enhancements and translations to the project then you are welcome to submit pull requests here on GitHub. We do however ask that you use the UNIX LF (\n) line endings. Git can automatically do this for you. For more information about this see this [help page](https://help.github.com/articles/dealing-with-line-endings).
 
 # Contributors
 

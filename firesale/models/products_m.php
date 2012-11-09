@@ -143,8 +143,11 @@ class Products_m extends MY_Model {
 	 * @return array A complete product array or FALSE on nothing found
 	 * @access public
 	 */
-	public function get_product($id_slug)
+	public function get_product($id_slug, $currency = NULL)
 	{
+		$user_currency = $this->session->userdata('currency');
+
+		$currency = $currency ? $currency : ($user_currency ? $user_currency : 1);
 
 		// Variables
 		$type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
@@ -188,7 +191,7 @@ class Products_m extends MY_Model {
 				$product['image']    = $this->get_single_image($product['id']);
 
 				// Format product pricing
-				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax']);
+				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency);
 
 				// Assign pricing
 				foreach( $pricing AS $key => $val )
@@ -549,7 +552,7 @@ class Products_m extends MY_Model {
 				if( $this->db->where($data)->get('firesale_products_firesale_categories')->num_rows() == 0 )
 				{
 					// Insert it
-					$this->db->insert('default_firesale_products_firesale_categories', $data);
+					$this->db->insert('firesale_products_firesale_categories', $data);
 				}
 
 			}

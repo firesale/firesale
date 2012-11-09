@@ -31,6 +31,8 @@ class Admin_categories extends Admin_Controller
 	 */
 	public $stream  = NULL;
 
+	public $section = 'categories';
+
 	/**
 	 * Loads the parent constructor and gets an
 	 * instance of CI. Also loads in the language
@@ -50,6 +52,7 @@ class Admin_categories extends Admin_Controller
 	
 		// Load libraries
 		$this->load->language('firesale');
+		$this->load->library('files/files');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->helper('general');
@@ -57,6 +60,8 @@ class Admin_categories extends Admin_Controller
 		// Add metadata
 		$this->template->append_css('module::categories.css')
 					   ->append_js('module::jquery.ui.nestedSortable.js')
+					   ->append_js('module::jquery.filedrop.js')
+					   ->append_js('module::upload.js')
 					   ->append_js('module::categories.js');
 	
 		// Get the stream
@@ -121,15 +126,24 @@ class Admin_categories extends Admin_Controller
 					'sort'		=> 'asc'
 				  );
 
+		// Fire build event
+		Events::trigger('form_build', $this);
+
 		// Assign variables
 		$this->data->controller =& $this;
 		$this->data->cats       =  $this->categories_m->generate_streams_tree($params);
 		$this->data->fields     =  fields_to_tabs($fields, $this->tabs);
 		$this->data->tabs	    =  array_keys($this->data->fields);
 	
-		// Build the page
+		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:categories'))
-					   ->build('admin/categories/index', $this->data);
+					   ->set($this->data);
+
+		// Fire events
+		Events::trigger('page_build', $this->template);
+
+		// Build the page
+		$this->template->build('admin/categories/index');
 	}
 	
 	/**
@@ -189,6 +203,45 @@ class Admin_categories extends Admin_Controller
 		
 		redirect('admin/firesale/categories');
 	}
+
+	public function upload($id)
+	{
+	
+		// Get product
+		$row    = $this->row_m->get_row($id, $this->stream, FALSE);
+		$folder = $this->products_m->get_file_folder_by_slug($row->slug);
+		$allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
+
+		// Create folder?
+		if( !$folder )
+		{
+			$parent = $this->products_m->get_file_folder_by_slug('category-images');
+			$folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
+			$folder = (object)$folder['data'];
+		}
+
+		// Check for folder
+		if( is_object($folder) AND ! empty($folder) )
+		{
+
+			// Upload it
+			$status = Files::upload($folder->id);
+
+			// Make square?
+			if( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 )
+			{
+				$this->products_m->make_square($status, $allow);
+			}
+
+			// Ajax status
+			echo json_encode(array('status' => $status['status'], 'message' => $status['message']));
+			exit;
+		}
+
+		// Seems it was unsuccessful
+		echo json_encode(array('status' => FALSE, 'message' => 'Error uploading image'));
+		exit();
+	}
 	
 	/**
 	 * Gets the category details and returns a JSON
@@ -206,6 +259,38 @@ class Admin_categories extends Admin_Controller
 		{
 			$cat = $this->categories_m->get_category($id);
 			echo json_encode($cat);
+			exit();
+		}
+	
+	}
+
+	/**
+	 * Gets the category images and returns an HTML string to be appended into the
+	 * tab created for each category.
+	 *
+	 * @param integer $id The Category ID to retrieve
+	 * @return string HTML for dropbox and image display
+	 * @access public
+	 */
+	public function ajax_cat_images($id)
+	{
+
+		if( $this->input->is_ajax_request() )
+		{
+
+			// Variables
+			$data = array();
+			$row  = $this->row_m->get_row($id, $this->stream, FALSE);
+
+			if( $row != FALSE )
+			{
+				$folder = $this->products_m->get_file_folder_by_slug($row->slug);
+				$images = Files::folder_contents($folder->id);
+				$data['images'] = $images['data']['file'];
+			}
+
+			// Return to script
+			echo $this->parser->parse('admin/categories/images', $data, true);
 			exit();
 		}
 	

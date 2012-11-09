@@ -4,7 +4,7 @@
 		<a class="tooltip-s show-filter" original-title="<?php echo lang('firesale:label_showfilter'); ?>"></a>
 	</section>
 
-	<?php echo form_open_multipart($this->uri->uri_string() . '/status', 'class="crud" id="tabs"'); ?>
+	<?php echo form_open($this->uri->uri_string() . '/status', 'class="crud" id="tabs"'); ?>
 
 		<section class="item">
 <?php if( !empty($orders)): ?>
@@ -13,10 +13,13 @@
 			    <legend><?php echo lang('global:filters'); ?></legend>
 			    <ul>  
 			        <li>
-			            <?php echo $filter_users; ?>
+			            <center><?php echo $filter_users; ?></center>
 			        </li>
 			        <li>
-			            <?php echo $filter_prods; ?>
+			            <center><?php echo $filter_status; ?></center>
+			        </li>
+			        <li>
+			            <center><?php echo $filter_prods; ?></center>
 			        </li>
 			    </ul>
 			</fieldset>
@@ -49,8 +52,8 @@
 						<td><?php echo $order['order_status']['value']; ?></td>
 						<td><?php echo $order['products']; ?></td>
 						<td><?php echo $order['ship_to']['country']['name']; ?></td>
-						<td><?php echo $this->settings->get('currency') . $order['price_total']; ?></td>
-						<td><?php echo $this->settings->get('currency') . $order['price_ship']; ?></td>
+						<td><?php echo $order['price_total']; ?></td>
+						<td><?php echo $order['price_ship']; ?></td>
 						<td class="actions">
 							<?php if (group_has_role('firesale', 'edit_orders')): ?>
 								<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>

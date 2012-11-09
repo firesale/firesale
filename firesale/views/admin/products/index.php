@@ -3,7 +3,7 @@
 		<a class="tooltip-s show-filter" original-title="<?php echo lang('firesale:label_showfilter'); ?>"></a>
 	</section>
 	
-	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
+	<?php echo form_open($this->uri->uri_string(), 'class="crud"'); ?>
 	
 		<section class="item">
 <?php if( $count == 0 ): ?>
@@ -69,7 +69,7 @@
 							<?php $string = ''; foreach( $product['category'] AS $cat ) { $string .= ( strlen($string) == 0 ? '' : ', ' ) . '<span data-id="' . $cat['id'] . '">' . $cat['title'] . '</span>'; } echo $string; ?>
 						</td>
 						<td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? lang('firesale:label_stock_unlimited') . ' (&infin;)' : $product['stock'] ); ?></td>
-						<td><?php echo $this->settings->get('currency'); ?><span class="item-price"><?php echo $product['price']; ?></span></td>
+						<td class="item-price"><?php echo $product['price_formatted']; ?></td>
 						<td class="actions">
 							<ul class="split-button">
 								<li><strong>Action</strong></li>

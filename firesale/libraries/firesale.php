@@ -26,9 +26,21 @@ class Firesale
 		if ($info['backend'] === TRUE && $info['firesale_core'] !== TRUE)
 			return $info;
 		
-		// Lets check if the FireSALE core module has been loaded yet...
+		// Lets check if the FireSale core module has been loaded yet...
 		if ( ! class_exists('Module_Firesale'))
 			return $info;
+
+		// Add the FireSale asset paths
+		if( file_exists(SHARED_ADDONPATH . 'modules/firesale/details.php') )
+		{
+			$dir = BASE_URL . 'addons/shared_addons/modules/';
+		}
+		else
+		{
+			$dir = BASE_URL . 'addons/' . SITE_REF . '/modules/';
+		}
+
+		Asset::add_path('firesale', $dir . 'firesale/');
 		
 		// Retrieve the FireSALE sub-modules
 		$this->_CI->db->where("(`is_backend` = 0 OR `slug` = 'firesale')", NULL, FALSE)->order_by('CASE WHEN `slug`="firesale" THEN 0 ELSE 1 END', NULL, FALSE)->order_by('id', 'asc');

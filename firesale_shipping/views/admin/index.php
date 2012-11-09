@@ -35,13 +35,13 @@
 							<?php echo lang('firesale:label_up_to'); ?>
 							<?php echo ( strlen($option['price_max']) > 0 ? $this->settings->get('currency') . $option['price_max'] : 'Unlimited' ); ?></td>
 						<td>
-							<?php echo ( strlen($option['weight_min']) > 0 ? $option['weight_min']: '0.00' ); ?>kg
+							<?php echo ( strlen($option['weight_min']) > 0 ? $option['weight_min']: '0.00' ); ?> kg
 							<?php echo lang('firesale:label_up_to'); ?>
-							<?php echo ( strlen($option['weight_max']) > 0 ? $option['weight_max'] :  'Unlimited' ); ?>kg
+							<?php echo ( strlen($option['weight_max']) > 0 ? $option['weight_max'] :  'Unlimited' ); ?> kg
 						</td>
 						<td>
-							<a class="button small" href="<?php echo site_url('admin/firesale_shipping/edit/'.$option['id']); ?>"><?php echo lang('global:edit'); ?></a>
-							<a class="button small confirm" href="<?php echo site_url('admin/firesale_shipping/delete/'.$option['id']); ?>"><?php echo lang('global:delete'); ?></a>
+							<a class="btn orange" href="<?php echo site_url('admin/firesale_shipping/edit/'.$option['id']); ?>"><?php echo lang('global:edit'); ?></a>
+							<a class="btn confirm red" href="<?php echo site_url('admin/firesale_shipping/delete/'.$option['id']); ?>"><?php echo lang('global:delete'); ?></a>
 						</td>
 					</tr>
 <?php endforeach; ?>

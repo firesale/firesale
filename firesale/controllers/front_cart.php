@@ -24,7 +24,7 @@ class Front_cart extends Public_Controller
 		
 		// Load the required models
 		$this->load->driver('Streams');
-		$this->load->model('firesale/currency_m');
+		$this->load->library('files/files');
 		$this->load->model('firesale/cart_m');
 		$this->load->model('firesale/orders_m');
 		$this->load->model('firesale/address_m');
@@ -55,25 +55,6 @@ class Front_cart extends Public_Controller
 		
 		// Get the stream
 		$this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
-		
-		// Set the tax percentage
-		$this->fs_cart->currency    = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
-		$this->fs_cart->tax_percent = $this->settings->get('firesale_tax');
-		
-		// Set the pricing vars
-		if ($this->fs_cart->total() > 0)
-		{
-			$this->fs_cart->tax_mod  = 1 - ( $this->fs_cart->currency->cur_tax / 100 );
-			$this->fs_cart->total	 = $this->fs_cart->total();
-			$this->fs_cart->tax		 = $this->fs_cart->total / (( $this->fs_cart->tax_percent / 100 ) + 1 ) * ( 1 - $this->fs_cart->tax_mod );
-			$this->fs_cart->subtotal = ( $this->fs_cart->total - $this->fs_cart->tax );
-		}
-		else
-		{
-			$this->fs_cart->total	 = '0.00';
-			$this->fs_cart->tax		 = '0.00';
-			$this->fs_cart->subtotal = '0.00';
-		}
 
 		// Load shipping model
 		if( isset($this->firesale->roles['shipping']) )
@@ -90,12 +71,11 @@ class Front_cart extends Public_Controller
 
 	public function index()
 	{
-	
 		// Assign Variables
-		$data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal, $this->fs_cart->currency, false);
-		$data['tax']   		 = $this->currency_m->format_string($this->fs_cart->tax, $this->fs_cart->currency, false);
-		$data['total']   	 = $this->currency_m->format_string($this->fs_cart->total, $this->fs_cart->currency, false);
-		$data['currency']    = $this->fs_cart->currency;
+		$data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
+		$data['tax']   		 = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
+		$data['total']   	 = $this->currency_m->format_string($this->fs_cart->total(), $this->fs_cart->currency(), false);
+		$data['currency']    = $this->fs_cart->currency();
 		$data['contents']    = $this->fs_cart->contents();
 
 		// Add item id
@@ -103,8 +83,8 @@ class Front_cart extends Public_Controller
 		foreach ($data['contents'] AS &$product)
 		{
 
-			$product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency, false);
-			$product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency, false);
+			$product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
+			$product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
 			$product['no']       = $i;
 
 			$i++;
@@ -324,7 +304,7 @@ class Front_cart extends Public_Controller
 		}
 		
 		// Update the cart
-		$this->fs_cart->update(array('rowid' => $row_id, 'qty' => 0));
+		$this->fs_cart->remove($row_id);
 		
 		if ($this->input->is_ajax_request())
 		{
@@ -332,7 +312,7 @@ class Front_cart extends Public_Controller
 		}
 		else
 		{
-			redirect( ( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->routes_m->build_url('cart') ));
+			redirect(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->routes_m->build_url('cart'));
 		}
 
 	}
@@ -341,7 +321,7 @@ class Front_cart extends Public_Controller
 	{
 
 		// No checkout without items
-		if ( ! $this->fs_cart->total())
+		if ( ! $this->fs_cart->total_items())
 		{
 			$this->session->set_flashdata('message', lang('firesale:cart:empty'));
 			redirect($this->routes_m->build_url('cart'));
@@ -355,7 +335,16 @@ class Front_cart extends Public_Controller
 			$this->load->helper('form');
 
 			// Variables
-			$data = array();
+			$data = array('ship_req' => FALSE);
+
+			// Check for shipping requirements
+			foreach ($this->fs_cart->contents() as $item)
+			{
+				if( ! isset($item['ship']) OR $item['ship'] == 1 )
+				{
+					$data['ship_req'] = TRUE;
+				}
+			}
 			
 			// Check for post data
 			if ($this->input->post('btnAction') == 'pay')
@@ -368,7 +357,7 @@ class Front_cart extends Public_Controller
 				$extra 	= array('return' => 'cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
 
 				// Shipping option
-				if (isset($this->firesale->roles['shipping']) AND isset($input['shipping']))
+				if ( $data['ship_req'] AND isset($this->firesale->roles['shipping']) AND isset($input['shipping']))
 				{
 					$role = $this->firesale->roles['shipping'];
 					$shipping = $this->$role['model']->get_option_by_id($input['shipping']);
@@ -382,20 +371,20 @@ class Front_cart extends Public_Controller
 				$input['shipping']	   = ( isset($input['shipping']) ? $input['shipping'] : 0 );
 				$input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
 				$input['order_status'] = '1'; // Unpaid
-				$input['price_sub']    = $this->fs_cart->subtotal;
+				$input['price_sub']    = $this->fs_cart->subtotal();
 				$input['price_ship']   = $shipping['price'];
-				$input['price_total']  = number_format(( $this->fs_cart->total + $shipping['price'] ), 2);
+				$input['price_total']  = number_format($this->fs_cart->total() + $shipping['price'], 2);
 				$_POST 				   = $input;
 
 				// Generate validation
-				$rules = $this->cart_m->build_validation();
+				$rules = $this->cart_m->build_validation($data['ship_req']);
 				$this->form_validation->set_rules($rules);
 
 				// Run validation
 				if ($this->form_validation->run() === TRUE)
 				{
 					// Check for addresses
-					if ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new')
+					if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' ) )
 					{
 						$input['ship_to'] = $this->address_m->add_address($input, 'ship');
 					}
@@ -452,7 +441,7 @@ class Front_cart extends Public_Controller
 			$data['fields'] = $this->address_m->get_address_form();
 			
 			// Get available shipping methods
-			if( isset($this->firesale->roles['shipping']) )
+			if( isset($this->firesale->roles['shipping']) AND $data['ship_req'] )
 			{
 				$role = $this->firesale->roles['shipping'];
 				$data['shipping'] = $this->$role['model']->calculate_methods($this->fs_cart->contents());
@@ -523,11 +512,26 @@ class Front_cart extends Public_Controller
 					'return_url' => $this->routes_m->build_url('cart') . '/success',
 					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
 				), $this->input->post(NULL, TRUE), array(
-					'currency_code' => $this->settings->get('firesale_currency'),
-					'amount'        => $this->fs_cart->total,
-					'reference'     => 'Order #' . $this->session->userdata('order_id')
+					'currency_code'  => $this->fs_cart->currency()->cur_code,
+					'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
+					'order_id'       => $this->session->userdata('order_id'),
+					'transaction_id' => $this->session->userdata('order_id'),
+					'reference'      => 'Order #' . $this->session->userdata('order_id'),
+					'description'    => 'Order #' . $this->session->userdata('order_id'),
+					'first_name'     => $order['bill_to']['firstname'],
+					'last_name'      => $order['bill_to']['lastname'],
+					'address1'       => $order['ship_to']['address1'],
+					'address2'       => $order['ship_to']['address2'],
+					'city'           => $order['ship_to']['city'],
+					'region'         => $order['ship_to']['county'],
+					'country'        => $order['ship_to']['country']['code'],
+					'postcode'       => $order['ship_to']['postcode'],
+					'phone'          => $order['ship_to']['phone'],
+					'email'          => $order['ship_to']['email'],
 				));
+
 				$process = $this->merchant->purchase($params);
+
 				$status = '_order_' . $process->status();
 
 				// Check status
@@ -565,6 +569,10 @@ class Front_cart extends Public_Controller
 				for ($i = $current_year; $i < $current_year + 15; $i++)
 					$var['years'][$i] = $i;
 
+				$current_year = date('Y');
+				for ($i = $current_year; $i > $current_year - 15; $i--)
+					$var['start_years'][$i] = $i;
+
 				$var['default_cards'] = array(
 					'visa'       => 'Visa',
 					'maestro'    => 'Maestro',
@@ -575,9 +583,14 @@ class Front_cart extends Public_Controller
 				// Format order
 				foreach( $order['items'] AS $key => $item )
 				{
-					$order['items'][$key]['price'] = number_format($item['price'], 2);
-					$order['items'][$key]['total'] = number_format(( $item['price'] * $item['qty']), 2);
+					$order['items'][$key]['price'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
+					$order['items'][$key]['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
 				}
+
+				// Format currency
+				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
 
 				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
@@ -587,6 +600,7 @@ class Front_cart extends Public_Controller
 							   ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart').'/payment')
 							   ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
 							   ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
+							   ->set('currency', $this->fs_cart->currency())
 							   ->set('payment', $gateway_view)
 							   ->build('payment', $order);
 
@@ -683,10 +697,17 @@ class Front_cart extends Public_Controller
 			// Clear cart
 			$this->fs_cart->destroy();
 
-			// Format order for display
-			$order['price_sub']   = number_format($order['price_sub'], 2);
-			$order['price_ship']  = number_format($order['price_ship'], 2);
-			$order['price_total'] = number_format($order['price_total'], 2);
+			// Format order
+			foreach ($order['items'] as &$item)
+			{
+				$item['price'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
+				$item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
+			}
+
+			// Format currency
+			$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+			$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+			$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
 
 			// Build page
 			$this->template->title(lang('firesale:payment:title_success'))
@@ -707,7 +728,8 @@ class Front_cart extends Public_Controller
 
 	private function _order_complete()
 	{
-		call_user_func_array(array($this, '_order_authorized'), func_get_args());
+		$args = func_get_args();
+		call_user_func_array(array($this, '_order_authorized'), $args);
 	}
 
 	public function success()

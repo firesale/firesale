@@ -1,0 +1,8 @@
+thead tr td {
+    height: 20px;
+    padding-top: 0px;
+}
+
+input[type="text"] {
+    width: 53px !important;
+}

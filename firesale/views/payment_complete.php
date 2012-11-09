@@ -45,21 +45,21 @@
             <td class="align-left"><strong>{{ name }}</strong></td>
             <td>{{ code }}</td>
             <td>{{ qty }}</td>
-            <td><span>{{ settings:currency }}</span>{{ price }}</td>
-            <td><span>{{ settings:currency }}</span>{{ total }}</td>
+            <td>{{ price }}</td>
+            <td>{{ subtotal }}</td>
           </tr>
 {{ /items }}
           <tr>
             <td class="align-right" colspan="4"><strong><?php echo lang('firesale:cart:label_sub_total'); ?>:</strong></td>
-            <td><span>{{ settings:currency }}</span>{{ price_sub }}</td>
+            <td>{{ price_sub }}</td>
           </tr>
           <tr>
             <td class="align-right" colspan="4"><strong><?php echo lang('firesale:tabs:shipping'); ?>:</strong></td>
-            <td><span>{{ settings:currency }}</span>{{ price_ship }}</td>
+            <td>{{ price_ship }}</td>
           </tr>
           <tr class="last">
             <td class="large align-right" colspan="4"><strong><?php echo lang('firesale:cart:label_total'); ?>:</strong></td>
-            <td class="large price"><span>{{ settings:currency }}</span>{{ price_total }}</td>
+            <td class="large price">{{ price_total }}</td>
           </tr>
         </table>
 

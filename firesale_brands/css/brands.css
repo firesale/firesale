@@ -1,0 +1,23 @@
+
+/* General */
+.img{width:40px!important;}
+.img img{width:32px;height:32px;float:left;display:block;background:url(img/none.jpg) no-repeat;background-size:32px 32px;overflow:hidden;text-indent:-1000px;}
+
+
+/* Image Dropbox */
+#dropbox{position:relative;min-height:290px;border-radius:15px;padding:4px 4px 44px;}
+#dropbox.dragging{background:rgba(100,100,100,0.05);border:4px dashed rgba(100,100,100,0.2);padding:0 0 40px;}
+#dropbox .message{font-size:30px;text-align:center;padding-top:147px;display:block;text-transform:uppercase;color:rgba(100,100,100,0.2);font-weight:700;}
+#dropbox:before{border-radius:3px 3px 0 0;}
+#dropbox .preview{width:245px;height:215px;float:left;position:relative;text-align:center;margin:55px 0 0 52px;}
+#dropbox .preview img{max-width:240px;max-height:180px;border:3px solid #fff;display:block;box-shadow:0 0 2px #000;}
+#dropbox .imageHolder{display:inline-block;position:relative;}
+#dropbox .imageTitle{display:block;width:100%;text-align:center;position:relative;margin-top:20px;text-transform:uppercase;}
+#dropbox .uploaded{position:absolute;top:0;left:0;height:100%;width:100%;background:url(img/done.png) no-repeat center center rgba(255,255,255,0.5);display:none;}
+#dropbox .preview.done .uploaded{display:block;}
+#dropbox .preview.error .uploaded{display:block;background-image:url(img/error.png);}
+#dropbox .progressHolder{position:absolute;background-color:#E0DBDB;height:12px;width:100%;left:0;bottom:0;box-shadow:0 0 2px #000;}
+#dropbox .progress{background-color:#EAA54F;position:absolute;height:100%;left:0;width:0;box-shadow:0 0 1px rgba(255,255,255,0.4) inset;-moz-transition:.25s;-webkit-transition:.25s;-o-transition:.25s;transition:.25s;}
+#dropbox .preview.done .progress{width:100%!important;}
+#dropbox .imageHolder:hover{cursor:move;}
+#dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(img/delete.png) no-repeat;}

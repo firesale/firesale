@@ -22,7 +22,7 @@ class Orders_m extends MY_Model
 	{
 
 		$total = 0; 
-		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, p.`price`, p.`slug`, i.`qty`
+		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`
 								   FROM `' . SITE_REF . '_firesale_orders_items` AS i
 						  		   INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
 						 		   WHERE i.`order_id` = ' . $order_id . '
@@ -109,6 +109,49 @@ class Orders_m extends MY_Model
 	}
 
 	/**
+	 * Builds the status field used in the order administration section.
+	 *
+	 * @return array The status input to be turned into a dropdown
+	 * @access public
+	 */
+	public function status_field()
+	{
+
+		// Start building list
+		$list  = array('0' => lang('firesale:label_order_status'));
+
+		// Get data from streams
+		$query = $this->db->select('field_data')
+						  ->where('field_namespace', 'firesale_orders')
+						  ->where('field_slug', 'order_status')
+						  ->get('data_fields')
+						  ->result_array();
+
+		// Check for results
+		if( !empty($query) )
+		{
+
+			// Get field data
+			$result = current($query);
+			$data   = unserialize($result['field_data']);
+
+			// Get options
+			$options = explode("\n", $data['choice_data']);
+
+			// Loop and assign
+			foreach( $options AS $option )
+			{
+				list($key, $val) = explode(' : ', $option);
+				$list[$key]      = lang(substr($val, 5));
+			}
+
+		}
+
+		return $list;
+	}
+
+
+	/**
 	 * Builds the product field used in the order administration section.
 	 *
 	 * @param integer $id (Optional) Product ID to pre-select
@@ -165,6 +208,10 @@ class Orders_m extends MY_Model
 			$input['shipping'] = 0;
 		}
 
+		// Get currency
+		$user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+		$currency      = $this->currency_m->get($user_currency);
+
 		// Append input
 		$input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
 		$input['price_ship']   	 = str_replace(',', '', $input['price_ship']);
@@ -172,6 +219,8 @@ class Orders_m extends MY_Model
 		$input['ip']			 = $_SERVER['REMOTE_ADDR'];
 		$input['created'] 		 = date("Y-m-d H:i:s");
 		$input['ordering_count'] = 0;
+		$input['currency']       = $user_currency;
+		$input['exchange_rate']  = $currency->exch_rate;
 		unset($input['btnAction']);
 		unset($input['bill_details_same']);
 
@@ -195,7 +244,6 @@ class Orders_m extends MY_Model
 	 */
 	public function insert_update_order_item($order_id, $product, $qty)
 	{
-	
 		$this->db->from('firesale_orders_items')
 				 ->where("order_id", $order_id)
 				 ->where("product_id", $product['id']);
@@ -208,7 +256,6 @@ class Orders_m extends MY_Model
 					
 		if( $this->db->count_all_results() == 0 )
 		{
-
 			$data = array(
 				'created'		=> date("Y-m-d H:i:s"),
 				'ordering_count'=> 0,
@@ -217,7 +264,8 @@ class Orders_m extends MY_Model
 				'code'			=> $product['code'],
 				'name'			=> ( isset($product['title']) ? $product['title'] : $product['name'] ),
 				'price'			=> $product['price'],
-				'qty'			=> $qty
+				'qty'			=> $qty,
+				'tax_band'      => $product['tax_band']['id']
 		 	);
 
 		 	if( $this->db->insert('firesale_orders_items', $data) )
@@ -251,9 +299,13 @@ class Orders_m extends MY_Model
 	public function update_order_cost($order_id, $update = TRUE, $cart = TRUE)
 	{
 
+		// Get tax rate
+		$user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+		$currency      = $this->currency_m->get($user_currency);
+
 		// Variables
 		$total = 0;
-		$tax   = $this->settings->get('firesale_tax');
+		$tax   = $currency->cur_tax;
 
 		// Run through cart items
 		if( $cart == TRUE )
@@ -282,7 +334,7 @@ class Orders_m extends MY_Model
 		{
 			$this->fs_cart->total    = number_format($total, 2);
 			$this->fs_cart->subtotal = number_format($sub, 2);
-			$this->fs_cart->tax 	  = number_format(( $total - $sub), 2);
+			$this->fs_cart->tax 	 = number_format(( $total - $sub), 2);
 		}
 
 		// Update?

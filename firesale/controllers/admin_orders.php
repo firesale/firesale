@@ -23,7 +23,9 @@ class Admin_orders extends Admin_Controller
 		$this->data = new StdClass;
 		
 		// Load the models
+		$this->load->library('files/files');
 		$this->load->model('orders_m');
+		$this->load->model('currency_m');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->model('address_m');
@@ -39,7 +41,6 @@ class Admin_orders extends Admin_Controller
 					   ->append_js('module::orders.js')
 					   ->append_metadata('<script type="text/javascript">' .
 										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
-										 "\n  var tax_rate = " . $this->settings->get('firesale_tax') . ";" .
 										 "\n</script>");
 	}
 
@@ -88,9 +89,22 @@ class Admin_orders extends Admin_Controller
 		$orders = $this->streams->entries->get_entries($params);
 		
 		// Get product count
-		foreach( $orders['entries'] AS $key => $order )
+		foreach( $orders['entries'] AS &$order )
 		{
-			$orders['entries'][$key]['products'] = $this->orders_m->get_product_count($order['id']);
+			
+			// Get product count
+			$order['products'] = $this->orders_m->get_product_count($order['id']);
+			
+			// No currency set?
+			if( $order['currency'] == NULL )
+			{
+				$order['currency'] = $this->currency_m->get(1);
+			}
+
+			// Format prices
+			$order['price_sub']   = $this->currency_m->format_string($order['price_sub'],   (object)$order['currency'], FALSE);
+			$order['price_ship']  = $this->currency_m->format_string($order['price_ship'],  (object)$order['currency'], FALSE);
+			$order['price_total'] = $this->currency_m->format_string($order['price_total'], (object)$order['currency'], FALSE);
 		}
 
 		// Assign variables
@@ -98,10 +112,12 @@ class Admin_orders extends Admin_Controller
 		$this->data->pagination = $orders['pagination'];
 
 		// Assign filtering
-		$users = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
-		$prods = $this->products_m->build_dropdown(( $type == 'product' ? $query : NULL));
-		$this->data->filter_users = $users['input'];
-		$this->data->filter_prods = form_dropdown('product', $prods, ( $type == 'product' ? $query : NULL ));
+		$users  = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
+		$prods  = $this->products_m->build_dropdown(( $type == 'product' ? $query : NULL));
+		$status = $this->orders_m->status_field();
+		$this->data->filter_users  = $users['input'];
+		$this->data->filter_status = form_dropdown('order_status', $status, ( $type == 'order_status' ? $query : NULL ));
+		$this->data->filter_prods  = form_dropdown('product', $prods, ( $type == 'product' ? $query : NULL ));
 		
 		// Build template
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:orders'))
@@ -119,7 +135,7 @@ class Admin_orders extends Admin_Controller
 			$input 	= $this->input->post();
 			$skip	= array('btnAction');
 			$extra 	= array(
-						'return' 			=> '/admin/firesale/orders/edit/-id-',
+						'return' 			=> 'admin/firesale/orders/edit/-id-',
 						'success_message'	=> lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
 						'error_message'		=> lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
@@ -204,16 +220,30 @@ class Admin_orders extends Admin_Controller
 		array_unshift($this->data->fields['ship']['details'], $ship);
 		array_unshift($this->data->fields['bill']['details'], $bill);
 
+		// Get currency
+		$this->data->currency = $this->currency_m->get(( $id != NULL && $row->currency != NULL ? $row->currency : 1 ));
+
 		// Get products
 		if( $id != NULL )
 		{
+
+			// Get and format products
 			$products = $this->orders_m->order_products($id);
+			foreach( $products['products'] AS &$product )
+			{
+				$price            = $product['price'];
+				$product['price'] = $this->currency_m->format_string($price, $this->data->currency, false);
+				$product['total'] = $this->currency_m->format_string($price * $product['qty'], $this->data->currency, false);
+			}
+
+			// Assign products
 			$this->data->products  = $products['products'];
 			$this->data->prod_drop = $this->products_m->build_dropdown();
 		}
-			
+
 		// Build the page
 		$this->template->title(lang('firesale:title') . ' ' . sprintf(lang('firesale:orders:title_' . ( $id == NULL ? 'create' : 'edit' )), $id))
+					   ->append_metadata("<script type=\"text/javascript\">\n  var currency = '{$this->data->currency->symbol}', tax_rate = '{$this->data->currency->cur_tax}';\n</script>")
 					   ->build('admin/orders/create', $this->data);
 	}
 
@@ -300,8 +330,11 @@ class Admin_orders extends Admin_Controller
 
 		if( $this->input->is_ajax_request() )
 		{
+			// Get order
+			$order_info = $this->orders_m->get_order_by_id($order);
+
 			// Get product
-			$product = (array)$this->products_m->get_product($id);
+			$product = (array)$this->products_m->get_product($id, $order_info['currency']['id']);
 
 			// Insert/Update item
 			if( $this->orders_m->insert_update_order_item($order, $product, $qty) )
@@ -311,7 +344,7 @@ class Admin_orders extends Admin_Controller
 
 				// Return to the browser
 				$qty = ( $product['stock_status']['key'] != 6 && $qty > $product['stock'] ? $product['stock'] : $qty );
-				$data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format(( $qty * $product['price']), 2));
+				$data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format($qty * $product['price'], 2));
 				echo json_encode($data);
 				exit();
 			}

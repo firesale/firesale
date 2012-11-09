@@ -48,10 +48,11 @@ $(function(){
 	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
 	// Tax link
-	tax_link($('#cost'), $('#cost_tax'));
 	tax_link($('#rrp'), $('#rrp_tax'));
 	tax_link($('#price'), $('#price_tax'));
-	$('#cost, #cost_tax, #rrp, #rrp_tax, #price, #price_tax');
+
+	// Add upload
+	if( $('#dropbox').length > 0 ) { bind_upload('admin/firesale/products/upload/'+$('#id').val()); }
 
 	// Image reordering
 	$('#dropbox').sortable({
@@ -60,7 +61,7 @@ $(function(){
 		stop: function(event, ui) {
 			var o = '';
 			$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });
-			$.post('/admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
+			$.post(SITE_URL+'admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
 				if( data != 'ok' ) { alert(data); }
 			});
 		}
@@ -75,6 +76,22 @@ $(function(){
 
 	// Categories "fix"
 	$('#category_list_2 li').each(function() { if( $('#category').val().indexOf($(this).attr('id')) == -1 ) { $(this).remove(); }});
+
+	/*********************
+	** DYNAMIC TAX LINK **
+	*********************/
+
+	$('#tax_band').change(function()
+	{
+		var selected_tax = $(this).find('option:selected').val();
+
+		if (taxes[selected_tax] !== undefined)
+		{
+			tax_rate = taxes[selected_tax];
+
+			$('#rrp, #price').change();
+		}
+	})
 	
 });
 	
@@ -85,7 +102,7 @@ $(function(){
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
 		price.change(function() {
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
-			if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() * ( 1 - ( tax_rate / 100 ) ) )); }
+			if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ) )); }
 		}).blur(function() { $(this).val(( $(this).val().length > 0 ? decimal($(this).val()) : '0.00' )); });
 		$('#' + tmp.attr('id')).change(function() {
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
@@ -112,7 +129,7 @@ $(function(){
 			id.html('<input type="hidden" name="old_id" value="' + id.text() + '" /><input type="text" id="id" name="id" value="' + id.text() + '" />');
 			title.html('<input type="text" id="title" name="title" value="' + title.text() + '" />');
 			stock.html('<input type="text" id="stock" name="stock" value="' + ( stock.text() == 'Unlimited (∞)' ? '0' : stock.text() ) + '" />');
-			price.parent().html('<input type="text" id="price" name="price" value="' + price.text() + '" pattern="^\d+(?:,\d{3})*\.\d{2}$" />');
+			price.html('<input type="text" id="price" name="price" value="' + price.text().substr(1) + '" pattern="^\d+(?:,\d{3})*\.\d{2}$" />');
 			
 			var select = $('select[name=category]').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'parent[]'});
 			select.find(':selected').removeAttr('selected');
@@ -151,7 +168,7 @@ $(function(){
 	function update_products(data)
 	{
 
-		$.post('/admin/firesale/products' + ( parseInt(data.value) != -1 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
+		$.post(SITE_URL+'admin/firesale/products' + ( parseInt(data.value) != -1 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
 			
 			// Variables
 			var products = $.parseJSON(p), tar = $('#product_table tbody'), row = '';

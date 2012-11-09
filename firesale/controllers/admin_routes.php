@@ -18,6 +18,9 @@ class Admin_routes extends Admin_Controller
 
 		parent::__construct();
 
+		// Does the user have access?
+		role_or_die('firesale', 'access_routes');
+
 		// Load libraries, drivers & models
 		$this->load->driver('Streams');
 		$this->load->model('routes_m');
@@ -73,8 +76,11 @@ class Admin_routes extends Admin_Controller
 		$fields = $this->fields->build_form($this->stream, 'new', $input, false, false, $skip, $extra);
 		
 		// Posted
-		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
+		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
+
+			// Check access
+			role_or_die('firesale', 'create_edit_routes');
 
 			// Got an ID back
 			if( is_numeric($fields) )
@@ -147,8 +153,11 @@ class Admin_routes extends Admin_Controller
 		}
 		
 		// Posted
-		if( $this->input->post('btnAction') == 'save' OR $this->input->post('btnAction') == 'save_exit' )
+		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
+
+			// Check access
+			role_or_die('firesale', 'create_edit_routes');
 
 			// Got an ID back
 			if( is_numeric($fields) )
@@ -207,6 +216,39 @@ class Admin_routes extends Admin_Controller
         // Flash and redirect
         $this->session->set_flashdata('success', lang('firesale:routes:build_success'));
         redirect('admin/firesale/routes');
+	}
+
+	public function delete($id)
+	{
+
+		// Get route
+		$query = $this->db->where('id', $id)->get('firesale_routes');
+
+		// Check if exists
+		if( $query->num_rows() )
+		{
+
+			// Get the route
+			$route = current($query->result_array());
+
+			// Check if it's core
+			if( $route['is_core'] != '1' )
+			{
+
+				// Remove it
+				if( $this->routes_m->delete($id) )
+				{
+					$this->session->set_flashdata('success', lang('firesale:routes:delete_success'));
+					redirect('admin/firesale/routes');
+				}
+
+			}
+
+		}
+
+		// Something went wrong
+		$this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
+		redirect('admin/firesale/routes');
 	}
 
 }

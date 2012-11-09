@@ -15,25 +15,31 @@
 	$lang['firesale:sections:orders'] 		= 'Pesanan';
 	$lang['firesale:sections:addresses'] 	= 'Alamat';
 	$lang['firesale:sections:orders_items']	= 'Item Pesanan';
-	$lang['firesale:sections:gateways']		= 'Gateway'; //
+	$lang['firesale:sections:gateways']		= 'Gateway';
 	$lang['firesale:sections:settings'] 	= 'Pengaturan';
-	$lang['firesale:sections:routes']         = 'Routes'; # Translate
-	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
-	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
-
+	$lang['firesale:sections:routes']         = 'Rute'; 
+	$lang['firesale:sections:currency']       = 'Mata Uang';
+	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
+	
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opsi Umum';
 	$lang['firesale:tabs:description'] 	= 'Deskripsi';
+	$lang['firesale:tabs:formatting'] 	= 'Format';
 	$lang['firesale:tabs:shipping']		= 'Pengiriman';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Atribut';
 	$lang['firesale:tabs:images']		= 'Gambar';
+	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Buat Produk';
 	$lang['firesale:shortcuts:cat_create']		= 'Buat Kategori';
 	$lang['firesale:shortcuts:install_gateway']	= 'Pasang Gateway';
 	$lang['firesale:shortcuts:create_order']	= 'Buat Pesanan';
+	$lang['firesale:shortcuts:create_routes'] = 'Tambah Route Baru';
+	$lang['firesale:shortcuts:build_routes']  = 'Bangun Ulang Rute';
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band'; #Translate
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes'; #Translate
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Ulasan Singkat';
@@ -41,13 +47,13 @@
 	$lang['firesale:elements:product_sales'] 	= 'Penjualan Produk';
 	$lang['firesale:elements:low_stock']	 	= 'Peringatan Stok';
 	$lang['firesale:dashboard:no_sales']	 	= 'Tidak ada penjualan dalam 12 bulan terakhir';
-	$lang['firesale:dashboard:stock_low']	 	= '%s Produk hampir habis';
+	$lang['firesale:dashboard:stock_low']	 	= '%s Produk dengan stok menipis';
 	$lang['firesale:dashboard:stock_out']	 	= '%s Produk habis';
-	$lang['firesale:dashboard:no_stock_low']	= 'Tidak ada produk dengan ketersediaan rendah';
+	$lang['firesale:dashboard:no_stock_low']	= 'Tidak ada produk dengan stok menipis';
 	$lang['firesale:dashboard:no_stock_out']	= 'Tidak ada produk yang habis';
 	$lang['firesale:dashboard:view_more']		= 'Lihat selengkapnya...';
-	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
-	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
+	$lang['firesale:dashbord:low_stock']		= 'Stok Menipis';
+	$lang['firesale:dashbord:out_of_stock']		= 'Stok Habis';
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Atur Kategori';
@@ -65,7 +71,7 @@
 	$lang['firesale:cats_edit_error'] 		= 'Ada masalah saat memperbaharui kategori';
 	$lang['firesale:cats_delete_success'] 	= 'Kategori berhasil dihapus';
 	$lang['firesale:cats_delete_error'] 	= 'Ada masalah saat menghapus kategori';
-	$lang['firesale:cats_all_products']     = 'All Products'; # Translate
+	$lang['firesale:cats_all_products']     = 'Semua Produk';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Tidak Ada Produk';
@@ -83,9 +89,9 @@
 	$lang['firesale:prod_duplicate_error'] 	= 'Ada masalah saat menduplikasi produk';
 	$lang['firesale:prod_duplicate_success']= 'Produk berhasil diduplikasi';
 	$lang['firesale:prod_not_found'] 		= 'Produk yang dimaksud tidak ditemukan';
-	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
-	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
-	$lang['firesale:prod_button_quick_edit']= 'Quick Edit'; #Translate	
+	$lang['firesale:prod_delimg_success']   = 'Gambar berhasil dihapus';
+	$lang['firesale:prod_delimg_error']     = 'Terjadi kesalahan saat menghapus gambar yang dimaksud';
+	$lang['firesale:prod_button_quick_edit']= 'Edit Cepat';	
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Harga eceran sebelum dan sesudah dikenai pajak';
@@ -103,6 +109,10 @@
 	$lang['firesale:label_parent']		= 'Kategori Induk';
 	$lang['firesale:label_filtercat']	= 'Saring Berdasarkan Kategori';
 	$lang['firesale:label_filtersel']	= 'Pilih Kategori';
+	$lang['firesale:label_filterprod']    = 'Pilih Produk';
+	$lang['firesale:label_filterstatus']  = 'Pilih Status Produk';
+	$lang['firesale:label_filtersstatus'] = 'Pilih Status Stok';
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
 	$lang['firesale:label_rrp']			= 'Harga Ecer yang Dianjurkan';
 	$lang['firesale:label_rrp_tax']		= 'Harga Ecer yang Dianjurkan (sebelum dikenai pajak)';
 	$lang['firesale:label_rrp_short']	= 'RRP';
@@ -111,16 +121,16 @@
 	$lang['firesale:label_stock']		= 'Level Stok Saat Ini';
 	$lang['firesale:label_drop_images'] = 'Tarik dan Lepaskan Gambar Disini untuk Mengunggah';
 	$lang['firesale:label_duplicate']   = 'Duplikasi';
-	$lang['firesale:label_showfilter']  = 'Show Filters'; # Translate
+	$lang['firesale:label_showfilter']  = 'Tampilkan Filter';
 
 	$lang['firesale:label_stock_short']		= 'Level Stok';
 	$lang['firesale:label_stock_status']	= 'Status Stok';
 	$lang['firesale:label_stock_in']		= 'Tersedia';
-	$lang['firesale:label_stock_low']		= 'Hampir Habis';
+	$lang['firesale:label_stock_low']		= 'Stok Menipis';
 	$lang['firesale:label_stock_out']		= 'Habis';
 	$lang['firesale:label_stock_order']		= 'Dipesan tambahan stok';
 	$lang['firesale:label_stock_ended']		= 'Tidak dilanjutkan';
-	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
+	$lang['firesale:label_stock_unlimited']	= 'Tak Terbatas';
 
 	$lang['firesale:label_remove']		= 'Hapus';
 	$lang['firesale:label_image']		= 'Gambar';
@@ -151,6 +161,7 @@
 	$lang['firesale:label_details'] 	= 'Alamat tagihan dan pengiriman sama';
 	$lang['firesale:label_user_order']	= 'Pengguna';
 	$lang['firesale:label_ip']			= 'Alamat IP';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping'; # Translate
 
 	$lang['firesale:label_nameaz']		= 'Nama A - Z';
 	$lang['firesale:label_nameza']		= 'Nama Z - A';
@@ -167,10 +178,28 @@
 	$lang['firesale:label_time_day']	= '1 hari yang lalu.';
 	$lang['firesale:label_time_days'] 	= '%s hari yang lalu.';
 
-	$lang['firesale:label_map']         = 'Map'; # Translate
-	$lang['firesale:label_route']       = 'Route'; # Translate
-	$lang['firesale:label_translation'] = 'Translation'; # Translate
-	$lang['firesale:label_table']       = 'Table'; # Translate
+	$lang['firesale:label_map']         = 'Peta';
+	$lang['firesale:label_route']       = 'Rute';
+	$lang['firesale:label_translation'] = 'Terjemahan';
+	$lang['firesale:label_table']       = 'Tabel';
+	
+	$lang['firesale:label_cur_code']        = 'Kode Mata Uang';
+	$lang['firesale:label_cur_code_inst']   = 'Format ISO-4217';
+	$lang['firesale:label_cur_tax']         = 'Rate Pajak';
+	$lang['firesale:label_cur_mod']         = 'Pengubah Mata Uang';
+	$lang['firesale:label_cur_mod_inst']    = 'Anda boleh mengubah kurs sedikit untuk menutupi biaya tambahan terkait dengan wilayah tersebut';
+	$lang['firesale:label_exch_rate']       = 'Kurs';
+	$lang['firesale:label_exch_rate_inst']  = 'ini akan diperbaharui secara otomatis setiap jam dan dapat dikosongkan karena akan tetap diperbaharui setelah disimpan';
+	$lang['firesale:label_cur_flag']        = 'Gambar Terkait';
+	$lang['firesale:label_enabled']         = 'Nyalakan';
+	$lang['firesale:label_disabled']        = 'Matikan';
+	$lang['firesale:label_cur_format']      = 'Format Mata Uang';
+	$lang['firesale:label_cur_format_inst'] = 'Format termasuk simbol mata uang, dengan "{{ price }}" yang nilainya akan ditampilkan, mis: Rp {{ price }}';
+	$lang['firesale:label_cur_format_dec']  = 'Simbol Desimal';
+	$lang['firesale:label_cur_format_sep']  = 'Simbol Batas Ribuan';
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; #Translate
+
+	$lang['firesale:label_tax_band']  = 'Tax Band'; #Translate
 
 	// Orders
 	$lang['firesale:orders:title']				= 'Pesanan';
@@ -197,16 +226,16 @@
 	$lang['firesale:orders:declined_message']	= 'Pembayaran Anda tertolak, silakan coba lagi.';
 	$lang['firesale:orders:mismatch_message']	= 'PEmbayaran Anda tidak cocok dengan pesanan.';
 	$lang['firesale:orders:logged_in']			= 'Anda harus masuk terlebih dahulu untuk melihat riwayat pesanan Anda.';
-	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
-	$lang['firesale:orders:label_products']		= 'Products'; # Translate
-	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
-	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
-	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
-	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate	
-	$lang['firesale:orders:labe_shipping_address'] 	= 'Shipping Address'; # Translate
-	$lang['firesale:orders:labe_payment_address'] 	= 'Payment Address'; # Translate
-	$lang['firesale:orders:label_order_status']		= 'Order Status'; # Translate
-	$lang['firesale:orders:label_message']			= 'Message'; # Translate
+	$lang['firesale:orders:label_view_order']	= 'Lihat Pesanan';
+	$lang['firesale:orders:label_products']		= 'Produk';
+	$lang['firesale:orders:label_view_order']	   = 'View Order'; #Translate
+	$lang['firesale:orders:label_customer']		= 'Pelanggan';
+	$lang['firesale:orders:label_date_placed']	= 'Tanggal Ditempatkan';
+	$lang['firesale:orders:label_order_id'] 	= 'ID Pesanan';
+	$lang['firesale:orders:labe_shipping_address'] 	= 'Alamat Kirim';
+	$lang['firesale:orders:labe_payment_address'] 	= 'Alamat Tagihan';
+	$lang['firesale:orders:label_order_status']		= 'Status Pengiriman';
+	$lang['firesale:orders:label_message']			= 'Pesan';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Gateway Pembayaran';
@@ -253,109 +282,123 @@
 	$lang['firesale:payment:title_success'] 		= 'Pembayaran Lengkap';
 	$lang['firesale:checkout:title:ship_method']	= 'Metode Pengiriman';
 	$lang['firesale:checkout:title:payment_method']	= 'Metode Pembayaran';
+	$lang['firesale:checkout:next']					= 'Next'; #Translate
+	$lang['firesale:checkout:previous']				= 'Previous';#Translate
+	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';#Translate
+	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';#Translate
+	$lang['firesale:checkout:submit_and_pay']		= 'Submit &amp; Pay';#Translate
 
 	// Routes
-	$lang['firesale:routes:title']          = 'Routes'; # Translate
-	$lang['firesale:routes:new']            = 'Add a new Route'; # Translate
-	$lang['firesale:routes:add_success']    = 'New route added successfully'; # Translate
-	$lang['firesale:routes:add_error']      = 'Error adding a new route'; # Translate
-	$lang['firesale:routes:edit']           = 'Edit %s Route'; # Translate
-	$lang['firesale:routes:edit_success']   = 'Route edited successfully'; # Translate
-	$lang['firesale:routes:edit_error']     = 'Error editing the route'; # Translate
-	$lang['firesale:routes:not_found']      = 'The selected route could not be found'; # Translate
-	$lang['firesale:routes:none']           = 'No routes found'; # Translate
-	$lang['firesale:routes:delete_success'] = 'Route removed successfully'; # Translate
-	$lang['firesale:routes:delete_error']   = 'Error removing route'; # Translate
-	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
-	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
+	$lang['firesale:routes:title']          = 'Rute';
+	$lang['firesale:routes:new']            = 'Tambah Rute Baru';
+	$lang['firesale:routes:add_success']    = 'Rute baru telah ditambahkan';
+	$lang['firesale:routes:add_error']      = 'Terjadi kesalahan saat menambahkan rute baru';
+	$lang['firesale:routes:edit']           = 'Edit %s Rute';
+	$lang['firesale:routes:edit_success']   = 'Rote telah diperbaharui';
+	$lang['firesale:routes:edit_error']     = 'Terjadi kesalahan saat memperbaharui rute';
+	$lang['firesale:routes:not_found']      = 'Rute yang dipilih tidak ditemukan';
+	$lang['firesale:routes:none']           = 'Rute tidak ditemukan';
+	$lang['firesale:routes:delete_success'] = 'Rute berhasil dihapus';
+	$lang['firesale:routes:delete_error']   = 'Terjadi kesalahan saat menghapus rute';
+	$lang['firesale:routes:build_success']  = 'Berhasil membangun ulang file routes';
+	$lang['firesale:routes:build_error']    = 'Terjadi kesalahan saat membangun ulang file routes';
 
 	// Currency
-	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency'; # translate
-	$lang['firesale:currency:enable']            = 'Enable'; # translate
-	$lang['firesale:currency:disable']           = 'Disable'; # translate
-	$lang['firesale:currency:disable_warn']      = 'Disabling this may cause issues for customers and previous orders'; # translate
-	$lang['firesale:currency:delete']            = 'Delete'; # translate
-	$lang['firesale:currency:delete_warn']       = 'Deleting this may cause issues for customers and previous orders'; # translate
-	$lang['firesale:currency:create']            = 'Create New Currency'; # translate
-	$lang['firesale:currency:edit']              = 'Edit Currency'; # translate
-	$lang['firesale:currency:not_found']         = 'Selected currency not found'; # translate
-	$lang['firesale:currency:add_success']       = 'New currency added successfully'; # translate
-	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency'; # translate
-	$lang['firesale:currency:edit_success']      = 'Currency updated successfully'; # translate
-	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency'; # translate
-	$lang['firesale:label_cur_format_num']       = 'Number Formatting'; # translate
-	$lang['firesale:currency:format_none']       = 'None'; # translate
-	$lang['firesale:currency:format_00']         = 'Round up to next full number'; # translate
-	$lang['firesale:currency:format_50']         = 'Round to closest .50'; # translate
-	$lang['firesale:currency:format_99']         = 'Round up to closest .99'; # translate
+	$lang['firesale:shortcuts:install_currency'] = 'Pasang Mata Uang Baru';
+	$lang['firesale:currency:enable']            = 'Nyalakan';
+	$lang['firesale:currency:disable']           = 'Matikan';
+	$lang['firesale:currency:disable_warn']      = 'Mematikan ini berpotensi menimbulkan masalah untuk pelanggan dan pesanan sebelumnya';
+	$lang['firesale:currency:delete']            = 'Hapus';
+	$lang['firesale:currency:delete_warn']       = 'Menghapus ini berpotensi menimbulkan masalah untuk pelanggan dan pesanan sebelumnya';
+	$lang['firesale:currency:create']            = 'Buat Mata Uang Baru';
+	$lang['firesale:currency:edit']              = 'Edit Mata Uang';
+	$lang['firesale:currency:not_found']         = 'Mata uang yang dipilih tidak ditemukan';
+	$lang['firesale:currency:add_success']       = 'Mata uang baru telah ditambahkan';
+	$lang['firesale:currency:add_error']         = 'Terjadi kesalahan saat menambahkan mata uang baru';
+	$lang['firesale:currency:edit_success']      = 'Mata Uang telah diperbaharui';
+	$lang['firesale:currency:edit_error']        = 'Terjadi kesalahan saat memperbaharui mata uang';
+	$lang['firesale:label_cur_format_num']       = 'Format Angka';
+	$lang['firesale:currency:format_none']       = 'Tidak ada';
+	$lang['firesale:currency:format_00']         = 'Bulatkan ke bilangan bulat selanjutnya';
+	$lang['firesale:currency:format_50']         = 'Bulatkan mendekati .50';
+	$lang['firesale:currency:format_99']         = 'Bulatkan mendekati .99';
+
+	// Taxes
+	$lang['firesale:taxes:none']                  = 'There are currently no tax bands setup'; # Translate
+	$lang['firesale:taxes:new']                   = 'Add tax band'; # Translate
+	$lang['firesale:taxes:edit']                  = 'Edit tax band'; # Translate
+	$lang['firesale:taxes:add_success']           = 'Tax band created successfully'; # Translate
+	$lang['firesale:taxes:add_error']             = 'There was an error whilst creating the tax band'; # Translate
+	$lang['firesale:taxes:edit_success']          = 'Tax band edited successfully'; # Translate
+	$lang['firesale:taxes:edit_error']            = 'There was an error whilst editing the tax band'; # Translate
+	$lang['firesale:taxes:assignments_updated']   = 'Tax band assignments were updated successfully'; # Translate
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Alamat Saya';
-	$lang['firesale:addresses:edit_address'] = 'Edit Address'; # Translate
-	$lang['firesale:addresses:new_address']  = 'Create new Address'; # Translate
-	$lang['firesale:addresses:save']	     = 'Save'; # Translate
-	$lang['firesale:addresses:cancel']       = 'Cancel'; # Translate
-	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
-	$lang['firesale:addresses:add_success']  = 'Address created successfully'; # Translate
-	$lang['firesale:addresses:add_error']    = 'Error creating address'; # Translate
-	$lang['firesale:addresses:edit_success'] = 'Address edited successfully'; # Translate
-	$lang['firesale:addresses:edit_error']   = 'Error editing address'; # Translate
+	$lang['firesale:addresses:edit_address'] = 'Edit Alamat';
+	$lang['firesale:addresses:new_address']  = 'Buat Alamat Baru';
+	$lang['firesale:addresses:save']	     = 'Simpan';
+	$lang['firesale:addresses:cancel']       = 'Batal';
+	$lang['firesale:addresses:no_user']      = 'Anda harus login untuk dapat mengatur buku alamat';
+	$lang['firesale:addresses:add_success']  = 'Alamat telah dibuat';
+	$lang['firesale:addresses:add_error']    = 'Terjadi kesalahan saat membuat alamat baru';
+	$lang['firesale:addresses:edit_success'] = 'Alamat telah diperbaharui';
+	$lang['firesale:addresses:edit_error']   = 'Terjadi kesalahan saat memperbaharui alamat baru';
 
 	// Products Frontend
-	$lang['firesale:product:label_availability'] = "Availability"; # Translate
-	$lang['firesale:product:label_model'] = "Model"; # Translate
-	$lang['firesale:product:label_product_code'] = "Product Code"; # Translate
-	$lang['firesale:product:label_qty'] = "Qty"; # Translate
-	$lang['firesale:product:label_add_to_cart'] = "Add to Cart"; # Translate
+	$lang['firesale:product:label_availability'] = "Ketersediaan";
+	$lang['firesale:product:label_model'] = "Model";
+	$lang['firesale:product:label_product_code'] = "Kode Produk";
+	$lang['firesale:product:label_qty'] = "Qty";
+	$lang['firesale:product:label_add_to_cart'] = "Tambahkan ke keranjang";
 	
 	// Cart Frontend
-	$lang['firesale:cart:label_remove'] = "Remove"; # Translate
-	$lang['firesale:cart:label_image'] = "Image"; # Translate
-	$lang['firesale:cart:label_name'] = "Name"; # Translate
+	$lang['firesale:cart:label_remove'] = "Singkirkan";
+	$lang['firesale:cart:label_image'] = "Gambar";
+	$lang['firesale:cart:label_name'] = "Nama";
 	$lang['firesale:cart:label_model'] = "Model"; # Translate
-	$lang['firesale:cart:label_quantity'] = "Quantity"; # Translate
-	$lang['firesale:cart:label_unit_price'] = "Unit Price"; # Translate
-	$lang['firesale:cart:label_total'] = "Total"; # Translate
-	$lang['firesale:cart:label_no_items_in_cart'] = "No items in your cart"; # Translate
-	$lang['firesale:cart:button_update'] = "Update cart"; # Translate
-	$lang['firesale:cart:button_goto_checkout'] = "Goto Checkout"; # Translate
-	$lang['firesale:cart:label_sub_total'] = "Sub-Total";  # Translate
-	$lang['firesale:cart:label_tax'] = "Tax"; # Translate
-	$lang['firesale:cart:label_total'] = "Total"; # Translate
+	$lang['firesale:cart:label_quantity'] = "Quantitas";
+	$lang['firesale:cart:label_unit_price'] = "Harga Unit";
+	$lang['firesale:cart:label_total'] = "Total";
+	$lang['firesale:cart:label_no_items_in_cart'] = "Tidak ada item di keranjang";
+	$lang['firesale:cart:button_update'] = "Perbaharui keranjang";
+	$lang['firesale:cart:button_goto_checkout'] = "Periksa";
+	$lang['firesale:cart:label_sub_total'] = "Sub-Total";
+	$lang['firesale:cart:label_tax'] = "Pajak";
+	$lang['firesale:cart:label_total'] = "Total";
 	
 	//Categories Frontend
-	$lang['firesale:categories:grid'] = 'Grid';	#Translate
-	$lang['firesale:categories:list'] = 'List';	#Translate
-	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate
+	$lang['firesale:categories:grid'] = 'Grid';
+	$lang['firesale:categories:list'] = 'List';
+	$lang['firesale:categories:add_to_basket'] = 'Tambahkan ke Keranjang';
 	
 	//Payment Frontend
-	$lang['firesale:payment:cancelled'] = 'Order Cancelled'; #Translate
-	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...'; #Translate
-	$lang['firesale:payment:btn_continue'] = 'Continue'; #Translate
+	$lang['firesale:payment:cancelled'] = 'Pesanan Dibatalkan';
+	$lang['firesale:payment:wait_redirect'] = 'Silakan tunggu sejenak, kami sedang mengalihkan Anda ke halaman pembayaran...';
+	$lang['firesale:payment:btn_continue'] = 'Lanjutkan';
 	
 	// Settings
-	$lang['firesale:settings_tax']                   = 'Tax Percentage'; # translate
-	$lang['firesale:settings_tax_inst']              = 'The percentage of tax to be applied to the products'; # translate
-	$lang['firesale:settings_currency']              = 'Default Currency Code'; # translate
-	$lang['firesale:settings_currency_inst']         = 'The currency you accept (ISO-4217 format)'; # translate
-	$lang['firesale:settings_currency_key']          = 'Currency API Key'; # translate
-	$lang['firesale:settings_currency_key_inst']     = 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>'; # translate
-	$lang['firesale:settings_current_currency']      = 'Current Currency'; # translate
-	$lang['firesale:settings_current_currency_inst'] = 'The current currency in use, used to update existing values if default currency is changed'; # translate
-	$lang['firesale:settings_currency_updated']      = 'Currency last update time'; # translate
-	$lang['firesale:settings_currency_updated_inst'] = 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that'; # translate
-	$lang['firesale:settings_perpage']               = 'Products per Page'; # translate
-	$lang['firesale:settings_perpage_inst']          = 'The number of products to be displayed on category and search result pages'; # translate
-	$lang['firesale:settings_image_square']          = 'Make Images Square'; # translate
-	$lang['firesale:settings_image_square_inst']     = 'Some themes may require square images to keep layouts consistent'; # translate
-	$lang['firesale:settings_image_background']      = 'Image Background Colour'; # translate
-	$lang['firesale:settings_image_background_inst'] = 'Hexcode (without #) colour you wish resized image backgrounds to be'; # translate
-	$lang['firesale:settings_login']                 = 'Require login to purchase'; # translate
-	$lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products'; # translate
+	$lang['firesale:settings_tax']                   = 'Persentase Pajak';
+	$lang['firesale:settings_tax_inst']              = 'Persentase pajak yang dikenakan pada produk';
+	$lang['firesale:settings_currency']              = 'Kode Mata Uang Dasar';
+	$lang['firesale:settings_currency_inst']         = 'Mata uang yang Anda terima (format ISO-4217)';
+	$lang['firesale:settings_currency_key']          = 'API Key Mata Uang';
+	$lang['firesale:settings_currency_key_inst']     = 'API Key dari <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>';
+	$lang['firesale:settings_current_currency']      = 'Mata Uang Saat Ini';
+	$lang['firesale:settings_current_currency_inst'] = 'Mata uang saat ini sedang digunakan untuk memperbaharui nilai yang ada bila mata uang dasar diubah';
+	$lang['firesale:settings_currency_updated']      = 'Waktu terakhir pembaharuan mata uang';
+	$lang['firesale:settings_currency_updated_inst'] = 'Terakhir kali mata uang diperbaharui, API diperbaharui setiap jam dan untuk menjaga batas kelajuan kami hanya mengecek setelah itu';
+	$lang['firesale:settings_perpage']               = 'Produk per Halaman';
+	$lang['firesale:settings_perpage_inst']          = 'Banyak produk yang ditampilkan dalam halaman kategori dan hasil pencarian';
+	$lang['firesale:settings_image_square']          = 'Buat Gambar menjadi Kotak';
+	$lang['firesale:settings_image_square_inst']     = 'Beberapa tema tampilan memerlukan gambar kotak untuk menjaga konsistensi tampilan';
+	$lang['firesale:settings_image_background']      = 'Warna Latar Gambar';
+	$lang['firesale:settings_image_background_inst'] = 'Kode Warna Hexa (tanpa #) untuk gambar yang diubah ukurannya';
+	$lang['firesale:settings_login']                 = 'Anda harus login untuk membeli';
+	$lang['firesale:settings_login_inst']            = 'Pastikan pengguna untuk login sebelum membolehkan mereka membeli produk';
 
 	// Install errors
-	$lang['firesale:install:wrong_version'] = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above'; #Translate
-	$lang['firesale:install:missing_multiple'] = 'FireSale requires the Multiple Relationships field type to operate. You can download this from <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">here</a>'; #Translate
-	$lang['firesale:install:not_installed'] = 'Please install the FireSale module before installing additional FireSale addons'; #Translate
-	$lang['firesale:install:no_route_access']  = 'FireSale requires access to the system/cms/config/routes.php file. Please set the appropriate permissions and try again'; # Translate
-	
+	$lang['firesale:install:wrong_version'] = 'Tidak dapat memasang modul FireSale, FireSale harus menggunakan PyroCMS versi 2.1.4 ke atas';
+	$lang['firesale:install:missing_multiple'] = 'FireSale memerlukan tipe field Multiple Relationships untuk dapat berfungsi. Anda dapat mengunduhnya di <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">disini</a>';
+	$lang['firesale:install:not_installed'] = 'Silakan pasang modul FireSale sebelum memasang modul tambahan untuk FireSale';
+	$lang['firesale:install:no_route_access']  = 'FireSale memerlukan akses ke file system/cms/config/routes.php. Silakan set permission yang dibutuhkan kemudian coba lagi';

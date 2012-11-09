@@ -42,7 +42,7 @@
 		<section id="cart-totals">
 			<ul>
 				<li><label><?php echo lang('firesale:cart:label_sub_total'); ?>:</label><span>{{ subtotal }}</span></li>
-				<li><label><?php echo lang('firesale:cart:label_tax'); ?> ({{ currency.cur_tax }}%):</label><span>{{ tax }}</span></li>
+				<li><label><?php echo lang('firesale:cart:label_tax'); ?>:</label><span>{{ tax }}</span></li>
 				<li class="large"><label><?php echo lang('firesale:cart:label_total'); ?>:</label><span>{{ total }}</li>
 			</ul>
 			<br class="clear" />

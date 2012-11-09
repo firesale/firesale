@@ -12,6 +12,38 @@ class Cart_m extends MY_Model
 {
 
 	/**
+	*/
+	public function update_currency($currency)
+	{
+
+		// Variables
+		$contents = $this->fs_cart->contents();
+
+		// Destroy the cart
+		$this->fs_cart->destroy();
+
+		// Loop products
+		foreach( $contents AS $row_id => $product )
+		{
+
+			// Get original price
+			$query = $this->db->select('price_tax, rrp_tax, tax_band')->where('id', $product['id'])->get('firesale_products');
+			$price = $query->row_array();
+
+			// Build new price
+			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], $price['tax_band'], $currency->id);
+
+			// Assign to data
+			$product['price']    = $price['price_tax'];
+			$product['subtotal'] = $price['price_tax'] * $product['qty'];
+
+			// insert
+			$this->fs_cart->insert($product);
+		}
+
+	}
+
+	/**
 	 * Ensures that the product quanities that have been added to a cart are within
 	 * the allowed limits of what is currently in stock.
 	 *
@@ -50,10 +82,11 @@ class Cart_m extends MY_Model
 	 * for the correct user or if a new address has been submitted that it contains
 	 * all of the necissary data.
 	 *
+	 * @param boolean $ship Do we require shipping?
 	 * @return array An array containing the rules to be added to validation
 	 * @access public
 	 */
-	public function build_validation()
+	public function build_validation($ship = TRUE)
 	{
 
 		// Variables
@@ -70,7 +103,7 @@ class Cart_m extends MY_Model
 		{
 
 			// Shipping
-			if( !isset($input['ship_to']) OR ( isset($input['ship_to']) AND $input['ship_to'] == 'new' ) )
+			if( $ship AND ( !isset($input['ship_to']) OR ( isset($input['ship_to']) AND $input['ship_to'] == 'new' ) ) )
 			{
 				$_rule   		= $rule;
 				$_rule['field'] = 'ship_' . $_rule['field'];
@@ -90,7 +123,7 @@ class Cart_m extends MY_Model
 		// Set callbacks
 		$rules[] = array('field' => 'gateway', 'label' => 'lang:firesale:label_gateway', 'rules' => 'callback__validate_gateway');
 		$rules[] = array('field' => 'shipping', 'label' => 'lang:firesale:label_shipping', 'rules' => 'callback__validate_shipping');
-		if( isset($input['ship_to']) )
+		if( $ship AND isset($input['ship_to']) )
 		{
 			$rules[] = array('field' => 'ship_to', 'label' => 'lang:firesale:label_ship_to', 'rules' => 'callback__validate_address');
 		}
@@ -152,17 +185,18 @@ class Cart_m extends MY_Model
 	 */
 	public function build_data($product, $qty)
 	{
-
 		$data = array(
-					'id'	=> $product['id'],
-					'code'	=> $product['code'],
-					'qty'	=> ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
-					'price'	=> $product['price'],
-					'name'	=> $product['title'],
-					'slug'	=> $product['slug'],
-					'weight'=> ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
-					'image'	=> $this->products_m->get_single_image($product['id'])
-				);
+			'id'	   => $product['id'],
+			'code'	   => $product['code'],
+			'qty'	   => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
+			'price'	   => $product['price_tax_rounded'],
+			'tax_band' => $product['tax_band']['id'],
+			'name'	   => $product['title'],
+			'slug'	   => $product['slug'],
+			'ship'     => $product['ship_req']['key'],
+			'weight'   => ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
+			'image'	   => $this->products_m->get_single_image($product['id'])
+		);
 
 		return $data;
 	}

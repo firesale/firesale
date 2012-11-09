@@ -5,9 +5,11 @@ class Plugin_Firesale extends Plugin
 
     public function __construct()
     {
+		$this->load->library('files/files');
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->model('routes_m');
+		$this->load->model('taxes_m');
 		$this->load->model('currency_m');
 	}
 
@@ -17,19 +19,20 @@ class Plugin_Firesale extends Plugin
 		// Variables
 		$route = $this->attribute('route');
 		$id    = $this->attribute('id');
+		$after = $this->attribute('after');
 
 		// Get the URL
-		return BASE_URL.$this->routes_m->build_url($route, $id);
+		return BASE_URL.$this->routes_m->build_url($route, $id).$after;
 	}
 
 	public function module_installed()
 	{
 	
 		// Variables
-		$module = $this->attribute('name', 'firesale');
+		$module = $this->attribute('slug', 'firesale');
 
 		// Check
-		$query = $this->db->select('id')->where("slug = '{$module}' AND installed = 1")->get('modules');
+		$query = $this->db->select('id')->where('slug', $module)->where('installed', '1')->get('modules');
 
 		if( $query->num_rows() )
 		{
@@ -44,7 +47,7 @@ class Plugin_Firesale extends Plugin
 	
 		// Variables
 		$limit	   = $this->attribute('limit', 6);
-		$category  = $this->attribute('category', 0);
+		$parent    = $this->attribute('parent', 0);
 		$where     = $this->attribute('where', FALSE);
 		$order_by  = $this->attribute('order-by', 'ordering_count');
 		$order_dir = $this->attribute('order-dir', 'asc');
@@ -59,10 +62,10 @@ class Plugin_Firesale extends Plugin
 		}
 		
 		// Build query
-		$query = $this->db->select('id, title, parent, slug')
+		$query = $this->db->select('id')
 					  	  ->from('firesale_categories')
 						  ->where('status', '1')
-						  ->where('parent', $category)
+						  ->where('parent', $parent)
 						  ->order_by($order_by, $order_dir);
 						  
 		// Add where?
@@ -81,8 +84,8 @@ class Plugin_Firesale extends Plugin
 			$query->limit($limit);
 		}
 
-		// Category may be NULL
-		if( $category <= 0 )
+		// Parent may be NULL
+		if( $parent <= 0 )
 		{
 			$query->or_where('status', '1')
 				  ->where('parent', NULL);
@@ -90,6 +93,12 @@ class Plugin_Firesale extends Plugin
 
 		// Get categories
 		$categories = $query->get()->result_array();
+
+		// Loop and get objects
+		foreach( $categories AS &$category )
+		{
+			$category = $this->categories_m->get_category($category['id']);
+		}
 		
 		return $categories;
 	}
@@ -174,10 +183,14 @@ class Plugin_Firesale extends Plugin
 	{
 	
 		// Load libraries
-		$this->load->model('products_m');
 		$this->load->library('fs_cart');
 
-		$tax  		 	= round(( 100 - $this->settings->get('firesale_tax') ) / 100, 3);
+		// Get currency
+		$currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
+
+
+		// Variables
+		$tax  		 	= round(( 100 - $currency->cur_tax ) / 100, 3);
 		$data 		 	= new stdClass;
 		$data->sub 	 	= 0;
 		$data->tax 	 	= 0;
@@ -189,30 +202,32 @@ class Plugin_Firesale extends Plugin
 		foreach( $this->fs_cart->contents() as $id => $item )
 		{
 		
-			$product = $this->products_m->get_product($item['id']);
-			
+			$product = $this->products_m->get($item['id']);
+
 			if( $product !== FALSE )
 			{
 			
 				$data->products[] = array(
 					'id'		=> $id,
-					'code' 		=> $product['code'],
-					'slug'		=> $product['slug'],
+					'code' 		=> $product->code,
+					'slug'		=> $product->slug,
 					'quantity'	=> $item['qty'],
 					'name'		=> $item['name']
 				);
 				
-				$data->total += $item['subtotal'];
+				$data->sub   += ( $product->price_tax * $item['qty'] );
+				$data->total += ( $product->price * $item['qty'] );
 				$data->count += $item['qty'];
 			}
 		
 		}
 		
 		// Calculate prices
-		$data->tax   = number_format(( $data->total * $tax ), 2);
-		$data->sub   = number_format(( $data->total - $data->tax ), 2);
-		$data->total = number_format($data->total, 2);
+		$data->tax   = $this->currency_m->format_string(( $data->total - $data->sub ), $currency, false);
+		$data->sub   = $this->currency_m->format_string($data->sub, $currency, false);
+		$data->total = $this->currency_m->format_string($data->total, $currency, false);
 
+		// Retrun data
 		return array($data);
 	}
 
@@ -230,27 +245,6 @@ class Plugin_Firesale extends Plugin
 		}
 
 		return $results;
-	}
-
-	public function prevoius_next()
-	{
-
-		// Variables
-		$id   = $this->attribute('id');
-		$type = $this->attribute('type', 'next');
-
-		// Check ID for previous
-		if( $type == 'previous' AND $id != 1 )
-		{
-			return $this->products_m->get_product(( $id - 1 ));
-		}
-		else if( $type == 'next' )
-		{
-			return $this->products_m->get_product(( $id + 1 ));
-		}
-
-		// Otherwise
-		return FALSE;
 	}
 
 	#######################

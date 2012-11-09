@@ -58,11 +58,11 @@ class Routes_m extends MY_Model
 				{
 
 					// Get type
-					$query = $this->db->select('id, slug, title')->where('id', $id)->get($route->table);
+					$query = $this->db->select('id' . ( $route->table != 'firesale_orders' ? ', slug, title' : '' ))->where('id', $id)->get($route->table);
 					$type  = $query->row();
 
 					// Perform replacements
-					$formatted = str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
+					$formatted = @str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
 
 					// Check for product and category slug
 					if( $route->table == 'firesale_products' AND ( strpos($formatted, '{{ category_slug }}') !== FALSE OR strpos($formatted, '{{ category_id }}') !== FALSE ) )
@@ -198,7 +198,8 @@ class Routes_m extends MY_Model
 		$file    = APPPATH.'config/routes.php';
 		$content = file_get_contents($file);
 		$before  = "\n/* End of file routes.php */";
-		$regex   = "%(\n/\* FireSale - ".($old_title?$old_title:$title)." \*/\n.+?\n)%si";
+		$_title  = str_replace(array('(', ')'), array('\(', '\)'), ($old_title?$old_title:$title));
+		$regex   = "%(\n/\* FireSale - {$_title} \*/\n.+?\n)%si";
 		$map     = preg_replace('/\$([0-9]+)/si', '\$__$1', $map);
 		$string  = "\n/* FireSale - {$title} */\n\$route['{$route}'] = '{$map}';\n";
 
@@ -207,15 +208,31 @@ class Routes_m extends MY_Model
 		{
 			// Replace in string
 			$content = preg_replace($regex, $string, $content);
+			$type    = 'Update';
 		}
 		else
 		{
 			// Add to string
 			$content = str_replace($before, $string.$before, $content);
+			$type    = 'New';
 		}
 
 		// Fix mapping
 		$content = str_replace('$__', '$', $content);
+
+		/*if( $type == 'New' )
+		{
+			echo '<pre>';
+				echo $type . '<br />';
+				echo $before . '<br />';
+				echo $regex . '<br />';
+				echo $map . '<br />';
+				echo $string . '<br />';
+				echo '<br />';
+				echo $content;
+			echo '</pre>';
+			exit();
+		}*/
 
 		// Write it
 		file_put_contents($file, $content);

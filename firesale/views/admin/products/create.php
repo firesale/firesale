@@ -12,7 +12,7 @@
 			<div class="tabs">
 
 				<ul class="tab-menu">
-					<?php foreach( $tabs AS $tab ): ?>
+				<?php foreach( $tabs AS $tab ): ?>
 					<?php if( ( substr($tab, 0, 1) == '_' && isset($id) && $id > 0 ) || substr($tab, 0, 1) != '_' ): ?>
 					<li><a href="#<?php echo strtolower(str_replace(array(' ', '_'), '', $tab)); ?>"><span><?php echo lang('firesale:tabs:' . str_replace('_', '', $tab)); ?></span></a></li>
 					<?php endif; ?>
@@ -29,7 +29,7 @@
 							<div class="preview" id="image-<?php echo $image->id; ?>">
 								<span class="imageHolder">
 									<a href="{{ site:url }}admin/firesale/products/delete_image/<?php echo $image->id; ?>" class="delete">x</a>
-									<img src="/files/thumb/<?php echo $image->id; ?>/480/360" />
+									<img src="{{ site:url }}files/thumb/<?php echo $image->id; ?>/480/360" />
 								</span>
 								<span class="imageTitle"><?php echo $image->name; ?></span>
 							</div>
@@ -53,8 +53,8 @@
 						<?php foreach( $field AS $input ): ?>
 							<li class="<?php echo alternator('even', ''); ?>">
 								<label for="<?php echo $input['input_slug']; ?>">
-									<?php echo lang(substr($input['input_title'], 5)); ?> <?php echo $input['required']; ?>
-									<small><?php echo lang(substr($input['instructions'], 5)); ?></small>
+									<?php echo lang(substr($input['input_title'], 5)) ? lang(substr($input['input_title'], 5)) : $input['input_title']; ?> <?php echo $input['required']; ?>
+									<small><?php echo lang(substr($input['instructions'], 5)) ? lang(substr($input['instructions'], 5)) : $input['instructions']; ?></small>
 								</label>
 								<div class="input"><?php echo $input['input']; ?></div>
 							</li>

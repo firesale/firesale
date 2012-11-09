@@ -28,7 +28,7 @@
             <ul<?php echo ( $title != 'general' ? ' class="width-half"' : '' ); ?>>
             <?php foreach( $section AS $field ): ?>
               <li>
-                <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
+                <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)) ? lang(substr($field['input_title'], 5)) : $field['input_title']; ?> <?php echo $field['required']; ?>:</label>
                 <?php echo $field['input']; ?>
               </li>
             <?php endforeach; ?>
@@ -62,8 +62,8 @@
                     <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                     <td class="model"><?php echo $product['code']; ?></td>
                     <td><input type="text" name="item[<?php echo $product['id']; ?>][qty]" value="<?php echo $product['qty']; ?>" /></td>
-                    <td class="price"><?php echo $this->settings->get('currency') . '<span>' . number_format($product['price'], 2) . '</span>'; ?></td>
-                    <td class="total"><?php echo $this->settings->get('currency') . '<span>' . number_format(( $product['price'] * $product['qty'] ), 2) . '</span>'; ?></td>
+                    <td class="price"><?php echo str_replace('{{ price }}', '<span>'.str_replace($currency->symbol, '', $product['price']).'</span>', $currency->cur_format); ?></td>
+                    <td class="total"><?php echo str_replace('{{ price }}', '<span>'.str_replace($currency->symbol, '', $product['total']).'</span>', $currency->cur_format); ?></td>
                   </tr>
               <?php endforeach; ?>
               <?php endif; ?>

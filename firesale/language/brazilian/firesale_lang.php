@@ -9,31 +9,37 @@
 	$lang['firesale:title:ship']		= 'Detalhes para Entrega';
 
 	// Sections
-	$lang['firesale:sections:dashboard'] 	= 'Painel de Controle';
-	$lang['firesale:sections:categories'] 	= 'Categorias';
-	$lang['firesale:sections:products'] 	= 'Produtos';
-	$lang['firesale:sections:orders'] 		= 'Pedidos';
-	$lang['firesale:sections:addresses'] 	= 'Endereços';
-	$lang['firesale:sections:orders_items']	= 'Items adquiridos';
-	$lang['firesale:sections:gateways']		= 'Meios de Pagamento';
-	$lang['firesale:sections:settings'] 	= 'Configurações';
+	$lang['firesale:sections:dashboard'] 	  = 'Painel de Controle';
+	$lang['firesale:sections:categories'] 	  = 'Categorias';
+	$lang['firesale:sections:products'] 	  = 'Produtos';
+	$lang['firesale:sections:orders'] 		  = 'Pedidos';
+	$lang['firesale:sections:addresses'] 	  = 'Endereços';
+	$lang['firesale:sections:orders_items']	  = 'Items adquiridos';
+	$lang['firesale:sections:gateways']		  = 'Meios de Pagamento';
+	$lang['firesale:sections:settings'] 	  = 'Configurações';
 	$lang['firesale:sections:routes']         = 'Routes'; # Translate
-	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
-	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
+	$lang['firesale:sections:currency']       = 'Currency'; # translate
+	$lang['firesale:sections:taxes']          = 'Taxes'; #Translate
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opções Gerais';
 	$lang['firesale:tabs:description'] 	= 'Descrições';
+	$lang['firesale:tabs:formatting'] 	= 'Formatting'; # translate
 	$lang['firesale:tabs:shipping']		= 'Envio';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Atributos';
 	$lang['firesale:tabs:images']		= 'Imagens';
+	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Criar Produto';
 	$lang['firesale:shortcuts:cat_create']		= 'Criar Categoria';
 	$lang['firesale:shortcuts:install_gateway']	= 'Instalar Meio de Pagamento';
 	$lang['firesale:shortcuts:create_order']	= 'Criar Pedido';
+	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route'; # Translate
+	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes'; # Translate
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band';  # Translate
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes'; # Translate
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Visualização Rápida';
@@ -103,6 +109,10 @@
 	$lang['firesale:label_parent']		= 'Categoria Pai';
 	$lang['firesale:label_filtercat']	= 'Filtrar por Categoria';
 	$lang['firesale:label_filtersel']	= 'Selecionar Categoria';
+	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
+	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
+	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
 	$lang['firesale:label_rrp']			= 'Preço de Venda Recomendado';
 	$lang['firesale:label_rrp_tax']		= 'Preço de Venda Recomendado (sem impostos)';
 	$lang['firesale:label_rrp_short']	= 'PVR';
@@ -151,6 +161,7 @@
 	$lang['firesale:label_details'] 	= 'Meu Endereço de Cobrança e Entrega são os mesmos';
 	$lang['firesale:label_user_order']	= 'Usuário';
 	$lang['firesale:label_ip']			= 'Endereço IP';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping'; # Translate
 
 	$lang['firesale:label_nameaz']		= 'Nome A - Z';
 	$lang['firesale:label_nameza']		= 'Nome Z - A';
@@ -171,6 +182,24 @@
 	$lang['firesale:label_route']       = 'Route'; # Translate
 	$lang['firesale:label_translation'] = 'Translation'; # Translate
 	$lang['firesale:label_table']       = 'Table'; # Translate
+
+	$lang['firesale:label_cur_code']        = 'Currency Code'; # translate
+	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format'; # translate
+	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
+	$lang['firesale:label_cur_mod']         = 'Currency Modifier'; # translate
+	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
+	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
+	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save'; # translate
+	$lang['firesale:label_cur_flag']        = 'Related Image'; # translate
+	$lang['firesale:label_enabled']         = 'Enabled'; # translate
+	$lang['firesale:label_disabled']        = 'Disabled'; # translate
+	$lang['firesale:label_cur_format']      = 'Currency Format'; # translate
+	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}'; # translate
+	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
+	
+	$lang['firesale:label_tax_band']  = 'Tax Band'; #Translate
 
 	// Orders
 	$lang['firesale:orders:title']				= 'Pedidos';
@@ -253,6 +282,11 @@
 	$lang['firesale:payment:title_success'] 		= 'Pagamento Completado';
 	$lang['firesale:checkout:title:ship_method']	= 'Método de Entrega';
 	$lang['firesale:checkout:title:payment_method']	= 'Método de Pagamento';
+	$lang['firesale:checkout:next']					= 'Next'; #Translate
+	$lang['firesale:checkout:previous']				= 'Previous';#Translate
+	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';#Translate
+	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';#Translate
+	$lang['firesale:checkout:submit_and_pay']		= 'Submit &amp; Pay';#Translate
 
 	// Routes
 	$lang['firesale:routes:title']          = 'Routes'; # Translate
@@ -288,6 +322,16 @@
 	$lang['firesale:currency:format_00']         = 'Round up to next full number'; # translate
 	$lang['firesale:currency:format_50']         = 'Round to closest .50'; # translate
 	$lang['firesale:currency:format_99']         = 'Round up to closest .99'; # translate
+
+	// Taxes
+	$lang['firesale:taxes:none']                  = 'There are currently no tax bands setup'; # Translate
+	$lang['firesale:taxes:new']                   = 'Add tax band'; # Translate
+	$lang['firesale:taxes:edit']                  = 'Edit tax band'; # Translate
+	$lang['firesale:taxes:add_success']           = 'Tax band created successfully'; # Translate
+	$lang['firesale:taxes:add_error']             = 'There was an error whilst creating the tax band'; # Translate
+	$lang['firesale:taxes:edit_success']          = 'Tax band edited successfully'; # Translate
+	$lang['firesale:taxes:edit_error']            = 'There was an error whilst editing the tax band'; # Translate
+	$lang['firesale:taxes:assignments_updated']   = 'Tax band assignments were updated successfully'; # Translate
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Meu Endereço';

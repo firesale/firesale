@@ -88,7 +88,8 @@
 			}
 
 			// Update last checked time
-			$this->ci->settings->set('firesale_currency_updated', $json->timestamp);
+			$time = ( (int)( time() - $json->timestamp ) > 3600 ? time() : $json->timestamp );
+			$this->ci->settings->set('firesale_currency_updated', $time);
 
 		}
 

@@ -19,6 +19,7 @@
 	$lang['firesale:sections:settings'] 	  = 'Settings';
 	$lang['firesale:sections:routes']         = 'Routes';
 	$lang['firesale:sections:currency']       = 'Currency';
+	$lang['firesale:sections:taxes']          = 'Taxes';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'General Options';
@@ -28,6 +29,7 @@
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributes';
 	$lang['firesale:tabs:images']		= 'Images';
+	$lang['firesale:tabs:assignments']  = 'Assignments';
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Create Product';
@@ -36,6 +38,8 @@
 	$lang['firesale:shortcuts:create_order']	= 'Create Order';
 	$lang['firesale:shortcuts:create_routes']   = 'Add a New Route';
 	$lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes';
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band';
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes';
 
 	// Dashboard
 	$lang['firesale:dash_overview']			 	= 'Quick Overview';
@@ -108,6 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Select a Product';
 	$lang['firesale:label_filterstatus']  = 'Select a Product Status';
 	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status';
+	$lang['firesale:label_order_status']  = 'Select an Order Status';
 	$lang['firesale:label_rrp']			  = 'Recommended Retail Price';
 	$lang['firesale:label_rrp_tax']		  = 'Recommended Retail Price (before tax)';
 	$lang['firesale:label_rrp_short']	  = 'RRP';
@@ -156,11 +161,12 @@
 	$lang['firesale:label_details'] 	= 'My Billing and Shipping addresses are the same';
 	$lang['firesale:label_user_order']	= 'User';
 	$lang['firesale:label_ip']			= 'IP Address';
+	$lang['firesale:label_ship_req']    = 'Requires Shipping';
 
 	$lang['firesale:label_nameaz']		= 'Name A - Z';
 	$lang['firesale:label_nameza']		= 'Name Z - A';
 	$lang['firesale:label_pricelow']	= 'Price Low &gt; High';
-	$lang['firesale:label_pricehigh']	= 'Pirce High &gt; Low';
+	$lang['firesale:label_pricehigh']	= 'Price High &gt; Low';
 	$lang['firesale:label_modelaz']		= 'Model A - Z';
 	$lang['firesale:label_modelza']		= 'Model Z - A';
 
@@ -190,7 +196,10 @@
 	$lang['firesale:label_cur_format']      = 'Currency Format';
 	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}';
 	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol';
-	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol';
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Separator Symbol';
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting';
+
+	$lang['firesale:label_tax_band']  = 'Tax Band';
 
 	// Orders
 	$lang['firesale:orders:title']				   = 'Orders';
@@ -209,7 +218,7 @@
 	$lang['firesale:orders:status_dispatched']	   = 'Dispatched';
 	$lang['firesale:orders:status_processing']	   = 'Processing';
 	$lang['firesale:orders:status_refunded']	   = 'Refunded';
-	$lang['firesale:orders:status_cancelled']	   = 'Cancelled';
+	$lang['firesale:orders:status_cancelled']	   = 'Canceled';
 	$lang['firesale:orders:status_failed']		   = 'Failed';
 	$lang['firesale:orders:status_declined']	   = 'Declined';
 	$lang['firesale:orders:status_mismatch']	   = 'Mismatch';
@@ -273,6 +282,11 @@
 	$lang['firesale:payment:title_success'] 		= 'Payment Complete';
 	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';
 	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
+	$lang['firesale:checkout:next']					= 'Next';
+	$lang['firesale:checkout:previous']				= 'Previous';
+	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';
+	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';
+	$lang['firesale:checkout:submit_and_pay']		= 'Submit &amp; Pay';
 
 	// Routes
 	$lang['firesale:routes:title']          = 'Routes';
@@ -303,11 +317,20 @@
 	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency';
 	$lang['firesale:currency:edit_success']      = 'Currency updated successfully';
 	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency';
-	$lang['firesale:label_cur_format_num']       = 'Number Formatting';
 	$lang['firesale:currency:format_none']       = 'None';
 	$lang['firesale:currency:format_00']         = 'Round up to next full number';
 	$lang['firesale:currency:format_50']         = 'Round to closest .50';
 	$lang['firesale:currency:format_99']         = 'Round up to closest .99';
+
+	// Taxes
+	$lang['firesale:taxes:none']                  = 'There are currently no tax bands setup';
+	$lang['firesale:taxes:new']                   = 'Add tax band';
+	$lang['firesale:taxes:edit']                  = 'Edit tax band';
+	$lang['firesale:taxes:add_success']           = 'Tax band created successfully';
+	$lang['firesale:taxes:add_error']             = 'There was an error whilst creating the tax band';
+	$lang['firesale:taxes:edit_success']          = 'Tax band edited successfully';
+	$lang['firesale:taxes:edit_error']            = 'There was an error whilst editing the tax band';
+	$lang['firesale:taxes:assignments_updated']   = 'Tax band assignments were updated successfully';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'My Addresses';
@@ -349,7 +372,7 @@
 	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';
 	
 	// Payment Frontend
-	$lang['firesale:payment:cancelled'] = 'Order Cancelled';
+	$lang['firesale:payment:cancelled'] = 'Order Canceled';
 	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...';
 	$lang['firesale:payment:btn_continue'] = 'Continue';
 
@@ -376,5 +399,5 @@
 	// Install errors
 	$lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';
 	$lang['firesale:install:missing_multiple'] = 'FireSale requires the Multiple Relationships field type to operate. You can download this from <a href="https://github.com/parse19/PyroStreams-Multiple-Relationships/zipball/master">here</a>';
-	$lang['firesale:install:not_installed']    = 'Please install the FireSale module before installing additional FireSale addons';
+	$lang['firesale:install:not_installed']    = 'Please install the FireSale module before installing additional FireSale add-ons';
 	$lang['firesale:install:no_route_access']  = 'FireSale requires access to the system/cms/config/routes.php file. Please set the appropriate permissions and try again';

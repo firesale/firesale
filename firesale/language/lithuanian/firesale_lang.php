@@ -1,7 +1,7 @@
 <?php
 	
 	// General Titles
-	$lang['firesale:title']				= 'FireSale';
+	$lang['firesale:title']			= 'FireSale';
 	$lang['firesale:title:general']		= 'Bendrai';
 	$lang['firesale:title:details']		= 'Jūsų duomenys';
 	$lang['firesale:title:address']		= 'Jūsų adresas';
@@ -12,31 +12,37 @@
 	$lang['firesale:sections:dashboard'] 	  = 'Įrankių skydas';
 	$lang['firesale:sections:categories'] 	  = 'Kategorijos';
 	$lang['firesale:sections:products'] 	  = 'Prekės';
-	$lang['firesale:sections:orders'] 		  = 'Užsakymai';
+	$lang['firesale:sections:orders']         = 'Užsakymai';
 	$lang['firesale:sections:addresses'] 	  = 'Adresai';
 	$lang['firesale:sections:orders_items']	  = 'Užsakytos prekės';
-	$lang['firesale:sections:gateways']		  = 'Mokėjimo būdai';
+	$lang['firesale:sections:gateways']	  = 'Mokėjimo būdai';
 	$lang['firesale:sections:settings'] 	  = 'Nustatymai';
-	$lang['firesale:sections:routes']         = 'Routes'; # Translate
-	$lang['firesale:shortcuts:create_routes'] = 'Add a New Route'; # Translate
-	$lang['firesale:shortcuts:build_routes']  = 'Rebuild Routes'; # Translate
+	$lang['firesale:sections:routes']         = 'Maršrutai';
+	$lang['firesale:sections:currency']       = 'Valiuta';
+	$lang['firesale:sections:taxes']          = 'Mokesčiai';
 
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Bendri nustatymai';
 	$lang['firesale:tabs:description'] 	= 'Aprašymas';
+	$lang['firesale:tabs:formatting'] 	= 'Formatting'; # Translate
 	$lang['firesale:tabs:shipping']		= 'Pristatymas';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Atributai';
 	$lang['firesale:tabs:images']		= 'Nuotraukos';
+	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Sukurti prekę';
 	$lang['firesale:shortcuts:cat_create']		= 'Sukurti kategoriją';
 	$lang['firesale:shortcuts:install_gateway']	= 'Įdiengti mokėjimo būdą';
 	$lang['firesale:shortcuts:create_order']	= 'Sukurti užsakymą';
+	$lang['firesale:shortcuts:create_routes']   = 'Pridėti naują maršrutą';
+	$lang['firesale:shortcuts:build_routes']    = 'Perkurti maršrutus';
+	$lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band'; #Translate
+	$lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes'; #Translate
 
 	// Dashboard
-	$lang['firesale:dash_overview']			 	= 'Bendras vaizdas';
+	$lang['firesale:dash_overview']			= 'Bendras vaizdas';
 	$lang['firesale:dash_categorytrack']	 	= 'Kategorijų stebėjimas';
 	$lang['firesale:elements:product_sales'] 	= 'Prekių pardavimai';
 	$lang['firesale:elements:low_stock']	 	= 'Atsargų įspėjimai';
@@ -46,23 +52,26 @@
 	$lang['firesale:dashboard:no_stock_low']	= 'Nėra prekių be minimalių atsargų';
 	$lang['firesale:dashboard:no_stock_out']	= 'Nėra prekių be atsargų';
 	$lang['firesale:dashboard:view_more']		= 'Peržiūrėti daugiau...';
-	$lang['firesale:dashbord:low_stock']		= 'Low Stock';	#Translate
-	$lang['firesale:dashbord:out_of_stock']		= 'Out of Stock'; #Translate
+	$lang['firesale:dashbord:low_stock']		= 'Sandėlyje mažas kiekis';
+	$lang['firesale:dashbord:out_of_stock']		= 'Išparduota';
 
 	// Categories
 	$lang['firesale:cats_title']			= 'Tvarkyti kategorijas';
-	$lang['firesale:cats_none']				= 'Kategorijų nerasta';
-	$lang['firesale:cats_new']				= 'Pridėti naują kategoriją';
+	$lang['firesale:cats_none']			= 'Kategorijų nerasta';
+	$lang['firesale:cats_new']			= 'Pridėti naują kategoriją';
 	$lang['firesale:cats_order']			= 'Rūšiuoti kategorijas';
 	$lang['firesale:cats_draft_label']		= 'Projektas';
 	$lang['firesale:cats_live_label']		= 'Gyvai';
-	$lang['firesale:cats_edit']				= 'Redaguoti kategoriją';
+	$lang['firesale:cats_edit']			= 'Redaguoti kategoriją';
+	$lang['firesale:cats_edit_title']		= 'Redaguoti "%s"';
 	$lang['firesale:cats_delete']			= 'Ištrinti';
 	$lang['firesale:cats_add_success'] 		= 'Nauja kategorija sukurta sėkmingai';
 	$lang['firesale:cats_add_error'] 		= 'Įvyko klaida kuriant kategoriją';
+	$lang['firesale:cats_edit_success'] 	= 'Kategorija sėkmingai redaguota';
+	$lang['firesale:cats_edit_error'] 		= 'Įvyko klaida redaguojant kategoriją';
 	$lang['firesale:cats_delete_success'] 	= 'Kategorija sėkmingai ištrinta';
 	$lang['firesale:cats_delete_error'] 	= 'Įvyko klaida trinant kategoriją';
-	$lang['firesale:cats_all_products']     = 'All Products'; # Translate
+	$lang['firesale:cats_all_products']     = 'Visos prekės';
 
 	// Products
 	$lang['firesale:prod_none']				= 'Prekių nerasta';
@@ -80,35 +89,39 @@
 	$lang['firesale:prod_duplicate_error'] 	= 'Įvyko klaida kopijuojant prekę';
 	$lang['firesale:prod_duplicate_success']= 'Prekė sėkminkai nukopijuota';
 	$lang['firesale:prod_not_found'] 		= 'Prekė nerasta';
-	$lang['firesale:prod_delimg_success']   = 'Image deleted successfully'; #Translate
-	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified'; #Translate
-	$lang['firesale:prod_button_quick_edit']= 'Quick Edit'; #Translate	
+	$lang['firesale:prod_delimg_success']   = 'Paveikslėlis pašalintas sėkmingai';
+	$lang['firesale:prod_delimg_error']     = 'Įvyko klaida šalinant paveiksliuką';
+	$lang['firesale:prod_button_quick_edit']= 'Greitas redagavimas';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Mažmeninė kaina prieš ir po PVM';
 	$lang['firesale:inst_price'] = 'Dabartinė pardavimo kaina prieš ir po PVM (jei mažesnė nei RMK, matoma kaip pardavimo kaina)';
 
 	// Labels
-	$lang['firesale:label_draft']		= 'Projektas';
-	$lang['firesale:label_live'] 		= 'Gyvai';
-	$lang['firesale:label_id'] 			= 'Prekės kodas';
-	$lang['firesale:label_title'] 		= 'Pavadinimas';
-	$lang['firesale:label_slug'] 		= 'URL';
-	$lang['firesale:label_status'] 		= 'Būsena';
-	$lang['firesale:label_description']	= 'Aprašymas';
-	$lang['firesale:label_category']	= 'Kategorija';
-	$lang['firesale:label_parent']		= 'Tėvinė kategorija';
-	$lang['firesale:label_filtercat']	= 'Filtruoti pagal kategoriją';
-	$lang['firesale:label_filtersel']	= 'Pasirinkti kategoriją';
-	$lang['firesale:label_rrp']			= 'Rekomenduojama mažmeninė kaina';
-	$lang['firesale:label_rrp_tax']		= 'Rekomenduojama mažmeninė kaina (prieš mokesčius)';
-	$lang['firesale:label_rrp_short']	= 'RMK';
-	$lang['firesale:label_price']		= 'Dabartinė kaina';
-	$lang['firesale:label_price_tax']	= 'Dabartinė kaina (prieš mokesčius)';
-	$lang['firesale:label_stock']		= 'Dabartinė atsargų būsena';
-	$lang['firesale:label_drop_images'] = 'Užtempkite nuotraukas įkėlimui';
-	$lang['firesale:label_duplicate']   = 'Kopijuoti';
-	$lang['firesale:label_showfilter']  = 'Show Filters'; # Translate
+	$lang['firesale:label_draft']		  = 'Projektas';
+	$lang['firesale:label_live'] 		  = 'Gyvai';
+	$lang['firesale:label_id'] 			  = 'Prekės kodas';
+	$lang['firesale:label_title'] 		  = 'Pavadinimas';
+	$lang['firesale:label_slug'] 		  = 'URL';
+	$lang['firesale:label_status'] 		  = 'Būsena';
+	$lang['firesale:label_description']	  = 'Aprašymas';
+	$lang['firesale:label_category']	  = 'Kategorija';
+	$lang['firesale:label_parent']		  = 'Tėvinė kategorija';
+	$lang['firesale:label_filtercat']	  = 'Filtruoti pagal kategoriją';
+	$lang['firesale:label_filtersel']	  = 'Pasirinkti kategoriją';
+	$lang['firesale:label_filterprod']    = 'Pasirinkti prekę';
+	$lang['firesale:label_filterstatus']  = 'Pasirinkti prekės būseną';
+	$lang['firesale:label_filtersstatus'] = 'Pasirinkti prekės būseną sandėlyje';
+	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
+	$lang['firesale:label_rrp']			  = 'Rekomenduojama mažmeninė kaina';
+	$lang['firesale:label_rrp_tax']		  = 'Rekomenduojama mažmeninė kaina (prieš mokesčius)';
+	$lang['firesale:label_rrp_short']	  = 'RMK';
+	$lang['firesale:label_price']		  = 'Dabartinė kaina';
+	$lang['firesale:label_price_tax']	  = 'Dabartinė kaina (prieš mokesčius)';
+	$lang['firesale:label_stock']		  = 'Dabartinė atsargų būsena';
+	$lang['firesale:label_drop_images']   = 'Užtempkite nuotraukas įkėlimui';
+	$lang['firesale:label_duplicate']     = 'Kopijuoti';
+	$lang['firesale:label_showfilter']    = 'Rodyti filtrus';
 
 	$lang['firesale:label_stock_short']		= 'Atsargų kiekis';
 	$lang['firesale:label_stock_status']	= 'Atsagų kiekis';
@@ -117,7 +130,7 @@
 	$lang['firesale:label_stock_out']		= 'Nėra';
 	$lang['firesale:label_stock_order']		= 'Užsakytas papildymas';
 	$lang['firesale:label_stock_ended']		= 'Neparduodama';
-	$lang['firesale:label_stock_unlimited']	= 'Unlimited'; #translate
+	$lang['firesale:label_stock_unlimited']	= 'Neribota';
 
 	$lang['firesale:label_remove']		= 'Pašalinti';
 	$lang['firesale:label_image']		= 'Paveiksliukas';
@@ -148,6 +161,7 @@
 	$lang['firesale:label_details'] 	= 'Mano užsakymo ir pristatymo adresai vienodi';
 	$lang['firesale:label_user_order']	= 'Vartotojas';
 	$lang['firesale:label_ip']			= 'IP adresas';
+	$lang['firesale:label_ship_req']    = 'Siuntimas privalomas';
 
 	$lang['firesale:label_nameaz']		= 'Vardas A - Z';
 	$lang['firesale:label_nameza']		= 'Vardas Z - A';
@@ -164,10 +178,28 @@
 	$lang['firesale:label_time_day']	= 'prieš 1 dieną.';
 	$lang['firesale:label_time_days'] 	= 'prieš %s dienas.';
 
-	$lang['firesale:label_map']         = 'Map'; # Translate
-	$lang['firesale:label_route']       = 'Route'; # Translate
-	$lang['firesale:label_translation'] = 'Translation'; # Translate
-	$lang['firesale:label_table']       = 'Table'; # Translate
+	$lang['firesale:label_map']         = 'Žemėlapis';
+	$lang['firesale:label_route']       = 'Maršrutas';
+	$lang['firesale:label_translation'] = 'Vertimas';
+	$lang['firesale:label_table']       = 'Lentelė';
+
+	$lang['firesale:label_cur_code']        = 'Valiutos kodas';
+	$lang['firesale:label_cur_code_inst']   = 'ISO-4217 Formatas';
+	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
+	$lang['firesale:label_cur_mod']         = 'Currency Modifier'; # translate
+	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
+	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
+	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save'; # translate
+	$lang['firesale:label_cur_flag']        = 'Related Image'; # translate
+	$lang['firesale:label_enabled']         = 'Enabled'; # translate
+	$lang['firesale:label_disabled']        = 'Disabled'; # translate
+	$lang['firesale:label_cur_format']      = 'Currency Format'; # translate
+	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}'; # translate
+	$lang['firesale:label_cur_format_dec']  = 'Decimal Place Symbol'; # translate
+	$lang['firesale:label_cur_format_sep']  = 'Thousand Seperator Symbol'; # translate
+	$lang['firesale:label_cur_format_num']  = 'Number Formatting'; # translate
+
+	$lang['firesale:label_tax_band']  = 'Tax Band'; #Translate
 
 	// Orders
 	$lang['firesale:orders:title']				= 'Užsakymai';
@@ -194,16 +226,16 @@
 	$lang['firesale:orders:declined_message']	= 'Jūsų apmokėjimas atmestas, pamėginkite dar kartą.';
 	$lang['firesale:orders:mismatch_message']	= 'Jūsų apmokįjimas nesutampa su užsakymu.';
 	$lang['firesale:orders:logged_in']			= 'Prisijunkite, kad matytumėte užsakymų istoriją.';
-	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
-	$lang['firesale:orders:label_products']		= 'Products'; # Translate
-	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
-	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
-	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
-	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate
-	$lang['firesale:orders:labe_shipping_address'] 	= 'Shipping Address'; # Translate
-	$lang['firesale:orders:labe_payment_address'] 	= 'Payment Address'; # Translate
-	$lang['firesale:orders:label_order_status']		= 'Order Status'; # Translate
-	$lang['firesale:orders:label_message']			= 'Message'; # Translate
+	$lang['firesale:orders:label_view_order']	= 'Peržiūrėti užsakymą';
+	$lang['firesale:orders:label_products']		= 'Prekės';
+	$lang['firesale:orders:label_view_order']	= 'Peržiūrėti užsakymą';
+	$lang['firesale:orders:label_customer']		= 'Pirkėjas';
+	$lang['firesale:orders:label_date_placed']	= 'Pirkimo data';
+	$lang['firesale:orders:label_order_id'] 	= "Užsakymo Nr";
+	$lang['firesale:orders:labe_shipping_address'] 	= 'Pristatymo adresas';
+	$lang['firesale:orders:labe_payment_address'] 	= 'Sąskaitos adresas';
+	$lang['firesale:orders:label_order_status']		= 'Užsakymo adresas';
+	$lang['firesale:orders:label_message']			= 'Žinutė';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Mokėjimo būdai';
@@ -214,7 +246,9 @@
 	$lang['firesale:gateways:no_uninstalled_gateways']		= 'Visi galimi apmokėjimo būdai įdiengti.';
 	$lang['firesale:gateways:errors:invalid_bool']			= 'Laukas %s turi būti taip/ne tipo.';
 	$lang['firesale:gateways:warning'] 						= 'Visi mokėjimo būdo nustatymai bus prarasti! Parduotuvė negalės priimti mokėjimų! Ar tikrai norite išdiegti šį mokėjimo būdą?';
-	
+	$lang['firesale:gateways:multiple_warning'] 			= 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall the selected gateways?'; # Translate
+
+
 	$lang['firesale:gateways:installed_success']			= 'Mokėjimo būdas sėkmingai įdiegtas';
 	$lang['firesale:gateways:installed_fail']				= 'Mokėjimo būdas nebuvo įdiegtas';
 
@@ -241,29 +275,34 @@
 	$lang['firesale:gateways:labels:desc']			= 'Aprašymas';
 	$lang['firesale:cart:title']					= 'Krepšelis';
 	$lang['firesale:cart:empty']					= 'Nėra krepšelyje prekių';
-	$lang['firesale:cart:login_required']			= 'You must be logged in before you can do that'; #translate
-	$lang['firesale:cart:qty_too_low']				= 'Stock level is too low to add that quantity to your cart'; #translate
+	$lang['firesale:cart:login_required']			= 'Turite būti prisijungęs, jei norite atlikti šį veiksmą';
+	$lang['firesale:cart:qty_too_low']				= 'Neužtenka prekių sandėlyje, kad įtrauktumėte į krepšelį tokį kiekį';
 	$lang['firesale:checkout:title'] 				= 'Apmokėti';
 	$lang['firesale:checkout:error_callback'] 		= 'Įvyko užsakymo klaida. Pamėginkite dar kartą, naudodami kitą mokėjimo būdą.';
 	$lang['firesale:payment:title'] 				= 'Patvirtinti duomenis';
 	$lang['firesale:payment:title_success'] 		= 'Mokėjimas baigtas';
 	$lang['firesale:checkout:title:ship_method']	= 'Pristatymo būdas';
 	$lang['firesale:checkout:title:payment_method']	= 'Mokėjimo būdas';
+	$lang['firesale:checkout:next']					= 'Next'; #Translate
+	$lang['firesale:checkout:previous']				= 'Previous';#Translate
+	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';#Translate
+	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';#Translate
+	$lang['firesale:checkout:submit_and_pay']		= 'Submit &amp; Pay';#Translate
 
 	// Routes
-	$lang['firesale:routes:title']          = 'Routes'; # Translate
-	$lang['firesale:routes:new']            = 'Add a new Route'; # Translate
-	$lang['firesale:routes:add_success']    = 'New route added successfully'; # Translate
-	$lang['firesale:routes:add_error']      = 'Error adding a new route'; # Translate
-	$lang['firesale:routes:edit']           = 'Edit %s Route'; # Translate
-	$lang['firesale:routes:edit_success']   = 'Route edited successfully'; # Translate
-	$lang['firesale:routes:edit_error']     = 'Error editing the route'; # Translate
-	$lang['firesale:routes:not_found']      = 'The selected route could not be found'; # Translate
-	$lang['firesale:routes:none']           = 'No routes found'; # Translate
-	$lang['firesale:routes:delete_success'] = 'Route removed successfully'; # Translate
-	$lang['firesale:routes:delete_error']   = 'Error removing route'; # Translate
-	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
-	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
+	$lang['firesale:routes:title']          = 'Maršrutai';
+	$lang['firesale:routes:new']            = 'Pridėti naują maršrutą';
+	$lang['firesale:routes:add_success']    = 'Naujas maršrutas pridėtas sėkmingai';
+	$lang['firesale:routes:add_error']      = 'Klaida, pridedant maršrutą';
+	$lang['firesale:routes:edit']           = 'Redaguoti %s maršrutą';
+	$lang['firesale:routes:edit_success']   = 'Maršrutas pridėtas sėkmingai';
+	$lang['firesale:routes:edit_error']     = 'Klaida, redaguojant maršrutą';
+	$lang['firesale:routes:not_found']      = 'Pasirinktas maršrutas nerastas';
+	$lang['firesale:routes:none']           = 'Maršrutų nerasta';
+	$lang['firesale:routes:delete_success'] = 'Maršrutas pašalintas sėkmingai';
+	$lang['firesale:routes:delete_error']   = 'Klaida, perkeliant maršrutą';
+	$lang['firesale:routes:build_success']  = 'Sėkmingai perkurtas maršrutų failas';
+	$lang['firesale:routes:build_error']    = 'Klaida, perkuriant maršrutų failą';
 
 	// Currency
 	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency'; # translate
@@ -285,46 +324,59 @@
 	$lang['firesale:currency:format_50']         = 'Round to closest .50'; # translate
 	$lang['firesale:currency:format_99']         = 'Round up to closest .99'; # translate
 
+	// Taxes
+	$lang['firesale:taxes:none']                  = 'There are currently no tax bands setup'; # Translate
+	$lang['firesale:taxes:new']                   = 'Add tax band'; # Translate
+	$lang['firesale:taxes:edit']                  = 'Edit tax band'; # Translate
+	$lang['firesale:taxes:add_success']           = 'Tax band created successfully'; # Translate
+	$lang['firesale:taxes:add_error']             = 'There was an error whilst creating the tax band'; # Translate
+	$lang['firesale:taxes:edit_success']          = 'Tax band edited successfully'; # Translate
+	$lang['firesale:taxes:edit_error']            = 'There was an error whilst editing the tax band'; # Translate
+	$lang['firesale:taxes:assignments_updated']   = 'Tax band assignments were updated successfully'; # Translate
+
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mano adresai';
-	$lang['firesale:addresses:edit_address'] = 'Edit Address'; # Translate
-	$lang['firesale:addresses:new_address']  = 'Create new Address'; # Translate
-	$lang['firesale:addresses:save']	     = 'Save'; # Translate
-	$lang['firesale:addresses:cancel']       = 'Cancel'; # Translate
-	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
-	$lang['firesale:addresses:add_success']  = 'Address created successfully'; # Translate
-	$lang['firesale:addresses:add_error']    = 'Error creating address'; # Translate
-	$lang['firesale:addresses:edit_success'] = 'Address edited successfully'; # Translate
-	$lang['firesale:addresses:edit_error']   = 'Error editing address'; # Translate
+	$lang['firesale:addresses:edit_address'] = 'Redaguoti adresą';
+	$lang['firesale:addresses:new_address']  = 'Sukurti naują adresą';
+	$lang['firesale:addresses:save']	     = 'Išsaugoti';
+	$lang['firesale:addresses:cancel']       = 'Nutraukti';
+	$lang['firesale:addresses:no_user']      = 'Prisijunkite, norėdami redaguoti savo adresus';
+	$lang['firesale:addresses:add_success']  = 'Adresas sukurtas sėkmingai';
+	$lang['firesale:addresses:add_error']    = 'Klaida, sukuriant adresą';
+	$lang['firesale:addresses:edit_success'] = 'Adresas redaguotas sėkmingai';
+	$lang['firesale:addresses:edit_error']   = 'Klaida, redaguojant adresą';
 
-	// Products Frontend
-	$lang['firesale:product:label_availability'] = "Availability"; # Translate
-	$lang['firesale:product:label_model'] = "Model"; # Translate
-	$lang['firesale:product:label_product_code'] = "Product Code"; # Translate
-	$lang['firesale:product:label_qty'] = "Qty"; # Translate
-	$lang['firesale:product:label_add_to_cart'] = "Add to Cart"; # Translate
+    // Products Frontend
+    $lang['firesale:product:label_availability'] = "Kiekis";
+    $lang['firesale:product:label_model'] = "Modelis";
+    $lang['firesale:product:label_product_code'] = "Prekės kodas";
+    $lang['firesale:product:label_qty'] = "Kiekis";
+    $lang['firesale:product:label_add_to_cart'] = "Į krepšelį";
 	
 	// Cart Frontend
-	$lang['firesale:cart:label_remove'] = "Remove"; # Translate
-	$lang['firesale:cart:label_image'] = "Image"; # Translate
-	$lang['firesale:cart:label_name'] = "Name"; # Translate
-	$lang['firesale:cart:label_model'] = "Model"; # Translate
-	$lang['firesale:cart:label_quantity'] = "Quantity"; # Translate
-	$lang['firesale:cart:label_unit_price'] = "Unit Price"; # Translate
-	$lang['firesale:cart:label_total'] = "Total"; # Translate
-	$lang['firesale:cart:label_sub_total'] = "Sub-Total";  # Translate
-	$lang['firesale:cart:label_tax'] = "Tax"; # Translate
-	$lang['firesale:cart:label_total'] = "Total"; # Translate
+	$lang['firesale:cart:label_remove'] = "Pašalinti";
+	$lang['firesale:cart:label_image'] = "Nuotrauka";
+	$lang['firesale:cart:label_name'] = "Pavadinimas";
+	$lang['firesale:cart:label_model'] = "Modelis";
+	$lang['firesale:cart:label_quantity'] = "Kiekis";
+	$lang['firesale:cart:label_unit_price'] = "Vieneto kaina";
+	$lang['firesale:cart:label_total'] = "Viso";
+	$lang['firesale:cart:label_no_items_in_cart'] = "Nėra prekių krepšelyje";
+	$lang['firesale:cart:button_update'] = "Atnaujinti krepšelį";
+	$lang['firesale:cart:button_goto_checkout'] = "Tęsti užsakymą";
+	$lang['firesale:cart:label_sub_total'] = "Prekių kaina";
+	$lang['firesale:cart:label_tax'] = "Mokesčiai";
+	$lang['firesale:cart:label_total'] = "Kaina";
 	
 	//Categories Frontend
-	$lang['firesale:categories:grid'] = 'Grid';	#Translate
-	$lang['firesale:categories:list'] = 'List';	#Translate
-	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate
+	$lang['firesale:categories:grid'] = 'Tinklelis';
+	$lang['firesale:categories:list'] = 'Sąrašas';
+	$lang['firesale:categories:add_to_basket'] = 'Į krepšelį';
 	
 	//Payment Frontend
-	$lang['firesale:payment:cancelled'] = 'Order Cancelled'; #Translate
-	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...'; #Translate
-	$lang['firesale:payment:btn_continue'] = 'Continue'; #Translate
+	$lang['firesale:payment:cancelled'] = 'Užsakymas nutrauktas';
+	$lang['firesale:payment:wait_redirect'] = 'Palaukite, kol nukreipsime į atsiskaitymo langą';
+	$lang['firesale:payment:btn_continue'] = 'Tęsti';
 
 	// Settings
 	$lang['firesale:settings_tax']                   = 'Tax Percentage'; # translate
