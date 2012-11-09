@@ -36,7 +36,7 @@ $lang['firesale:gateways:dps_pxpost:desc'] = 'PX POST is designed to handle tran
 
 // Dummy
 $lang['firesale:gateways:dummy:name'] = 'Mannequin FireSale';
-$lang['firesale:gateways:dummy:desc'] = 'The FireSALE dummy gateway. Handles sample payment processing (authorizes when using the test credit card number only).';
+$lang['firesale:gateways:dummy:desc'] = 'Plateforme vierge fournie pour tester la solution eCommerce.';
 
 // eWAY Shared
 $lang['firesale:gateways:eway_shared:name'] = 'eWAY Shared Payments';
@@ -47,8 +47,8 @@ $lang['firesale:gateways:eway:name'] = 'eWAY';
 $lang['firesale:gateways:eway:desc'] = 'Accept credit cards on your website with the leading UK payment gateway to connect your website directly to your bank to process your customers\' online credit card payments.';
 
 // PayPal Express Checkout
-$lang['firesale:gateways:paypal_express:name'] = 'PayPal Express Checkout'; #Translate
-$lang['firesale:gateways:paypal_express:desc'] = 'Quick. Customers don’t need to enter their postage and billing information when making a purchase - PayPal already has the information stored.'; #Translate
+$lang['firesale:gateways:paypal_express:name'] = 'PayPal Express Checkout';
+$lang['firesale:gateways:paypal_express:desc'] = 'Quick. Customers don’t need to enter their postage and billing information when making a purchase - PayPal already has the information stored.';
 
 // PayPal Pro
 $lang['firesale:gateways:paypal_pro:name'] = 'PayPal Payments Pro';
@@ -63,7 +63,7 @@ $lang['firesale:gateways:payflow_pro:name'] = 'PayFlow';
 $lang['firesale:gateways:payflow_pro:desc'] = 'A payment gateway links your website to your processing network and merchant account. Like most gateways, Payflow payment gateway handles all major credit cards.';
 
 // Sage Pay Server
-$lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server'; #Translate
+$lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server';
 $lang['firesale:gateways:sagepay_server:desc'] = 'Sage Pay Go with Server integration is a winning combination of flexibility and ease of integration. You get the security of outsourcing your payments with the ability to manage transactions and reporting on your own servers.'; #Translate
 
 // Sage Pay Direct
@@ -72,24 +72,24 @@ $lang['firesale:gateways:sagepay_direct:desc'] = 'Sage Pay Go with Direct integr
 
 // Stripe
 $lang['firesale:gateways:stripe:name'] = 'Stripe';
-$lang['firesale:gateways:stripe:desc'] = 'Stripe makes it easy for developers to accept credit cards on the web.';
+$lang['firesale:gateways:stripe:desc'] = 'Stripe rend l\'intégration des paiements en ligne pour les développeur';
 
 // WorldPay
 $lang['firesale:gateways:worldpay:name'] = 'WorldPay';
-$lang['firesale:gateways:worldpay:desc'] = 'Online payment gateways, online merchant accounts and risk management products to grow your business online.';
+$lang['firesale:gateways:worldpay:desc'] = 'Plateforme de paiement en ligne incluant des comptes marchands avec des outils de gestion des risques pour faire croître votre entreprise en ligne.';
 
 // Netaxept
-$lang['firesale:gateways:netaxept:name'] = 'Netaxept'; #Translate
-$lang['firesale:gateways:netaxept:desc'] = 'Norwegian payment gateway.'; #Translate
+$lang['firesale:gateways:netaxept:name'] = 'Netaxept';
+$lang['firesale:gateways:netaxept:desc'] = 'Plateforme de paiement Norvégienne.';
 
 // Gocardless
-$lang['firesale:gateways:gocardless:name'] = 'GoCardless'; #Translate
-$lang['firesale:gateways:gocardless:desc'] = 'GoCardless makes it simple and cheap to take payments online. No merchant account. No credit card fees. No hassle.'; #Translate
+$lang['firesale:gateways:gocardless:name'] = 'GoCardless';
+$lang['firesale:gateways:gocardless:desc'] = 'GoCardless est un service simple et économique de paiement en ligne. Pas de compte marchand. Pas de frais de carte bancaire.';
 
 // Cardsave
-$lang['firesale:gateways:cardsave:name'] = 'CardSave'; #Translate
-$lang['firesale:gateways:cardsave:desc'] = 'CardSave makes card processing easy with a wide range of cost effective solutions.'; #Translate
+$lang['firesale:gateways:cardsave:name'] = 'CardSave';
+$lang['firesale:gateways:cardsave:desc'] = 'CardSave rend les paiements par carte simple et rapide par de nombreuses solutions efficaces.';
 
 // Rabo OmniKassa
-$lang['firesale:gateways:rabo_omnikassa:name'] = 'Rabo OmniKassa'; #Translate
-$lang['firesale:gateways:rabo_omnikassa:desc'] = 'Duch payment gateway.'; #Translate
+$lang['firesale:gateways:rabo_omnikassa:name'] = 'Rabo OmniKassa';
+$lang['firesale:gateways:rabo_omnikassa:desc'] = 'Plateforme de paiement Néerlandaise.';
