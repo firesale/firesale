@@ -30,7 +30,7 @@ $(function(){
 		$.getJSON(SITE_URL+'admin/firesale/categories/ajax_cat_details/' + $details_id.val(), function(data) {
 
 			for( var k in data ) {
-				if( k == 'meta_keywords' && $('#tabs input[name='+k+']').length > 0 && data[k].length > 0 ) {
+				if( k == 'meta_keywords' && $('#tabs input[name='+k+']').length > 0 && data[k] != null ) {
 					$('#tabs input[name='+k+']').importTags(data[k]);
 				} else if( $('#tabs input[name='+k+']').length > 0 ) {
 					$('#tabs input[name='+k+']').val(data[k]);
