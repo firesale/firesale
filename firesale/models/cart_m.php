@@ -34,8 +34,8 @@ class Cart_m extends MY_Model
 			$price = $this->currency_m->format_price($price['price_tax'], $price['rrp_tax'], $price['tax_band'], $currency->id);
 
 			// Assign to data
-			$product['price']    = $price['price_tax'];
-			$product['subtotal'] = $price['price_tax'] * $product['qty'];
+			$product['price']    = $price['price_tax_rounded'];
+			$product['subtotal'] = $price['price_tax_rounded'] * $product['qty'];
 
 			// insert
 			$this->fs_cart->insert($product);
