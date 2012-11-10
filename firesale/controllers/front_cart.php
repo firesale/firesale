@@ -47,10 +47,18 @@ class Front_cart extends Public_Controller
 				$url = current_url();
 			}
 
+			if( $this->input->is_ajax_request() )
+			{
+				// If ajax send back error reponse
+				echo $this->cart_m->ajax_response(lang('firesale:cart:login_required'));
+				exit();
+			}
+
 			// Set data and redirect
 			$this->session->set_flashdata('error', lang('firesale:cart:login_required'));
 			$this->session->set_userdata('redirect_to', $url);
-			redirect('users/login');		
+			redirect('users/login');
+
 		}
 		
 		// Get the stream
