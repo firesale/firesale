@@ -509,7 +509,7 @@ class Front_cart extends Public_Controller
 			$this->merchant->initialize($this->gateways->settings($gateway));
 			
 			// Begin payment processing
-			if ($this->input->post())
+			if ($_SERVER['REQUEST_METHOD'] == 'POST')
 			{
 				// Load the routes model
 				$this->load->model('routes_m');
