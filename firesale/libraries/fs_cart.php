@@ -75,7 +75,7 @@ class Fs_cart extends CI_Cart
 	{
 		$total = parent::total();
 
-		return $total;
+		return number_format($total, 2, '.', '');
 	}
 
 	public function shipping()
