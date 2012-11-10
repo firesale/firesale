@@ -50,16 +50,6 @@ class Fs_cart extends CI_Cart
 		return $this->currency;
 	}
 
-	public function tax_mod()
-	{
-		if ( ! isset($this->tax_mod))
-		{
-			$this->tax_mod = 1 - ($this->currency()->cur_tax / 100);
-		}
-
-		return $this->tax_mod;
-	}
-
 	public function tax()
 	{
 		$this->tax = 0;
