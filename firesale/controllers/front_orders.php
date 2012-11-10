@@ -114,9 +114,9 @@ class Front_orders extends Public_Controller
 
 			// Build page
 			$this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
-						   ->set_breadcrumb('Home', '/home')
-						   ->set_breadcrumb(lang('firesale:orders:my_orders'), '/users/orders')
-						   ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), '/users/orders/' . $id)
+						   ->set_breadcrumb('Home', '/')
+						   ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->routes_m->url('orders'))
+						   ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), $this->routes_m->url('orders-single', $id))
 						   ->set($order);
 
 			// Fire events
