@@ -62,7 +62,7 @@ class Fs_cart extends CI_Cart
 
 			$tax_mod = 1 - ($percentage / 100);
 
-			$tax = ($item['price'] * (($percentage / 100) + 1) - $item['price']);
+			$tax = $item['price'] / (($percentage / 100) + 1) * ($percentage / 100);
 			$tax = $tax * $item['qty'];
 
 			$this->tax += $tax;
@@ -74,8 +74,6 @@ class Fs_cart extends CI_Cart
 	public function total()
 	{
 		$total = parent::total();
-
-		$total += $this->tax();
 
 		return $total;
 	}
