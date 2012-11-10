@@ -188,14 +188,8 @@ class Plugin_Firesale extends Plugin
 		// Get currency
 		$currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
 
-
 		// Variables
-		$tax  		 	= round(( 100 - $currency->cur_tax ) / 100, 3);
 		$data 		 	= new stdClass;
-		$data->sub 	 	= 0;
-		$data->tax 	 	= 0;
-		$data->total 	= 0;
-		$data->count 	= 0;
 		$data->products = array();
 		
 		// Loop products in cart
@@ -214,18 +208,15 @@ class Plugin_Firesale extends Plugin
 					'quantity'	=> $item['qty'],
 					'name'		=> $item['name']
 				);
-				
-				$data->sub   += ( $product->price_tax * $item['qty'] );
-				$data->total += ( $product->price * $item['qty'] );
-				$data->count += $item['qty'];
 			}
 		
 		}
 		
 		// Calculate prices
-		$data->tax   = $this->currency_m->format_string(( $data->total - $data->sub ), $currency, false);
-		$data->sub   = $this->currency_m->format_string($data->sub, $currency, false);
-		$data->total = $this->currency_m->format_string($data->total, $currency, false);
+		$data->tax   = $this->currency_m->format_string($this->fs_cart->tax(), $currency, false);
+		$data->sub   = $this->currency_m->format_string($this->fs_cart->subtotal(), $currency, false);
+		$data->total = $this->currency_m->format_string($this->fs_cart->total(), $currency, false);
+		$data->count = $this->fs_cart->total_items();
 
 		// Retrun data
 		return array($data);
