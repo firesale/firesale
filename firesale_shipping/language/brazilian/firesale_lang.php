@@ -25,4 +25,4 @@
 	$lang['firesale:label_height_cm']	= 'Produto Altura (cm)';
 	$lang['firesale:label_width_cm']	= 'Produto Largura (cm)';
 	$lang['firesale:label_depth_cm']	= 'Produto Profundidade (cm)';
-	$lang['firesale:label_up_to']		= 'Up to'; # Translate
+	$lang['firesale:label_up_to']		= 'Até'; # Translate
