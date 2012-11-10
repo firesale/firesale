@@ -99,16 +99,17 @@ class Front_orders extends Public_Controller
 		// Check user can view
 		if( $user != NULL AND $order != FALSE AND $user == $order['created_by']['user_id'] )
 		{
-		
+
 			// Format order for display
-			$order['price_sub']   = number_format($order['price_sub'], 2);
-			$order['price_ship']  = number_format($order['price_ship'], 2);
-			$order['price_total'] = number_format($order['price_total'], 2);
+			$order['price_sub']   = $this->currency_m->format_string($order['price_sub'], (object)$order['currency'], FALSE, FALSE);
+			$order['price_ship']  = $this->currency_m->format_string($order['price_ship'], (object)$order['currency'], FALSE, FALSE);
+			$order['price_total'] = $this->currency_m->format_string($order['price_total'], (object)$order['currency'], FALSE, FALSE);
 
 			// Format products
 			foreach( $order['items'] AS &$item )
 			{
-				$item['price'] = number_format($item['price'], 2);
+				$item['price'] = $this->currency_m->format_string($item['price'], (object)$order['currency'], FALSE, FALSE);
+				$item['total'] = $this->currency_m->format_string($item['total'], (object)$order['currency'], FALSE, FALSE);
 			}
 
 			// Build page

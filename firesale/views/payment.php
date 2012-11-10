@@ -38,34 +38,40 @@
         <h2>Products</h2>
 
         <table class="firesale standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <thead>
           <tr>
-            <th>Product</th>
-            <th>Model</th>
-            <th>Quantity</th>
-            <th>Unit Price</th>
-            <th width="130">Total</th>
+            <th><?php echo lang('firesale:label_product'); ?></th>
+            <th><?php echo lang('firesale:product:label_model'); ?></th>
+            <th><?php echo lang('firesale:cart:label_quantity'); ?></th>
+            <th><?php echo lang('firesale:cart:label_unit_price'); ?></th>
+            <th width="130"><?php echo lang('firesale:cart:label_total'); ?></th>
           </tr>
+          </thead>
+          <tfoot>
+            <tr>
+              <td colspan="4"><strong>Sub-Total:</strong></td>
+              <td>{{ price_sub }}</td>
+            </tr>
+            <tr>
+              <td colspan="4"><strong>Shipping:</strong></td>
+              <td>{{ price_ship }}</td>
+            </tr>
+            <tr class="last">
+              <td class="large" colspan="4"><strong>Total:</strong></td>
+              <td class="large price">{{ price_total }}</td>
+            </tr>
+          </tfoot>
+          <tbody>
 {{ items }}
-          <tr>
-            <td class="align-left"><strong>{{ name }}</strong></td>
-            <td>{{ code }}</td>
-            <td>{{ qty }}</td>
-            <td>{{ price }}</td>
-            <td>{{ total }}</td>
-          </tr>
+            <tr>
+              <td class="align-left"><strong>{{ name }}</strong></td>
+              <td>{{ code }}</td>
+              <td>{{ qty }}</td>
+              <td>{{ price }}</td>
+              <td>{{ total }}</td>
+            </tr>
 {{ /items }}
-          <tr>
-            <td class="align-right" colspan="4"><strong>Sub-Total:</strong></td>
-            <td>{{ price_sub }}</td>
-          </tr>
-          <tr>
-            <td class="align-right" colspan="4"><strong>Shipping:</strong></td>
-            <td>{{ price_ship }}</td>
-          </tr>
-          <tr class="last">
-            <td class="large align-right" colspan="4"><strong>Total:</strong></td>
-            <td class="large price">{{ price_total }}</td>
-          </tr>
+          </tbody>
         </table>
 
       </div>

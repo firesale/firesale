@@ -34,7 +34,7 @@
 
         <table class="firesale standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">
           <tr>
-            <th><?php echo lang('firesale:label_product'); ?>></th>
+            <th><?php echo lang('firesale:label_product'); ?></th>
             <th><?php echo lang('firesale:product:label_model'); ?></th>
             <th><?php echo lang('firesale:cart:label_quantity'); ?></th>
             <th><?php echo lang('firesale:cart:label_unit_price'); ?></th>

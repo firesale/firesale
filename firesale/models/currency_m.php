@@ -174,4 +174,5 @@ class Currency_m extends MY_Model
 		// Return
 		return $formatted;
 	}
+
 }
