@@ -19,7 +19,10 @@ class Front_cart extends Public_Controller
 
 		parent::__construct();
 
-		// Load CodeIgniter's cart class, the ci-merchant class and the gateways class
+		// Load ci-merchant language file
+		$this->lang->load('merchant');
+
+		// Load cart class, the ci-merchant class and the gateways class
 		$this->load->library(array('fs_cart', 'merchant', 'gateways'));
 		
 		// Load the required models
@@ -514,12 +517,14 @@ class Front_cart extends Public_Controller
 				// Load the routes model
 				$this->load->model('routes_m');
 
+				$posted_data = $this->input->post(NULL, TRUE);
+
 				// Run payment
 				$params = array_merge(array(
 					'notify_url' => $this->routes_m->build_url('cart') . '/callback',
 					'return_url' => $this->routes_m->build_url('cart') . '/success',
 					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
-				), $this->input->post(NULL, TRUE), array(
+				), $posted_data ? $posted_data : array(), array(
 					'currency_code'  => $this->fs_cart->currency()->cur_code,
 					'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
 					'order_id'       => $this->session->userdata('order_id'),
