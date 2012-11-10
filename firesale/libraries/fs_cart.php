@@ -60,11 +60,6 @@ class Fs_cart extends CI_Cart
 		return $this->tax_mod;
 	}
 
-	public function tax_rate()
-	{
-		return $this->currency()->cur_tax;
-	}
-
 	public function tax()
 	{
 		$this->tax = 0;
