@@ -91,11 +91,11 @@
 	$lang['firesale:prod_not_found'] 		= 'Este produto nao pode ser encontrado';
 	$lang['firesale:prod_delimg_success']   = 'Imagem removida com sucesso';
 	$lang['firesale:prod_delimg_error']     = 'Ocorreu um erro ao remover a imagem selecionada';
-	$lang['firesale:prod_button_quick_edit']= 'Quick Edit'; #Translate
+	$lang['firesale:prod_button_quick_edit']= 'Edição Rápida';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Preço de venda antes e após impostos';
-	$lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)'; # Translate
+	$lang['firesale:inst_price'] = 'Preço de venda antes e após taxas. (Se abaixo do preço do fornecedor, será exibido como preço de venda)';
 
 	// Labels
 	$lang['firesale:label_draft']		= 'Rascunho';
@@ -226,16 +226,16 @@
 	$lang['firesale:orders:declined_message']	= 'Seu pagamento foi rejeitado, por favor tente novamente.';
 	$lang['firesale:orders:mismatch_message']	= 'Seu pagamento não pertence a este pedido.';
 	$lang['firesale:orders:logged_in']			= 'Você deve estar logado no sistema para visualizar seu histórico de compra.';
-	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
-	$lang['firesale:orders:label_products']		= 'Products'; # Translate
-	$lang['firesale:orders:label_view_order']	= 'View Order'; # Translate
-	$lang['firesale:orders:label_customer']		= 'Customer'; # Translate
-	$lang['firesale:orders:label_date_placed']	= 'Date Placed'; # Translate
-	$lang['firesale:orders:label_order_id'] 	= "Order ID"; # Translate
-	$lang['firesale:orders:labe_shipping_address'] 	= 'Shipping Address'; # Translate
-	$lang['firesale:orders:labe_payment_address'] 	= 'Payment Address'; # Translate
-	$lang['firesale:orders:label_order_status']		= 'Order Status'; # Translate
-	$lang['firesale:orders:label_message']			= 'Message'; # Translate
+	$lang['firesale:orders:label_view_order']	= 'Visualizar Pedido';
+	$lang['firesale:orders:label_products']		= 'Produtos';
+	$lang['firesale:orders:label_view_order']	= 'Visualizar Pedido';
+	$lang['firesale:orders:label_customer']		= 'Cliente';
+	$lang['firesale:orders:label_date_placed']	= 'Data da compra';
+	$lang['firesale:orders:label_order_id'] 	= 'Pedido ID';
+	$lang['firesale:orders:labe_shipping_address'] 	= 'Endereço de Entrega';
+	$lang['firesale:orders:labe_payment_address'] 	= 'Endereço de Pagamento';
+	$lang['firesale:orders:label_order_status']		= 'Status do Pedido';
+	$lang['firesale:orders:label_message']			= 'Mensage';
 
 	// Gateways
 	$lang['firesale:gateways:admin_title']					= 'Meios de Pagamento';
@@ -335,11 +335,11 @@
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Meu Endereço';
-	$lang['firesale:addresses:edit_address'] = 'Edit Address'; # Translate
-	$lang['firesale:addresses:new_address']  = 'Create new Address'; # Translate
-	$lang['firesale:addresses:save']	     = 'Save'; # Translate
-	$lang['firesale:addresses:cancel']       = 'Cancel'; # Translate
-	$lang['firesale:addresses:no_user']      = 'You must be logged in to manage your address book'; # Translate
+	$lang['firesale:addresses:edit_address'] = 'Editar Endereço';
+	$lang['firesale:addresses:new_address']  = 'Adicionar novo endereço';
+	$lang['firesale:addresses:save']	     = 'Salvar';
+	$lang['firesale:addresses:cancel']       = 'Cancelar';
+	$lang['firesale:addresses:no_user']      = 'Você deve estar logado no sistema para gerenciar seus endereços.';
 	$lang['firesale:addresses:add_success']  = 'Address created successfully'; # Translate
 	$lang['firesale:addresses:add_error']    = 'Error creating address'; # Translate
 	$lang['firesale:addresses:edit_success'] = 'Address edited successfully'; # Translate
@@ -368,14 +368,14 @@
 	$lang['firesale:cart:label_total'] = 'Total';
 	
 	// Categories Frontend
-	$lang['firesale:categories:grid'] = 'Grid';	#Translate
-	$lang['firesale:categories:list'] = 'List';	#Translate
-	$lang['firesale:categories:add_to_basket'] = 'Add to Basket';	#Translate
+	$lang['firesale:categories:list'] = 'Lista';
+	$lang['firesale:categories:grid'] = 'Gride';
+	$lang['firesale:categories:add_to_basket'] = 'Adicionar a cesta de compras';
 	
 	// Payment Frontend
-	$lang['firesale:payment:cancelled'] = 'Order Cancelled'; #Translate
-	$lang['firesale:payment:wait_redirect'] = 'Please wait while we redirect you to the payment page...'; #Translate
-	$lang['firesale:payment:btn_continue'] = 'Continue'; #Translate
+	$lang['firesale:payment:cancelled'] = 'Pedido Cancelado';
+	$lang['firesale:payment:wait_redirect'] = 'Por favor aguarde enquanto o direcionamos para realizar o pagamento...';
+	$lang['firesale:payment:btn_continue'] = 'Continuar';
 
 	// Settings
 	$lang['firesale:settings_tax']                   = 'Tax Percentage'; # translate

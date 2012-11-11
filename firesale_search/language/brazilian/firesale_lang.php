@@ -11,5 +11,5 @@
 	$lang['firesale:search:no_terms']		= 'Nenhum termo disponível';
 	
 	//Search Frontend
-	$lang['firesale:search:label_search'] 			= 'Search';	# Translate
-	$lang['firesale:search:label_nothing_found'] 	= 'Nothing found!';	# Translate
+	$lang['firesale:search:label_search'] 			= 'Pesquisar';
+	$lang['firesale:search:label_nothing_found'] 	= 'Nenhum resultado encontrado';
