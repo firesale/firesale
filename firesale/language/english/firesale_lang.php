@@ -317,6 +317,8 @@
 	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency';
 	$lang['firesale:currency:edit_success']      = 'Currency updated successfully';
 	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency';
+	$lang['firesale:currency:delete_success']    = 'Currency was deleted successfully';
+	$lang['firesale:currency:delete_error']      = 'There was an error deleting the currency';
 	$lang['firesale:currency:format_none']       = 'None';
 	$lang['firesale:currency:format_00']         = 'Round up to next full number';
 	$lang['firesale:currency:format_50']         = 'Round to closest .50';

@@ -317,6 +317,8 @@
 	$lang['firesale:currency:add_error']         = 'Impossible d\'ajouter la nouvelle monnaie';
 	$lang['firesale:currency:edit_success']      = 'Monnaie modifiée';
 	$lang['firesale:currency:edit_error']        = 'Impossible de modifier la monnaie';
+	$lang['firesale:currency:delete_success']    = 'Currency was deleted successfully'; # translate
+	$lang['firesale:currency:delete_error']      = 'There was an error deleting the currency'; # translate
 	$lang['firesale:currency:format_none']       = 'Aucun';
 	$lang['firesale:currency:format_00']         = 'Arrondir à l\'entier supérieur';
 	$lang['firesale:currency:format_50']         = 'Arrondir au format .50 le plus proche';

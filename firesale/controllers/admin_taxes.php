@@ -120,10 +120,13 @@ class Admin_taxes extends Admin_Controller
 		{
 			foreach ($this->input->post('action_to') as $id)
 			{
-				$this->delete($id, FALSE);
+				if ($this->taxes_m->can_delete($id))
+				{
+					$this->delete($id, FALSE);
+				}
 			}
 		}
-		elseif ($id != 1)
+		elseif ($this->taxes_m->can_delete($id))
 		{
 			$this->streams->entries->delete_entry($id, 'firesale_taxes', 'firesale_taxes');
 			

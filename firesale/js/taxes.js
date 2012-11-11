@@ -4,7 +4,7 @@ $(function()
 	{
 		var tax_id = $(this).attr('id');
 
-		if (tax_id == 1)
+		if ($(this).data('delete') != '1')
 		{
 			$(this).html('<a href="' + SITE_URL + 'admin/firesale/taxes/edit/' + tax_id + '">Edit</a>');
 		}

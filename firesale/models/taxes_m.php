@@ -18,6 +18,12 @@ class Taxes_m extends MY_Model
 		$taxes = $this->streams->entries->get_entries($params);
 		$data['taxes'] = $taxes['entries'];
 
+		// Get delete status
+		foreach( $data['taxes'] AS $key => $tax )
+		{
+			$data['taxes'][$key]['can_delete'] = $this->can_delete($tax['id']);
+		}
+
 		// Get currencies
 		$params = array(
 			'stream'    => 'firesale_currency',
@@ -59,6 +65,17 @@ class Taxes_m extends MY_Model
 		}
 
 		return $data;
+	}
+
+	public function can_delete($band)
+	{
+
+		// Get usage count
+		$query = $this->db->where('tax_band', $band)
+						  ->get('firesale_orders_items');
+
+		// return
+		return ( $query->num_rows() || $band == 1 ? false : true );
 	}
 
 	public function taxes_for_currency($currency = FALSE)

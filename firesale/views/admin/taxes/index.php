@@ -12,7 +12,7 @@
 					<tr>
 						<td class="spacer" style="width:100px"></td>
 						<?php foreach ($taxes as $tax): ?>
-							<td id="<?php echo $tax['id']; ?>" data-title="<?php echo $tax['title']; ?>"><?php echo $tax['title']; ?></td>
+							<td id="<?php echo $tax['id']; ?>" data-delete="<?php echo ( $tax['can_delete'] ? '1' : '0' ); ?>" data-title="<?php echo $tax['title']; ?>"><?php echo $tax['title']; ?></td>
 						<?php endforeach; ?>
 					</tr>
 				</thead>

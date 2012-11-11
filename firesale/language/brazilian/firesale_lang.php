@@ -317,6 +317,8 @@
 	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency'; # translate
 	$lang['firesale:currency:edit_success']      = 'Currency updated successfully'; # translate
 	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency'; # translate
+	$lang['firesale:currency:delete_success']    = 'Currency was deleted successfully'; # translate
+	$lang['firesale:currency:delete_error']      = 'There was an error deleting the currency'; # translate
 	$lang['firesale:label_cur_format_num']       = 'Number Formatting'; # translate
 	$lang['firesale:currency:format_none']       = 'None'; # translate
 	$lang['firesale:currency:format_00']         = 'Round up to next full number'; # translate

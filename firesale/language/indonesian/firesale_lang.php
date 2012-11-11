@@ -317,6 +317,8 @@
 	$lang['firesale:currency:add_error']         = 'Terjadi kesalahan saat menambahkan mata uang baru';
 	$lang['firesale:currency:edit_success']      = 'Mata Uang telah diperbaharui';
 	$lang['firesale:currency:edit_error']        = 'Terjadi kesalahan saat memperbaharui mata uang';
+	$lang['firesale:currency:delete_success']    = 'Currency was deleted successfully'; # translate
+	$lang['firesale:currency:delete_error']      = 'There was an error deleting the currency'; # translate
 	$lang['firesale:label_cur_format_num']       = 'Format Angka';
 	$lang['firesale:currency:format_none']       = 'Tidak ada';
 	$lang['firesale:currency:format_00']         = 'Bulatkan ke bilangan bulat selanjutnya';

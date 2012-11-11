@@ -58,6 +58,17 @@ class Currency_m extends MY_Model
 		return FALSE;
 	}
 
+	public function can_delete($currency)
+	{
+
+		// Get usage count
+		$query = $this->db->where('currency', $currency)
+						  ->get('firesale_orders');
+
+		// return
+		return ( $query->num_rows() || $currency == 1 ? false : true );
+	}
+
 	public function format_price($price, $rrp, $tax_id = NULL, $currency = NULL)
 	{
 		// Get currency ID

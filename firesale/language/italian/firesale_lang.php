@@ -317,6 +317,8 @@
 	$lang['firesale:currency:add_error']         = 'Si è verificato un errore nell\'aggiungere la nuova Valuta';
 	$lang['firesale:currency:edit_success']      = 'Valuta aggiornata correttamente';
 	$lang['firesale:currency:edit_error']        = 'Si è verificato un errore nell\'aggiornare la nuova Valuta';
+	$lang['firesale:currency:delete_success']    = 'Currency was deleted successfully'; # translate
+	$lang['firesale:currency:delete_error']      = 'There was an error deleting the currency'; # translate
 	$lang['firesale:currency:format_none']       = 'Nessuno';
 	$lang['firesale:currency:format_00']         = 'Arrotonda al numero intero più vicino'; 
 	$lang['firesale:currency:format_50']         = 'Arrotonda al più vicino .50'; 

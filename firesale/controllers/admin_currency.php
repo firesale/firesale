@@ -66,6 +66,12 @@ class Admin_currency extends Admin_Controller
         // Assign routes
         $this->data->currencies = $this->streams->entries->get_entries($params);
 
+        // Check for usage
+        foreach( $this->data->currencies['entries'] AS &$currency )
+        {
+        	$currency['delete'] = $this->currency_m->can_delete($currency['id']);
+        }
+
 		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:currency'))
 					   ->set($this->data);
@@ -230,6 +236,21 @@ class Admin_currency extends Admin_Controller
 		// Check access
 		role_or_die('firesale', 'install_uninstall_currency');
 
+		// Check deletion
+		if( $this->currency_m->can_delete($id) )
+		{
+			// Delete entry
+			$this->streams->entries->delete_entry($id, 'firesale_currency', 'firesale_currency');
+			$this->session->set_flashdata('success', lang('firesale:currency:delete_success'));
+		}
+		else
+		{
+			// Unable to delete
+			$this->session->set_flashdata('error', lang('firesale:currency:delete_error'));
+		}
+
+		// Send them back
+		redirect('admin/firesale/currency');
 	}
 
 }
