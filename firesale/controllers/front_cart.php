@@ -521,9 +521,9 @@ class Front_cart extends Public_Controller
 
 				// Run payment
 				$params = array_merge(array(
-					'notify_url' => $this->routes_m->build_url('cart') . '/callback',
-					'return_url' => $this->routes_m->build_url('cart') . '/success',
-					'cancel_url' => $this->routes_m->build_url('cart') . '/cancel'
+					'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback'),
+					'return_url' => site_url($this->routes_m->build_url('cart') . '/success'),
+					'cancel_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
 				), $posted_data ? $posted_data : array(), array(
 					'currency_code'  => $this->fs_cart->currency()->cur_code,
 					'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
