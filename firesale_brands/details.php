@@ -20,10 +20,12 @@ class Module_Firesale_brands extends Module {
 			'name' => array(
 				'en' => 'FireSale Brands',
 				'fr' => 'FireSale Marques',
+				'it' => 'FireSale Marche'
 			),
 			'description' => array(
 				'en' => 'Brand Management',
 				'fr' => 'Gestion des marques',
+				'it' => 'Gestione Marche'
 			),
 			'frontend'		=> FALSE,
 			'backend'		=> FALSE,

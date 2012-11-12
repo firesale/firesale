@@ -112,7 +112,7 @@
 	$lang['firesale:label_filterprod']    = 'Seleziona un prodotto';
 	$lang['firesale:label_filterstatus']  = 'Seleziona lo stato di un prodotto';
 	$lang['firesale:label_filtersstatus'] = 'Seleziona uno stato di scorte'; 
-	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
+	$lang['firesale:label_order_status']  = 'Seleziona uno stato di Ordine';
 	$lang['firesale:label_rrp']			  = 'Prezzo di vendita raccomandato';
 	$lang['firesale:label_rrp_tax']		  = 'Prezzo di vendita raccomandato (tasse escluse)';
 	$lang['firesale:label_rrp_short']	  = 'RRP';
@@ -157,7 +157,7 @@
 	$lang['firesale:label_city']		= 'Città';
 	$lang['firesale:label_postcode']	= 'C.A.P.';
 	$lang['firesale:label_county']		= 'Provincia';
-	$lang['firesale:label_country']		= 'Regione';
+	$lang['firesale:label_country']		= 'Stato';
 	$lang['firesale:label_details'] 	= 'L\'indirizzo di fatturazione e di spedizione coincidono.';
 	$lang['firesale:label_user_order']	= 'Utente';
 	$lang['firesale:label_ip']			= 'Indirizzo IP';
@@ -186,7 +186,7 @@
 	$lang['firesale:label_cur_code']        = 'Codice Valuta';
 	$lang['firesale:label_cur_code_inst']   = 'Formato ISO-4217';
 	$lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
-	$lang['firesale:label_cur_mod']         = 'Modificatore di valuta'; # translate
+	$lang['firesale:label_cur_mod']         = 'Modificatore di valuta';
 	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region'; # translate
 	$lang['firesale:label_exch_rate']       = 'Exchange Rate'; # translate
 	$lang['firesale:label_exch_rate_inst']  = 'Questo sarà automaticamente aggiornato ogni ora, se lasciato bianco sarò aggiornato al momento del salvataggio';
@@ -317,8 +317,8 @@
 	$lang['firesale:currency:add_error']         = 'Si è verificato un errore nell\'aggiungere la nuova Valuta';
 	$lang['firesale:currency:edit_success']      = 'Valuta aggiornata correttamente';
 	$lang['firesale:currency:edit_error']        = 'Si è verificato un errore nell\'aggiornare la nuova Valuta';
-	$lang['firesale:currency:delete_success']    = 'Currency was deleted successfully'; # translate
-	$lang['firesale:currency:delete_error']      = 'There was an error deleting the currency'; # translate
+	$lang['firesale:currency:delete_success']    = 'La valuta è stata cancellata con successo';
+	$lang['firesale:currency:delete_error']      = 'Si è verificato un errore nel cancellare la valuta';
 	$lang['firesale:currency:format_none']       = 'Nessuno';
 	$lang['firesale:currency:format_00']         = 'Arrotonda al numero intero più vicino'; 
 	$lang['firesale:currency:format_50']         = 'Arrotonda al più vicino .50'; 
