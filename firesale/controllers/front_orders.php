@@ -115,8 +115,8 @@ class Front_orders extends Public_Controller
 			// Build page
 			$this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
 						   ->set_breadcrumb('Home', '/')
-						   ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->routes_m->url('orders'))
-						   ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), $this->routes_m->url('orders-single', $id))
+						   ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->routes_m->build_url('orders'))
+						   ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), $this->routes_m->build_url('orders-single', $id))
 						   ->set($order);
 
 			// Fire events
@@ -129,7 +129,7 @@ class Front_orders extends Public_Controller
 		else
 		{
 			// Must be logged in
-			$this->set_flashdata('error', lang('firesale:orders:logged_in'));
+			$this->session->set_flashdata('error', lang('firesale:orders:logged_in'));
 			redirect('users/login');
 		}
 	
