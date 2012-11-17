@@ -150,7 +150,7 @@ class Products_m extends MY_Model {
 		$currency = $currency ? $currency : ($user_currency ? $user_currency : 1);
 
 		// Variables
-		$type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
+		$type = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
 
 		// Check cache
 		if( array_key_exists($id_slug, $this->cache[$type]) )
