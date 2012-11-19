@@ -76,7 +76,7 @@
 				// Do we need to cross-convert?
 				if( $json->base != $this->base )
 				{
-					$new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$this->base ) );
+					$new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$base ) );
 					$rate = round($new, 6);
 				}
 
