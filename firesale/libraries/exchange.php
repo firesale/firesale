@@ -70,11 +70,13 @@
 			// Loop them
 			foreach( $currencies AS $currency )
 			{
+				//Added patch
+				$rate = 1;
 
 				// Do we need to cross-convert?
 				if( $json->base != $this->base )
 				{
-					$new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$base ) );
+					$new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$this->base ) );
 					$rate = round($new, 6);
 				}
 
