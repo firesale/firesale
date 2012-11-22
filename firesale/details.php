@@ -918,13 +918,6 @@ class Module_Firesale extends Module {
 				'description' => 'Default'
 			));
 
-			// And the default tax assignment
-			$this->db->insert('firesale_taxes_assignments', array(
-				'tax_id' => 1,
-				'currency_id' => 1,
-				'value' => '20.00'
-			));
-
 		}
 		elseif ($method == 'remove')
 		{

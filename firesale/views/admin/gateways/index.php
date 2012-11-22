@@ -13,7 +13,7 @@
 						<th><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
 						<th><?php echo lang('firesale:gateways:labels:name'); ?></th>
 						<th><?php echo lang('firesale:gateways:labels:desc'); ?></th>
-						<th style="width: 200px;"></th>
+						<th style="width: 190px;"></th>
 					</tr>
 				</thead>
 				<tbody>
@@ -23,7 +23,7 @@
 								<td><input type="checkbox" name="action_to[]" value="<?php echo $gateway['id']; ?>"  /></td>
 								<td><?php echo $gateway['name']; ?></td>
 								<td><?php echo $gateway['desc']; ?></td>
-								<td class="actions">
+								<td class="actions"><center>
 									<?php if ($gateway['enabled'] AND group_has_role('firesale', 'enable_disable_gateways')): ?>
 										<a class="confirm btn orange" href="<?php echo site_url('admin/firesale/gateways/disable/'.$gateway['id']); ?>" title="<?php echo lang('firesale:gateways:warning'); ?>"><?php echo lang('buttons.disable'); ?></a>
 									<?php elseif (group_has_role('firesale', 'enable_disable_gateways')): ?>
@@ -35,14 +35,14 @@
 									<?php if (group_has_role('firesale', 'install_uninstall_gateways')): ?>
 										<a class="confirm btn red" href="<?php echo site_url('admin/firesale/gateways/uninstall/'.$gateway['id']); ?>" title="<?php echo lang('firesale:gateways:warning'); ?>"><?php echo lang('buttons.uninstall'); ?></a>
 									<?php endif; ?>
-								</td>
+								</center></td>
 							</tr>
 						<?php endforeach; ?>
 				</tbody>
 			</table>
-			<br />
 
-			<div class="table_action_buttons">
+			<br />
+			<div class="buttons">
 				<?php if (group_has_role('firesale', 'enable_disable_gateways')): ?>
 					<button class="btn red green" value="enable" name="btnAction" type="submit" disabled="">
 						<span><?php echo lang('buttons.enable'); ?></span>

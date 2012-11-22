@@ -18,12 +18,12 @@
 					<th><?php echo lang('firesale:label_cur_mod'); ?></th>
 					<th><?php echo lang('firesale:label_exch_rate'); ?></th>
 					<th><?php echo lang('firesale:label_cur_tax'); ?></th>
-					<th style="width: 180px"></th>
+					<th style="width: 120px"></th>
 				</tr>
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="5">
+					<td colspan="8">
 						<div class="inner"><?php $this->load->view('admin/partials/pagination'); ?></div>
 					</td>
 				</tr>
@@ -38,7 +38,7 @@
 					<td><?php echo str_replace('|', ' ', $currency['cur_mod']); ?></td>
 					<td><?php echo $currency['exch_rate']; ?></td>
 					<td><?php echo number_format($currency['cur_tax'], 2).'%'; ?></td>
-					<td>
+					<td><center>
 						<a href="<?php echo site_url(); ?>admin/firesale/currency/edit/<?php echo $currency['id']; ?>" class="btn blue"><?php echo lang('global:edit'); ?></a>
 <?php if( $currency['enabled']['key'] == '1' ): ?>
 						<a href="<?php echo site_url(); ?>admin/firesale/currency/disable/<?php echo $currency['id']; ?>" class="btn orange"><?php echo lang('firesale:currency:disable'); ?></a>
@@ -48,13 +48,14 @@
 <?php if( $currency['delete'] ): ?>
 						<a href="<?php echo site_url(); ?>admin/firesale/currency/delete/<?php echo $currency['id']; ?>" class="btn red confirm" title="<?php echo lang('firesale:currency:delete_warn'); ?>"><?php echo lang('global:delete'); ?></a>
 <?php endif; ?>
-					</td>
+					</center></td>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>
 		</table>
 
-		<div class="table_action_buttons">
+		<br />
+		<div class="buttons">
 			<button class="btn green" name="btnAction" value="enable"><span><?php echo lang('firesale:currency:enable'); ?></span></button>
 			<button class="btn orange confirm" name="btnAction" value="disable" title="<?php echo lang('firesale:currency:disable_warn'); ?>"><span><?php echo lang('firesale:currency:disable'); ?></span></button>
 			<button class="btn red confirm" name="btnAction" value="delete" title="<?php echo lang('firesale:currency:delete_warn'); ?>"><span><?php echo lang('firesale:currency:delete'); ?></span></button>

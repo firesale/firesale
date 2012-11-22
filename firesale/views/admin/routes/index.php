@@ -13,7 +13,7 @@
 					<th><?php echo lang('firesale:label_slug'); ?></th>
 					<th><?php echo lang('firesale:label_route'); ?></th>
 					<th><?php echo lang('firesale:label_translation'); ?></th>
-					<th style="min-width: 20px; max-width: 130px"></th>
+					<th style="min-width: 20px; max-width: 110px">&nbsp;</th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -30,10 +30,10 @@
 					<td><?php echo $route['slug']; ?></td>
 					<td><?php echo $route['route']; ?></td>
 					<td><?php echo $route['translation']; ?></td>
-					<td>
+					<td><center>
 						<?php echo anchor('admin/firesale/routes/edit/' . $route['id'], lang('global:edit'), 'class="btn orange edit"'); ?>
                         <?php echo ( $route['is_core'] != '1' ? anchor('admin/firesale/routes/delete/' . $route['id'], lang('global:delete'), array('class' => 'confirm btn red delete')) : '' ); ?>
-                    </td>
+                    </center></td>
 				</tr>
 				<?php endforeach; ?>
 			</tbody>

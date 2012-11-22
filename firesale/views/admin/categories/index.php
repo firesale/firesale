@@ -72,6 +72,7 @@
 					<?php endif; ?>
 					<?php endforeach; ?>
 
+					<br class="clear" />
 		        	<div class="buttons">
 					<?php if( isset($input->id) ): ?>
 						<button type="submit" class="btn blue" value="save" name="btnAction"><span><?php echo lang('firesale:cats_edit'); ?></span></button>

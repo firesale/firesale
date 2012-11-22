@@ -85,6 +85,7 @@
 		      </fieldset>
 		    </div>
 
+        <br class="clear" />
     		<div class="buttons">
     			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
     		</div>

@@ -82,18 +82,6 @@ class Front_category extends Public_Controller {
 			// Query
 			$query = $this->categories_m->_build_query($category['id']);
 
-			// Check start for sale section
-			if( !is_int($start) AND substr($start, 0, 4) == 'sale' )
-			{
-
-				// Redefine vars
-				$sale  = $start;
-				$start = $extra;
-
-				// Add where
-				$query->where('firesale_products.rrp > firesale_products.price');
-			}
-
 			// Add ordering
 			$query->order_by('firesale_products.' . $this->data->order['by'], $this->data->order['dir']);
 
@@ -119,7 +107,7 @@ class Front_category extends Public_Controller {
 			// Assign pagination
 			if( !empty($products) )
 			{
-				$this->data->pagination = create_pagination($this->routes_m->build_url('category', $category['id']).'/'.$category['slug'] . ( isset($sale) ? '/' . $sale : '' ),  $this->categories_m->total_products($category['id']), $this->perpage, ( isset($sale) ? 4 : 3 ));
+				$this->data->pagination = create_pagination($this->routes_m->build_url('category', $category['id']),  $this->categories_m->total_products($category['id']), $this->perpage, 3);
 				$this->data->pagination['shown'] = count($products);
 			}
 

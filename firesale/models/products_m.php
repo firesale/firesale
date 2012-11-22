@@ -150,7 +150,7 @@ class Products_m extends MY_Model {
 		$currency = $currency ? $currency : ($user_currency ? $user_currency : 1);
 
 		// Variables
-		$type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
+		$type = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
 
 		// Check cache
 		if( array_key_exists($id_slug, $this->cache[$type]) )
@@ -739,35 +739,20 @@ class Products_m extends MY_Model {
 		$original_slug  = $slug;
 		$original_title = $title;
 
-		// Append title name if required
-		while( $this->db->where('slug', $slug)->get('file_folders')->num_rows() )
+		// Create folder
+		$data = Files::create_folder($parent, $title);
+
+		// Check status
+		if( $data['status'] )
 		{
-			$i++;
-			$slug  = $original_slug.'-'.$i;
-			$title = $original_title.'-'.$i;
+			$this->db->where('id', $data['data']['id'])->update('file_folders', array('slug' => $slug));
+			$data['data']['slug'] = $slug;
+			return $data;
 		}
+		var_dump($data);
 
-		// Build insert data
-		$insert = array(
-						'parent_id'        => $parent, 
-						'slug'             => $slug, 
-						'name'             => $title,
-						'location'         => 'local',
-						'remote_container' => '',
-						'date_added'       => now(), 
-						'sort'             => now()
-					);
+		// Change slug
 
-		// Insert it
-		if( $this->db->insert('file_folders', $insert) )
-		{
-
-			// Build return data
-			$return['id'] = $this->db->insert_id();
-
-			// Return
-			return $return;
-		}
 
 		// Failed
 		return FALSE;

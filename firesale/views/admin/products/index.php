@@ -71,12 +71,12 @@
 						<td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? lang('firesale:label_stock_unlimited') . ' (&infin;)' : $product['stock'] ); ?></td>
 						<td class="item-price"><?php echo $product['price_formatted']; ?></td>
 						<td class="actions">
-							<ul class="split-button">
+							<center><ul class="split-button">
 								<li><strong>Action</strong></li>
 								<li><a href="#" class="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a></li>
 								<li><a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="edit"><?php echo lang('global:edit'); ?></a></li>
 								<li><a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="confirm"><?php echo lang('global:delete'); ?></a></li>
-							</ul>
+							</ul></center>
 						</td>
 					</tr>
 <?php endforeach; ?>

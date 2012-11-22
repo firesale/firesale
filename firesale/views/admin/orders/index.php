@@ -65,7 +65,8 @@
 				</tbody>
 			</table>
 
-			<div class="table_action_buttons">
+			<br />
+			<div class="buttons">
 				<button class="btn green" value="paid" name="btnAction" type="submit" disabled="">
 					<span><?php echo lang('firesale:orders:mark_as') . lang('firesale:orders:status_paid'); ?></span>
 				</button>
