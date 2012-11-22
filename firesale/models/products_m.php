@@ -745,14 +745,11 @@ class Products_m extends MY_Model {
 		// Check status
 		if( $data['status'] )
 		{
+			// Change slug
 			$this->db->where('id', $data['data']['id'])->update('file_folders', array('slug' => $slug));
 			$data['data']['slug'] = $slug;
 			return $data;
 		}
-		var_dump($data);
-
-		// Change slug
-
 
 		// Failed
 		return FALSE;
