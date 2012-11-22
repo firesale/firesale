@@ -960,7 +960,7 @@ class Module_Firesale extends Module {
 		$this->load->library('unzip');
 
 		// Variables
-		$url    = 'https://github.com/parse19/PyroStreams-Multiple-Relationships/zipball/master';
+		$url    = 'https://github.com/firesale/PyroStreams-Multiple-Relationships/zipball/master';
 		$path   = SHARED_ADDONPATH . 'field_types/';
 		$before = scandir($path);
 
