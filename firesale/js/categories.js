@@ -32,12 +32,12 @@ $(function(){
 			for( var k in data ) {
 				if( k == 'meta_keywords' && $('#tabs input[name='+k+']').length > 0 && data[k] != null ) {
 					$('#tabs input[name='+k+']').importTags(data[k]);
+				} else if( $('#tabs select[name='+k+']').length > 0 ) {
+					if( data[k] != null ) { $('#tabs select[name='+k+']').val(data[k].key).trigger('liszt:updated'); }
 				} else if( $('#tabs input[name='+k+']').length > 0 ) {
 					$('#tabs input[name='+k+']').val(data[k]);
 				} else if( $('#tabs textarea[name='+k+']').length > 0 ) {
 					$('#tabs textarea[name='+k+']').val(data[k]);
-				} else if( $('#tabs select[name='+k+']').length > 0 ) {
-					$('#tabs select[name='+k+']').val(data[k]).trigger('liszt:updated');
 				}
 			}
 
