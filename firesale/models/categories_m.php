@@ -136,12 +136,12 @@ class Categories_m extends MY_Model
     {
 
     	// Variables
-	$children = $this->get_children($category);
+		$children = $this->get_children($category);
     	$query    = $this->db->select('`row_id` AS id', FALSE)
     						 ->from('firesale_products_firesale_categories')
     						 ->join('firesale_products', 'firesale_products.id = firesale_products_firesale_categories.row_id', 'inner')
     						 ->where('firesale_products.status', 1)
-    						 ->group_by('firesale_products_firesale_categories.row_id');
+    						 ->group_by('firesale_products.slug');
 
     	// Has children?
     	if( !empty($children) AND $category != NULL )
