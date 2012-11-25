@@ -9,7 +9,7 @@
  * $this->load->library('fs_cart');
  * $this->fs_cart->function();
  * 
- * Written by: Chris Harvey (FireSALE Team)
+ * Written by: Chris Harvey (FireSale Team)
  */
 
 // Include the stock CodeIgniter Cart class

@@ -1,7 +1,7 @@
 <?php
 	
 	// General
-	$lang['firesale:title']					= 'FireSALE';
+	$lang['firesale:title']					= 'FireSale';
 	$lang['firesale:shortcuts:band_create'] = 'Buat Berkas Baru';
 	
 	// Sections

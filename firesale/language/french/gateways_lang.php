@@ -2,7 +2,7 @@
 
 /*
  * This file stores the names and descriptions of the
- * default FireSALE payment gateways.
+ * default FireSale payment gateways.
  * 
  * The syntax is:
  * 		firesale:gateways:{slug}:name

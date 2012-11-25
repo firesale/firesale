@@ -9,7 +9,7 @@ class Module_Firesale_shipping extends Module {
 	{
 		parent::__construct();
 		
-		// Load in the FireSALE library
+		// Load in the FireSale library
 		$this->load->library('firesale/firesale');
 	}
 
@@ -31,7 +31,7 @@ class Module_Firesale_shipping extends Module {
 			'backend'		=> FALSE,
 			'firesale_core'	=> FALSE,
 			'role'			=> 'shipping',
-			'menu'	   		=> 'FireSALE',
+			'menu'	   		=> 'FireSale',
 			'author'   		=> 'Jamie Holdroyd',
 			'sections' 		=> array(
 				'shipping' 	=> array(
