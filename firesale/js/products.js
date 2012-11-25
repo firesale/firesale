@@ -129,7 +129,7 @@ $(function(){
 			id.html('<input type="hidden" name="old_id" value="' + id.text() + '" /><input type="text" id="id" name="id" value="' + id.text() + '" />');
 			title.html('<input type="text" id="title" name="title" value="' + title.text().replace(/"/g, '&quot;') + '" />');
 			stock.html('<input type="text" id="stock" name="stock" value="' + ( stock.text() == 'Unlimited (∞)' ? '0' : stock.text() ) + '" />');
-			price.html('<input type="text" id="price" name="price" value="' + price.text().substr(1) + '" pattern="^\d+(?:,\d{3})*\.\d{2}$" />');
+			price.html('<input type="text" id="price" name="price" value="' + price.text().replace(/[^0-9\.]/g, '') + '" pattern="^\d+(?:,\d{3})*\.\d{2}$" />');
 			
 			var select = $('select[name=category]').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'parent[]'});
 			select.find(':selected').removeAttr('selected');
