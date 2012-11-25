@@ -42,9 +42,9 @@ class Firesale
 
 		Asset::add_path('firesale', $dir . 'firesale/');
 		
-		// Retrieve the FireSALE sub-modules
+		// Retrieve the FireSale sub-modules
 		$this->_CI->db->where("(`is_backend` = 0 OR `slug` = 'firesale')", NULL, FALSE)->order_by('CASE WHEN `slug`="firesale" THEN 0 ELSE 1 END', NULL, FALSE)->order_by('id', 'asc');
-		$subs = $this->_CI->db->get_where('modules', array('menu' => 'FireSALE', 'installed' => '1', 'enabled' => '1'));
+		$subs = $this->_CI->db->get_where('modules', array('menu' => 'FireSale', 'installed' => '1', 'enabled' => '1'));
 
 		if ($subs->num_rows())
 		{
@@ -57,7 +57,7 @@ class Firesale
 					// Instantiate the module
 					$module_class = new $class;
 
-					// Get this modules info (the FireSALE way)
+					// Get this modules info (the FireSale way)
 					$module_info = $module_class->information();
 
 					// Add the modules sections if it has any.

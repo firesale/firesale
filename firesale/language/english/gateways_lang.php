@@ -2,7 +2,7 @@
 
 /*
  * This file stores the names and descriptions of the
- * default FireSALE payment gateways.
+ * default FireSale payment gateways.
  * 
  * The syntax is:
  * 		firesale:gateways:{slug}:name
@@ -33,8 +33,8 @@ $lang['firesale:gateways:dps_pxpost:name'] = 'DPS (PX Post)';
 $lang['firesale:gateways:dps_pxpost:desc'] = 'PX POST is designed to handle transactions using a HTTPS Post Request.';
 
 // Dummy
-$lang['firesale:gateways:dummy:name'] = 'FireSALE Dummy';
-$lang['firesale:gateways:dummy:desc'] = 'The FireSALE dummy gateway. Handles sample payment processing (authorizes when using the test credit card number only).';
+$lang['firesale:gateways:dummy:name'] = 'FireSale Dummy';
+$lang['firesale:gateways:dummy:desc'] = 'The FireSale dummy gateway. Handles sample payment processing (authorizes when using the test credit card number only).';
 
 // eWAY Shared
 $lang['firesale:gateways:eway_shared:name'] = 'eWAY Shared Payments';

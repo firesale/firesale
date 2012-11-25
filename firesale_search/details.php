@@ -9,7 +9,7 @@ class Module_Firesale_Search extends Module {
 	{
 		parent::__construct();
 		
-		// Load in the FireSALE library
+		// Load in the FireSale library
 		$this->load->library('firesale/firesale');
 	}
 
@@ -18,7 +18,7 @@ class Module_Firesale_Search extends Module {
 		
 		$info = array(
 			'name' => array(
-				'en' => 'FireSALE Search (Basic)',
+				'en' => 'FireSale Search (Basic)',
 				'fr' => 'FireSale Recherche (Basique)',
 				'it' => 'FireSale Ricerca (Base)'
 			),
@@ -30,7 +30,7 @@ class Module_Firesale_Search extends Module {
 			'frontend' 		=> TRUE,
 			'backend' 		=> FALSE,
 			'firesale_core'	=> FALSE,
-			'menu'	   		=> 'FireSALE',
+			'menu'	   		=> 'FireSale',
 			'author' 		=> 'Jamie Holdroyd',
 			'elements' => array(
 				'dashboard' => array(

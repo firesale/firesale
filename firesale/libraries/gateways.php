@@ -5,7 +5,7 @@
  * and build a form for the user to enter their settings for
  * the gateway.
  * 
- * Written by: Chris Harvey (FireSALE Team)
+ * Written by: Chris Harvey (FireSale Team)
  */
 class Gateways
 {

@@ -1,7 +1,7 @@
 <?php
 	
 	// General
-	$lang['firesale:title']					= 'FireSALE';
+	$lang['firesale:title']					= 'FireSale';
 	$lang['firesale:shortcuts:band_create'] = 'Crea un nuovo corriere';
 	
 	// Sections
@@ -26,4 +26,3 @@
 	$lang['firesale:label_width_cm']	= 'Larghezza prodotto (cm)';
 	$lang['firesale:label_depth_cm']	= 'Profondità prodotto (cm)';
 	$lang['firesale:label_up_to']		= 'fino a'; # Translate
-
