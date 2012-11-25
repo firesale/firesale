@@ -44,7 +44,7 @@ class Admin_products extends Admin_Controller
 					   ->append_js('module::upload.js')
 					   ->append_js('module::products.js')
 					   ->append_metadata('<script type="text/javascript">' .
-										 "\n  var currency = '" . $this->settings->get('currency') . "';" . 
+										 "\n  var currency = '" . $this->currency_m->get_symbol() . "';" . 
 										 "\n  var tax_rate = '" . $this->taxes_m->get_percentage(1, 1) . "';" .
 										 "\n</script>");
 	

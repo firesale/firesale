@@ -58,6 +58,14 @@ class Currency_m extends MY_Model
 		return FALSE;
 	}
 
+	public function get_symbol($id = 1)
+	{
+
+		// Variables
+		$currency = $this->get($id);
+		return str_replace('{{ price }}', '', $currency->symbol);
+	}
+
 	public function can_delete($currency)
 	{
 
