@@ -33,7 +33,10 @@ $(function(){
 				if( k == 'meta_keywords' && $('#tabs input[name='+k+']').length > 0 && data[k] != null ) {
 					$('#tabs input[name='+k+']').importTags(data[k]);
 				} else if( $('#tabs select[name='+k+']').length > 0 ) {
-					if( data[k] != null ) { $('#tabs select[name='+k+']').val(data[k].key).trigger('liszt:updated'); }
+					if( data[k] != null ) {
+						if( typeof data[k].id != 'undefined' ) { data[k].key = data[k].id; }
+					 	var obj = $('#tabs select[name='+k+']'); obj.val(data[k].key); obj.trigger('liszt:updated');
+					}
 				} else if( $('#tabs input[name='+k+']').length > 0 ) {
 					$('#tabs input[name='+k+']').val(data[k]);
 				} else if( $('#tabs textarea[name='+k+']').length > 0 ) {
