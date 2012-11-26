@@ -44,51 +44,46 @@ class Plugin_Firesale extends Plugin
 
 	public function categories()
 	{
-	
-		// Variables
-		$limit	   = $this->attribute('limit', 6);
-		$parent    = $this->attribute('parent', 0);
-		$where     = $this->attribute('where', FALSE);
-		$order_by  = $this->attribute('order-by', 'ordering_count');
-		$order_dir = $this->attribute('order-dir', 'asc');
-		$not_empty = (bool)$this->attribute('exclude-empty', FALSE);		
 
-		// Exclude empty categories?
-		if( $not_empty )
-		{
-			$this->db->where('(SELECT COUNT(id)
-				FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
-				WHERE firesale_categories_id=' . $this->db->dbprefix('firesale_categories.id') . ') >', 0);
-		}
+		// Variables
+		$attributes = $this->attributes();
 		
 		// Build query
 		$query = $this->db->select('id')
 					  	  ->from('firesale_categories')
-						  ->where('status', '1')
-						  ->where('parent', $parent)
-						  ->order_by($order_by, $order_dir);
-						  
-		// Add where?
-		if( $where !== FALSE )
+						  ->where('status', '1');
+
+		// Add to query
+		foreach( $attributes AS $key => $val )
 		{
-			list($field, $value) = @explode('=', $where, 2);
-			if( !empty($field) AND !empty($value) )
+
+			switch($key)
 			{
-				$query->where($field, $value);
+
+				case 'limit':
+					$query->limit($val);
+				break;
+
+				case 'order':
+					list($by, $dir) = explode(' ', $val);
+					$query->order_by($by, $dir);
+				break;
+
+				case 'empty':
+					if( $val == 'false' )
+					{
+						$this->db->where('(SELECT COUNT(id)
+										  FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
+										  WHERE firesale_categories_id=' . $this->db->dbprefix('firesale_categories.id') . ') >', 0);
+					}
+				break;
+
+				default:
+					$query->where($key, $val);
+				break;
+
 			}
-		}
 
-		// Add limit?
-		if( $limit > 0 )
-		{
-			$query->limit($limit);
-		}
-
-		// Parent may be NULL
-		if( $parent <= 0 )
-		{
-			$query->or_where('status', '1')
-				  ->where('parent', NULL);
 		}
 
 		// Get categories
