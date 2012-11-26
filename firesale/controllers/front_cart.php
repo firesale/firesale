@@ -561,14 +561,46 @@ class Front_cart extends Public_Controller
 						$status = '_order_mismatch';
 					}
 				}
-
-				if ( ! method_exists($this, $status))
+				else
 				{
-					$status = '_order_processing';
+					// Looks like theres an error! Set this to flash data so we know.
+					$this->session->set_flashdata('error', $process->message());
 				}
 
-				// Run status function
-				$this->$status($order);
+				$theme_path = $this->template->get_theme_path();
+				if ($process->is_redirect())
+				{
+					if (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/all.php'))
+					{
+						$this->template->set('redirect_url', $process->redirect_url())
+									   ->set('redirect_method', $process->redirect_method())
+									   ->set('redirect_data', $process->redirect_data())
+									   ->build('gateways/redirect/all');
+					}
+					elseif (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/' . $gateway . '.php'))
+					{
+						$this->template->set('redirect_url', $process->redirect_url())
+									   ->set('redirect_method', $process->redirect_method())
+									   ->set('redirect_data', $process->redirect_data())
+									   ->build('gateways/redirect/' . $gateway);
+					}
+					else
+					{
+						$process->redirect();
+					}
+				}
+				else
+				{
+					if ( ! method_exists($this, $status))
+					{
+						$status = '_order_processing';
+					}
+
+					// Run status function
+					$this->$status($order);
+				}
+
+					
 			}
 			else
 			{
@@ -662,10 +694,17 @@ class Front_cart extends Public_Controller
 		}
 	}
 
+	private function _order_processing()
+	{
+		$this->orders_m->update_status($order['id'], 4);
+
+		if ( ! $callback)
+			redirect($this->routes_m->build_url('cart').'/payment');
+	}
+
 	private function _order_failed($order, $callback = FALSE)
 	{
 		$this->orders_m->update_status($order['id'], 7);
-		$this->session->set_flashdata('error', lang('firesale:orders:failed_message'));
 
 		if ( ! $callback)
 			redirect($this->routes_m->build_url('cart').'/payment');
@@ -674,7 +713,6 @@ class Front_cart extends Public_Controller
 	private function _order_declined($order, $callback = FALSE)
 	{
 		$this->orders_m->update_status($order['id'], 8);
-		$this->session->set_flashdata('error', lang('firesale:orders:declined_message'));
 
 		if ( ! $callback)
 			redirect($this->routes_m->build_url('cart').'/payment');
@@ -684,7 +722,6 @@ class Front_cart extends Public_Controller
 	private function _order_mismatch($order, $callback = FALSE)
 	{
 		$this->orders_m->update_status($order['id'], 9);
-		$this->session->set_flashdata('error', lang('firesale:orders:mismatch_message'));
 
 		if ( ! $callback)
 			redirect($this->routes_m->build_url('cart').'/payment');
