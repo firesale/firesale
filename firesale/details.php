@@ -471,14 +471,14 @@ class Module_Firesale extends Module {
 		##################
 
 		$this->db->query("
-			CREATE TABLE IF NOT EXISTS `".SITE_REF."_firesale_transactions` (
-			  `txn_id` varchar(50) NOT NULL,
-			  `order_id` int(11) NOT NULL,
-			  `gateway` varchar(100) NOT NULL,
-			  `amount` decimal(10,2) NOT NULL,
-			  `message` text NOT NULL,
-			  `status` varchar(100) NOT NULL,
-			  PRIMARY KEY  (`txn_id`)
+			CREATE TABLE IF NOT EXISTS `default_firesale_transactions` (
+			  `reference` longtext,
+			  `order_id` int(11) DEFAULT NULL,
+			  `gateway` varchar(100) DEFAULT NULL,
+			  `amount` decimal(10,2) DEFAULT NULL,
+			  `currency` varchar(3) DEFAULT NULL,
+			  `status` varchar(100) DEFAULT NULL,
+			  `data` longtext
 			) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 		");
 		
@@ -629,6 +629,21 @@ class Module_Firesale extends Module {
 			$fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
 			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 			$this->streams->fields->add_fields($fields);
+
+			// Up-to-date transactions table
+			$this->dbforge->drop_table('firesale_transactions');
+
+			$this->db->query("
+				CREATE TABLE IF NOT EXISTS `default_firesale_transactions` (
+				  `reference` longtext,
+				  `order_id` int(11) DEFAULT NULL,
+				  `gateway` varchar(100) DEFAULT NULL,
+				  `amount` decimal(10,2) DEFAULT NULL,
+				  `currency` varchar(3) DEFAULT NULL,
+				  `status` varchar(100) DEFAULT NULL,
+				  `data` longtext
+				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+			");
 
 		}
 

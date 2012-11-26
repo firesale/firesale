@@ -521,7 +521,7 @@ class Front_cart extends Public_Controller
 
 				// Run payment
 				$params = array_merge(array(
-					'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback'),
+					'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback/' . $gateway . '/' . $order['id']),
 					'return_url' => site_url($this->routes_m->build_url('cart') . '/success'),
 					'cancel_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
 				), $posted_data ? $posted_data : array(), array(
@@ -544,6 +544,16 @@ class Front_cart extends Public_Controller
 				));
 
 				$process = $this->merchant->purchase($params);
+
+				$this->db->insert('firesale_transactions', array(
+					'reference' => $process->reference(),
+					'order_id'  => $order['id'],
+					'gateway'   => $gateway,
+					'amount'    => $this->fs_cart->total() + $order['shipping']['price'],
+					'currency'  => $this->fs_cart->currency()->cur_code,
+					'status'    => $process->status(),
+					'data'      => serialize($process->data())
+				));
 
 				$status = '_order_' . $process->status();
 
@@ -661,24 +671,32 @@ class Front_cart extends Public_Controller
 
 	public function callback($gateway = NULL, $order_id = NULL)
 	{
-
 		$order = $this->orders_m->get_order_by_id($order_id);
 
 		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND ! empty($order))
 		{
-			$this->merchant->load($gateway, $this->gateways->settings($gateway));
-			$response = $this->merchant->process_return();
-			$status = '_order_' . $process->status;
+			$this->merchant->load($gateway);
+			$this->merchant->initialize($this->gateways->settings($gateway));
 
-			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->reference(), 'status' => $response->status()))->num_rows();
-			$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->reference(), 'amount' => $response->amount(), 'message' => $response->message(), 'status' => $response->status()));
+			$transaction = $this->db->get_where('firesale_transactions', array(
+				'order_id' => $order_id,
+				'gateway'  => $gateway
+			))->row_array();
+
+			$response = $this->merchant->purchase_return(array_merge($transaction, array(
+				'failure_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
+			)));
+
+			$status = '_order_' . $response->status();
+			$processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status()))->num_rows();
+			$processed OR $this->db->insert('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status(), 'data' => serialize($response->data())));
 
 			if ( ! $processed)
 			{
 				// Check status
-				if ($process->status() == 'authorized')
+				if ($response->status() == 'authorized')
 				{
-					if ($process->amount() != $order['price_total'])
+					if ($response->amount() != $order['price_total'])
 					{
 						$status = '_order_mismatch';
 					}
@@ -707,7 +725,13 @@ class Front_cart extends Public_Controller
 		$this->orders_m->update_status($order['id'], 7);
 
 		if ( ! $callback)
+		{
 			redirect($this->routes_m->build_url('cart').'/payment');
+		}
+		else
+		{
+			$this->merchant->confirm_return(site_url($this->routes_m->build_url('cart') . '/cancel'));
+		}
 	}
 
 	private function _order_declined($order, $callback = FALSE)
@@ -772,6 +796,10 @@ class Front_cart extends Public_Controller
 
 			// Build the page
 			$this->template->build('payment_complete', $order);
+		}
+		else
+		{
+			$this->merchant->confirm_return(site_url($this->routes_m->build_url('cart') . '/success'));
 		}
 
 	}
