@@ -105,10 +105,10 @@ class Merchant_sagepay_server extends Merchant_sagepay_base
 
 	protected function _build_authorize_or_purchase($method)
 	{
-		$this->require_params('return_url');
+		$this->require_params('notify_url');
 
 		$request = parent::_build_authorize_or_purchase($method);
-		$request['NotificationURL'] = $this->param('return_url');
+		$request['NotificationURL'] = $this->param('notify_url');
 
 		return $request;
 	}
