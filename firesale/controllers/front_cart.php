@@ -93,10 +93,12 @@ class Front_cart extends Public_Controller
 		$i = 1;
 		foreach ($data['contents'] AS &$product)
 		{
+			$price    = $product['price'];
+			$subtotal = $product['subtotal'];
 
-			$product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
-			$product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
-			$product['no']       = $i;
+			$product['price']        = $this->currency_m->format_string($price, $this->fs_cart->currency(), false);
+			$product['subtotal']     = $this->currency_m->format_string($subtotal, $this->fs_cart->currency(), false);
+			$product['no']           = $i;
 
 			$i++;
 		}
@@ -643,9 +645,14 @@ class Front_cart extends Public_Controller
 				}
 
 				// Format currency
-				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
-				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
-				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
+				$order['price_tax']     = $order['price_total'] - $order['price_sub'] - $order['price_ship'];
+				$order['price_sub_tax'] = $order['price_sub'] + $order['price_tax'];
+				
+				$order['price_tax']     = $this->currency_m->format_string($order['price_tax'], $this->fs_cart->currency(), FALSE);
+				$order['price_sub_tax'] = $this->currency_m->format_string($order['price_sub_tax'], $this->fs_cart->currency(), FALSE);
+				$order['price_sub']     = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+				$order['price_ship']    = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+				$order['price_total']   = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
 
 				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
