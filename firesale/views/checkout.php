@@ -1,6 +1,4 @@
 
-	<?php echo validation_errors(); ?>
-
 	<?php echo form_open(''); ?>
     
 		<div id="checkout" class="firesale">
