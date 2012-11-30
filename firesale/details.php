@@ -741,7 +741,7 @@ class Module_Firesale extends Module {
 		// Routes
 		$routes   = array();
 		$routes[] = array('id' => '7', 'is_core' => 1, 'title' => 'Category (Customisation)', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
-		$routes[] = array('id' => '1', 'is_core' => 1, 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}', 'route' => 'category(/[a-z0-9-]+)?', 'translation' => 'firesale/front_category/index$1');
+		$routes[] = array('id' => '1', 'is_core' => 1, 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2');
 		$routes[] = array('id' => '2', 'is_core' => 1, 'title' => 'Product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-]+)', 'translation' => 'firesale/front_product/index/$1');
 		$routes[] = array('id' => '3', 'is_core' => 1, 'title' => 'Cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
 		$routes[] = array('id' => '5', 'is_core' => 1, 'title' => 'Orders (Single)', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
