@@ -31,13 +31,10 @@ class Firesale
 			return $info;
 
 		// Add the FireSale asset paths
-		if( file_exists(SHARED_ADDONPATH . 'modules/firesale/details.php') )
+		$dir = ADDONPATH.'/modules/';
+		if( file_exists(SHARED_ADDONPATH.'modules/firesale/details.php') )
 		{
-			$dir = BASE_URL . 'addons/shared_addons/modules/';
-		}
-		else
-		{
-			$dir = BASE_URL . 'addons/' . SITE_REF . '/modules/';
+			$dir = SHARED_ADDONPATH.'modules/';
 		}
 
 		Asset::add_path('firesale', $dir . 'firesale/');
@@ -204,7 +201,11 @@ class Firesale
 		if( isset($this->assets[$page]) )
 		{
 		
-			$dir = BASE_URL . 'addons/shared_addons/modules/';
+			$dir = ADDONPATH.'/modules/';
+			if( file_exists(SHARED_ADDONPATH.'modules/firesale/details.php') )
+			{
+				$dir = SHARED_ADDONPATH.'modules/';
+			}
 			
 			while( list($key, $options) = each($this->assets[$page]) )
 			{
