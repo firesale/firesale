@@ -130,16 +130,16 @@ class Currency_m extends MY_Model
 		// Prepare return
 		$return = array(
 					'currency'            => $currency,
-					'rrp_tax'             => round($rrp_tax, 2),
+					'rrp_tax'             => $rrp_tax,
 					'rrp_tax_formatted'   => $rrp_tax_f,
 					'rrp_tax_rounded'     => $rrp_tax_r,
-					'rrp'                 => round($rrp, 2),
+					'rrp'                 => $rrp,
 					'rrp_formatted'       => $rrp_f,
 					'rrp_rounded'         => $rrp_r,
-					'price_tax'           => round($price_tax, 2),
+					'price_tax'           => $price_tax,
 					'price_tax_formatted' => $price_tax_f,
 					'price_tax_rounded'   => $price_tax_r,
-					'price'               => round($price, 2),
+					'price'               => $price,
 					'price_formatted'     => $price_f,
 					'price_rounded'       => $price_r
 				  );
@@ -149,6 +149,7 @@ class Currency_m extends MY_Model
 
 	public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
 	{
+
 		// Format initial value
 		if( $fix )
 		{
@@ -159,11 +160,15 @@ class Currency_m extends MY_Model
 				break;
 				
 				case '2':
-					$price = round(($price*2), 0)/2;
+					$price = ( round(( $price * 2 ), 0) / 2 );
 				break;
 
 				case '3':
 					$price = round($price).'.99';
+				break;
+
+				default:
+					$price = ( ceil($price * 100) / 100 ); 
 				break;
 			}
 		}
