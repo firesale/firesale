@@ -69,12 +69,11 @@ $(function(){
 
 	// Stock status switch
 	$('#stock').bind('keyup update blur paste delete', function() {
-		var val = $(this).val(), status = 1;
-		if( val == 0 && $('#stock_status').val() != 6 ) { status = 3; } else if( val <= 5 ) { status = 2; }
-		$('#stock_status').val(status).trigger('liszt:updated');
+		var val = $(this).val();
+		if( parseInt(val) == 0 && $('#stock_status').val() != '6' ) { $('#stock_status').val('3').trigger('liszt:updated'); }
 	});
 	$('#stock_status').change(function() {
-		if( $(this).val() == 6 ) { $('#stock').val('0'); }
+		if( $(this).val() == '6' ) { $('#stock').val('0'); }
 	});
 
 	// Categories "fix"
