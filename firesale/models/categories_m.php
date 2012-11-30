@@ -128,32 +128,35 @@ class Categories_m extends MY_Model
     /**
      * Builds the product query for use in other functions
      *
-     * @param integer $category The Category ID to query
+     * @param array $category The Category object to query
      * @return DB_Driver_Object
      * @access public
      */
     public function _build_query($category)
     {
 
-    	// Variables
-		$children = $this->get_children($category);
-    	$query    = $this->db->select('`row_id` AS id', FALSE)
-    						 ->from('firesale_products_firesale_categories')
-    						 ->join('firesale_products', 'firesale_products.id = firesale_products_firesale_categories.row_id', 'inner')
-    						 ->where('firesale_products.status', 1)
-    						 ->group_by('firesale_products.slug');
-
-    	// Has children?
-    	if( !empty($children) AND $category != NULL )
+    	// Get children
+    	if( isset($category['id']) AND $category['id'] != NULL )
 		{
-			// Then get the count including child products
-			$children[] = $category;
+			$children = $this->get_children($category['id']);
+		}
+
+    	// Build the initial query
+    	$query = $this->db->select('`row_id` AS id', FALSE)
+    					  ->from('firesale_products_firesale_categories')
+    					  ->join('firesale_products', 'firesale_products.id = firesale_products_firesale_categories.row_id', 'inner')
+    					  ->where('firesale_products.status', 1)
+    					  ->group_by('firesale_products.slug');
+
+		// Check for children
+		if( isset($children) AND ! empty($children) )
+		{
+			$children[] = $category['id'];
 			$query->where_in('firesale_categories_id', $children);
 		}
-		else if( $category != NULL )
+		else if( isset($category['id']) AND $category['id'] != NULL )
 		{
-			// Otherwise just this categories
-			$query->where('firesale_categories_id', (int)$category);
+			$query->where('firesale_categories_id', (int)$category['id']);
 		}
 
 		// Return object
@@ -171,7 +174,7 @@ class Categories_m extends MY_Model
     {
 
     	// Get a query
-    	$query = $this->_build_query($category);
+    	$query = $this->_build_query(array('id' => $category));
 
 		// Run the query
 		$result = $query->get();
