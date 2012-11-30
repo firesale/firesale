@@ -64,10 +64,17 @@ class Front_category extends Public_Controller {
 	 */	
 	public function index($category = NULL, $start = 0, $extra = NULL)
 	{
+
+		// Check category
+		if( ( is_int($category) OR is_numeric($category) ) AND $start == 0 )
+		{
+			$start    = $category;
+			$category = NULL;
+		}
 	
 		// Get cookie data
-		$this->data->layout = $this->input->cookie('firesale_listing_style') ? $this->input->cookie('firesale_listing_style') : 'grid';
-		$this->data->order  = get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1);
+		$this->data->layout = $this->input->cookie('firesale_listing_style') or 'grid';
+		$this->data->order  = get_order($this->input->cookie('firesale_listing_order') or 1);
 
 		// Get category details
 		if( $category != NULL )
@@ -79,17 +86,14 @@ class Front_category extends Public_Controller {
 		if( $category != FALSE or $category == NULL )
 		{
 			
-			// Query
-			$query = $this->categories_m->_build_query($category['id']);
-
-			// Add ordering
-			$query->order_by('firesale_products.' . $this->data->order['by'], $this->data->order['dir']);
-
-			// Add Limits
-			$query->limit($this->perpage, $start);
+			// Run Query
+			$query = $this->categories_m->_build_query($category)
+						  ->order_by('firesale_products.' . $this->data->order['by'], $this->data->order['dir'])
+						  ->limit($this->perpage, $start)
+						  ->get();
 
 			// Get products
-			$ids      = $query->get()->result_array();
+			$ids      = $query->result_array();
 			$products = array();
 
 			foreach( $ids AS $id )
@@ -107,7 +111,9 @@ class Front_category extends Public_Controller {
 			// Assign pagination
 			if( !empty($products) )
 			{
-				$this->data->pagination = create_pagination($this->routes_m->build_url('category', $category['id']),  $this->categories_m->total_products($category['id']), $this->perpage, 3);
+				$cat = ( isset($category['id']) ? $category['id'] : NULL );
+				$url = str_replace('/{{ slug }}', '', $this->routes_m->build_url('category', $cat));
+				$this->data->pagination = create_pagination($url, $this->categories_m->total_products($cat), $this->perpage, ( 2 + substr_count($url, '/') ));
 				$this->data->pagination['shown'] = count($products);
 			}
 
