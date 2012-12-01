@@ -170,15 +170,15 @@ class Routes_m extends MY_Model
 		return FALSE;
 	}
 
-	public function delete($id)
+	public function delete($id_slug)
 	{
 
-		// Variables
-		$stream = $this->streams->streams->get_stream('firesale_routes', 'firesale_routes');
-		$row = $this->row_m->get_row($id, $stream, false);
+		// Get row
+		$type = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
+		$row  = $this->db->where($type, $id_slug)->get('firesale_routes')->row();
 
 		// Remove it
-		if( $row AND $this->db->where('id', $id)->delete('firesale_routes') )
+		if( $row AND $this->db->where('id', $row->id)->delete('firesale_routes') )
 		{
 			// Remove from file
 			$this->remove($row->title);
@@ -219,20 +219,6 @@ class Routes_m extends MY_Model
 
 		// Fix mapping
 		$content = str_replace('$__', '$', $content);
-
-		/*if( $type == 'New' )
-		{
-			echo '<pre>';
-				echo $type . '<br />';
-				echo $before . '<br />';
-				echo $regex . '<br />';
-				echo $map . '<br />';
-				echo $string . '<br />';
-				echo '<br />';
-				echo $content;
-			echo '</pre>';
-			exit();
-		}*/
 
 		// Write it
 		file_put_contents($file, $content);

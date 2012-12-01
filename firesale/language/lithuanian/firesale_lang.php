@@ -93,6 +93,9 @@
 	$lang['firesale:prod_delimg_error']     = 'Įvyko klaida šalinant paveiksliuką';
 	$lang['firesale:prod_button_quick_edit']= 'Greitas redagavimas';
 
+	// Product Modifiers
+	$lang['firesale:prod_modifiers:title'] = 'Modifiers'; # translate
+
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Mažmeninė kaina prieš ir po PVM';
 	$lang['firesale:inst_price'] = 'Dabartinė pardavimo kaina prieš ir po PVM (jei mažesnė nei RMK, matoma kaip pardavimo kaina)';
@@ -104,7 +107,9 @@
 	$lang['firesale:label_title'] 		  = 'Pavadinimas';
 	$lang['firesale:label_slug'] 		  = 'URL';
 	$lang['firesale:label_status'] 		  = 'Būsena';
+	$lang['firesale:label_type'] 		  = 'Type'; # translate
 	$lang['firesale:label_description']	  = 'Aprašymas';
+	$lang['firesale:label_inst']          = 'Instructions'; # translate
 	$lang['firesale:label_category']	  = 'Kategorija';
 	$lang['firesale:label_parent']		  = 'Tėvinė kategorija';
 	$lang['firesale:label_filtercat']	  = 'Filtruoti pagal kategoriją';
@@ -122,6 +127,9 @@
 	$lang['firesale:label_drop_images']   = 'Užtempkite nuotraukas įkėlimui';
 	$lang['firesale:label_duplicate']     = 'Kopijuoti';
 	$lang['firesale:label_showfilter']    = 'Rodyti filtrus';
+	$lang['firesale:label_mod_variant']   = 'Variant'; # translate
+	$lang['firesale:label_mod_input']     = 'Input'; # translate
+	$lang['firesale:label_mod_single']    = 'Single Product'; # translate
 
 	$lang['firesale:label_stock_short']		= 'Atsargų kiekis';
 	$lang['firesale:label_stock_status']	= 'Atsagų kiekis';
@@ -303,6 +311,16 @@
 	$lang['firesale:routes:delete_error']   = 'Klaida, perkeliant maršrutą';
 	$lang['firesale:routes:build_success']  = 'Sėkmingai perkurtas maršrutų failas';
 	$lang['firesale:routes:build_error']    = 'Klaida, perkuriant maršrutų failą';
+
+	// Route Labels
+	$lang['firesale:routes:category_custom'] = 'Category Customisation'; # translate
+	$lang['firesale:routes:category']        = 'Category'; # translate
+	$lang['firesale:routes:product']         = 'Product'; # translate
+	$lang['firesale:routes:cart']            = 'Cart'; # translate
+	$lang['firesale:routes:order_single']    = 'Single Order'; # translate
+	$lang['firesale:routes:orders']          = 'User Orders'; # translate
+	$lang['firesale:routes:addresses']       = 'User Addresses'; # translate
+	$lang['firesale:routes:currency']        = 'Currency Switcher'; # translate
 
 	// Currency
 	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency'; # translate

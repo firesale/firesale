@@ -18,9 +18,9 @@ class Module_Firesale_Search extends Module {
 		
 		$info = array(
 			'name' => array(
-				'en' => 'FireSale Search (Basic)',
-				'fr' => 'FireSale Recherche (Basique)',
-				'it' => 'FireSale Ricerca (Base)'
+				'en' => 'FireSale Search',
+				'fr' => 'FireSale Recherche',
+				'it' => 'FireSale Ricerca'
 			),
 			'description' => array(
 				'en' => 'Product and category search with ajax capabilities', 
@@ -78,6 +78,9 @@ class Module_Firesale_Search extends Module {
 			$this->dbforge->add_key('id', TRUE);
 			if( !$this->dbforge->create_table('firesale_search') ) { $_return = FALSE; }
 
+			// Add routes
+			$this->routes('add');
+
 			// Return
 			return $_return;
 		}
@@ -92,14 +95,59 @@ class Module_Firesale_Search extends Module {
 		// Drop tables
 		if( !$this->dbforge->drop_table('firesale_search') ) { $_return = FALSE; }
 
+		// Remove routes
+		$this->routes('remove');
+
 		// Return
 		return $_return;
 	}
 
 	public function upgrade($old_version)
 	{
-		// Your Upgrade Logic
+
+		// Pre 1.1.1
+		if( $old_version < '1.1.1' )
+		{
+
+			// Load requirements
+			$this->load->model('firesale/routes_m');
+
+			// Add search route
+			$route = array('is_core' => 1, 'title' => 'lang:firesale:routes:search', 'slug' => 'search', 'table' => '', 'map' => 'search/{{ any }}', 'route' => 'search(/:any)?', 'translation' => 'firesale_search/front/index$1');
+			$this->routes_m->create($route);
+		}
+
 		return TRUE;
+	}
+
+	public function routes($action)
+	{
+
+		// Load requirements
+		$this->load->model('firesale/routes_m');
+
+		// Route definitions
+		$routes   = array();
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:search', 'slug' => 'search', 'table' => '', 'map' => 'search/{{ any }}', 'route' => 'search(/:any)?', 'translation' => 'firesale_search/front/index$1');
+
+		// Perform
+		foreach( $routes AS $route )
+		{
+
+			// Check action
+			if( $action == 'add' )
+			{
+				// Add
+				$this->routes_m->create($route);
+			}
+			else if( $action == 'remove' )
+			{
+				// Remove
+				$this->routes_m->delete($route['slug']);
+			}
+
+		}
+
 	}
 	
 	public function help()

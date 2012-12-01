@@ -26,7 +26,7 @@
 			<tbody>
 				<?php foreach($routes['entries'] as $route ): ?>
 				<tr>
-					<td><?php echo $route['title']; ?></td>
+					<td><?php echo ( substr($route['title'], 0, 5) == 'lang:' ? lang(substr($route['title'], 5)) : $route['title'] ); ?></td>
 					<td><?php echo $route['slug']; ?></td>
 					<td><?php echo $route['route']; ?></td>
 					<td><?php echo $route['translation']; ?></td>

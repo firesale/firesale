@@ -93,35 +93,43 @@
 	$lang['firesale:prod_delimg_error']     = 'Terjadi kesalahan saat menghapus gambar yang dimaksud';
 	$lang['firesale:prod_button_quick_edit']= 'Edit Cepat';	
 
+	// Product Modifiers
+	$lang['firesale:prod_modifiers:title'] = 'Modifiers'; # translate
+
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Harga eceran sebelum dan sesudah dikenai pajak';
 	$lang['firesale:inst_price'] = 'Harga jual saat ini sebelum dan sesudah dikenai pajak (apabila lebih rendah dari RRP, akan muncul sebagai harga jual)';
 
 	// Labels
-	$lang['firesale:label_draft']		= 'Draft';
-	$lang['firesale:label_live'] 		= 'Live';
-	$lang['firesale:label_id'] 			= 'Kode Produk';
-	$lang['firesale:label_title'] 		= 'Judul';
-	$lang['firesale:label_slug'] 		= 'Slug';
-	$lang['firesale:label_status'] 		= 'Status';
-	$lang['firesale:label_description']	= 'Deskripsi';
-	$lang['firesale:label_category']	= 'Kategori';
-	$lang['firesale:label_parent']		= 'Kategori Induk';
-	$lang['firesale:label_filtercat']	= 'Saring Berdasarkan Kategori';
-	$lang['firesale:label_filtersel']	= 'Pilih Kategori';
+	$lang['firesale:label_draft']		  = 'Draft';
+	$lang['firesale:label_live'] 		  = 'Live';
+	$lang['firesale:label_id'] 			  = 'Kode Produk';
+	$lang['firesale:label_title'] 		  = 'Judul';
+	$lang['firesale:label_slug'] 		  = 'Slug';
+	$lang['firesale:label_status'] 		  = 'Status';
+	$lang['firesale:label_type'] 		  = 'Type'; # translate
+	$lang['firesale:label_description']	  = 'Deskripsi';
+	$lang['firesale:label_inst']          = 'Instructions'; # translate
+	$lang['firesale:label_category']	  = 'Kategori';
+	$lang['firesale:label_parent']		  = 'Kategori Induk';
+	$lang['firesale:label_filtercat']	  = 'Saring Berdasarkan Kategori';
+	$lang['firesale:label_filtersel']	  = 'Pilih Kategori';
 	$lang['firesale:label_filterprod']    = 'Pilih Produk';
 	$lang['firesale:label_filterstatus']  = 'Pilih Status Produk';
 	$lang['firesale:label_filtersstatus'] = 'Pilih Status Stok';
 	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
-	$lang['firesale:label_rrp']			= 'Harga Ecer yang Dianjurkan';
-	$lang['firesale:label_rrp_tax']		= 'Harga Ecer yang Dianjurkan (sebelum dikenai pajak)';
-	$lang['firesale:label_rrp_short']	= 'RRP';
-	$lang['firesale:label_price']		= 'Harga Saat Ini';
-	$lang['firesale:label_price_tax']	= 'Harga Saat Ini (sebelum dikenai pajak)';
-	$lang['firesale:label_stock']		= 'Level Stok Saat Ini';
-	$lang['firesale:label_drop_images'] = 'Tarik dan Lepaskan Gambar Disini untuk Mengunggah';
-	$lang['firesale:label_duplicate']   = 'Duplikasi';
-	$lang['firesale:label_showfilter']  = 'Tampilkan Filter';
+	$lang['firesale:label_rrp']			  = 'Harga Ecer yang Dianjurkan';
+	$lang['firesale:label_rrp_tax']		  = 'Harga Ecer yang Dianjurkan (sebelum dikenai pajak)';
+	$lang['firesale:label_rrp_short']	  = 'RRP';
+	$lang['firesale:label_price']		  = 'Harga Saat Ini';
+	$lang['firesale:label_price_tax']	  = 'Harga Saat Ini (sebelum dikenai pajak)';
+	$lang['firesale:label_stock']		  = 'Level Stok Saat Ini';
+	$lang['firesale:label_drop_images']   = 'Tarik dan Lepaskan Gambar Disini untuk Mengunggah';
+	$lang['firesale:label_duplicate']     = 'Duplikasi';
+	$lang['firesale:label_showfilter']    = 'Tampilkan Filter';
+	$lang['firesale:label_mod_variant']   = 'Variant'; # translate
+	$lang['firesale:label_mod_input']     = 'Input'; # translate
+	$lang['firesale:label_mod_single']    = 'Single Product'; # translate
 
 	$lang['firesale:label_stock_short']		= 'Level Stok';
 	$lang['firesale:label_stock_status']	= 'Status Stok';
@@ -302,6 +310,16 @@
 	$lang['firesale:routes:delete_error']   = 'Terjadi kesalahan saat menghapus rute';
 	$lang['firesale:routes:build_success']  = 'Berhasil membangun ulang file routes';
 	$lang['firesale:routes:build_error']    = 'Terjadi kesalahan saat membangun ulang file routes';
+
+	// Route Labels
+	$lang['firesale:routes:category_custom'] = 'Category Customisation'; # translate
+	$lang['firesale:routes:category']        = 'Category'; # translate
+	$lang['firesale:routes:product']         = 'Product'; # translate
+	$lang['firesale:routes:cart']            = 'Cart'; # translate
+	$lang['firesale:routes:order_single']    = 'Single Order'; # translate
+	$lang['firesale:routes:orders']          = 'User Orders'; # translate
+	$lang['firesale:routes:addresses']       = 'User Addresses'; # translate
+	$lang['firesale:routes:currency']        = 'Currency Switcher'; # translate
 
 	// Currency
 	$lang['firesale:shortcuts:install_currency'] = 'Pasang Mata Uang Baru';
