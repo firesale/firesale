@@ -13,11 +13,11 @@
 <?php endif; ?>
 
 	<div id="results">
-<?php if( isset($current) AND $total <= 0 ): ?>
+<?php if( isset($current) && ( ! isset($total) || $total <= 0 ) ): ?>
 
 		<h2><?php echo lang('firesale:search:label_nothing_found'); ?></h2>
 
-<?php elseif( isset($current) AND $total > 0 ): ?>
+<?php elseif( isset($current) && isset($total) && $total > 0 ): ?>
 <?php foreach( $results as $product ): ?>
 
 		<a href="<?php echo BASE_URI . "product/{$product['slug']}"; ?>"><?php echo $product['title']; ?></a>

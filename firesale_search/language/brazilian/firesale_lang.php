@@ -1,6 +1,5 @@
 <?php
-	
-	$lang['firesale:test:label_hello'] 		  = 'Olá mundo!';
+
 	$lang['firesale:sections:search'] 		  = 'Pesquisar';
 	$lang['firesale:sections:search_results'] = 'Resultados encontrados "%s"';
 	$lang['firesale:search:products_match']	  = 'Produtos relacionados com o critério de pesquisa';
@@ -10,6 +9,9 @@
 	$lang['firesale:elements:search_terms'] = 'Termos populares pesquisados';
 	$lang['firesale:search:no_terms']		= 'Nenhum termo disponível';
 	
-	//Search Frontend
+	// Search Frontend
 	$lang['firesale:search:label_search'] 			= 'Pesquisar';
 	$lang['firesale:search:label_nothing_found'] 	= 'Nenhum resultado encontrado';
+
+	// Routes
+	$lang['firesale:routes:search'] = 'Search'; #translate

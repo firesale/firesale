@@ -93,6 +93,9 @@
 	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified';
 	$lang['firesale:prod_button_quick_edit']= 'Quick Edit';
 
+	// Product Modifiers
+	$lang['firesale:prod_modifiers:title'] = 'Modifiers';
+
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';
 	$lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)';
@@ -104,7 +107,9 @@
 	$lang['firesale:label_title'] 		  = 'Title';
 	$lang['firesale:label_slug'] 		  = 'Slug';
 	$lang['firesale:label_status'] 		  = 'Status';
+	$lang['firesale:label_type'] 		  = 'Type';
 	$lang['firesale:label_description']	  = 'Description';
+	$lang['firesale:label_inst']          = 'Instructions';
 	$lang['firesale:label_category']	  = 'Category';
 	$lang['firesale:label_parent']		  = 'Parent Category';
 	$lang['firesale:label_filtercat']	  = 'Filter by Category';
@@ -122,6 +127,9 @@
 	$lang['firesale:label_drop_images']   = 'Drop images here to upload';
 	$lang['firesale:label_duplicate']     = 'Duplicate';
 	$lang['firesale:label_showfilter']    = 'Show Filters';
+	$lang['firesale:label_mod_variant']   = 'Variant';
+	$lang['firesale:label_mod_input']     = 'Input';
+	$lang['firesale:label_mod_single']    = 'Single Product';
 
 	$lang['firesale:label_stock_short']		= 'Stock Level';
 	$lang['firesale:label_stock_status']	= 'Stock Status';
@@ -302,6 +310,16 @@
 	$lang['firesale:routes:delete_error']   = 'Error removing route';
 	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file';
 	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file';
+
+	// Route Labels
+	$lang['firesale:routes:category_custom'] = 'Category Customisation';
+	$lang['firesale:routes:category']        = 'Category';
+	$lang['firesale:routes:product']         = 'Product';
+	$lang['firesale:routes:cart']            = 'Cart';
+	$lang['firesale:routes:order_single']    = 'Single Order';
+	$lang['firesale:routes:orders']          = 'User Orders';
+	$lang['firesale:routes:addresses']       = 'User Addresses';
+	$lang['firesale:routes:currency']        = 'Currency Switcher';
 
 	// Currency
 	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency';

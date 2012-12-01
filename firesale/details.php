@@ -306,6 +306,26 @@ class Module_Firesale extends Module {
 						  CHANGE `price` `price` DECIMAL( 10, 2 ) DEFAULT '0.00',
 						  CHANGE `price_tax` `price_tax` DECIMAL( 10, 2 ) DEFAULT '0.00';");
 
+		#######################
+		## PRODUCT MODIFIERS ##
+		#######################
+
+		// Create product modifiers stream
+		if( !$this->streams->streams->add_stream(lang('firesale:prod_modifiers:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
+
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_product_modifiers', 'assign' => 'firesale_product_modifiers', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_type', 'slug' => 'type', 'type' => 'choice', 'extra' => array('choice_data' => "1 : lang:firesale:label_mod_variant\n2 : lang:firesale:label_mod_input\n3 : lang:firesale:label_mod_single", 'choice_type' => 'dropdown', 'default_value' => 1));
+		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
+		$fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'));
+		$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $products->id), 'required' => FALSE);
+
+		// Combine
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+	
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
 
 		###########
 		## TAXES ##
@@ -560,6 +580,7 @@ class Module_Firesale extends Module {
 		// Remove streams
 		$this->streams->utilities->remove_namespace('firesale_categories');
 		$this->streams->utilities->remove_namespace('firesale_products');
+		$this->streams->utilities->remove_namespace('firesale_product_modifiers');
 		$this->streams->utilities->remove_namespace('firesale_gateways');
 		$this->streams->utilities->remove_namespace('firesale_addresses');
 		$this->streams->utilities->remove_namespace('firesale_orders');
@@ -740,14 +761,14 @@ class Module_Firesale extends Module {
 
 		// Routes
 		$routes   = array();
-		$routes[] = array('id' => '7', 'is_core' => 1, 'title' => 'Category (Customisation)', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
-		$routes[] = array('id' => '1', 'is_core' => 1, 'title' => 'Category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2');
-		$routes[] = array('id' => '2', 'is_core' => 1, 'title' => 'Product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-]+)', 'translation' => 'firesale/front_product/index/$1');
-		$routes[] = array('id' => '3', 'is_core' => 1, 'title' => 'Cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
-		$routes[] = array('id' => '5', 'is_core' => 1, 'title' => 'Orders (Single)', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
-		$routes[] = array('id' => '4', 'is_core' => 1, 'title' => 'Orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
-		$routes[] = array('id' => '6', 'is_core' => 1, 'title' => 'Addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
-		$routes[] = array('id' => '8', 'is_core' => 1, 'title' => 'Currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category_custom', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-]+)', 'translation' => 'firesale/front_product/index/$1');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:order_single', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
+		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1');
 
 		// Perform
 		foreach( $routes AS $route )
@@ -762,7 +783,7 @@ class Module_Firesale extends Module {
 			else if( $action == 'remove' )
 			{
 				// Remove
-				$this->routes_m->delete($route['id']);
+				$this->routes_m->delete($route['slug']);
 			}
 
 		}

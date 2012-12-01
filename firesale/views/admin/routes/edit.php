@@ -1,6 +1,6 @@
 
 	<section class="title">
-		<h4><?php echo sprintf(lang('firesale:routes:edit'), $row->title); ?></h4>
+		<h4><?php echo sprintf(lang('firesale:routes:edit'), ( substr($row->title, 0, 5) == 'lang:' ? lang(substr($row->title, 5)) : $row->title )); ?></h4>
 	</section>
 
 	<section class="item form_inputs">

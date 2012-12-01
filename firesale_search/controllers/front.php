@@ -2,7 +2,7 @@
 
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-class Search extends Public_Controller {
+class Front extends Public_Controller {
 
     private $validation_rules = array();
 	
@@ -17,11 +17,12 @@ class Search extends Public_Controller {
 		// Load libraries
 		$this->lang->load('firesale_search/firesale');
 		$this->load->model('firesale/products_m');
+		$this->load->model('firesale/routes_m');
 		$this->load->model('search_m');
 		$this->load->helper('firesale/general');
 
 		// Get perpage option
-		$this->perpage = $this->settings->get('firesale_perpage');
+		$this->perpage = (int)$this->settings->get('firesale_perpage', 15);
 
     }
     
@@ -34,7 +35,7 @@ class Search extends Public_Controller {
 			$category = $this->input->post('category');
 			$term	  = $this->input->post('search');
 			unset($_POST);
-			redirect('/search/' . $category . '/' . $term);
+			redirect($this->routes_m->build_url('search').$category.'/'.$term);
 		}
 		
 		// Assign base variables
@@ -50,7 +51,7 @@ class Search extends Public_Controller {
 		// Check for search term
 		if( $term !== NULL )
 		{
-		
+
 			// Update search terms
 			$this->search_m->update_terms($term);
 
@@ -58,7 +59,7 @@ class Search extends Public_Controller {
 			if( $category != 'all' AND $is_cat = $this->search_m->check_category($term) )
 			{
 				// Send there if we got exact match
-				redirect('/category/' . $is_cat);
+				redirect($this->routes_m->build_url('category', $is_cat));
 			}
 
 			// Get search results
@@ -71,7 +72,7 @@ class Search extends Public_Controller {
 				if( $total_rows > $this->perpage )
 				{
 					// Assign pagination
-					$this->data->pagination  = create_pagination("/search/{$category}/{$term}/", $total_rows, $this->perpage, 4);
+					$this->data->pagination  = create_pagination($this->routes_m->build_url('search').$category.'/'.$term.'/', $total_rows, $this->perpage, 4);
 				}
 				
 				// Get images
@@ -91,7 +92,7 @@ class Search extends Public_Controller {
 			else if( $total_rows == 1 AND !$this->input->is_ajax_request() )
 			{
 				// Redirect to page with one result
-				redirect('/product/' . $this->data->products[0]['slug']);
+				redirect($this->routes_m->build_url('product', $this->data->products[0]['id']));
 			}
 	
 		}
@@ -102,7 +103,7 @@ class Search extends Public_Controller {
 			$results = array();
 			foreach( $this->data->products AS $result )
 			{
-				$results[] = array('label' => $result['title'], 'value' => '/product/' . $result['slug']);
+				$results[] = array('label' => $result['title'], 'value' => $this->routes_m->build_url('product', $result['id']));
 			}
 			echo json_encode($results);
 			exit();			
@@ -111,7 +112,7 @@ class Search extends Public_Controller {
 		{
 			// Build page
 			$this->template->set_breadcrumb('Home', '/')
-						   ->set_breadcrumb(lang('firesale:sections:search'), '/search')
+						   ->set_breadcrumb(lang('firesale:sections:search'), $this->routes_m->build_url('search'))
 						   ->append_css('module::search.css')
 						   ->title(sprintf(lang('firesale:sections:search' . ( $term != NUll ? '_results' : '' )), $term))
 						   ->build('search', $this->data);	
@@ -120,4 +121,3 @@ class Search extends Public_Controller {
     }
 
 }
-/* End of file */

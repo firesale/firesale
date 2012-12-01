@@ -93,35 +93,43 @@
 	$lang['firesale:prod_delimg_error']     = 'Ocorreu um erro ao remover a imagem selecionada';
 	$lang['firesale:prod_button_quick_edit']= 'Edição Rápida';
 
+	// Product Modifiers
+	$lang['firesale:prod_modifiers:title'] = 'Modifiers'; # translate
+
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Preço de venda antes e após impostos';
 	$lang['firesale:inst_price'] = 'Preço de venda antes e após taxas. (Se abaixo do preço do fornecedor, será exibido como preço de venda)';
 
 	// Labels
-	$lang['firesale:label_draft']		= 'Rascunho';
-	$lang['firesale:label_live'] 		= 'Ativo';
-	$lang['firesale:label_id'] 			= 'Códito do Produto';
-	$lang['firesale:label_title'] 		= 'Título';
-	$lang['firesale:label_slug'] 		= 'Abreviatura';
-	$lang['firesale:label_status'] 		= 'Situação';
-	$lang['firesale:label_description']	= 'Descrição';
-	$lang['firesale:label_category']	= 'Categoria';
-	$lang['firesale:label_parent']		= 'Categoria Pai';
-	$lang['firesale:label_filtercat']	= 'Filtrar por Categoria';
-	$lang['firesale:label_filtersel']	= 'Selecionar Categoria';
+	$lang['firesale:label_draft']		  = 'Rascunho';
+	$lang['firesale:label_live'] 		  = 'Ativo';
+	$lang['firesale:label_id'] 			  = 'Códito do Produto';
+	$lang['firesale:label_title'] 		  = 'Título';
+	$lang['firesale:label_slug'] 		  = 'Abreviatura';
+	$lang['firesale:label_status'] 		  = 'Situação';
+	$lang['firesale:label_type'] 		  = 'Type'; # translate
+	$lang['firesale:label_description']	  = 'Descrição';
+	$lang['firesale:label_inst']          = 'Instructions'; # translate
+	$lang['firesale:label_category']	  = 'Categoria';
+	$lang['firesale:label_parent']		  = 'Categoria Pai';
+	$lang['firesale:label_filtercat']	  = 'Filtrar por Categoria';
+	$lang['firesale:label_filtersel']	  = 'Selecionar Categoria';
 	$lang['firesale:label_filterprod']    = 'Select a Product'; # translate
 	$lang['firesale:label_filterstatus']  = 'Select a Product Status'; # translate
 	$lang['firesale:label_filtersstatus'] = 'Select a Stock Status'; # translate
 	$lang['firesale:label_order_status']  = 'Select an Order Status'; # translate
-	$lang['firesale:label_rrp']			= 'Preço de Venda Recomendado';
-	$lang['firesale:label_rrp_tax']		= 'Preço de Venda Recomendado (sem impostos)';
-	$lang['firesale:label_rrp_short']	= 'PVR';
-	$lang['firesale:label_price']		= 'Preço Atual';
-	$lang['firesale:label_price_tax']	= 'Preço Atual (sem impostos)';
-	$lang['firesale:label_stock']		= 'Quantidade em Estoque';
-	$lang['firesale:label_drop_images'] = 'Solte suas imagens aqui para realizar o upload';
-	$lang['firesale:label_duplicate']   = 'Duplicado';
-	$lang['firesale:label_showfilter']  = 'Show Filters'; # Translate
+	$lang['firesale:label_rrp']			  = 'Preço de Venda Recomendado';
+	$lang['firesale:label_rrp_tax']		  = 'Preço de Venda Recomendado (sem impostos)';
+	$lang['firesale:label_rrp_short']	  = 'PVR';
+	$lang['firesale:label_price']		  = 'Preço Atual';
+	$lang['firesale:label_price_tax']	  = 'Preço Atual (sem impostos)';
+	$lang['firesale:label_stock']		  = 'Quantidade em Estoque';
+	$lang['firesale:label_drop_images']   = 'Solte suas imagens aqui para realizar o upload';
+	$lang['firesale:label_duplicate']     = 'Duplicado';
+	$lang['firesale:label_showfilter']    = 'Show Filters'; # Translate
+	$lang['firesale:label_mod_variant']   = 'Variant'; # translate
+	$lang['firesale:label_mod_input']     = 'Input'; # translate
+	$lang['firesale:label_mod_single']    = 'Single Product'; # translate
 
 	$lang['firesale:label_stock_short']		= 'Estoque';
 	$lang['firesale:label_stock_status']	= 'Situaçao do Estoque';
@@ -302,6 +310,16 @@
 	$lang['firesale:routes:delete_error']   = 'Error removing route'; # Translate
 	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file'; # Translate
 	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file'; # Translate
+	
+	// Route Labels
+	$lang['firesale:routes:category_custom'] = 'Category Customisation'; # translate
+	$lang['firesale:routes:category']        = 'Category'; # translate
+	$lang['firesale:routes:product']         = 'Product'; # translate
+	$lang['firesale:routes:cart']            = 'Cart'; # translate
+	$lang['firesale:routes:order_single']    = 'Single Order'; # translate
+	$lang['firesale:routes:orders']          = 'User Orders'; # translate
+	$lang['firesale:routes:addresses']       = 'User Addresses'; # translate
+	$lang['firesale:routes:currency']        = 'Currency Switcher'; # translate
 
 	// Currency
 	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency'; # translate
