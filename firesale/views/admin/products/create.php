@@ -39,6 +39,111 @@
 					</fieldset>
 				</div>
 
+				<?php elseif( $slug == '_modifiers' && isset($id) && $id > 0 ): ?>
+				<div id="modifiers" class="form_inputs">
+					<fieldset>
+					<?php if( ! $is_variant ): ?>
+						<table class="modifiers">
+							<thead>
+								<tr>
+									<th style="width: 15%"><?php echo lang('firesale:label_type'); ?></th>
+									<th style="width: 15%"><?php echo lang('firesale:label_title'); ?></th>
+									<th style="width: 35%"><?php echo lang('firesale:label_inst'); ?></th>
+									<th style="width: 35%"><?php echo lang('firesale:prod_variations:title'); ?></th>
+								</tr>
+							</thead>
+							<tfoot>
+								<tr>
+									<td colspan="4"><a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal">+ Add a modifier</a></td>
+								</tr>
+							</tfoot>
+							<tbody>
+							<?php if( ! empty($modifiers) ): ?>
+							<?php foreach( $modifiers as $modifier ): ?>
+								<tr>
+									<td><?php echo $modifier['type']['val']; ?></td>
+									<td><?php echo $modifier['title']; ?></td>
+									<td><?php echo $modifier['instructions']; ?></td>
+									<td>
+									<?php if( $modifier['type']['key'] != 2 ): ?>
+										<table>
+											<thead>
+												<tr>
+													<th style="width: 50%">Option</th>
+													<th style="width: 50%">Price Modifier</th>
+												</tr>
+											</thead>
+											<tfoot>
+												<tr>
+													<td colspan="2"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal">+ New variation</a></td>
+												</tr>
+											</tfoot>
+											<tbody>
+											<?php if( ! empty($modifier['variations']) ): ?>
+											<?php foreach( $modifier['variations'] as $variation ): ?>
+												<tr>
+													<td><?php echo $variation['title']; ?></td>
+													<td><?php echo $variation['price']; ?></td>
+												</tr>
+											<?php endforeach; ?>
+											<?php else: ?>
+												<tr><td colspan="2"><div class="no_data" style="margin-top: 7px">No Variations</div></td></tr>
+											<?php endif; ?>
+											</tbody>
+										</table>
+									<?php endif; ?>
+									</td>
+								</tr>
+							<?php endforeach; ?>
+							<?php else: ?>
+								<tr><td colspan="4"><div class="no_data" style="margin-top: 7px">No Modifiers</div></td></tr>
+							<?php endif; ?>
+							</tbody>
+						</table>
+
+						<br />
+
+						<table class="products">
+							<thead>
+								<tr>
+								<?php foreach( $modifiers as $modifier ): ?>
+								<?php if( $modifier['type']['key'] == '1' ): ?>
+									<th><?php echo $modifier['title']; ?></th>
+								<?php endif; ?>
+								<?php endforeach; ?>
+									<th>Code</th>
+									<th>Price</th>
+									<th>Stock</th>
+									<th>Status</th>
+									<th style="width: 50px"></th>
+								</tr>
+							</thead>
+							<tbody>
+							<?php if( ! empty($variations) ): ?>
+							<?php foreach( $variations as $variation ): ?>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $variation['code']; ?></td>
+									<td><?php echo $variation['price_formatted']; ?></td>
+									<td><?php echo $variation['stock']; ?></td>
+									<td><?php echo $variation['stock_status']['val']; ?></td>
+									<td><a href="{{ url:site }}admin/firesale/products/edit/<?php echo $variation['id']; ?>" class="btn orange">Edit</td>
+								</tr>
+							<?php endforeach; ?>
+							<?php else: ?>
+								<tr><td colspan="<?php echo ( 5 + count($modifiers) ); ?>"><div class="no_data" style="margin-top: 7px">No Variations</div></td></tr>
+							<?php endif; ?>
+							</tbody>
+						</table>
+
+					<?php else: ?>
+						<div class="no_data">You can't add modifiers to a variant</div>
+					<?php endif; ?>
+					</fieldset>
+				</div>
+
 				<?php elseif( substr($slug, 0, 1) == '_' && isset($id) && $id > 0 ): ?>
 				<div id="<?php echo strtolower(str_replace(array(' ', '_'), '', $slug)); ?>" class="form_inputs">
 					<fieldset>

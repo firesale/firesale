@@ -300,6 +300,7 @@ class Module_Firesale extends Module {
 		
 		// Change engine and add fulltext
 		$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_products` ENGINE = MyISAM,
+						  ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0',
 						  ADD FULLTEXT (`title`, `description`),
 						  CHANGE `rrp` `rrp` DECIMAL( 10, 2 ) DEFAULT '0.00',
 						  CHANGE `rrp_tax` `rrp_tax` DECIMAL( 10, 2 ) DEFAULT '0.00',
@@ -317,15 +318,44 @@ class Module_Firesale extends Module {
 		$fields   = array();
 		$template = array('namespace' => 'firesale_product_modifiers', 'assign' => 'firesale_product_modifiers', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_type', 'slug' => 'type', 'type' => 'choice', 'extra' => array('choice_data' => "1 : lang:firesale:label_mod_variant\n2 : lang:firesale:label_mod_input\n3 : lang:firesale:label_mod_single", 'choice_type' => 'dropdown', 'default_value' => 1));
-		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
-		$fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'));
-		$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $products->id), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
 		// Combine
 		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 	
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
+
+		########################
+		## PRODUCT VARIATIONS ##
+		########################
+
+		// Create product modifiers stream
+		if( !$this->streams->streams->add_stream(lang('firesale:prod_variations:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
+
+		// Add fields
+		$fields   = array();
+		$template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
+		$fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32));
+		$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
+
+		// Combine
+		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+	
+		// Add fields to stream
+		$this->streams->fields->add_fields($fields);
+
+		// Create lookup table
+		$this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
+						  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+						  `row_id` int(11) NOT NULL,
+						  `firesale_products_id` int(11) NOT NULL,
+						  `firesale_categories_id` int(11) NOT NULL,
+						  PRIMARY KEY (`id`)
+						  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;");
 
 		###########
 		## TAXES ##
@@ -581,6 +611,7 @@ class Module_Firesale extends Module {
 		$this->streams->utilities->remove_namespace('firesale_categories');
 		$this->streams->utilities->remove_namespace('firesale_products');
 		$this->streams->utilities->remove_namespace('firesale_product_modifiers');
+		$this->streams->utilities->remove_namespace('firesale_product_variations');
 		$this->streams->utilities->remove_namespace('firesale_gateways');
 		$this->streams->utilities->remove_namespace('firesale_addresses');
 		$this->streams->utilities->remove_namespace('firesale_orders');
@@ -588,6 +619,7 @@ class Module_Firesale extends Module {
 		
 		// Drop the payment gateway tables
 		$this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it =/
+		$this->dbforge->drop_table('firesale_product_variations_firesale_products');
 		$this->dbforge->drop_table('firesale_gateway_settings');
 		$this->dbforge->drop_table('firesale_orders_items');
 		$this->dbforge->drop_table('firesale_transactions');

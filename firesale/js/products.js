@@ -1,4 +1,4 @@
-$(function(){
+$(function() {
 
 	/**************
 	** DASHBOARD **
@@ -78,6 +78,15 @@ $(function(){
 
 	// Categories "fix"
 	$('#category_list_2 li').each(function() { if( $('#category').val().indexOf($(this).attr('id')) == -1 ) { $(this).remove(); }});
+
+	/**************
+	** MODIFIERS **
+	**************/
+
+	$('.modifiers a.modcreate').click(function(e) {
+		e.preventDefault();
+		$('.modifiers tr.modcreate').css('display', 'table-row');
+	});
 
 	/*********************
 	** DYNAMIC TAX LINK **

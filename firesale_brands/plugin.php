@@ -19,9 +19,8 @@ class Plugin_Firesale_brands extends Plugin
 		$attributes = $this->attributes();
 
 		// Build query
-		$query = $this->db->select('b.id')
-						  ->from('firesale_brands AS b')
-						  ->where('b.status', '1');
+		$query = $this->db->select('id')
+						  ->where('status', '1');
 
 		// Add to query
 		foreach( $attributes AS $key => $val )
@@ -36,11 +35,11 @@ class Plugin_Firesale_brands extends Plugin
 
 				case 'order':
 					list($by, $dir) = explode(' ', $val);
-					$query->order_by('b.' . $by, $dir);
+					$query->order_by($by, $dir);
 				break;
 
 				default:
-					$query->where('b.'.$key, $val);
+					$query->where($key, $val);
 				break;
 
 			}
@@ -48,7 +47,7 @@ class Plugin_Firesale_brands extends Plugin
 		}
 
 		// Run query
-		$results = $query->get()->result_array();
+		$results = $query->get('firesale_brands')->result_array();
 
 		// Get brands
 		foreach( $results AS &$result )

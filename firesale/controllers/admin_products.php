@@ -15,6 +15,7 @@ class Admin_products extends Admin_Controller
 	public $perpage = 30;
 	public $section = 'products';
 	public $tabs	= array('description' => array('description'),
+							'_modifiers'  => array(),
 							'_images'	  => array());
 
 	public function __construct()
@@ -27,6 +28,7 @@ class Admin_products extends Admin_Controller
 		$this->load->model(array(
 			'routes_m',
 			'products_m',
+			'modifier_m',
 			'categories_m',
 			'taxes_m',
 			'streams_core/row_m'
@@ -127,9 +129,8 @@ class Admin_products extends Admin_Controller
 						'error_message'   => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
 					  );
 
-			// Temporary until we move to grid
-			// Remove duplicate entries before updating categories
-			// Also deletes all existing categories from a product
+			// Clear out current categories to prevent duplicate db entries
+			// Will fix this in multiple itself
 			if( $id !== NULL )
 			{
 				$input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
@@ -184,20 +185,28 @@ class Admin_products extends Admin_Controller
 
 		// Fire build event
 		Events::trigger('form_build', $this);
-
-		// Assign variables
-		if( $row !== NULL ) { $this->data = $row; }
-		$this->data->id		= $id;
-		$this->data->fields = fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs	= array_keys($this->data->fields);
 		
-		// Get current images
-		if( $row != FALSE )
+		// Get edit variables
+		if( $row )
 		{
+
+			// Add row
+			$this->data = $row;
+
+			// Get modifiers and variants
+			$this->data->modifiers  = $this->modifier_m->get_modifiers($row->id);
+			$this->data->variations = $this->modifier_m->get_products($row->id);
+
+			// Get images
 			$folder = $this->products_m->get_file_folder_by_slug($row->slug);
 			$images = Files::folder_contents($folder->id);
 			$this->data->images = $images['data']['file'];
 		}
+
+		// Assign variables
+		$this->data->id		= $id;
+		$this->data->fields = fields_to_tabs($fields, $this->tabs);
+		$this->data->tabs	= array_keys($this->data->fields);
 		
 		// Add metadata
 		$this->template->append_js('module::jquery.filedrop.js')
@@ -288,6 +297,113 @@ class Admin_products extends Admin_Controller
 		
 		redirect('admin/firesale/products');
 		
+	}
+
+	public function modifier($parent, $id = NULL)
+	{
+
+		// Variables
+		$input  = FALSE;
+		$skip   = array();
+		$extra  = array();
+		$stream = $this->streams->streams->get_stream('firesale_product_modifiers', 'firesale_product_modifiers');
+
+		// Check for post data
+		if( $this->input->post('btnAction') == 'save' )
+		{
+
+			// Update variables
+			$input 	= $this->input->post();
+			$skip	= array('btnAction');
+			$extra 	= array(
+						'return'          => FALSE,
+						'success_message' => 'Success',
+						'error_message'   => 'Failure'
+					  );
+
+			// Add parent to post
+			$input['parent'] = $_POST['parent'] = $parent;
+
+		}
+	
+		// Get the stream fields
+		$fields = $this->fields->build_form($stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);		
+
+		// Check for success
+		if( is_string($fields) OR is_integer($fields) )
+		{
+			redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
+		}
+
+		// Assign variables
+		unset($fields[3]);
+		$this->data->fields = $fields;
+		$this->data->parent = $parent;
+
+		// Add page data
+		$this->template->set_layout(false)
+					   ->set($this->data)
+					   ->build('admin/products/modifier');
+
+	}
+
+	public function variation($parent, $id = NULL)
+	{
+
+		// Variables
+		$input  = FALSE;
+		$skip   = array();
+		$extra  = array();
+		$stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+
+		// Check for post data
+		if( $this->input->post('btnAction') == 'save' )
+		{
+
+			// Update variables
+			$input 	= $this->input->post();
+			$skip	= array('btnAction');
+			$extra 	= array(
+						'return'          => FALSE,
+						'success_message' => 'Success',
+						'error_message'   => 'Failure'
+					  );
+
+			// Add parent to post
+			$input['parent'] = $_POST['parent'] = $parent;
+
+		}
+	
+		// Get the stream fields
+		$fields = $this->fields->build_form($stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);		
+
+		// Check for success
+		if( is_string($fields) OR is_integer($fields) )
+		{
+
+			// Get parent information
+			$row = $this->db->where('id', $parent)->get('firesale_product_modifiers')->row();
+
+			// Check for variant type
+			if( $row->type == '1' )
+			{
+				$this->modifier_m->build_variations($row->parent, $stream);
+			}
+			
+			// Send back to edit
+			redirect('admin/firesale/products/edit/'.$row->parent.'#modifiers');
+		}
+
+		// Assign variables
+		unset($fields[2]);
+		$this->data->fields = $fields;
+		$this->data->parent = $parent;
+
+		// Add page data
+		$this->template->set_layout(false)
+					   ->set($this->data)
+					   ->build('admin/products/variation');
+
 	}
 
 	public function duplicate($prod_id = 0 )

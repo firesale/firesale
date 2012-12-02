@@ -28,6 +28,7 @@
 	$lang['firesale:tabs:shipping']		= 'Shipping';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributes';
+	$lang['firesale:tabs:modifiers']	= 'Modifiers';
 	$lang['firesale:tabs:images']		= 'Images';
 	$lang['firesale:tabs:assignments']  = 'Assignments';
 	
@@ -94,7 +95,8 @@
 	$lang['firesale:prod_button_quick_edit']= 'Quick Edit';
 
 	// Product Modifiers
-	$lang['firesale:prod_modifiers:title'] = 'Modifiers';
+	$lang['firesale:prod_modifiers:title']  = 'Modifiers';
+	$lang['firesale:prod_variations:title'] = 'Variations';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';
@@ -130,6 +132,8 @@
 	$lang['firesale:label_mod_variant']   = 'Variant';
 	$lang['firesale:label_mod_input']     = 'Input';
 	$lang['firesale:label_mod_single']    = 'Single Product';
+	$lang['firesale:label_mod_price']     = 'Price Modifier';
+	$lang['firesale:label_mod_price_inst']= 'Some instructions';
 
 	$lang['firesale:label_stock_short']		= 'Stock Level';
 	$lang['firesale:label_stock_status']	= 'Stock Status';
