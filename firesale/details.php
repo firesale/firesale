@@ -352,8 +352,8 @@ class Module_Firesale extends Module {
 		$this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
 						  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 						  `row_id` int(11) NOT NULL,
+						  `firesale_product_variations_id` int(11) NOT NULL,
 						  `firesale_products_id` int(11) NOT NULL,
-						  `firesale_categories_id` int(11) NOT NULL,
 						  PRIMARY KEY (`id`)
 						  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;");
 
