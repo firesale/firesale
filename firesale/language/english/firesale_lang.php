@@ -131,7 +131,7 @@
 	$lang['firesale:label_drop_images']   = 'Drop images here to upload';
 	$lang['firesale:label_duplicate']     = 'Duplicate';
 	$lang['firesale:label_showfilter']    = 'Show Filters';
-	$lang['firesale:label_mod_variant']   = 'Variant';
+	$lang['firesale:label_mod_variant']   = 'Variation';
 	$lang['firesale:label_mod_input']     = 'Input';
 	$lang['firesale:label_mod_single']    = 'Single Product';
 	$lang['firesale:label_mod_price']     = 'Price Modifier';

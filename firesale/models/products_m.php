@@ -394,10 +394,10 @@ class Products_m extends MY_Model {
 	
 		$product = $this->get_product($id);
 
-		if( $this->db->delete('firesale_products', array('id' => $id)) )
+		if( $this->db->where('id', $product['id'])->delete('firesale_products') )
 		{
-			
-			// Remove from attributes
+
+			// Remove from variations
 			$this->db->where('firesale_products_id', $id)->delete('firesale_product_variations_firesale_products');
 
 			// Remove files folder
@@ -416,13 +416,9 @@ class Products_m extends MY_Model {
 			}
 
 			return TRUE;
-	
 		}
-		else
-		{
-			return FALSE;
-		}
-	
+
+		return FALSE;	
 	}
 
 	/**

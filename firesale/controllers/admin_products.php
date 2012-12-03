@@ -328,6 +328,16 @@ class Admin_products extends Admin_Controller
 			$input['parent'] = $_POST['parent'] = $parent;
 
 		}
+
+		// Check for ID
+		if( $id != NULL )
+		{
+			// Get current row
+			$row = $this->row_m->get_row($id, $stream, FALSE);
+
+			// Update parent in post
+			$input['parent'] = $_POST['parent'] = $row->parent;
+		}
 	
 		// Get the stream fields
 		$fields = $this->fields->build_form($stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);		
@@ -358,6 +368,7 @@ class Admin_products extends Admin_Controller
 		$skip   = array();
 		$extra  = array();
 		$stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+		$parent = $this->db->where('id', $parent)->get('firesale_product_modifiers')->row();
 
 		// Check for post data
 		if( $this->input->post('btnAction') == 'save' )
@@ -373,8 +384,24 @@ class Admin_products extends Admin_Controller
 					  );
 
 			// Add parent to post
-			$input['parent'] = $_POST['parent'] = $parent;
+			$input['parent'] = $_POST['parent'] = $parent->id;
 
+		}
+		else if( $id != null and $this->input->post('btnAction') == 'delete' )
+		{
+
+			// Delete
+			if( $this->modifier_m->delete_variation($id) )
+			{
+				$this->session->set_flashdata('success', 'Success');
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'Error');
+			}
+
+			// Send back to edit
+			redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
 		}
 		
 		// Check for ID
@@ -394,9 +421,6 @@ class Admin_products extends Admin_Controller
 		if( is_string($fields) OR is_integer($fields) )
 		{
 
-			// Get parent information
-			$parent = $this->db->where('id', $parent)->get('firesale_product_modifiers')->row();
-
 			// If we're in creation mode
 			if( $id == NULL and $parent->type == '1' )
 			{
@@ -406,7 +430,7 @@ class Admin_products extends Admin_Controller
 			else if( $id != NULL )
 			{
 				// Update the products for this option
-				// Update and stuff
+				$this->modifier_m->edit_variations($row, $input);
 			}
 			
 			// Send back to edit

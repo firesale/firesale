@@ -55,6 +55,100 @@ class Modifier_m extends MY_Model {
 		return array();
 	}
 
+	public function edit_variations($row, $input)
+	{
+
+		// Variables
+		$stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+		$tax    = ( 100 + $this->taxes_m->get_percentage() ) / 100;
+
+		// Get all products that are part of this variation
+		$query = $this->db->select('firesale_products_id')
+						  ->where('row_id', $row->id)
+						  ->where('firesale_product_variations_id', $stream->id)
+						  ->get('firesale_product_variations_firesale_products');
+
+		// Check for results
+		if( $query->num_rows() )
+		{
+			
+			// Get results
+			$variations = $query->result_array();
+
+			// Loop through them
+			foreach( $variations as $variation )
+			{
+
+				// Get the product details
+				$product = $this->products_m->get_product($variation->firesale_products_id);
+				$update  = array();
+
+				// Edit price
+				$diff = ( $input['price'] - $row->price );
+				$update['price']     = round(( $product['price'] + $diff ), 2);
+				$update['price_tax'] = round(( $update['price'] % $tax ), 2);
+
+				// Edit title
+				$update['title'] = str_replace(' '.$row->title, ' '.$input['title'], $product['title']);
+
+				// Edit code
+				$old = strtoupper(substr($row->title, 0, 2));
+				$new = strtoupper(substr($input['title'], 0, 2));
+				$update['code'] = str_replace($old, $new, $product['code']);
+
+				// Update the product
+				$this->db->where('id', $product['id'])->update('firesale_products', $update);
+			}
+
+		}
+
+	}
+
+	public function delete_variation($id)
+	{
+
+		// Variables
+		$stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+
+		// Delete associated products
+		$this->delete_variation_products($id);
+
+		// Delete remaining references
+		$this->db->where('row_id', $id)->where('firesale_product_variations_id', $stream->id)->delete('firesale_product_variations_firesale_products');
+
+		// Delete from variations
+		return $this->db->where('id', $id)->delete('firesale_product_variations');
+	}
+
+	public function delete_variation_products($id)
+	{
+
+		// Variables
+		$stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+
+		// Get all products that are part of this variation
+		$query = $this->db->select('firesale_products_id')
+						  ->where('row_id', $id)
+						  ->where('firesale_product_variations_id', $stream->id)
+						  ->get('firesale_product_variations_firesale_products');
+
+		// Check for results
+		if( $query->num_rows() )
+		{
+			
+			// Get results
+			$variations = $query->result_array();
+
+			// Loop through them
+			foreach( $variations as $variation )
+			{
+				$action = $this->products_m->delete_product($variation['firesale_products_id']);
+			}
+
+		}
+
+	}
+
 	public function get_variations($parent)
 	{
 

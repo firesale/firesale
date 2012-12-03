@@ -51,12 +51,12 @@
 									<th style="width: 18%"><?php echo lang('firesale:label_title'); ?></th>
 									<th style="width: 32%"><?php echo lang('firesale:label_inst'); ?></th>
 									<th style="width: 35%"><?php echo lang('firesale:prod_variations:title'); ?></th>
-									<th style="width: 30px"></th>
+									<th style="width: 30px"><a href="#" title="Show/Hide all options" class="tooltip-s mod-min">Show/Hide All</a></th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
-									<td colspan="6"><a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal">+ Add a modifier</a></td>
+									<td colspan="6"><a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal btn green">Add a Modifier</a></td>
 								</tr>
 							</tfoot>
 							<tbody>
@@ -80,7 +80,7 @@
 											</thead>
 											<tfoot>
 												<tr>
-													<td colspan="4"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal">+ New variation</a></td>
+													<td colspan="4"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal btn green">Add a Variation</a></td>
 												</tr>
 											</tfoot>
 											<tbody>
