@@ -24,6 +24,9 @@ class Front_product extends Public_Controller {
 		$this->load->model('streams_core/row_m');
 		$this->load->library('files/files');
 
+		// Assign data object
+		$this->data = new stdClass;
+
 	}
 	
 	public function index($product)

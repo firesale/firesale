@@ -56,7 +56,9 @@
 							</thead>
 							<tfoot>
 								<tr>
-									<td colspan="6"><a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal btn green">Add a Modifier</a></td>
+									<td colspan="6">
+										<a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal btn green">Add a Modifier</a>
+									</td>
 								</tr>
 							</tfoot>
 							<tbody>
@@ -89,7 +91,7 @@
 												<tr id="var_<?php echo $variation['id']; ?>">
 													<td><span class="var-mover"></span></td>
 													<td><?php echo $variation['title']; ?></td>
-													<td><?php echo $variation['price']; ?></td>
+													<td><?php echo $symbol.$variation['price']; ?></td>
 													<td><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $id; ?>/<?php echo $variation['id']; ?>" class="modal btn orange">Edit</a></td>
 												</tr>
 											<?php endforeach; ?>

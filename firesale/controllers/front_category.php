@@ -43,6 +43,9 @@ class Front_category extends Public_Controller {
 		$this->load->model('routes_m');
 		$this->load->helper('firesale/general');
 
+		// Assign data object
+		$this->data = new stdClass;
+
 		// Get perpage option
 		$this->perpage = $this->settings->get('firesale_perpage');
 
@@ -73,8 +76,9 @@ class Front_category extends Public_Controller {
 		}
 	
 		// Get cookie data
+		$order              = $this->input->cookie('firesale_listing_order');
 		$this->data->layout = $this->input->cookie('firesale_listing_style') or 'grid';
-		$this->data->order  = get_order($this->input->cookie('firesale_listing_order') or 1);
+		$this->data->order  = get_order(( $order != null ? $order : '1' ));
 
 		// Get category details
 		if( $category != NULL )

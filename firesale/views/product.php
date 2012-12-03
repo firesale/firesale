@@ -44,4 +44,10 @@
         <section id="product-description">
           {{ product.description }}
         </section>
+        <br class="clear" />
+        {{ if product.modifiers }}
+        <section id="product-modifiers">
+          {{ firesale:modifier_form product=product.id }}
+        </section>
+        {{ endif }}
       </div>

@@ -174,6 +174,34 @@ class Plugin_Firesale extends Plugin
 		return $results;
 	}
 
+	public function modifier_form()
+	{
+
+		// Variables
+		$product = $this->attribute('product');
+		$product = $this->products_m->get_product($product);
+
+		// Format data
+		foreach( $product['modifiers'] as &$modifier )
+		{
+
+			$modifier['mod_id'] = $modifier['id'];
+
+			foreach( $modifier['variations'] as $key => &$variation )
+			{
+				$variation['selected'] = ( $key == 0 ? 'checked="checked" ' : '' );
+			}
+
+		}
+
+		// Assign data
+		$data = new stdClass;
+		$data->modifiers = $product['modifiers'];
+
+		// Build form
+		return $this->module_view('firesale', 'partials/modifier_form', $data, true);
+	}
+
 	public function cart()
 	{
 	

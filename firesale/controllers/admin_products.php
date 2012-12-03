@@ -119,6 +119,11 @@ class Admin_products extends Admin_Controller
 	public function create($id = NULL, $row = NULL)
 	{
 
+		// Variables
+		$input = FALSE;
+		$skip  = array();
+		$extra = array();
+
 		// Check for post data
 		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
 		{
@@ -139,12 +144,6 @@ class Admin_products extends Admin_Controller
 				$input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
 			}
 		
-		}
-		else
-		{
-			$input = FALSE;
-			$skip  = array();
-			$extra = array();
 		}
 	
 		// Get the stream fields
@@ -210,6 +209,7 @@ class Admin_products extends Admin_Controller
 		$this->data->id		= $id;
 		$this->data->fields = fields_to_tabs($fields, $this->tabs);
 		$this->data->tabs	= array_keys($this->data->fields);
+		$this->data->symbol = $this->currency_m->get_symbol();
 		
 		// Add metadata
 		$this->template->append_js('module::jquery.filedrop.js')
@@ -425,7 +425,7 @@ class Admin_products extends Admin_Controller
 			if( $id == NULL and $parent->type == '1' )
 			{
 				// Check for variant type
-				$this->modifier_m->build_variations($row->parent, $stream);
+				$this->modifier_m->build_variations($parent->parent, $stream);
 			}
 			else if( $id != NULL )
 			{
@@ -439,6 +439,7 @@ class Admin_products extends Admin_Controller
 
 		// Assign variables
 		unset($fields[2]);
+		$this->data->id     = $id;
 		$this->data->fields = $fields;
 		$this->data->parent = $parent;
 

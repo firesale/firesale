@@ -109,7 +109,7 @@
 	 */ 
 	function get_order($id = NULL)
 	{
-		
+
 		// Define order
 		$_ORDER    = array();
 		$_ORDER[1] = array('title' => lang('firesale:label_nameaz'), 'by' => 'title', 'dir' => 'asc');
@@ -121,7 +121,9 @@
 		
 		// Return
 		if( $id != NULL )
+		{
 			return $_ORDER[$id];
+		}
 
 		// Add key to values
 		foreach($_ORDER AS $key => $order )

@@ -386,24 +386,29 @@ class Products_m extends MY_Model {
 	 * Deletes a product, the images and Files folder related to it.
 	 *
 	 * @param integer $id The Product ID to delete
+	 * @param boolean $images Delete images as well as product?
 	 * @return boolean TRUE or FALSE on success of failure
 	 * @access public
 	 */
-	public function delete_product($id)
+	public function delete_product($id, $images = true)
 	{
 	
-		$product = $this->get_product($id);
+		// Get product basics
+		$product = $this->db->select('id, slug')->where('id', $id)->get('firesale_products')->row();
 
-		if( $this->db->where('id', $product['id'])->delete('firesale_products') )
+		if( $this->db->where('id', $product->id)->delete('firesale_products') )
 		{
 
+			// Remove from categories
+			$this->db->where('row_id', $product->id)->delete('firesale_products_firesale_categories');
+			
 			// Remove from variations
-			$this->db->where('firesale_products_id', $id)->delete('firesale_product_variations_firesale_products');
+			$this->db->where('firesale_products_id', $product->id)->delete('firesale_product_variations_firesale_products');
 
 			// Remove files folder
-			if( $product !== FALSE )
+			if( $product !== FALSE AND $images == TRUE )
 			{
-				$folder = $this->get_file_folder_by_slug($product['slug']);
+				$folder = $this->get_file_folder_by_slug($product->slug);
 				if( $folder != FALSE ) {
 					$images = Files::folder_contents($folder->id);
 					$images = $images['data']['file'];

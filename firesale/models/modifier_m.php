@@ -142,7 +142,7 @@ class Modifier_m extends MY_Model {
 			// Loop through them
 			foreach( $variations as $variation )
 			{
-				$action = $this->products_m->delete_product($variation['firesale_products_id']);
+				$action = $this->products_m->delete_product($variation['firesale_products_id'], FALSE);
 			}
 
 		}
