@@ -54,6 +54,7 @@ class Products_m extends MY_Model {
 		$this->load->model('firesale/categories_m');
 		$this->load->helper('firesale/general');
 		$this->load->model('firesale/currency_m');
+		$this->load->model('firesale/modifier_m');
 	}
 	
 	/**
@@ -145,6 +146,7 @@ class Products_m extends MY_Model {
 	 */
 	public function get_product($id_slug, $currency = NULL)
 	{
+
 		$user_currency = $this->session->userdata('currency');
 
 		$currency = $currency ? $currency : ($user_currency ? $user_currency : 1);
@@ -176,6 +178,12 @@ class Products_m extends MY_Model {
 			{
 				$params['where'] .= ' AND status = 1';
 			}
+
+			// Display variations?
+			if( $this->uri->segment('4') != 'edit' and ! $this->settings->get('firesale_show_variations') )
+			{
+				$params['where'] .= ' AND is_variation = 0';
+			}
 			
 			// Get entries		
 			$product = $this->streams->entries->get_entries($params);
@@ -185,11 +193,15 @@ class Products_m extends MY_Model {
 			{
 
 				// Get and format product data
-				$product 			 = current($product['entries']);
-				$product['snippet']  = truncate_words($product['description']);
-				$product['category'] = $this->get_categories($product['id']);
-				$product['image']    = $this->get_single_image($product['id']);
-
+				$product 			     = current($product['entries']);
+				$product['snippet']      = truncate_words($product['description']);
+				$product['category']     = $this->get_categories($product['id']);
+				$product['image']        = $this->get_single_image($product['id']);
+				
+				// Get variation and modifer data
+				$product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
+				$product['modifiers']    = $this->modifier_m->product_variations($product['id'], $product['is_variation']);
+				
 				// Format product pricing
 				$pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency);
 
@@ -263,6 +275,12 @@ class Products_m extends MY_Model {
 			{
 				$query->where($key, $value);
 			}
+		}
+
+		// Display variations?
+		if( $this->uri->segment('4') != 'edit' and ! $this->settings->get('firesale_show_variations') )
+		{
+			$query->where('is_variation', 0);
 		}
 
 		// Run query

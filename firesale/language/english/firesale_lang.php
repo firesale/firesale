@@ -95,8 +95,10 @@
 	$lang['firesale:prod_button_quick_edit']= 'Quick Edit';
 
 	// Product Modifiers
-	$lang['firesale:prod_modifiers:title']  = 'Modifiers';
-	$lang['firesale:prod_variations:title'] = 'Variations';
+	$lang['firesale:prod_modifiers:title']      = 'Modifiers';
+	$lang['firesale:prod_variations:title']     = 'Variations';
+	$lang['firesale:prod_variations:show_set']  = 'Show Variations';
+	$lang['firesale:prod_variations:show_inst'] = 'Do you want to show variations on listings and search results?';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';

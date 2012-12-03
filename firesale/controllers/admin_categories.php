@@ -56,6 +56,9 @@ class Admin_categories extends Admin_Controller
 		$this->load->model('categories_m');
 		$this->load->model('products_m');
 		$this->load->helper('general');
+
+		// Add data object
+		$this->data = new stdClass;
 		
 		// Add metadata
 		$this->template->append_css('module::categories.css')
@@ -130,10 +133,10 @@ class Admin_categories extends Admin_Controller
 		Events::trigger('form_build', $this);
 
 		// Assign variables
-		$this->data->controller =& $this;
-		$this->data->cats       =  $this->categories_m->generate_streams_tree($params);
-		$this->data->fields     =  fields_to_tabs($fields, $this->tabs);
-		$this->data->tabs	    =  array_keys($this->data->fields);
+		$this->data->controller = $this;
+		$this->data->cats       = $this->categories_m->generate_streams_tree($params);
+		$this->data->fields     = fields_to_tabs($fields, $this->tabs);
+		$this->data->tabs	    = array_keys($this->data->fields);
 	
 		// Add page data
 		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:categories'))

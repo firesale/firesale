@@ -10,9 +10,17 @@
  */
 class Modifier_m extends MY_Model {
 
+	private $cache_mods = array();
+	private $cache_vars = array();
 
 	public function get_modifiers($product)
 	{
+
+		// Check cache
+		if( array_key_exists($product, $this->cache_mods) )
+		{
+			return $this->cache_mods[$product];
+		}
 
 		// Variables
 		$return = array();
@@ -20,7 +28,7 @@ class Modifier_m extends MY_Model {
 					'stream' 	=> 'firesale_product_modifiers',
 					'namespace'	=> 'firesale_product_modifiers',
 					'where'		=> "parent = '{$product}'",
-					'order_by'	=> 'id',
+					'order_by'	=> 'ordering_count',
 					'sort'		=> 'asc'
 				  );
 
@@ -37,6 +45,9 @@ class Modifier_m extends MY_Model {
 				$modifier['variations'] = $this->get_variations($modifier['id']);
 			}
 
+			// Add into cache
+			$this->cache_mods[$product] = $modifiers['entries'];
+
 			return $modifiers['entries'];
 		}
 
@@ -47,13 +58,19 @@ class Modifier_m extends MY_Model {
 	public function get_variations($parent)
 	{
 
+		// Check cache
+		if( array_key_exists($parent, $this->cache_vars) )
+		{
+			return $this->cache_vars[$parent];
+		}
+
 		// Variables
 		$return = array();
 		$params	= array(
 					'stream' 	=> 'firesale_product_variations',
 					'namespace'	=> 'firesale_product_variations',
 					'where'		=> "parent = '{$parent}'",
-					'order_by'	=> 'id',
+					'order_by'	=> 'ordering_count',
 					'sort'		=> 'asc'
 				  );
 
@@ -63,6 +80,9 @@ class Modifier_m extends MY_Model {
 		// Check total
 		if( $variations['total'] > 0 )
 		{
+			// Add into cache
+			$this->cache_vars[$parent] = $variations['entries'];
+
 			return $variations['entries'];
 		}
 
@@ -82,16 +102,50 @@ class Modifier_m extends MY_Model {
 		// Loop variations
 		foreach( $variations AS $variation )
 		{
-
 			// Get products
 			if( $id = $this->variation_exists($variation, $stream->id) )
 			{
 				$products[] = $this->products_m->get_product($id);
 			}
-
 		}
 
 		return $products;
+	}
+
+	public function product_variations($product, $is_variation = false)
+	{
+
+		// Variables
+		$stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+
+		// Check if this is a variation
+		// If so we must go bottom up rather than top down
+		if( $is_variation )
+		{
+
+			// Get variations
+			$query = $this->db->select('m.*, v.title AS var_title, v.price AS var_price, v.id AS var_id')
+							  ->from('firesale_product_variations_firesale_products AS fp')
+							  ->join('firesale_product_variations AS v', 'v.id = fp.row_id', 'inner')
+							  ->join('firesale_product_modifiers AS m', 'm.id = v.parent', 'inner')
+							  ->where('fp.firesale_products_id', $product)
+							  ->where('fp.firesale_product_variations_id', $stream->id)
+							  ->order_by('m.ordering_count', 'asc')
+							  ->get();
+
+			// Check results
+			if( $query->num_rows() )
+			{
+				// Get results
+				$results = $query->result_array();
+				return $query->result_array();
+			}
+
+			return array();
+		}
+
+		// Otherwise just send back the modifiers
+		return $this->get_modifiers($product);
 	}
 
 	public function build_variations($product, $stream)

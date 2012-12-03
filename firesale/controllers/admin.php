@@ -19,6 +19,9 @@ class Admin extends Admin_Controller
 		// Load libraries
 		$this->lang->load('firesale');
 		$this->load->library('firesale/firesale');
+
+		// Add data object
+		$this->data = new stdClass;
 		
 		// Add metadata
 		$this->template->append_css('module::dashboard.css')
@@ -74,10 +77,10 @@ class Admin extends Admin_Controller
 		}
 		
 		// Assign variables
-		$this->data->controller =& $this;
-		$this->data->items      =  $items;
-		$this->data->shown		=  count($items);
-		$this->data->count		=  ( isset($_tmp) ? count($_tmp) : $this->data->shown );
+		$this->data->controller = $this;
+		$this->data->items      = $items;
+		$this->data->shown		= count($items);
+		$this->data->count		= ( isset($_tmp) ? count($_tmp) : $this->data->shown );
 	
 		// Build the page
 		$this->template->enable_parser(true)

@@ -83,9 +83,34 @@ $(function() {
 	** MODIFIERS **
 	**************/
 
-	$('.modifiers a.modcreate').click(function(e) {
+	$('.modifiers tbody').sortable({
+		handle: 'span.mod-mover',
+		update: function() {
+			$('.modifiers tbody > tr').removeClass('even');
+			$('.modifiers tbody > tr:nth-child(even)').addClass('even');
+			var order = [];
+			$('.modifiers tbody > tr').each(function() { order.push(this.id); });
+			order = order.join(',');
+			$.post(SITE_URL + 'admin/firesale/products/ajax_order_modifiers', { order: order });
+		}
+	});
+
+	$('.modifiers tbody table tbody').sortable({
+		handle: 'span.var-mover',
+		update: function() {
+			$('.modifiers table tbody > tr').removeClass('even');
+			$('.modifiers table tbody > tr:nth-child(even)').addClass('even');
+			var order = [];
+			$('.modifiers table tbody > tr').each(function() { order.push(this.id); });
+			order = order.join(',');
+			$.post(SITE_URL + 'admin/firesale/products/ajax_order_variations', { order: order });
+		}
+	});
+
+	$('.modifiers .mod-min').click(function(e) {
 		e.preventDefault();
-		$('.modifiers tr.modcreate').css('display', 'table-row');
+		$(this).parents('tr').find('table').slideToggle(250);
+		$(this).toggleClass('show');
 	});
 
 	/*********************

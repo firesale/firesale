@@ -38,6 +38,9 @@ class Admin_products extends Admin_Controller
 		$this->load->library('files/files');
 		$this->load->helper('general');
 
+		// Add data object
+		$this->data = new stdClass;
+
 		// Add metadata
 		$this->template->append_css('module::products.css')
 					   ->append_js('module::jquery.tablesort.js')
@@ -373,7 +376,17 @@ class Admin_products extends Admin_Controller
 			$input['parent'] = $_POST['parent'] = $parent;
 
 		}
-	
+		
+		// Check for ID
+		if( $id != NULL )
+		{
+			// Get current row
+			$row = $this->row_m->get_row($id, $stream, FALSE);
+
+			// Update parent in post
+			$input['parent'] = $_POST['parent'] = $row->parent;
+		}
+
 		// Get the stream fields
 		$fields = $this->fields->build_form($stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);		
 
@@ -382,16 +395,22 @@ class Admin_products extends Admin_Controller
 		{
 
 			// Get parent information
-			$row = $this->db->where('id', $parent)->get('firesale_product_modifiers')->row();
+			$parent = $this->db->where('id', $parent)->get('firesale_product_modifiers')->row();
 
-			// Check for variant type
-			if( $row->type == '1' )
+			// If we're in creation mode
+			if( $id == NULL and $parent->type == '1' )
 			{
+				// Check for variant type
 				$this->modifier_m->build_variations($row->parent, $stream);
+			}
+			else if( $id != NULL )
+			{
+				// Update the products for this option
+				// Update and stuff
 			}
 			
 			// Send back to edit
-			redirect('admin/firesale/products/edit/'.$row->parent.'#modifiers');
+			redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
 		}
 
 		// Assign variables
@@ -571,6 +590,40 @@ class Admin_products extends Admin_Controller
 
 		echo 'error';
 		exit();
+	}
+
+	public function ajax_order_modifiers($table = 'firesale_product_modifiers', $replace = 'mod_')
+	{
+
+		if( $this->input->is_ajax_request() )
+		{
+
+			$order = $this->input->post('order');
+
+			if( strlen($order) > 0 )
+			{
+				$order = explode(',', $order);
+				for( $i = 0; $i < count($order); $i++ )
+				{
+					if( strlen($order[$i]) > 0 )
+					{
+						$id = str_replace($replace, '', $order[$i]);
+						$this->db->where('id', $id)->update($table, array('ordering_count' => $i));
+					}
+				}
+				echo 'ok';
+				exit();
+			}
+
+		}
+
+		echo 'error';
+		exit();
+	}
+
+	public function ajax_order_variations()
+	{
+		$this->ajax_order_modifiers('firesale_product_variations', 'var_');
 	}
 
 	public function ajax_filter()

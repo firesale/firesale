@@ -42,25 +42,28 @@
 				<?php elseif( $slug == '_modifiers' && isset($id) && $id > 0 ): ?>
 				<div id="modifiers" class="form_inputs">
 					<fieldset>
-					<?php if( ! $is_variant ): ?>
+					<?php if( ! $is_variation ): ?>
 						<table class="modifiers">
 							<thead>
 								<tr>
+									<th style="width: 30px"></th>
 									<th style="width: 15%"><?php echo lang('firesale:label_type'); ?></th>
-									<th style="width: 15%"><?php echo lang('firesale:label_title'); ?></th>
-									<th style="width: 35%"><?php echo lang('firesale:label_inst'); ?></th>
+									<th style="width: 18%"><?php echo lang('firesale:label_title'); ?></th>
+									<th style="width: 32%"><?php echo lang('firesale:label_inst'); ?></th>
 									<th style="width: 35%"><?php echo lang('firesale:prod_variations:title'); ?></th>
+									<th style="width: 30px"></th>
 								</tr>
 							</thead>
 							<tfoot>
 								<tr>
-									<td colspan="4"><a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal">+ Add a modifier</a></td>
+									<td colspan="6"><a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal">+ Add a modifier</a></td>
 								</tr>
 							</tfoot>
 							<tbody>
 							<?php if( ! empty($modifiers) ): ?>
 							<?php foreach( $modifiers as $modifier ): ?>
-								<tr>
+								<tr id="mod_<?php echo $modifier['id']; ?>">
+									<td><span class="mod-mover"></span></td>
 									<td><?php echo $modifier['type']['val']; ?></td>
 									<td><?php echo $modifier['title']; ?></td>
 									<td><?php echo $modifier['instructions']; ?></td>
@@ -69,34 +72,42 @@
 										<table>
 											<thead>
 												<tr>
+													<th style="width: 30px"></th>
 													<th style="width: 50%">Option</th>
 													<th style="width: 50%">Price Modifier</th>
+													<th style="width: 42px"></th>
 												</tr>
 											</thead>
 											<tfoot>
 												<tr>
-													<td colspan="2"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal">+ New variation</a></td>
+													<td colspan="4"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal">+ New variation</a></td>
 												</tr>
 											</tfoot>
 											<tbody>
 											<?php if( ! empty($modifier['variations']) ): ?>
 											<?php foreach( $modifier['variations'] as $variation ): ?>
-												<tr>
+												<tr id="var_<?php echo $variation['id']; ?>">
+													<td><span class="var-mover"></span></td>
 													<td><?php echo $variation['title']; ?></td>
 													<td><?php echo $variation['price']; ?></td>
+													<td><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $id; ?>/<?php echo $variation['id']; ?>" class="modal btn orange">Edit</a></td>
 												</tr>
 											<?php endforeach; ?>
 											<?php else: ?>
-												<tr><td colspan="2"><div class="no_data" style="margin-top: 7px">No Variations</div></td></tr>
+												<tr><td colspan="4"><div class="no_data" style="margin-top: 7px">No Variations</div></td></tr>
 											<?php endif; ?>
 											</tbody>
 										</table>
-									<?php endif; ?>
 									</td>
+									<td><a href="#" title="Show/Hide this option" class="tooltip-s mod-min">Show/Hide</a></td>
+								<?php else: ?>
+									</td>
+									<td></td>
+								<?php endif; ?>
 								</tr>
 							<?php endforeach; ?>
 							<?php else: ?>
-								<tr><td colspan="4"><div class="no_data" style="margin-top: 7px">No Modifiers</div></td></tr>
+								<tr><td colspan="6"><div class="no_data" style="margin-top: 7px">No Modifiers</div></td></tr>
 							<?php endif; ?>
 							</tbody>
 						</table>
@@ -115,16 +126,16 @@
 									<th>Price</th>
 									<th>Stock</th>
 									<th>Status</th>
-									<th style="width: 50px"></th>
+									<th style="width: 42px"></th>
 								</tr>
 							</thead>
 							<tbody>
 							<?php if( ! empty($variations) ): ?>
 							<?php foreach( $variations as $variation ): ?>
 								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
+								<?php foreach( $variation['modifiers'] as $modifier ): ?>
+									<td><?php echo $modifier['var_title']; ?></td>
+								<?php endforeach; ?>
 									<td><?php echo $variation['code']; ?></td>
 									<td><?php echo $variation['price_formatted']; ?></td>
 									<td><?php echo $variation['stock']; ?></td>
