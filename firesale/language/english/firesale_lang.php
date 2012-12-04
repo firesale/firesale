@@ -116,6 +116,7 @@
 	$lang['firesale:label_inst']          = 'Instructions';
 	$lang['firesale:label_category']	  = 'Category';
 	$lang['firesale:label_parent']		  = 'Parent Category';
+	$lang['firesale:label_options']		  = 'Options';
 	$lang['firesale:label_filtercat']	  = 'Filter by Category';
 	$lang['firesale:label_filtersel']	  = 'Select a Category';
 	$lang['firesale:label_filterprod']    = 'Select a Product';

@@ -13,6 +13,59 @@ class Modifier_m extends MY_Model {
 	private $cache_mods = array();
 	private $cache_vars = array();
 
+	public function cart_variation($options)
+	{
+
+		// Variables
+		$modifiers     = $this->get_modifiers($options['prd_code'][0]);
+		$stream        = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+		$post          = $_POST;
+		$post['price'] = 0; 
+		$ids           = array();
+
+		// Loop through options
+		foreach( $options['options'] as $mod => $var )
+		{
+			
+			// Get variations
+			$modifier = $modifiers[$mod];
+
+			// Check type
+			if( $modifier['type']['key'] == '1' )
+			{
+				$variation = $modifier['variations'][$var];
+				$ids[] = $var;
+			}
+			else if( $modifier['type']['key'] == '3' )
+			{
+				$variation      = $modifier['variations'][$var];
+				$post['price'] += $variation['price'];
+			}
+
+			// Change options
+			$post['options'][$mod] = array(
+										'mod_id' => $modifier['id'],
+										'var_id' => ( isset($variation) ? $variation['id'] : '' ),
+										'type'   => $modifier['type']['key'],
+										'title'  => $modifier['title'],
+										'value'  => ( isset($variation) ? $variation['title'] : $var )
+									 );
+
+			// Unset before next loop
+			unset($modifier);
+			unset($variation);
+		}
+
+		// Get correct ID for options
+		if( ! empty($ids) )
+		{
+			$post['prd_code'][0] = $this->variation_exists($ids, $stream->id);
+		}
+
+		// Retrun
+		return $post;
+	}
+
 	public function get_modifiers($product)
 	{
 
@@ -34,6 +87,7 @@ class Modifier_m extends MY_Model {
 
 		// Get the modifiers
 		$modifiers = $this->streams->entries->get_entries($params);
+		$tmp = array();
 
 		// Check total
 		if( $modifiers['total'] > 0 )
@@ -43,12 +97,60 @@ class Modifier_m extends MY_Model {
 			foreach( $modifiers['entries'] as &$modifier )
 			{
 				$modifier['variations'] = $this->get_variations($modifier['id']);
+				$tmp[$modifier['id']]   = $modifier;
 			}
+
+			$modifiers['entries'] = $tmp;
 
 			// Add into cache
 			$this->cache_mods[$product] = $modifiers['entries'];
 
 			return $modifiers['entries'];
+		}
+
+		// Nothing found
+		return array();
+	}
+
+	public function get_variations($parent)
+	{
+
+		// Check cache
+		if( array_key_exists($parent, $this->cache_vars) )
+		{
+			return $this->cache_vars[$parent];
+		}
+
+		// Variables
+		$return = array();
+		$params	= array(
+					'stream' 	=> 'firesale_product_variations',
+					'namespace'	=> 'firesale_product_variations',
+					'where'		=> "parent = '{$parent}'",
+					'order_by'	=> 'ordering_count',
+					'sort'		=> 'asc'
+				  );
+
+		// Get the variations
+		$variations = $this->streams->entries->get_entries($params);
+		$tmp = array();
+
+		// Loop and reassign with id as key
+		foreach( $variations['entries'] as $variation )
+		{
+			$tmp[$variation['id']] = $variation;
+		}
+
+		// Reassign
+		$variations['entries'] = $tmp;
+
+		// Check total
+		if( $variations['total'] > 0 )
+		{
+			// Add into cache
+			$this->cache_vars[$parent] = $variations['entries'];
+
+			return $variations['entries'];
 		}
 
 		// Nothing found
@@ -149,41 +251,6 @@ class Modifier_m extends MY_Model {
 
 	}
 
-	public function get_variations($parent)
-	{
-
-		// Check cache
-		if( array_key_exists($parent, $this->cache_vars) )
-		{
-			return $this->cache_vars[$parent];
-		}
-
-		// Variables
-		$return = array();
-		$params	= array(
-					'stream' 	=> 'firesale_product_variations',
-					'namespace'	=> 'firesale_product_variations',
-					'where'		=> "parent = '{$parent}'",
-					'order_by'	=> 'ordering_count',
-					'sort'		=> 'asc'
-				  );
-
-		// Get the variations
-		$variations = $this->streams->entries->get_entries($params);
-
-		// Check total
-		if( $variations['total'] > 0 )
-		{
-			// Add into cache
-			$this->cache_vars[$parent] = $variations['entries'];
-
-			return $variations['entries'];
-		}
-
-		// Nothing found
-		return array();
-	}
-
 	public function get_products($product)
 	{
 
@@ -199,7 +266,7 @@ class Modifier_m extends MY_Model {
 			// Get products
 			if( $id = $this->variation_exists($variation, $stream->id) )
 			{
-				$products[] = $this->products_m->get_product($id);
+				$products[] = $this->products_m->get_product($id, null, true);
 			}
 		}
 

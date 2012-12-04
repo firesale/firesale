@@ -34,6 +34,7 @@ class Front_cart extends Public_Controller
 		$this->load->model('firesale/categories_m');
 		$this->load->model('firesale/products_m');
 		$this->load->model('firesale/routes_m');
+		$this->load->model('firesale/modifier_m');
 
 		// Require login?
 		if( $this->settings->get('firesale_login') == 1 AND !$this->current_user )
@@ -127,19 +128,34 @@ class Front_cart extends Public_Controller
 			{
 
 				$qtys = $this->input->post('qty', TRUE);
+
+				// Check for options
+				if( $this->input->post('options') )
+				{
+					// Modify post
+					$_POST = $this->modifier_m->cart_variation($this->input->post());
+				}
 				
 				foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code)
 				{
 					
-					$product = $this->products_m->get_product($prd_code);
+					// Get product
+					$product = $this->products_m->get_product($prd_code, null, true);
+
+					// Increase price based on options
+					$product['price_rounded'] += $this->input->post('price') or 0;
+					$product['price']         += $this->input->post('price') or 0;
+
+					echo $product['price'];
 
 					if ($product != FALSE AND ( $product['stock_status']['key'] == 6 OR $qtys[$key] > 0 ))
 					{
-						$data[] = $this->cart_m->build_data($product, (int)$qtys[$key]);
+						$data[] = $this->cart_m->build_data($product, (int)$qtys[$key], $this->input->post('options'));
 						if( $product['stock_status']['key'] != 6 ) { $tmp[$product['id']] = $product['stock']; }
 					}
 
 				}
+
 			}
 
 		}
@@ -227,7 +243,7 @@ class Front_cart extends Public_Controller
 					else
 					{
 
-						$product = $this->products_m->get_product($cart[$row_id]['id']);
+						$product = $this->products_m->get_product($cart[$row_id]['id'], null, true);
 
 						if ($product)
 						{

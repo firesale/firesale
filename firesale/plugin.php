@@ -184,18 +184,18 @@ class Plugin_Firesale extends Plugin
 		// Format data
 		foreach( $product['modifiers'] as &$modifier )
 		{
-
-			$modifier['mod_id'] = $modifier['id'];
-
-			foreach( $modifier['variations'] as $key => &$variation )
+			$first = true;
+			foreach( $modifier['variations'] as &$variation )
 			{
-				$variation['selected'] = ( $key == 0 ? 'checked="checked" ' : '' );
+				$variation['mod_id']   = $modifier['id'];
+				$variation['selected'] = ( $first ? 'checked="checked" ' : '' );
+				$first = false;
 			}
-
 		}
 
 		// Assign data
 		$data = new stdClass;
+		$data->product   = $product;
 		$data->modifiers = $product['modifiers'];
 
 		// Build form

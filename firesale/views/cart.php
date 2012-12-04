@@ -8,6 +8,7 @@
 					<th class="image"><?php echo lang('firesale:cart:label_image'); ?></th>
 					<th class="name"><?php echo lang('firesale:cart:label_name'); ?></th>
 					<th class="model"><?php echo lang('firesale:cart:label_model'); ?></th>
+					<th class="options"><?php echo lang('firesale:label_options'); ?></th>
 					<th><?php echo lang('firesale:cart:label_quantity'); ?></th>
 					<th><?php echo lang('firesale:cart:label_unit_price'); ?></th>
 					<th><?php echo lang('firesale:cart:label_total'); ?></th>
@@ -21,13 +22,18 @@
 					<td class="image">{{ if image > 0 }}<img src="{{ site:url }}files/thumb/{{ image }}/60/60" alt="image" />{{ else }}<div class="no_image_60"></div>{{ endif }}</td>
 					<td class="name"><a href="{{ firesale:url route="product" id=id }}">{{ name }}</a></td>
 					<td class="model">{{ code }}</td>
+					<td class="options">
+					{{ options }}
+						<strong>{{ title }}: </strong> {{ value }}<br />
+					{{ /options }}
+					</td>
 					<td><input type="text" name="item[{{ rowid }}][qty]" value="{{ qty }}" /></td>
 					<td>{{ price }}</td>
 					<td>{{ subtotal }}</td>
 				</tr>
 {{ /contents }}
 {{ else }}
-				<tr><td colspan="7"><center><strong><?php echo lang('firesale:cart:label_no_items_in_cart'); ?></strong></center></td></tr>
+				<tr><td colspan="8"><center><strong><?php echo lang('firesale:cart:label_no_items_in_cart'); ?></strong></center></td></tr>
 {{ endif }}
 			</tbody>
 		</table>

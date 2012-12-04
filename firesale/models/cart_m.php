@@ -180,10 +180,11 @@ class Cart_m extends MY_Model
 	 *
 	 * @param array $product The product data to be used
 	 * @param integer $qty The quantity of the product to be added
+	 * @param boolean/array $options The options associated with this product
 	 * @return array An array of information for db/cart insertion
 	 * @access public
 	 */
-	public function build_data($product, $qty)
+	public function build_data($product, $qty, $options = false)
 	{
 		$data = array(
 			'id'	   => $product['id'],
@@ -195,7 +196,8 @@ class Cart_m extends MY_Model
 			'slug'	   => $product['slug'],
 			'ship'     => $product['ship_req']['key'],
 			'weight'   => ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
-			'image'	   => $this->products_m->get_single_image($product['id'])
+			'image'	   => $this->products_m->get_single_image($product['id']),
+			'options'  => $options
 		);
 
 		return $data;

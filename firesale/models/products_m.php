@@ -144,8 +144,13 @@ class Products_m extends MY_Model {
 	 * @return array A complete product array or FALSE on nothing found
 	 * @access public
 	 */
-	public function get_product($id_slug, $currency = NULL)
+	public function get_product($id_slug, $currency = NULL, $show_variations = false)
 	{
+
+		if( ! $show_variations )
+		{
+			$show_variations = (bool)$this->settings->get('firesale_show_variations');
+		}
 
 		$user_currency = $this->session->userdata('currency');
 
@@ -180,7 +185,7 @@ class Products_m extends MY_Model {
 			}
 
 			// Display variations?
-			if( $this->uri->segment('4') != 'edit' and ! $this->settings->get('firesale_show_variations') )
+			if( ! $show_variations )
 			{
 				$params['where'] .= ' AND is_variation = 0';
 			}
