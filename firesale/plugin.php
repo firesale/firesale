@@ -178,6 +178,7 @@ class Plugin_Firesale extends Plugin
 	{
 
 		// Variables
+		$type    = $this->attribute('type', 'select'); // radio
 		$product = $this->attribute('product');
 		$product = $this->products_m->get_product($product);
 
@@ -195,11 +196,12 @@ class Plugin_Firesale extends Plugin
 
 		// Assign data
 		$data = new stdClass;
+		$data->type      = $type;
 		$data->product   = $product;
 		$data->modifiers = $product['modifiers'];
 
 		// Build form
-		return $this->module_view('firesale', 'partials/modifier_form', $data, true);
+		return$this->module_view('firesale', 'partials/modifier_form', $data, true);
 	}
 
 	public function cart()
