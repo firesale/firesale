@@ -1,27 +1,39 @@
 
 	<form method="post" action="{{ firesale:url route='cart' }}/insert">
-		<input type="hidden" name="prd_code[]" value="{{ product.id }}" />
+		<input type="hidden" name="prd_code[]" value="<?php echo $product['id']; ?>" />
 		<fieldset>
 
 			<ul>
-			{{ modifiers }}
+			<?php if( ! empty($modifiers) ): ?>
+			<?php foreach( $modifiers as $modifier ): ?>
 				<li>
 					<label>
-						<strong>{{ title }}</strong>
-						<small>{{ instructions }}</small>
+						<?php echo $modifier['title']; ?>
+						<small><?php echo $modifier['instructions']; ?></small>
 					</label>
 					<div class="input">
-					{{ if variations }}
-					{{ variations }}
-						<input type="radio" name="options[{{ mod_id }}]" id="options_{{ id }}" value="{{ id }}" {{ selected }}/>
-						<label for="options_{{ id }}">{{ title }} ({{ price }})</label>
-					{{ /variations }}
-					{{ else }}
-						<textarea name="options[{{ mod_id }}]"></textarea>
-					{{ endif }}
+					<?php if( $modifier['type']['key'] != '2' ): ?>
+					<?php if( $type == 'select' ): ?>
+						<select name="options[<?php echo $modifier['id']; ?>]">
+					<?php endif; ?>
+					<?php foreach( $modifier['variations'] as $variation ): ?>
+					<?php if( $type == 'radio' ): ?>
+						<input type="radio" name="options[<?php echo $modifier['id']; ?>]" id="options_<?php echo $variation['id']; ?>" value="<?php echo $variation['id']; ?>" <?php echo $variation['selected']; ?>/>
+						<label for="options_<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</label>
+					<?php else: ?>
+							<option <?php echo $variation['selected']; ?>value="<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</option>
+					<?php endif; ?>
+					<?php endforeach; ?>
+					<?php if( $type == 'select' ): ?>
+						</select>
+					<?php endif; ?>
+					<?php else: ?>
+						<textarea name="options[<?php echo $modifier['id']; ?>]"></textarea>
+					<?php endif; ?>
 					</div>
 				</li>
-			{{ /modifiers }}
+			<?php endforeach; ?>
+			<?php endif; ?>
 				<li>
 					<label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label>
 					<div class="input">

@@ -136,7 +136,7 @@ class Modifier_m extends MY_Model {
 		$tmp = array();
 
 		// Loop and reassign with id as key
-		foreach( $variations['entries'] as $variation )
+		foreach( $variations['entries'] as &$variation )
 		{
 			$tmp[$variation['id']] = $variation;
 		}
@@ -182,13 +182,13 @@ class Modifier_m extends MY_Model {
 			{
 
 				// Get the product details
-				$product = $this->products_m->get_product($variation->firesale_products_id);
+				$product = $this->products_m->get_product($variation['firesale_products_id'], null, true);
 				$update  = array();
 
 				// Edit price
 				$diff = ( $input['price'] - $row->price );
 				$update['price']     = round(( $product['price'] + $diff ), 2);
-				$update['price_tax'] = round(( $update['price'] % $tax ), 2);
+				$update['price_tax'] = round(( $update['price'] / $tax ), 2);
 
 				// Edit title
 				$update['title'] = str_replace(' '.$row->title, ' '.$input['title'], $product['title']);

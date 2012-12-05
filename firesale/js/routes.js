@@ -41,7 +41,7 @@ function build_buttons()
 	    id   = id[(id.length-1)];
 
 	// Category and product
-	if( id == '1' || slug == 'category' || id == '2' || slug == 'product' || id == '8' || slug == 'currency' || id == '9' || slug == 'brands' )
+	if( id == '2' || slug == 'category' || id == '3' || slug == 'product' || id == '8' || slug == 'currency' || id == '9' || slug == 'brands' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="([0-9]+)"><span>Add ID</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z0-9-]+)"><span>Add Slug</span></button>';
@@ -49,13 +49,13 @@ function build_buttons()
 	}
 
 	// Category specific
-	if( id == '1' || slug == 'category' )
+	if( id == '2' || slug == 'category' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ parent_slug }}" data-translation="[0-9a-z-/]+"><span>Add Parent Slugs</span></button>';
 	}
 
 	// Product specific
-	if( id == '2' || slug == 'product' )
+	if( id == '3' || slug == 'product' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ category_id }}" data-translation="[0-9]+"><span>Add Category ID</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ category_slug }}" data-translation="[a-z0-9-]+"><span>Add Category Slug</span></button>';
