@@ -16,11 +16,11 @@
 		</fieldset>
 
 		<div class="buttons">
-			<button type="submit" name="btnAction" value="save" class="btn blue"><span>Save</span></button>
+			<button type="submit" name="btnAction" value="save" class="btn blue"><span><?php echo lang('global:edit'); ?></span></button>
 		<?php if( $id != null ): ?>
-			<button type="submit" name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>
+			<button type="submit" name="btnAction" value="delete" class="btn red confirm"><span><?php echo lang('global:delete'); ?></span></button>
 		<?php endif; ?>
-			<a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $parent->parent; ?>" class="btn red cancel">Cancel</a>
+			<a href="#" class="btn gray cancel"><?php echo lang('global:cancel'); ?></a>
 		</div>
 
 	<?php echo form_close(); ?>
