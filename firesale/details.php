@@ -303,9 +303,9 @@ class Module_Firesale extends Module {
 						  ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0',
 						  ADD FULLTEXT (`title`, `description`),
 						  CHANGE `rrp` `rrp` DECIMAL( 10, 2 ) DEFAULT '0.00',
-						  CHANGE `rrp_tax` `rrp_tax` DECIMAL( 10, 2 ) DEFAULT '0.00',
+						  CHANGE `rrp_tax` `rrp_tax` DECIMAL( 10, 3 ) DEFAULT '0.00',
 						  CHANGE `price` `price` DECIMAL( 10, 2 ) DEFAULT '0.00',
-						  CHANGE `price_tax` `price_tax` DECIMAL( 10, 2 ) DEFAULT '0.00';");
+						  CHANGE `price_tax` `price_tax` DECIMAL( 10, 3 ) DEFAULT '0.00';");
 
 		#######################
 		## PRODUCT MODIFIERS ##

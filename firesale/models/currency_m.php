@@ -149,7 +149,6 @@ class Currency_m extends MY_Model
 
 	public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
 	{
-		//echo $price . br(2);
 		// Format initial value
 		if( $fix )
 		{
@@ -168,7 +167,7 @@ class Currency_m extends MY_Model
 				break;
 
 				default:
-				//	$price = ( ceil($price * 100) / 100 ); 
+					$price = ( floor($price * 100) / 100 ); 
 				break;
 			}
 		}
