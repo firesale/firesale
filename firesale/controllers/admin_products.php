@@ -361,8 +361,10 @@ class Admin_products extends Admin_Controller
 			redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
 		}
 
-		// Assign variables
+		// Format streams fields
 		unset($fields[3]);
+
+		// Assign variables
 		$this->data->id     = $id;
 		$this->data->fields = $fields;
 		$this->data->parent = $parent;
@@ -451,11 +453,23 @@ class Admin_products extends Admin_Controller
 			redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
 		}
 
-		// Assign variables
+		// Format streams fields
 		unset($fields[2]);
+		if( $parent->type != '3' )
+		{
+			unset($fields[3]);
+		}
+
+		// Assign variables
 		$this->data->id     = $id;
 		$this->data->fields = $fields;
 		$this->data->parent = $parent;
+
+		// Single products can link to products
+		if( $this->data->parent->type == '3' )
+		{
+			$this->data->products = $this->products_m->build_dropdown();
+		}
 
 		// Add page data
 		$this->template->set_layout(false)
