@@ -16,7 +16,7 @@
 		</fieldset>
 
 		<div class="buttons">
-			<button type="submit" name="btnAction" value="save" class="btn blue"><span><?php echo lang('global:edit'); ?></span></button>
+			<button type="submit" name="btnAction" value="save" class="btn blue"><span><?php echo lang('save_label'); ?></span></button>
 		<?php if( $id != null ): ?>
 			<button type="submit" name="btnAction" value="delete" class="btn red confirm"><span><?php echo lang('global:delete'); ?></span></button>
 		<?php endif; ?>

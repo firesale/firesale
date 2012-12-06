@@ -312,7 +312,7 @@ class Module_Firesale extends Module {
 		#######################
 
 		// Create product modifiers stream
-		if( !$this->streams->streams->add_stream(lang('firesale:prod_modifiers:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
+		if( !$this->streams->streams->add_stream(lang('firesale:mods:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
 
 		// Add fields
 		$fields   = array();
@@ -333,14 +333,15 @@ class Module_Firesale extends Module {
 		########################
 
 		// Create product modifiers stream
-		if( !$this->streams->streams->add_stream(lang('firesale:prod_variations:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
+		if( !$this->streams->streams->add_stream(lang('firesale:vars:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
 
 		// Add fields
 		$fields   = array();
 		$template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-		$fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32));
+		$fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32, 'default' => '0.00'));
 		$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
+		$fields[] = array('name' => 'lang:firesale:label_prod_link', 'slug' => 'product', 'type' => 'relationship', 'extra' => array('choose_stream' => $products->id), 'required' => FALSE);
 
 		// Combine
 		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
@@ -503,11 +504,6 @@ class Module_Firesale extends Module {
 		$fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
 		$fields[] = array('name' => 'lang:firesale:label_quantity', 'slug' => 'qty', 'type' => 'integer', 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
-		
-		/**
-		* @todo Create a field type for this or something
-		*/
-		$fields[] = array('name' => 'lang:firesale:label_options', 'slug' => 'options', 'type' => 'textarea', 'required' => FALSE);
 
 		// Combine
 		foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
@@ -736,7 +732,10 @@ class Module_Firesale extends Module {
 			########################
 			## PRODUCT VARIATIONS ##
 			########################
-	
+
+			// Get products stream
+			$products = $this->streams->streams->get_stream('firesale_products', 'firesale_products');
+
 			// Create product modifiers stream
 			if( !$this->streams->streams->add_stream(lang('firesale:prod_variations:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
 	
@@ -744,14 +743,10 @@ class Module_Firesale extends Module {
 			$fields   = array();
 			$template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
 			$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-			$fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32));
+			$fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32, 'default' => '0.00'));
 			$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
-			
-			/**
-			* @todo Create a field type for this or something
-			*/
-			$fields[] = array('name' => 'lang:firesale:label_options', 'slug' => 'options', 'type' => 'textarea', 'namespace' => 'firesale_orders_items', 'assign' => 'firesale_orders_items', 'required' => FALSE);
-			
+			$fields[] = array('name' => 'lang:firesale:label_prod_link', 'slug' => 'product', 'type' => 'relationship', 'extra' => array('choose_stream' => $products->id), 'required' => FALSE);
+
 			// Combine
 			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 		
