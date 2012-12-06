@@ -149,7 +149,7 @@ class Currency_m extends MY_Model
 
 	public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
 	{
-
+		//echo $price . br(2);
 		// Format initial value
 		if( $fix )
 		{
@@ -168,7 +168,7 @@ class Currency_m extends MY_Model
 				break;
 
 				default:
-					$price = ( ceil($price * 100) / 100 ); 
+				//	$price = ( ceil($price * 100) / 100 ); 
 				break;
 			}
 		}
@@ -185,7 +185,7 @@ class Currency_m extends MY_Model
 		}
 
 		if ( ! $format)
-			return $price;
+			return number_format($price, 2, $currency->cur_format_dec, $currency->cur_format_sep);
 
 		// Just in case streams has added any extra formatting
 		$currency->cur_format = html_entity_decode($currency->cur_format);
