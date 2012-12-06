@@ -501,53 +501,6 @@ class Products_m extends MY_Model {
 	}
 
 	/**
-	 * Updates the basic information for products with the same slug as the current
-	 * product being edited. This requires the option to be selected in admin
-	 * otherwise they will be left untouched.
-	 * 
-	 * @param integer $id The primary product ID
-	 * @param string $slug The slug to update
-	 * @param array $input The post array to use
-	 * @return TRUE or FALSE on success
-	 * @access public
-	 */
-	public function update_duplicates($id, $slug, $input)
-	{
-
-		/**
-		 * @todo Add to options and check it before performing the following actions
-		 */
-
-		// Get IDs of related products
-		$products = $this->db->select('id')->where('slug', $slug)->get('firesale_products')->result_array();
-
-		// Check products
-		if( count($products) > 1 )
-		{
-
-			// Build data
-			$data = array(
-						'slug'		  => $input['slug'],
-						'description' => $input['description']
-						/**
-						 * @todo Figure out other data to be added here
-						 */
-					);
-
-			// Loop linked products
-			foreach( $products AS $product )
-			{
-
-				// Update them
-				$this->db->where('id', $product['id'])->update('firesale_products', $data);
-
-			}
-
-		}
-
-	}
-
-	/**
 	 * Updates the mulitple categories for a Product.
 	 * Required at the moment since the Streams Multiple field type doesn't seem
 	 * to do this automatically at the moment.

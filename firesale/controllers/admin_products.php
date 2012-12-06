@@ -159,9 +159,6 @@ class Admin_products extends Admin_Controller
 				// Assign ID
 				$id = $fields;
 
-				// Update duplicates
-				$this->products_m->update_duplicates($id, $row->slug, $input);
-
 				// Update image folder?
 				if( $row->slug != $input['slug'] )
 				{
