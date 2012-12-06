@@ -244,7 +244,7 @@ $(function() {
 							  '  '+str+
 							  ' </td>'+
 							  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
-							  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
+							  ' <td class="item-price">'+p.price_formatted+'</td>'+
 							  ' <td class="actions">'+
 							  '  <ul class="split-button">'+
 							  '   <li><strong>Action</strong></li>'+
