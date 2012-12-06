@@ -679,6 +679,14 @@ class Front_cart extends Public_Controller
 		}
 	}
 
+	private function _order_processing()
+	{
+		$this->orders_m->update_status($order['id'], 4);
+
+		if ( ! $callback)
+			redirect($this->routes_m->build_url('cart').'/payment');
+	}
+
 	private function _order_failed($order, $callback = FALSE)
 	{
 		$this->orders_m->update_status($order['id'], 7);
