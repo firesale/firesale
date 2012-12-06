@@ -194,8 +194,8 @@ class Modifier_m extends MY_Model {
 				$update['title'] = str_replace(' '.$row->title, ' '.$input['title'], $product['title']);
 
 				// Edit code
-				$old = strtoupper(substr($row->title, 0, 2));
-				$new = strtoupper(substr($input['title'], 0, 2));
+				$old = strtoupper(substr(str_replace(' ', '', $row->title), 0, 2));
+				$new = strtoupper(substr(str_replace(' ', '', $input['title']), 0, 2));
 				$update['code'] = str_replace($old, $new, $product['code']);
 
 				// Update the product
