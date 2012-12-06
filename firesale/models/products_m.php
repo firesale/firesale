@@ -413,8 +413,11 @@ class Products_m extends MY_Model {
 			// Remove from variations
 			$this->db->where('firesale_products_id', $product->id)->delete('firesale_product_variations_firesale_products');
 
+			// Check remaining products with same slug
+			$siblings = $this->db->select('id')->where('slug', $product->slug)->get('firesale_products');
+
 			// Remove files folder
-			if( $product !== FALSE AND $images == TRUE )
+			if( ! $siblings->num_rows() AND $product !== FALSE AND $images == TRUE )
 			{
 				$folder = $this->get_file_folder_by_slug($product->slug);
 				if( $folder != FALSE ) {
