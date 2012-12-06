@@ -57,7 +57,7 @@
 							<tfoot>
 								<tr>
 									<td colspan="6">
-										<a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal btn green">Add a Modifier</a>
+										<a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal btn green"><?php echo lang('firesale:mods:create'); ?></a>
 									</td>
 								</tr>
 							</tfoot>
@@ -75,14 +75,14 @@
 											<thead>
 												<tr>
 													<th style="width: 30px"></th>
-													<th style="width: 50%">Option</th>
-													<th style="width: 50%">Price Modifier</th>
+													<th style="width: 50%"><?php echo lang('firesale:label_options'); ?></th>
+													<th style="width: 50%"><?php echo lang('firesale:label_mod_price'); ?></th>
 													<th style="width: 42px"></th>
 												</tr>
 											</thead>
 											<tfoot>
 												<tr>
-													<td colspan="4"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal btn green">Add a Variation</a></td>
+													<td colspan="4"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal btn green"><?php echo lang('firesale:vars:create'); ?></a></td>
 												</tr>
 											</tfoot>
 											<tbody>
@@ -96,7 +96,7 @@
 												</tr>
 											<?php endforeach; ?>
 											<?php else: ?>
-												<tr><td colspan="4"><div class="no_data" style="margin-top: 7px">No Variations</div></td></tr>
+												<tr><td colspan="4"><div class="no_data" style="margin-top: 7px"><?php echo lang('firesale:vars:none'); ?></div></td></tr>
 											<?php endif; ?>
 											</tbody>
 										</table>
@@ -109,11 +109,12 @@
 								</tr>
 							<?php endforeach; ?>
 							<?php else: ?>
-								<tr><td colspan="6"><div class="no_data" style="margin-top: 7px">No Modifiers</div></td></tr>
+								<tr><td colspan="6"><div class="no_data" style="margin-top: 7px"><?php echo lang('firesale:mods:none'); ?></div></td></tr>
 							<?php endif; ?>
 							</tbody>
 						</table>
 
+					<?php if( isset($variations) and !empty($variations) ): ?>
 						<br />
 
 						<table class="products">
@@ -124,10 +125,10 @@
 									<th><?php echo $modifier['title']; ?></th>
 								<?php endif; ?>
 								<?php endforeach; ?>
-									<th>Code</th>
-									<th>Price</th>
-									<th>Stock</th>
-									<th>Status</th>
+									<th><?php echo lang('firesale:label_id'); ?></th>
+									<th><?php echo lang('firesale:label_price'); ?></th>
+									<th><?php echo lang('firesale:label_stock_short'); ?></th>
+									<th><?php echo lang('firesale:label_status'); ?></th>
 									<th style="width: 42px"></th>
 								</tr>
 							</thead>
@@ -142,17 +143,18 @@
 									<td><?php echo $variation['price_formatted']; ?></td>
 									<td><?php echo $variation['stock']; ?></td>
 									<td><?php echo $variation['stock_status']['val']; ?></td>
-									<td><a href="{{ url:site }}admin/firesale/products/edit/<?php echo $variation['id']; ?>" class="btn orange">Edit</td>
+									<td><a href="{{ url:site }}admin/firesale/products/edit/<?php echo $variation['id']; ?>" class="btn orange"><?php echo lang('global:edit'); ?></td>
 								</tr>
 							<?php endforeach; ?>
 							<?php else: ?>
-								<tr><td colspan="<?php echo ( 5 + count($modifiers) ); ?>"><div class="no_data" style="margin-top: 7px">No Variations</div></td></tr>
+								<tr><td colspan="<?php echo ( 5 + count($modifiers) ); ?>"><div class="no_data" style="margin-top: 7px"><?php echo lang('firesale:vars:none'); ?></div></td></tr>
 							<?php endif; ?>
 							</tbody>
 						</table>
 
+					<?php endif; ?>
 					<?php else: ?>
-						<div class="no_data">You can't add modifiers to a variant</div>
+						<div class="no_data"><?php echo lang('firesale:mods:nothere'); ?></div>
 					<?php endif; ?>
 					</fieldset>
 				</div>

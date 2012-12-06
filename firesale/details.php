@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module {
 	
-	public $version = '1.1.0';
+	public $version = '1.2.0-dev';
 	public $language_file = 'firesale/firesale';
 	
 	public function __construct()
@@ -312,7 +312,7 @@ class Module_Firesale extends Module {
 		#######################
 
 		// Create product modifiers stream
-		if( !$this->streams->streams->add_stream(lang('firesale:prod_modifiers:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
+		if( !$this->streams->streams->add_stream(lang('firesale:mods:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
 
 		// Add fields
 		$fields   = array();
@@ -333,7 +333,7 @@ class Module_Firesale extends Module {
 		########################
 
 		// Create product modifiers stream
-		if( !$this->streams->streams->add_stream(lang('firesale:prod_variations:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
+		if( !$this->streams->streams->add_stream(lang('firesale:vars:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
 
 		// Add fields
 		$fields   = array();
@@ -697,6 +697,65 @@ class Module_Firesale extends Module {
 				  `data` longtext
 				) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 			");
+
+		}
+
+		// Pre 1.2.0
+		if( $old_version < '1.2.0' )
+		{
+
+			// Change engine and add fulltext
+			$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_products` ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0';");
+
+			#######################
+			## PRODUCT MODIFIERS ##
+			#######################
+	
+			// Create product modifiers stream
+			if( !$this->streams->streams->add_stream(lang('firesale:prod_modifiers:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
+	
+			// Add fields
+			$fields   = array();
+			$template = array('namespace' => 'firesale_product_modifiers', 'assign' => 'firesale_product_modifiers', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+			$fields[] = array('name' => 'lang:firesale:label_type', 'slug' => 'type', 'type' => 'choice', 'extra' => array('choice_data' => "1 : lang:firesale:label_mod_variant\n2 : lang:firesale:label_mod_input\n3 : lang:firesale:label_mod_single", 'choice_type' => 'dropdown', 'default_value' => 1));
+			$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
+			$fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
+			$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
+	
+			// Combine
+			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+		
+			// Add fields to stream
+			$this->streams->fields->add_fields($fields);
+	
+			########################
+			## PRODUCT VARIATIONS ##
+			########################
+	
+			// Create product modifiers stream
+			if( !$this->streams->streams->add_stream(lang('firesale:prod_variations:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
+	
+			// Add fields
+			$fields   = array();
+			$template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+			$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
+			$fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32));
+			$fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
+	
+			// Combine
+			foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+		
+			// Add fields to stream
+			$this->streams->fields->add_fields($fields);
+	
+			// Create lookup table
+			$this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
+							  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+							  `row_id` int(11) NOT NULL,
+							  `firesale_product_variations_id` int(11) NOT NULL,
+							  `firesale_products_id` int(11) NOT NULL,
+							  PRIMARY KEY (`id`)
+							  ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;");
 
 		}
 

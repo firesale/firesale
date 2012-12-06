@@ -242,6 +242,9 @@ class Products_m extends MY_Model {
 	public function get_products($filter, $start = 0, $limit = 0)
 	{
 
+		// Show variations?
+		$show_variations = (bool)$this->settings->get('firesale_show_variations');
+
 		// Build initial query
 		$query = $this->db->select('p.id')
 						  ->from($this->_table . ' AS p')
@@ -283,9 +286,9 @@ class Products_m extends MY_Model {
 		}
 
 		// Display variations?
-		if( $this->uri->segment('4') != 'edit' and ! $this->settings->get('firesale_show_variations') )
+		if( ! $show_variations )
 		{
-			$query->where('is_variation', 0);
+			$query->where('is_variation', '0');
 		}
 
 		// Run query

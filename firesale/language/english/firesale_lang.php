@@ -94,11 +94,28 @@
 	$lang['firesale:prod_delimg_error']     = 'There was an error removing the image specified';
 	$lang['firesale:prod_button_quick_edit']= 'Quick Edit';
 
-	// Product Modifiers
-	$lang['firesale:prod_modifiers:title']      = 'Modifiers';
-	$lang['firesale:prod_variations:title']     = 'Variations';
-	$lang['firesale:prod_variations:show_set']  = 'Show Variations';
-	$lang['firesale:prod_variations:show_inst'] = 'Do you want to show variations on listings and search results?';
+	// Product Modifiers & Variations
+	$lang['firesale:mods:title']          = 'Modifiers';
+	$lang['firesale:mods:create_success'] = 'New modifier created successfully';
+	$lang['firesale:mods:edit_success']   = 'Modifier edited successfully';
+	$lang['firesale:mods:delete_success'] = 'Modifier deleted successfully';
+	$lang['firesale:mods:create_error']   = 'Error creating new modifier';
+	$lang['firesale:mods:edit_error']     = 'Error editing the modifier';
+	$lang['firesale:mods:delete_error']   = 'Error deleting the modifier';
+	$lang['firesale:mods:create']         = 'Add a Modifier';
+	$lang['firesale:mods:none']           = 'No Modifiers Found';
+	$lang['firesale:mods:nothere']        = 'You can\'t add modifiers to a variant';
+	$lang['firesale:vars:title']          = 'Variations';
+	$lang['firesale:vars:show_set']       = 'Show Variations';
+	$lang['firesale:vars:show_inst']      = 'Do you want to show variations on listings and search results?';
+	$lang['firesale:vars:create_success'] = 'New variation created successfully';
+	$lang['firesale:vars:edit_success']   = 'Variation edited successfully';
+	$lang['firesale:vars:delete_success'] = 'Variation deleted successfully';
+	$lang['firesale:vars:create_error']   = 'Error creating new variation';
+	$lang['firesale:vars:edit_error']     = 'Error editing the variation';
+	$lang['firesale:vars:delete_error']   = 'Error deleting the variation';
+	$lang['firesale:vars:none']           = 'No Variations Found';
+	$lang['firesale:vars:create']         = 'Add a Variation';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Retail price before and after tax';

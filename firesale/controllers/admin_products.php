@@ -320,8 +320,8 @@ class Admin_products extends Admin_Controller
 			$skip	= array('btnAction');
 			$extra 	= array(
 						'return'          => FALSE,
-						'success_message' => 'Success',
-						'error_message'   => 'Failure'
+						'success_message' => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_success'),
+						'error_message'   => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_error')
 					  );
 
 			// Add parent to post
@@ -379,8 +379,8 @@ class Admin_products extends Admin_Controller
 			$skip	= array('btnAction');
 			$extra 	= array(
 						'return'          => FALSE,
-						'success_message' => 'Success',
-						'error_message'   => 'Failure'
+						'success_message' => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_success'),
+						'error_message'   => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_error')
 					  );
 
 			// Add parent to post
@@ -393,11 +393,11 @@ class Admin_products extends Admin_Controller
 			// Delete
 			if( $this->modifier_m->delete_variation($id) )
 			{
-				$this->session->set_flashdata('success', 'Success');
+				$this->session->set_flashdata('success', lang('firesale:vars:delete_success'));
 			}
 			else
 			{
-				$this->session->set_flashdata('error', 'Error');
+				$this->session->set_flashdata('error', lang('firesale:vars:delete_success'));
 			}
 
 			// Send back to edit
