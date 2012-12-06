@@ -1,14 +1,14 @@
-	<?php echo form_open_multipart($this->uri->uri_string(), 'class="crud" id="tabs"'); ?>
+  <?php echo form_open_multipart($this->uri->uri_string(), 'class="crud" id="tabs"'); ?>
 
-		<section class="title">
-			<h4>
+    <section class="title">
+      <h4>
         <?php if( isset($id) && $id > 0 ): ?>
           <?php echo sprintf(lang('firesale:orders:title_edit'), $id); ?>
         <?php else: ?>
           <?php echo lang('firesale:orders:title_create'); ?>
         <?php endif; ?>
       </h4>
-		</section>
+    </section>
 
     <section class="item">
 
@@ -22,8 +22,8 @@
         </ul>
 
         <?php foreach( $fields AS $title => $sections ): ?>
-		    <div class="form_inputs" id="<?php echo $title; ?>">
-		      <fieldset>
+        <div class="form_inputs" id="<?php echo $title; ?>">
+          <fieldset>
           <?php foreach( $sections AS $subtitle => $section ): ?>
             <ul<?php echo ( $title != 'general' ? ' class="width-half"' : '' ); ?>>
             <?php foreach( $section AS $field ): ?>
@@ -35,12 +35,12 @@
             </ul>
             <?php endforeach; ?>
             <br class="clear" />
-		      </fieldset>
-		    </div>
+          </fieldset>
+        </div>
         <?php endforeach; ?>
 
-		    <div class="form_inputs" id="products">
-		      <fieldset>
+        <div class="form_inputs" id="products">
+          <fieldset>
             <table class="cart"<?php echo ( ( isset($products) && empty($products) ) || !isset($products) ? ' style="display: none"' : '' ); ?>>
               <thead>
                 <tr>
@@ -48,6 +48,7 @@
                   <th class="image"><?php echo lang('firesale:label_image'); ?></th>
                   <th class="name"><?php echo lang('firesale:label_title'); ?></th>
                   <th class="model"><?php echo lang('firesale:label_id'); ?></th>
+                  <th class="model"><?php echo lang('firesale:label_options'); ?></th>
                   <th><?php echo lang('firesale:label_quantity'); ?></th>
                   <th><?php echo lang('firesale:label_price_sub'); ?></th>
                   <th><?php echo lang('firesale:label_price_total'); ?></th>
@@ -56,11 +57,16 @@
               <tbody>
               <?php if( isset($products) && !empty($products) ): ?>
               <?php foreach( $products AS $product ): ?>
-      	  	    <tr class="prod-<?php echo $product['id']; ?>">
+                <tr class="prod-<?php echo $product['id']; ?>">
                     <td class="remove"><input type="checkbox" name="item[<?php echo $product['id']; ?>][remove]" value="1" /></td>
                     <td class="image"><img src="/files/thumb/<?php echo $product['image']; ?>/64/64" class="image" alt="Product Image" /></td>
                     <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                     <td class="model"><?php echo $product['code']; ?></td>
+                    <td class="model">
+                      <?php foreach ($product['options'] as $option): ?>
+                        <strong><?php echo $option['title']; ?>:</strong> <?php echo $option['value']; ?><br />
+                      <?php endforeach; ?>
+                    </td>
                     <td><input type="text" name="item[<?php echo $product['id']; ?>][qty]" value="<?php echo $product['qty']; ?>" /></td>
                     <td class="price"><?php echo str_replace('{{ price }}', '<span>'.str_replace($currency->symbol, '', $product['price']).'</span>', $currency->cur_format); ?></td>
                     <td class="total"><?php echo str_replace('{{ price }}', '<span>'.str_replace($currency->symbol, '', $product['total']).'</span>', $currency->cur_format); ?></td>
@@ -72,7 +78,7 @@
             <?php if( isset($products) && empty($products) && isset($id) ): ?>
             <div class="no_data"><?php echo lang('firesale:prod_none'); ?></div>
             <?php elseif( !isset($id) ): ?>
-  			    <div class="no_data"><?php echo lang('firesale:orders:save_first'); ?></div>
+            <div class="no_data"><?php echo lang('firesale:orders:save_first'); ?></div>
             <?php endif; ?>
             <?php if( isset($id) ): ?>
             <div class="items">
@@ -82,16 +88,16 @@
             </div>
             <?php endif; ?>
             <br class="clear" />
-		      </fieldset>
-		    </div>
+          </fieldset>
+        </div>
 
         <br class="clear" />
-    		<div class="buttons">
-    			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
-    		</div>
+        <div class="buttons">
+          <?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
+        </div>
 
       </div>
 
     </section>
 
-	<?php echo form_close(); ?>
+  <?php echo form_close(); ?>
