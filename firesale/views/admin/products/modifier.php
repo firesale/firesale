@@ -16,7 +16,11 @@
 		</fieldset>
 
 		<div class="buttons">
-			<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
+			<button type="submit" name="btnAction" value="save" class="btn blue"><span><?php echo lang('global:edit'); ?></span></button>
+		<?php if( $id != null ): ?>
+			<button type="submit" name="btnAction" value="delete" class="btn red confirm"><span><?php echo lang('global:delete'); ?></span></button>
+		<?php endif; ?>
+			<a href="#" class="btn gray cancel"><?php echo lang('cancel_label'); ?></a>
 		</div>
 
 	<?php echo form_close(); ?>

@@ -81,6 +81,7 @@ button.link.unlinked{background-position:-40px 0;}
 table.modifiers span.mod-mover, table.modifiers span.var-mover { width: 24px; height: 16px; display: block; cursor: move; background: url('img/drag_handle_dark.gif') no-repeat 0 0; }
 table.modifiers a.mod-min { background: url('img/showhide.png') no-repeat 0 100%; width: 24px; height: 24px; display: block; overflow: hidden; text-indent: -1000px; }
 table.modifiers a.mod-min.show { background-position: 0 0; }
+table.modifiers .btn.right { float: right; }
 
 /* Responsive */
 @media only screen and (min-width: 281px) {

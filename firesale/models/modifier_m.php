@@ -206,6 +206,33 @@ class Modifier_m extends MY_Model {
 
 	}
 
+	public function delete_modifier($id)
+	{
+
+		// Get modifier type
+		$row = $this->db->select('type')->where('id', $id)->get('firesale_product_modifiers')->row();
+
+		// Check type
+		if( $row->type == '1' )
+		{
+
+			// Select variations
+			$results = $this->db->where('parent', $id)->get('firesale_product_variations')->result_array();
+
+			if( ! empty($results) )
+			{
+				foreach( $results as $result )
+				{
+					$this->delete_variation($result['id']);
+				}
+			}
+
+		}
+
+		// Delete this
+		return $this->db->where('id', $id)->delete('firesale_product_modifiers');
+	}
+
 	public function delete_variation($id)
 	{
 

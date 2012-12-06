@@ -82,7 +82,10 @@
 											</thead>
 											<tfoot>
 												<tr>
-													<td colspan="4"><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal btn green"><?php echo lang('firesale:vars:create'); ?></a></td>
+													<td colspan="4">
+														<a href="{{ url:site }}admin/firesale/products/variation/<?php echo $modifier['id']; ?>" class="modal btn green"><?php echo lang('firesale:vars:create'); ?></a>
+														<a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>/<?php echo $modifier['id']; ?>" class="right modal btn orange"><?php echo lang('firesale:mods:edit'); ?></a>
+													</td>
 												</tr>
 											</tfoot>
 											<tbody>
@@ -92,7 +95,7 @@
 													<td><span class="var-mover"></span></td>
 													<td><?php echo $variation['title']; ?></td>
 													<td><?php echo $symbol.$variation['price']; ?></td>
-													<td><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $id; ?>/<?php echo $variation['id']; ?>" class="modal btn orange">Edit</a></td>
+													<td><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $id; ?>/<?php echo $variation['id']; ?>" class="modal btn orange"><?php echo lang('global:edit'); ?></a></td>
 												</tr>
 											<?php endforeach; ?>
 											<?php else: ?>

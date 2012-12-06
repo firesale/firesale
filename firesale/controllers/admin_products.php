@@ -325,6 +325,22 @@ class Admin_products extends Admin_Controller
 			$input['parent'] = $_POST['parent'] = $parent;
 
 		}
+		else if( $id != null and $this->input->post('btnAction') == 'delete' )
+		{
+
+			// Delete
+			if( $this->modifier_m->delete_modifier($id) )
+			{
+				$this->session->set_flashdata('success', lang('firesale:mods:delete_success'));
+			}
+			else
+			{
+				$this->session->set_flashdata('error', lang('firesale:mods:delete_success'));
+			}
+
+			// Send back to edit
+			redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
+		}
 
 		// Check for ID
 		if( $id != NULL )
@@ -347,6 +363,7 @@ class Admin_products extends Admin_Controller
 
 		// Assign variables
 		unset($fields[3]);
+		$this->data->id     = $id;
 		$this->data->fields = $fields;
 		$this->data->parent = $parent;
 

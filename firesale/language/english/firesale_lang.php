@@ -103,6 +103,7 @@
 	$lang['firesale:mods:edit_error']     = 'Error editing the modifier';
 	$lang['firesale:mods:delete_error']   = 'Error deleting the modifier';
 	$lang['firesale:mods:create']         = 'Add a Modifier';
+	$lang['firesale:mods:edit']           = 'Edit Modifier';
 	$lang['firesale:mods:none']           = 'No Modifiers Found';
 	$lang['firesale:mods:nothere']        = 'You can\'t add modifiers to a variant';
 	$lang['firesale:vars:title']          = 'Variations';
