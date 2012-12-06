@@ -114,6 +114,7 @@ class Plugin_Firesale extends Plugin
 
 	public function products()
 	{
+		$show_variations = (bool)$this->settings->get('firesale_show_variations');
 
 		// Variables
 		$attributes = $this->attributes();
@@ -132,6 +133,9 @@ class Plugin_Firesale extends Plugin
 						  ->join('firesale_categories AS c', 'c.id = pc.firesale_categories_id')
 						  ->where('p.status', '1')
 						  ->group_by('p.slug');
+
+		if ( ! $show_variations)
+			$query->where('is_variation', 0);
 
 		// Add to query
 		foreach( $attributes AS $key => $val )
