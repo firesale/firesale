@@ -538,7 +538,7 @@ class Front_cart extends Public_Controller
 
 				// Run payment
 				$params = array_merge(array(
-					'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback'),
+					'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback/' . $gateway . '/' . $order['id']),
 					'return_url' => site_url($this->routes_m->build_url('cart') . '/success'),
 					'cancel_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
 				), $posted_data ? $posted_data : array(), array(
@@ -562,6 +562,16 @@ class Front_cart extends Public_Controller
 
 				$process = $this->merchant->purchase($params);
 
+				$this->db->insert('firesale_transactions', array(
+					'reference' => $process->reference(),
+					'order_id'  => $order['id'],
+					'gateway'   => $gateway,
+					'amount'    => $this->fs_cart->total() + $order['shipping']['price'],
+					'currency'  => $this->fs_cart->currency()->cur_code,
+					'status'    => $process->status(),
+					'data'      => serialize($process->data())
+				));
+
 				$status = '_order_' . $process->status();
 
 				// Check status
@@ -578,14 +588,46 @@ class Front_cart extends Public_Controller
 						$status = '_order_mismatch';
 					}
 				}
-
-				if ( ! method_exists($this, $status))
+				else
 				{
-					$status = '_order_processing';
+					// Looks like theres an error! Set this to flash data so we know.
+					$this->session->set_flashdata('error', $process->message());
 				}
 
-				// Run status function
-				$this->$status($order);
+				$theme_path = $this->template->get_theme_path();
+				if ($process->is_redirect())
+				{
+					if (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/all.php'))
+					{
+						$this->template->set('redirect_url', $process->redirect_url())
+									   ->set('redirect_method', $process->redirect_method())
+									   ->set('redirect_data', $process->redirect_data())
+									   ->build('gateways/redirect/all');
+					}
+					elseif (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/' . $gateway . '.php'))
+					{
+						$this->template->set('redirect_url', $process->redirect_url())
+									   ->set('redirect_method', $process->redirect_method())
+									   ->set('redirect_data', $process->redirect_data())
+									   ->build('gateways/redirect/' . $gateway);
+					}
+					else
+					{
+						$process->redirect();
+					}
+				}
+				else
+				{
+					if ( ! method_exists($this, $status))
+					{
+						$status = '_order_processing';
+					}
+
+					// Run status function
+					$this->$status($order);
+				}
+
+					
 			}
 			else
 			{
@@ -618,9 +660,14 @@ class Front_cart extends Public_Controller
 				}
 
 				// Format currency
-				$order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
-				$order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
-				$order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
+				$order['price_tax']     = $order['price_total'] - $order['price_sub'] - $order['price_ship'];
+				$order['price_sub_tax'] = $order['price_sub'] + $order['price_tax'];
+				
+				$order['price_tax']     = $this->currency_m->format_string($order['price_tax'], $this->fs_cart->currency(), FALSE);
+				$order['price_sub_tax'] = $this->currency_m->format_string($order['price_sub_tax'], $this->fs_cart->currency(), FALSE);
+				$order['price_sub']     = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+				$order['price_ship']    = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+				$order['price_total']   = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
 
 				$gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
@@ -646,24 +693,32 @@ class Front_cart extends Public_Controller
 
 	public function callback($gateway = NULL, $order_id = NULL)
 	{
-
 		$order = $this->orders_m->get_order_by_id($order_id);
 
 		if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND ! empty($order))
 		{
-			$this->merchant->load($gateway, $this->gateways->settings($gateway));
-			$response = $this->merchant->process_return();
-			$status = '_order_' . $process->status;
+			$this->merchant->load($gateway);
+			$this->merchant->initialize($this->gateways->settings($gateway));
 
-			$processed = $this->db->get_where('firesale_transactions', array('txn_id' => $response->reference(), 'status' => $response->status()))->num_rows();
-			$processed OR $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'txn_id' => $response->reference(), 'amount' => $response->amount(), 'message' => $response->message(), 'status' => $response->status()));
+			$transaction = $this->db->get_where('firesale_transactions', array(
+				'order_id' => $order_id,
+				'gateway'  => $gateway
+			))->row_array();
+
+			$response = $this->merchant->purchase_return(array_merge($transaction, array(
+				'failure_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
+			)));
+
+			$status = '_order_' . $response->status();
+			$processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status()))->num_rows();
+			$processed OR $this->db->insert('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status(), 'data' => serialize($response->data())));
 
 			if ( ! $processed)
 			{
 				// Check status
-				if ($process->status() == 'authorized')
+				if ($response->status() == 'authorized')
 				{
-					if ($process->amount() != $order['price_total'])
+					if ($response->amount() != $order['price_total'])
 					{
 						$status = '_order_mismatch';
 					}
@@ -690,16 +745,20 @@ class Front_cart extends Public_Controller
 	private function _order_failed($order, $callback = FALSE)
 	{
 		$this->orders_m->update_status($order['id'], 7);
-		$this->session->set_flashdata('error', lang('firesale:orders:failed_message'));
 
 		if ( ! $callback)
+		{
 			redirect($this->routes_m->build_url('cart').'/payment');
+		}
+		else
+		{
+			$this->merchant->confirm_return(site_url($this->routes_m->build_url('cart') . '/cancel'));
+		}
 	}
 
 	private function _order_declined($order, $callback = FALSE)
 	{
 		$this->orders_m->update_status($order['id'], 8);
-		$this->session->set_flashdata('error', lang('firesale:orders:declined_message'));
 
 		if ( ! $callback)
 			redirect($this->routes_m->build_url('cart').'/payment');
@@ -709,7 +768,6 @@ class Front_cart extends Public_Controller
 	private function _order_mismatch($order, $callback = FALSE)
 	{
 		$this->orders_m->update_status($order['id'], 9);
-		$this->session->set_flashdata('error', lang('firesale:orders:mismatch_message'));
 
 		if ( ! $callback)
 			redirect($this->routes_m->build_url('cart').'/payment');
@@ -760,6 +818,10 @@ class Front_cart extends Public_Controller
 
 			// Build the page
 			$this->template->build('payment_complete', $order);
+		}
+		else
+		{
+			$this->merchant->confirm_return(site_url($this->routes_m->build_url('cart') . '/success'));
 		}
 
 	}
