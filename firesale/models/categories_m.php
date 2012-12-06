@@ -134,6 +134,7 @@ class Categories_m extends MY_Model
      */
     public function _build_query($category)
     {
+		$show_variations = (bool)$this->settings->get('firesale_show_variations');
 
     	// Get children
     	if( isset($category['id']) AND $category['id'] != NULL )
@@ -147,6 +148,9 @@ class Categories_m extends MY_Model
     					  ->join('firesale_products', 'firesale_products.id = firesale_products_firesale_categories.row_id', 'inner')
     					  ->where('firesale_products.status', 1)
     					  ->group_by('firesale_products.slug');
+
+    	if ( ! $show_variations)
+    		$query->where('is_variation', 0);
 
 		// Check for children
 		if( isset($children) AND ! empty($children) )
