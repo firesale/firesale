@@ -29,7 +29,7 @@ class Orders_m extends MY_Model
 	{
 
 		$total = 0; 
-		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`
+		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`, i.`options`
 								   FROM `' . SITE_REF . '_firesale_orders_items` AS i
 						  		   INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
 						 		   WHERE i.`order_id` = ' . $order_id . '
@@ -39,8 +39,9 @@ class Orders_m extends MY_Model
 		// Build overall count and add image
 		foreach( $items AS &$item )
 		{
-			$total         += $item['count'];
-			$item['image']  = $this->products_m->get_single_image($item['id']);
+			$total          += $item['count'];
+			$item['image']   = $this->products_m->get_single_image($item['id']);
+			$item['options'] = ! empty($item['options']) ? unserialize($item['options']) : NULL;
 		}
 		
 		// Return
