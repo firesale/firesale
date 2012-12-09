@@ -24,13 +24,13 @@
 	// Tabs
 	$lang['firesale:tabs:general']		= 'Opzioni generali';
 	$lang['firesale:tabs:description'] 	= 'Descrizione';
-	$lang['firesale:tabs:formatting'] 	= 'Farmattazione';
+	$lang['firesale:tabs:formatting'] 	= 'Formattazione';
 	$lang['firesale:tabs:shipping']		= 'Spedizione';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributi';
 	$lang['firesale:tabs:images']		= 'Immagini';
-	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
-	
+	$lang['firesale:tabs:assignments']  = 'Assegnamenti';
+		
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Aggiungi Prodotto';
 	$lang['firesale:shortcuts:cat_create']		= 'Aggiungi Categoria';
@@ -107,9 +107,9 @@
 	$lang['firesale:label_title'] 		  = 'Titolo';
 	$lang['firesale:label_slug'] 		  = 'Link';
 	$lang['firesale:label_status'] 		  = 'Stato';
-	$lang['firesale:label_type'] 		  = 'Type'; # translate
+	$lang['firesale:label_type'] 		  = 'Tipo';
 	$lang['firesale:label_description']	  = 'Descrizione';
-	$lang['firesale:label_inst']          = 'Instructions'; # translate
+	$lang['firesale:label_inst']          = 'Istruzioni';
 	$lang['firesale:label_category']	  = 'Categoria';
 	$lang['firesale:label_parent']		  = 'Categoria padre';
 	$lang['firesale:label_filtercat']	  = 'Filtra per categoria';
@@ -129,7 +129,7 @@
 	$lang['firesale:label_showfilter']    = 'Mostra filtri';
 	$lang['firesale:label_mod_variant']   = 'Variant'; # translate
 	$lang['firesale:label_mod_input']     = 'Input'; # translate
-	$lang['firesale:label_mod_single']    = 'Single Product'; # translate
+	$lang['firesale:label_mod_single']    = 'Singolo prodotto';
 
 	$lang['firesale:label_stock_short']		= 'Livello scorte';
 	$lang['firesale:label_stock_status']	= 'Stato delle scorte';
@@ -312,14 +312,14 @@
 	$lang['firesale:routes:build_error']    = 'Si è verificato un errore nel ricostruire il file dei Reindirizzamenti';
 
 	// Route Labels
-	$lang['firesale:routes:category_custom'] = 'Category Customisation'; # translate
-	$lang['firesale:routes:category']        = 'Category'; # translate
-	$lang['firesale:routes:product']         = 'Product'; # translate
-	$lang['firesale:routes:cart']            = 'Cart'; # translate
-	$lang['firesale:routes:order_single']    = 'Single Order'; # translate
-	$lang['firesale:routes:orders']          = 'User Orders'; # translate
-	$lang['firesale:routes:addresses']       = 'User Addresses'; # translate
-	$lang['firesale:routes:currency']        = 'Currency Switcher'; # translate
+	$lang['firesale:routes:category_custom'] = 'Personalizzazione categoria';
+	$lang['firesale:routes:category']        = 'Categoria';
+	$lang['firesale:routes:product']         = 'Prodotto';
+	$lang['firesale:routes:cart']            = 'Carrello'; 
+	$lang['firesale:routes:order_single']    = 'Singolo ordine';
+	$lang['firesale:routes:orders']          = 'Ordini utente'; 
+	$lang['firesale:routes:addresses']       = 'Indirizzi utente';
+	$lang['firesale:routes:currency']        = 'Cambio valuta';
 
 	// Currency
 	$lang['firesale:shortcuts:install_currency'] = 'Installa nuova Valuta';
