@@ -211,7 +211,7 @@ class Categories_m extends MY_Model
 				$this->db->update('firesale_categories', array('parent' => 1), 'parent = ' . ( 0 + $id ));
 
 				// Add products to root category
-				$this->db->update('firesale_products_firesale_categories', array('firesale_categories_id' => 1));
+				$this->db->where('firesale_categories_id', ( 0 + $id ))->update('firesale_products_firesale_categories', array('firesale_categories_id' => 1));
 
 				// Return
 				return TRUE;
