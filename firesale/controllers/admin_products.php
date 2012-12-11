@@ -295,8 +295,7 @@ class Admin_products extends Admin_Controller
 			$this->session->set_flashdata('error', lang('firesale:prod_delete_error'));
 		}
 		
-		redirect('admin/firesale/products');
-		
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 
 	public function modifier($parent, $id = NULL)
