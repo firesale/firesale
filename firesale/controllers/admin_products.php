@@ -154,21 +154,24 @@ class Admin_products extends Admin_Controller
 		{
 
 			// Got an ID back
-			if( ( is_string($fields) OR is_integer($fields) ) AND ! empty($row) )
+			if( is_string($fields) OR is_integer($fields) )
 			{
 
 				// Assign ID
 				$id = $fields;
 
 				// Update image folder?
-				if( $row->slug != $input['slug'] )
+				if( ! empty($row) )
 				{
-					$this->products_m->update_folder_slug($row->slug, $input['slug']);
-				}
+					if( $row->slug != $input['slug'] )
+					{
+						$this->products_m->update_folder_slug($row->slug, $input['slug']);
+					}
 
-				// Fire event
-				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
-				Events::trigger('product_updated', $data);
+					// Fire event
+					$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
+					Events::trigger('product_updated', $data);
+				}
 
 				// Redirect
 				redirect('admin/firesale/products'.( $input['btnAction'] != 'save_exit' ? '/edit/'.$id : '' ));
