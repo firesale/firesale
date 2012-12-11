@@ -716,6 +716,10 @@ class Module_Firesale extends Module {
 			// Change engine and add fulltext
 			$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_products` ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0';");
 
+			// Update currency fields
+			$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_currency` CHANGE `cur_format_dec` `cur_format_dec` VARCHAR( 12 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ,
+							  CHANGE `cur_format_sep` `cur_format_sep` VARCHAR( 12 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
+
 			#######################
 			## PRODUCT MODIFIERS ##
 			#######################
@@ -937,8 +941,8 @@ class Module_Firesale extends Module {
 			$fields[] = array('name' => 'lang:firesale:label_enabled', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_disabled\n1 : lang:firesale:label_enabled", 'choice_type' => 'dropdown', 'default_value' => 1));
 			$fields[] = array('name' => 'lang:firesale:label_cur_tax', 'slug' => 'cur_tax', 'type' => 'text', 'extra' => array('max_length' => 10));
 			$fields[] = array('name' => 'lang:firesale:label_cur_format', 'slug' => 'cur_format', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_format_inst', 'extra' => array('max_length' => 64));
-			$fields[] = array('name' => 'lang:firesale:label_cur_format_dec', 'slug' => 'cur_format_dec', 'type' => 'text', 'extra' => array('max_length' => 1), 'required' => FALSE);
-			$fields[] = array('name' => 'lang:firesale:label_cur_format_sep', 'slug' => 'cur_format_sep', 'type' => 'text', 'extra' => array('max_length' => 1));
+			$fields[] = array('name' => 'lang:firesale:label_cur_format_dec', 'slug' => 'cur_format_dec', 'type' => 'text', 'extra' => array('max_length' => 12), 'required' => FALSE);
+			$fields[] = array('name' => 'lang:firesale:label_cur_format_sep', 'slug' => 'cur_format_sep', 'type' => 'text', 'extra' => array('max_length' => 12));
 			$fields[] = array('name' => 'lang:firesale:label_cur_format_num', 'slug' => 'cur_format_num', 'type' => 'choice', 'extra' => array('choice_data' => $cur_format, 'choice_type' => 'dropdown', 'default_value' => '1'));
 			$fields[] = array('name' => 'lang:firesale:label_cur_mod', 'slug' => 'cur_mod', 'type' => 'text', 'instructions' => 'lang:firesale:label_cur_mod_inst', 'extra' => array('default' => '0', 'max_length' => 10));
 			$fields[] = array('name' => 'lang:firesale:label_cur_flag', 'slug' => 'image', 'type' => 'image', 'extra' => array('folder' => $currency['data']['id']), 'required' => FALSE);

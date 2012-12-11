@@ -113,6 +113,9 @@ class Admin_currency extends Admin_Controller
 			$value            = preg_replace('/[^0-9,.]/', '', $this->input->post('cur_mod'));
 			$_POST['cur_mod'] = $modifier.'|'.$value;
 
+			// Format seperator
+			$_POST['cur_format_sep'] = $input['cur_format_sep'] = str_replace(' ', '&nbsp;', $_POST['cur_format_sep']);
+
 		}
 
 		// Build the form

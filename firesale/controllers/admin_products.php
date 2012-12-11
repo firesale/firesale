@@ -154,8 +154,9 @@ class Admin_products extends Admin_Controller
 		{
 
 			// Got an ID back
-			if( is_numeric($fields) AND ! empty($row) )
+			if( ( is_string($fields) OR is_integer($fields) ) AND ! empty($row) )
 			{
+
 				// Assign ID
 				$id = $fields;
 
@@ -168,16 +169,10 @@ class Admin_products extends Admin_Controller
 				// Fire event
 				$data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
 				Events::trigger('product_updated', $data);
-			}
 
-			// Redirect
-			if( $input['btnAction'] == 'save_exit' AND ! is_object($fields) )
-			{
-				redirect('admin/firesale/products');
-			}
-			else if( is_string($fields) OR is_integer($fields) )
-			{
-				redirect('admin/firesale/products/edit/'.$fields);
+				// Redirect
+				redirect('admin/firesale/products'.( $input['btnAction'] != 'save_exit' ? '/edit/'.$id : '' ));
+
 			}
 
 		}
