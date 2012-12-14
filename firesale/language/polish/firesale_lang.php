@@ -36,9 +36,9 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Dodaj kategorię';
 	$lang['firesale:shortcuts:install_gateway']	= 'Instaluj bramkę płatności';
 	$lang['firesale:shortcuts:create_order']	= 'Utwórz zamówienie';
-	$lang['firesale:shortcuts:create_routes']   = 'Dodaj nową route';
-	$lang['firesale:shortcuts:build_routes']    = 'Przebuduj routes';
-	$lang['firesale:shortcuts:add_tax_band']    = 'Dodaj nowy podatek';
+	$lang['firesale:shortcuts:create_routes']   = 'Dodaj nowe trasowanie';
+	$lang['firesale:shortcuts:build_routes']    = 'Przebuduj trasowania';
+	$lang['firesale:shortcuts:add_tax_band']    = 'Dodaj nową stawkę podatkową';
 	$lang['firesale:shortcuts:assign_taxes']    = 'Przypisz podatki';
 
 	// Dashboard
@@ -63,7 +63,7 @@
 	$lang['firesale:cats_draft_label']		= 'Robocze';
 	$lang['firesale:cats_live_label']		= 'Opublikowane';
 	$lang['firesale:cats_edit']				= 'Edytuj kategorię';
-	$lang['firesale:cats_edit_title']		= 'Edytuj "%s"';
+	$lang['firesale:cats_edit_title']		= 'Edycja "%s"';
 	$lang['firesale:cats_delete']			= 'Usuń';
 	$lang['firesale:cats_add_success'] 		= 'Nowa kategoria dodana pomyślnie';
 	$lang['firesale:cats_add_error'] 		= 'Podczas dodawania kategorii wystąpił błąd';
@@ -76,7 +76,7 @@
 	// Products
 	$lang['firesale:prod_none']				= 'Nie znaleziono produktów';
 	$lang['firesale:prod_create'] 			= 'Dodaj produkt';
-	$lang['firesale:prod_header']			= 'Edytuj %t';
+	$lang['firesale:prod_header']			= 'Edycja %t';
 	$lang['firesale:prod_title']			= 'Zarządzaj produktami';
 	$lang['firesale:prod_title_create'] 	= 'Dodaj nowy produkt';
 	$lang['firesale:prod_title_edit'] 		= 'Edytuj produkt';
@@ -90,7 +90,7 @@
 	$lang['firesale:prod_duplicate_success']= 'Produkt zduplikowany prawidłowo';
 	$lang['firesale:prod_not_found'] 		= 'Nie można znaleźć tego produktu';
 	$lang['firesale:prod_delimg_success']   = 'Zdjęcie usunięte prawidłowo';
-	$lang['firesale:prod_delimg_error']     = 'Błąd podczasThere was an error removing the image specified';
+	$lang['firesale:prod_delimg_error']     = 'Błąd podczas usuwania wskazanego zdjęcia';
 	$lang['firesale:prod_button_quick_edit']= 'Szybka edycja';
 
 	// Instructions
@@ -179,7 +179,7 @@
 	$lang['firesale:label_time_days'] 	= '%s dni temu.';
 
 	$lang['firesale:label_map']         = 'Mapa';
-	$lang['firesale:label_route']       = 'Route';
+	$lang['firesale:label_route']       = 'Trasowanie';
 	$lang['firesale:label_translation'] = 'Tłumaczenie';
 	$lang['firesale:label_table']       = 'Tablica';
 
@@ -384,10 +384,10 @@
 	$lang['firesale:settings_currency']              = 'Podstawowy kod waluty';
 	$lang['firesale:settings_currency_inst']         = 'Akceptowane waluty (format ISO-4217)';
 	$lang['firesale:settings_currency_key']          = 'Currency API Key';
-	$lang['firesale:settings_currency_key_inst']     = 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>';
+	$lang['firesale:settings_currency_key_inst']     = 'Klucz API z <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>';
 	$lang['firesale:settings_current_currency']      = 'Aktualna waluta';
 	$lang['firesale:settings_current_currency_inst'] = 'The current currency in use, used to update existing values if default currency is changed';
-	$lang['firesale:settings_currency_updated']      = 'Currency last update time';
+	$lang['firesale:settings_currency_updated']      = 'Ostatnia aktualizacja waluty';
 	$lang['firesale:settings_currency_updated_inst'] = 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that';
 	$lang['firesale:settings_perpage']               = 'Produktów na stronę';
 	$lang['firesale:settings_perpage_inst']          = 'The number of products to be displayed on category and search result pages';
