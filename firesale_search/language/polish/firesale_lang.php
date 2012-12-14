@@ -1,15 +1,15 @@
 <?php
-	
-	$lang['firesale:test:label_hello'] 		  = 'Hello World!';
-	$lang['firesale:sections:search'] 		  = 'Search';
-	$lang['firesale:sections:search_results'] = 'Search Results Matching "%s"';
-	$lang['firesale:search:products_match']	  = 'Products meeting the search criteria';
-	$lang['firesale:search:products_none']	  = 'No products meeting the search criteria';
+
+	$lang['firesale:sections:search'] 		  = 'Szukaj';
+	$lang['firesale:sections:search_results'] = 'Szukaj produktów pasujących do "%s"';
+	$lang['firesale:search:products_match']	  = 'Produkty spełniające kryteria wyszukiwania';
+	$lang['firesale:search:products_none']	  = 'Brak produktów spełniających kryteria wyszukiwania';
 	
 	// Dashboard
-	$lang['firesale:elements:search_terms'] = 'Popular Search Terms';
-	$lang['firesale:search:no_terms']		= 'No search terms found';
+	$lang['firesale:elements:search_terms'] = 'Najpopularniejsze szukane hasła';
+	$lang['firesale:search:no_terms']		= 'Nie szukano jeszcze żadnych haseł';
 	
 	//Search Frontend
-	$lang['firesale:search:label_search'] 			= 'Search';
-	$lang['firesale:search:label_nothing_found'] 	= 'Nothing found!';
+	$lang['firesale:search:label_search'] 			= 'Szukaj';
+	$lang['firesale:search:label_nothing_found'] 	= 'Nic nie znaleziono';
+	

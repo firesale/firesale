@@ -34,7 +34,7 @@ $lang['firesale:gateways:dps_pxpost:desc'] = 'PX POST is designed to handle tran
 
 // Dummy
 $lang['firesale:gateways:dummy:name'] = 'FireSALE Dummy';
-$lang['firesale:gateways:dummy:desc'] = 'The FireSALE dummy gateway. Handles sample payment processing (authorizes when using the test credit card number only).';
+$lang['firesale:gateways:dummy:desc'] = 'Bramka testowa FireSALE . Przetwarza proste płatności (autoryzacja przy użyciu tylko testowej karty kredytowej).';
 
 // eWAY Shared
 $lang['firesale:gateways:eway_shared:name'] = 'eWAY Shared Payments';

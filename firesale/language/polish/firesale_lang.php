@@ -5,8 +5,8 @@
 	$lang['firesale:title:general']		= 'Ogólne';
 	$lang['firesale:title:details']		= 'Twoje informacje';
 	$lang['firesale:title:address']		= 'Twój adres';
-	$lang['firesale:title:bill']		= 'Informacje o płatnościach';
-	$lang['firesale:title:ship']		= 'Informacje o wysyłce';
+	$lang['firesale:title:bill']		= 'Płatność';
+	$lang['firesale:title:ship']		= 'Wysyłka';
 
 	// Sections
 	$lang['firesale:sections:dashboard'] 	  = 'Sklep start';
@@ -17,7 +17,7 @@
 	$lang['firesale:sections:orders_items']	  = 'Order Items';
 	$lang['firesale:sections:gateways']		  = 'Bramki płatności';
 	$lang['firesale:sections:settings'] 	  = 'Ustawienia';
-	$lang['firesale:sections:routes']         = 'Routes';
+	$lang['firesale:sections:routes']         = 'Trasowania';
 	$lang['firesale:sections:currency']       = 'Waluty';
 	$lang['firesale:sections:taxes']          = 'Podatki';
 
@@ -36,9 +36,9 @@
 	$lang['firesale:shortcuts:cat_create']		= 'Dodaj kategorię';
 	$lang['firesale:shortcuts:install_gateway']	= 'Instaluj bramkę płatności';
 	$lang['firesale:shortcuts:create_order']	= 'Utwórz zamówienie';
-	$lang['firesale:shortcuts:create_routes']   = 'Dodaj nową route';
-	$lang['firesale:shortcuts:build_routes']    = 'Przebuduj routes';
-	$lang['firesale:shortcuts:add_tax_band']    = 'Dodaj nowy podatek';
+	$lang['firesale:shortcuts:create_routes']   = 'Dodaj nowe trasowanie';
+	$lang['firesale:shortcuts:build_routes']    = 'Przebuduj trasowania';
+	$lang['firesale:shortcuts:add_tax_band']    = 'Dodaj nową stawkę podatkową';
 	$lang['firesale:shortcuts:assign_taxes']    = 'Przypisz podatki';
 
 	// Dashboard
@@ -63,7 +63,7 @@
 	$lang['firesale:cats_draft_label']		= 'Robocze';
 	$lang['firesale:cats_live_label']		= 'Opublikowane';
 	$lang['firesale:cats_edit']				= 'Edytuj kategorię';
-	$lang['firesale:cats_edit_title']		= 'Edytuj "%s"';
+	$lang['firesale:cats_edit_title']		= 'Edycja "%s"';
 	$lang['firesale:cats_delete']			= 'Usuń';
 	$lang['firesale:cats_add_success'] 		= 'Nowa kategoria dodana pomyślnie';
 	$lang['firesale:cats_add_error'] 		= 'Podczas dodawania kategorii wystąpił błąd';
@@ -76,7 +76,7 @@
 	// Products
 	$lang['firesale:prod_none']				= 'Nie znaleziono produktów';
 	$lang['firesale:prod_create'] 			= 'Dodaj produkt';
-	$lang['firesale:prod_header']			= 'Edytuj %t';
+	$lang['firesale:prod_header']			= 'Edycja %t';
 	$lang['firesale:prod_title']			= 'Zarządzaj produktami';
 	$lang['firesale:prod_title_create'] 	= 'Dodaj nowy produkt';
 	$lang['firesale:prod_title_edit'] 		= 'Edytuj produkt';
@@ -90,7 +90,7 @@
 	$lang['firesale:prod_duplicate_success']= 'Produkt zduplikowany prawidłowo';
 	$lang['firesale:prod_not_found'] 		= 'Nie można znaleźć tego produktu';
 	$lang['firesale:prod_delimg_success']   = 'Zdjęcie usunięte prawidłowo';
-	$lang['firesale:prod_delimg_error']     = 'Błąd podczasThere was an error removing the image specified';
+	$lang['firesale:prod_delimg_error']     = 'Błąd podczas usuwania wskazanego zdjęcia';
 	$lang['firesale:prod_button_quick_edit']= 'Szybka edycja';
 
 	// Instructions
@@ -179,7 +179,7 @@
 	$lang['firesale:label_time_days'] 	= '%s dni temu.';
 
 	$lang['firesale:label_map']         = 'Mapa';
-	$lang['firesale:label_route']       = 'Route';
+	$lang['firesale:label_route']       = 'Trasowanie';
 	$lang['firesale:label_translation'] = 'Tłumaczenie';
 	$lang['firesale:label_table']       = 'Tablica';
 
@@ -187,14 +187,14 @@
 	$lang['firesale:label_cur_code_inst']   = 'format ISO-4217 ';
 	$lang['firesale:label_cur_tax']         = 'Stawka podatkowa';
 	$lang['firesale:label_cur_mod']         = 'Modyfikator waluty';
-	$lang['firesale:label_cur_mod_inst']    = 'You may wish to modify the exchange rate slightly to cover additional costs associated with this region';
+	$lang['firesale:label_cur_mod_inst']    = 'Możesz nieco zmodyfikować kurs wymiany, aby pokryć dodatkowe koszty w tym regionie';
 	$lang['firesale:label_exch_rate']       = 'Kurs wymiany';
-	$lang['firesale:label_exch_rate_inst']  = 'This will be automatically updated every hour and can be left blank as it will be updated on save';
+	$lang['firesale:label_exch_rate_inst']  = 'Będzie aktualizowany co godzinę, można pozostawić pusty.';
 	$lang['firesale:label_cur_flag']        = 'Powiązane zdjęcie';
 	$lang['firesale:label_enabled']         = 'Włączony';
 	$lang['firesale:label_disabled']        = 'Wyłączony';
 	$lang['firesale:label_cur_format']      = 'Format waluty';
-	$lang['firesale:label_cur_format_inst'] = 'Formatting including currency symbol, with "{{ price }}" where the value is shown, eg: £{{ price }}';
+	$lang['firesale:label_cur_format_inst'] = 'Formatowanie, włącznie z symbolem waluty. "{{ price }}" pokazuje miejsce wstawienia ceny, np: {{ price }} zł';
 	$lang['firesale:label_cur_format_dec']  = 'Symbol miejsca dziesiętnego';
 	$lang['firesale:label_cur_format_sep']  = 'Symbol rozdzielania tysięcy';
 	$lang['firesale:label_cur_format_num']  = 'Formatowanie liczb';
@@ -280,59 +280,59 @@
 	$lang['firesale:checkout:error_callback'] 		= 'Przetwarzanie Twojego zamówienia napotkało problemy. Spróbuj jeszcze raz z inną metodą płatności.';
 	$lang['firesale:payment:title'] 				= 'Potwierdź szczegóły';
 	$lang['firesale:payment:title_success'] 		= 'Płatność zakończona';
-	$lang['firesale:checkout:title:ship_method']	= 'Shipping Method';
-	$lang['firesale:checkout:title:payment_method']	= 'Payment Method';
-	$lang['firesale:checkout:next']					= 'Next';
-	$lang['firesale:checkout:previous']				= 'Previous';
-	$lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';
-	$lang['firesale:checkout:select_payment_method'] = 'Please select your preferred payment method below before continuing';
-	$lang['firesale:checkout:submit_and_pay']		= 'Submit &amp; Pay';
+	$lang['firesale:checkout:title:ship_method']	= 'Forma wysyłki';
+	$lang['firesale:checkout:title:payment_method']	= 'Metoda płatności';
+	$lang['firesale:checkout:next']					= 'Następne';
+	$lang['firesale:checkout:previous']				= 'Poprzednie';
+	$lang['firesale:checkout:select_shipping_method'] = 'Proszę wybrać metodę wysyłki przed kontynuowaniem.';
+	$lang['firesale:checkout:select_payment_method'] = 'Proszę wybrać metodę płatności przed kontynuowaniem';
+	$lang['firesale:checkout:submit_and_pay']		= 'Wyślij i Zapłać';
 
 	// Routes
-	$lang['firesale:routes:title']          = 'Routes';
-	$lang['firesale:routes:new']            = 'Add a new Route';
-	$lang['firesale:routes:add_success']    = 'New route added successfully';
-	$lang['firesale:routes:add_error']      = 'Error adding a new route';
-	$lang['firesale:routes:edit']           = 'Edit %s Route';
-	$lang['firesale:routes:edit_success']   = 'Route edited successfully';
-	$lang['firesale:routes:edit_error']     = 'Error editing the route';
-	$lang['firesale:routes:not_found']      = 'The selected route could not be found';
-	$lang['firesale:routes:none']           = 'No routes found';
-	$lang['firesale:routes:delete_success'] = 'Route removed successfully';
-	$lang['firesale:routes:delete_error']   = 'Error removing route';
-	$lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file';
-	$lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file';
+	$lang['firesale:routes:title']          = 'Trasowanie';
+	$lang['firesale:routes:new']            = 'Dodaj nowe trasowanie';
+	$lang['firesale:routes:add_success']    = 'Nowe trasowanie dodane prawidłowo';
+	$lang['firesale:routes:add_error']      = 'Błąd przy dodawaniu trasowania';
+	$lang['firesale:routes:edit']           = 'Edytuj trasowanie %s ';
+	$lang['firesale:routes:edit_success']   = 'Edycja trasowania zakończona prawidłowo';
+	$lang['firesale:routes:edit_error']     = 'Błąd podczas edycji trasowania';
+	$lang['firesale:routes:not_found']      = 'Wybrane trasowanie nie odnalezione';
+	$lang['firesale:routes:none']           = 'Nie odnaleziono żadnych trasowań';
+	$lang['firesale:routes:delete_success'] = 'Trasowanie usunięte prawidłowo';
+	$lang['firesale:routes:delete_error']   = 'Błąd usuwania trasowania';
+	$lang['firesale:routes:build_success']  = 'Prawidłowo przebudowano plik trasowań';
+	$lang['firesale:routes:build_error']    = 'Błąd podczas przebudowania pliku trasowań';
 
 	// Currency
-	$lang['firesale:shortcuts:install_currency'] = 'Install new Currency';
-	$lang['firesale:currency:enable']            = 'Enable';
-	$lang['firesale:currency:disable']           = 'Disable';
-	$lang['firesale:currency:disable_warn']      = 'Disabling this may cause issues for customers and previous orders';
-	$lang['firesale:currency:delete']            = 'Delete';
-	$lang['firesale:currency:delete_warn']       = 'Deleting this may cause issues for customers and previous orders';
-	$lang['firesale:currency:create']            = 'Create New Currency';
-	$lang['firesale:currency:edit']              = 'Edit Currency';
-	$lang['firesale:currency:not_found']         = 'Selected currency not found';
-	$lang['firesale:currency:add_success']       = 'New currency added successfully';
-	$lang['firesale:currency:add_error']         = 'There was an error adding the new currency';
-	$lang['firesale:currency:edit_success']      = 'Currency updated successfully';
-	$lang['firesale:currency:edit_error']        = 'There was an error updating that currency';
-	$lang['firesale:currency:delete_success']    = 'Currency was deleted successfully';
-	$lang['firesale:currency:delete_error']      = 'There was an error deleting the currency';
-	$lang['firesale:currency:format_none']       = 'None';
-	$lang['firesale:currency:format_00']         = 'Round up to next full number';
-	$lang['firesale:currency:format_50']         = 'Round to closest .50';
-	$lang['firesale:currency:format_99']         = 'Round up to closest .99';
+	$lang['firesale:shortcuts:install_currency'] = 'Dodaj nową walutę';
+	$lang['firesale:currency:enable']            = 'Włącz';
+	$lang['firesale:currency:disable']           = 'Wyłącz';
+	$lang['firesale:currency:disable_warn']      = 'Wyłączenie może spowodować kłopoty dla klientów i poprzednich zleceń';
+	$lang['firesale:currency:delete']            = 'Usuń';
+	$lang['firesale:currency:delete_warn']       = 'Usunięcie może spowodować kłopoty dla klientów i poprzednich zleceń';
+	$lang['firesale:currency:create']            = 'Dodaj nową walutę';
+	$lang['firesale:currency:edit']              = 'Edytuj walutę';
+	$lang['firesale:currency:not_found']         = 'Wybrana waluta nie znaleziona';
+	$lang['firesale:currency:add_success']       = 'Nowa waluta dodana prawidłowo';
+	$lang['firesale:currency:add_error']         = 'Błąd podczas dodawania nowej waluty';
+	$lang['firesale:currency:edit_success']      = 'Waluta pomyślnie wyedytowana';
+	$lang['firesale:currency:edit_error']        = 'Błąd edycji waluty';
+	$lang['firesale:currency:delete_success']    = 'Waluta usunięta pomyślnie';
+	$lang['firesale:currency:delete_error']      = 'Błąd usuwania waluty';
+	$lang['firesale:currency:format_none']       = 'Żaden';
+	$lang['firesale:currency:format_00']         = 'Zaokrąglać do następnej pełnej liczby';
+	$lang['firesale:currency:format_50']         = 'Zaokrąglać do najbliższej .50';
+	$lang['firesale:currency:format_99']         = 'Zaokrąglać do najbliższej .99';
 
 	// Taxes
-	$lang['firesale:taxes:none']                  = 'There are currently no tax bands setup';
-	$lang['firesale:taxes:new']                   = 'Add tax band';
-	$lang['firesale:taxes:edit']                  = 'Edit tax band';
-	$lang['firesale:taxes:add_success']           = 'Tax band created successfully';
-	$lang['firesale:taxes:add_error']             = 'There was an error whilst creating the tax band';
-	$lang['firesale:taxes:edit_success']          = 'Tax band edited successfully';
-	$lang['firesale:taxes:edit_error']            = 'There was an error whilst editing the tax band';
-	$lang['firesale:taxes:assignments_updated']   = 'Tax band assignments were updated successfully';
+	$lang['firesale:taxes:none']                  = 'Brak zdefiniowanych stawek podatkowych';
+	$lang['firesale:taxes:new']                   = 'Dodaj stawkę podatkową';
+	$lang['firesale:taxes:edit']                  = 'Edytuj stawkę podatkową';
+	$lang['firesale:taxes:add_success']           = 'Stawka podatkowa wyedytowana prawidłowo';
+	$lang['firesale:taxes:add_error']             = 'Błąd podczas tworzenia stawki podatkowej';
+	$lang['firesale:taxes:edit_success']          = 'Stawka podatkowa wyedytowana prawidłowo';
+	$lang['firesale:taxes:edit_error']            = 'Błąd edycji stawki podatkowej';
+	$lang['firesale:taxes:assignments_updated']   = 'Przypisanie stawek podatkowych dokonane prawidłowo';
 
 	// Addresses
 	$lang['firesale:addresses:title']        = 'Mój adres';
@@ -363,8 +363,8 @@
 	$lang['firesale:cart:label_total'] = "Suma";
 	$lang['firesale:cart:label_no_items_in_cart'] = "W koszyku nie ma przedmiotów";
 	$lang['firesale:cart:button_update'] = "Odśwież koszyk";
-	$lang['firesale:cart:button_goto_checkout'] = "Goto Checkout";
-	$lang['firesale:cart:label_sub_total'] = "Sub-Total";
+	$lang['firesale:cart:button_goto_checkout'] = "Przejdź do podsumowania";
+	$lang['firesale:cart:label_sub_total'] = "Podsuma";
 	$lang['firesale:cart:label_tax'] = "Podatek";
 	$lang['firesale:cart:label_total'] = "Suma";
 	
@@ -384,10 +384,10 @@
 	$lang['firesale:settings_currency']              = 'Podstawowy kod waluty';
 	$lang['firesale:settings_currency_inst']         = 'Akceptowane waluty (format ISO-4217)';
 	$lang['firesale:settings_currency_key']          = 'Currency API Key';
-	$lang['firesale:settings_currency_key_inst']     = 'API Key from <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>';
+	$lang['firesale:settings_currency_key_inst']     = 'Klucz API z <a target="_blank" href="https://openexchangerates.org/signup/free">Open Exchange Rates</a>';
 	$lang['firesale:settings_current_currency']      = 'Aktualna waluta';
 	$lang['firesale:settings_current_currency_inst'] = 'The current currency in use, used to update existing values if default currency is changed';
-	$lang['firesale:settings_currency_updated']      = 'Currency last update time';
+	$lang['firesale:settings_currency_updated']      = 'Ostatnia aktualizacja waluty';
 	$lang['firesale:settings_currency_updated_inst'] = 'The last time the currency was updated, api is updated every hour and to keep to rate limits we only check after that';
 	$lang['firesale:settings_perpage']               = 'Produktów na stronę';
 	$lang['firesale:settings_perpage_inst']          = 'The number of products to be displayed on category and search result pages';
