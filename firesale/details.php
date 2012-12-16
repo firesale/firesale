@@ -519,6 +519,9 @@ class Module_Firesale extends Module {
 		// Add fields to stream
 		$this->streams->fields->add_fields($fields);
 
+		// Update Orders Items
+		$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` TEXT NOT NULL");
+
 		############
 		## ROUTES ##
 		############
@@ -719,6 +722,9 @@ class Module_Firesale extends Module {
 			// Update currency fields
 			$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_currency` CHANGE `cur_format_dec` `cur_format_dec` VARCHAR( 12 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ,
 							  CHANGE `cur_format_sep` `cur_format_sep` VARCHAR( 12 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
+
+			// Update Orders Items
+			$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` TEXT NOT NULL");
 
 			#######################
 			## PRODUCT MODIFIERS ##

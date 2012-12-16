@@ -41,7 +41,7 @@
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="9"></td>
+						<td colspan="10" id="pagination"><?php echo $pagination; ?></td>
 					</tr>
 				</tfoot>
 				<tbody>
