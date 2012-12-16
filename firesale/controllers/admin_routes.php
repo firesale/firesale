@@ -182,8 +182,11 @@ class Admin_routes extends Admin_Controller
 		$this->data->row    = $row;
 		$this->data->fields = $fields;
 
+		// Build title
+		$title = sprintf(lang('firesale:routes:edit'), ( substr($row->title, 0, 5) == 'lang:' ? lang(substr($row->title, 5)) : $row->title ));
+
 		// Build the page
-        $this->template->title(lang('firesale:title').' '.sprintf(lang('firesale:routes:edit'), $row->title))
+        $this->template->title(lang('firesale:title').' '.$title)
         			   ->set($this->data)
         			   ->append_css('module::routes.css')
         			   ->append_js('module::jquery.caret.js')
