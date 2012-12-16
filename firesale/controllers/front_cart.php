@@ -146,8 +146,6 @@ class Front_cart extends Public_Controller
 					$product['price_rounded'] += $this->input->post('price') or 0;
 					$product['price']         += $this->input->post('price') or 0;
 
-					echo $product['price'];
-
 					if ($product != FALSE AND ( $product['stock_status']['key'] == 6 OR $qtys[$key] > 0 ))
 					{
 						$data[] = $this->cart_m->build_data($product, (int)$qtys[$key], $this->input->post('options'));

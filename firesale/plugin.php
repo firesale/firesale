@@ -205,7 +205,7 @@ class Plugin_Firesale extends Plugin
 		$data->modifiers = $product['modifiers'];
 
 		// Build form
-		return$this->module_view('firesale', 'partials/modifier_form', $data, true);
+		return $this->parser->parse('partials/modifier_form', $data, true);
 	}
 
 	public function cart()

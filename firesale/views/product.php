@@ -35,19 +35,10 @@
           <br class="clear" />
         </section>
 		    <section class="product-buy">
-          <form method="post" action="{{ url:base }}cart/insert">
-            <input type="hidden" name="prd_code[]" value="{{ product.id }}" />
-            <label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label><input id="product_quantity" name="qty[]" size="3" value="1" type="text" />
-            <button type="submit" class="btn"><?php echo lang('firesale:product:label_add_to_cart'); ?></button>
-          </form>
+          {{ firesale:modifier_form type="select" product=product.id }}
         </section>
         <section id="product-description">
           {{ product.description }}
         </section>
         <br class="clear" />
-        {{ if product.modifiers }}
-        <section id="product-modifiers">
-          {{ firesale:modifier_form product=product.id }}
-        </section>
-        {{ endif }}
       </div>

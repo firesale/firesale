@@ -2,7 +2,6 @@
 	<form method="post" action="{{ firesale:url route='cart' }}/insert">
 		<input type="hidden" name="prd_code[]" value="<?php echo $product['id']; ?>" />
 		<fieldset>
-
 			<ul>
 			<?php if( ! empty($modifiers) ): ?>
 			<?php foreach( $modifiers as $modifier ): ?>
