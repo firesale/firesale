@@ -28,6 +28,7 @@
 				<thead>
 					<tr>
 						<th><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
+						<th><?php echo lang('firesale:orders:label_order_id'); ?></th>
 						<th class="{sorter: 'date'}"><?php echo lang('firesale:label_date'); ?></th>
 						<th><?php echo lang('firesale:label_ship_to'); ?></th>
 						<th><?php echo lang('firesale:label_status'); ?></th>
@@ -47,6 +48,7 @@
 <?php foreach( $orders AS $order ): ?>
 					<tr class="status-<?php echo $order['order_status']['key']; ?>">
 						<td><input type="checkbox" name="action_to[]" value="<?php echo $order['id']; ?>"  /></td>
+						<td><?php echo $order['id']; ?></td>
 						<td><?php echo date('Y-m-d H:i:s', $order['created']); ?></td>
 						<td><?php echo $order['ship_to']['firstname'] . ' ' . $order['ship_to']['lastname']; ?></td>
 						<td><?php echo $order['order_status']['value']; ?></td>
