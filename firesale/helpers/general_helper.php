@@ -62,7 +62,7 @@
 		$data = array($default => array());
 
 		// Loop fields
-		foreach( $fields AS $field )
+		foreach( $fields AS $key => $field )
 		{
 	
 			// Reset found
@@ -71,17 +71,19 @@
 			// Loop each of the tab options
 			foreach( $tabs AS $tab => $slugs )
 			{
-			
 				// Add tab to array?
 				if( !array_key_exists($tab, $data) )
 				{
-					$data[$tab] = ( substr($tab, 0, 1) == '_' ? $slugs : array() );
+					if ($tab != '!hidden')
+						$data[$tab] = is_array($slugs) ? array() : $slugs;
 				}
 
 				// Assign to special tab
 				if( in_array($field['input_slug'], $slugs) )
 				{
-					$data[$tab][] = $field;
+					if ($tab != '!hidden')
+						$data[$tab][] = $field;
+
 					$found = TRUE;
 				}
 
@@ -94,6 +96,8 @@
 			}
 
 		}
+
+		//unset($data['_hidden']);
 		
 		// Retrun
 		return $data;	
