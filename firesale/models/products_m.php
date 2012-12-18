@@ -216,6 +216,13 @@ class Products_m extends MY_Model {
 					$product[$key] = $val;
 				}
 
+				// Append data from other modules
+				$results = Events::trigger('product_get', $product['id'], 'array');
+				foreach( $results as $result )
+				{
+					$product = array_merge($product, $result);
+				}
+
 				// Add to cache
 				$this->cache['id'][$product['id']]     = $product;
 				$this->cache['slug'][$product['slug']] = $product;
