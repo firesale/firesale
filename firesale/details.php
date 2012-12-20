@@ -520,7 +520,7 @@ class Module_Firesale extends Module {
 		$this->streams->fields->add_fields($fields);
 
 		// Update Orders Items
-		$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` TEXT NOT NULL");
+		$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` LONGTEXT NULL");
 
 		############
 		## ROUTES ##
