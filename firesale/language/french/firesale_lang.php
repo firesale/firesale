@@ -46,7 +46,7 @@
 	$lang['firesale:dash_categorytrack']	 				= 'Suivi de catégorie';
 	$lang['firesale:elements:product_sales'] 				= 'Ventes du produit';
 	$lang['firesale:elements:low_stock']	 				= 'Stock faible';
-	$lang['firesale:dashboard:no_sales']	 				= 'Aucune vente trouvé dans les 12 derniers mois';
+	$lang['firesale:dashboard:no_sales']	 				= 'Aucune vente trouvée dans les 12 derniers mois';
 	$lang['firesale:dashboard:stock_low']	 				= '%s produits avec un stock faible';
 	$lang['firesale:dashboard:stock_out']	 				= '%s produits en rupture de stock';
 	$lang['firesale:dashboard:no_stock_low']				= 'Aucun produit avec un stock faible';

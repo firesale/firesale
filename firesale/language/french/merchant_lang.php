@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 $lang = array(
 	// payment gateways
@@ -91,7 +91,7 @@ $lang = array(
 	'merchant_insecure_connection'			=> 'Les informations de la carte doivent être envoyés via une connexion sécurisée.',
 	'merchant_required'						=> 'Le champs %s est requis.',
 	'merchant_invalid_card_no'				=> 'Le numéro de la carte est invalide.',
-	'merchant_card_expired'					=> 'La carte a expirée.',
+	'merchant_card_expired'					=> 'La carte a expiré.',
 	'merchant_invalid_status'				=> 'Statut de paiement invalide.',
 	'merchant_invalid_method'				=> 'Méthode de paiement non supportée par la plateforme de paiement.',
 	'merchant_invalid_response'				=> 'Réponse invalide de la plateforme de paiement.',
@@ -100,4 +100,4 @@ $lang = array(
 	'merchant_3dauth_redirect'				=> 'Merci de patienter pendant que nous vous redirigeons vers la page d\'authentification de votre émetteur...'
 );
 
-/* End of file ./language/english/merchant_lang.php */
+/* End of file ./language/french/merchant_lang.php */

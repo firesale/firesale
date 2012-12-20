@@ -7,5 +7,5 @@ $lang['firesale.role_enable_disable_gateways']    = 'Activer / Désactiver les p
 $lang['firesale.role_edit_gateways']              = 'Modifier les paramètres des plateformes de paiement';
 $lang['firesale.role_access_routes']              = 'Voir les routes';
 $lang['firesale.role_create_edit_routes']         = 'Gérer les routes';
-$lang['firesale.role_access_currency']            = 'Voir les monnaies';
-$lang['firesale.role_install_uninstall_currency'] = 'Modifier les monnaies';
+$lang['firesale.role_access_currency']            = 'Voir les devises';
+$lang['firesale.role_install_uninstall_currency'] = 'Modifier les devises';
