@@ -22,7 +22,10 @@ class Plugin_Firesale extends Plugin
 		$after = $this->attribute('after');
 
 		// Get the URL
-		return BASE_URL.$this->routes_m->build_url($route, $id).$after;
+		$url = $this->pyrocache->model('routes_m', 'build_url', array($route, $id), $this->firesale->cache_time);
+
+		// Build the URL
+		return BASE_URL.$url.$after;
 	}
 
 	public function module_installed()
@@ -47,52 +50,61 @@ class Plugin_Firesale extends Plugin
 
 		// Variables
 		$attributes = $this->attributes();
+		$cache_key  = md5(implode('|', $attributes));
 		
-		// Build query
-		$query = $this->db->select('id')
-					  	  ->from('firesale_categories')
-						  ->where('status', '1');
-
-		// Add to query
-		foreach( $attributes AS $key => $val )
+		// Get from cache
+		if( ! $categories = $this->cache->get($cache_key) )
 		{
 
-			switch($key)
+			// Build query
+			$query = $this->db->select('id')
+						  	  ->from('firesale_categories')
+							  ->where('status', '1');
+
+			// Add to query
+			foreach( $attributes AS $key => $val )
 			{
 
-				case 'limit':
-					$query->limit($val);
-				break;
+				switch($key)
+				{
 
-				case 'order':
-					list($by, $dir) = explode(' ', $val);
-					$query->order_by($by, $dir);
-				break;
+					case 'limit':
+						$query->limit($val);
+					break;
 
-				case 'empty':
-					if( $val == 'false' )
-					{
-						$this->db->where('(SELECT COUNT(id)
-										  FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
-										  WHERE firesale_categories_id=' . $this->db->dbprefix('firesale_categories.id') . ') >', 0);
-					}
-				break;
+					case 'order':
+						list($by, $dir) = explode(' ', $val);
+						$query->order_by($by, $dir);
+					break;
 
-				default:
-					$query->where($key, $val);
-				break;
+					case 'empty':
+						if( $val == 'false' )
+						{
+							$this->db->where('(SELECT COUNT(id)
+											  FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
+											  WHERE firesale_categories_id=' . $this->db->dbprefix('firesale_categories.id') . ') >', 0);
+						}
+					break;
+
+					default:
+						$query->where($key, $val);
+					break;
+
+				}
 
 			}
 
-		}
+			// Get categories
+			$categories = $query->get()->result_array();
 
-		// Get categories
-		$categories = $query->get()->result_array();
+			// Loop and get objects
+			foreach( $categories AS &$category )
+			{
+				$category = $this->pyrocache->model('categories_m', 'get_category', array($category['id']), $this->firesale->cache_time);
+			}
 
-		// Loop and get objects
-		foreach( $categories AS &$category )
-		{
-			$category = $this->categories_m->get_category($category['id']);
+			// Add to cache
+			$this->cache->save($cache_key, $categories, $this->firesale->cache_time);
 		}
 		
 		return $categories;
@@ -114,64 +126,73 @@ class Plugin_Firesale extends Plugin
 
 	public function products()
 	{
-		$show_variations = (bool)$this->settings->get('firesale_show_variations');
 
 		// Variables
-		$attributes = $this->attributes();
-
-		// Children?
-		if( isset($attributes['category']) )
-		{
-			$children   = $this->categories_m->get_children($attributes['category']);
-			$children[] = $attributes['category'];
-		}
-
-		// Build query
-		$query = $this->db->select('p.id')
-						  ->from('firesale_products AS p')
-						  ->join('firesale_products_firesale_categories AS pc', 'pc.row_id = p.id', 'inner')
-						  ->join('firesale_categories AS c', 'c.id = pc.firesale_categories_id')
-						  ->where('p.status', '1')
-						  ->group_by('p.slug');
-
-		if ( ! $show_variations)
-			$query->where('is_variation', 0);
-
-		// Add to query
-		foreach( $attributes AS $key => $val )
+		$attributes      = $this->attributes();
+		$show_variations = (bool)$this->settings->get('firesale_show_variations');
+		$cache_key       = md5(implode('|', $attributes));
+		
+		// Get from cache
+		if( ! $results = $this->cache->get($cache_key) )
 		{
 
-			switch($key)
+			// Children?
+			if( isset($attributes['category']) )
+			{
+				$children   = $this->categories_m->get_children($attributes['category']);
+				$children[] = $attributes['category'];
+			}
+
+			// Build query
+			$query = $this->db->select('p.id')
+							  ->from('firesale_products AS p')
+							  ->join('firesale_products_firesale_categories AS pc', 'pc.row_id = p.id', 'inner')
+							  ->join('firesale_categories AS c', 'c.id = pc.firesale_categories_id')
+							  ->where('p.status', '1')
+							  ->group_by('p.slug');
+
+			if ( ! $show_variations)
+				$query->where('is_variation', 0);
+
+			// Add to query
+			foreach( $attributes AS $key => $val )
 			{
 
-				case 'limit':
-					$query->limit($val);
-				break;
+				switch($key)
+				{
 
-				case 'order':
-					list($by, $dir) = explode(' ', $val);
-					$query->order_by('p.' . $by, $dir);
-				break;
+					case 'limit':
+						$query->limit($val);
+					break;
 
-				case 'category':
-					$query->where_in('c.id', $children);
-				break;
+					case 'order':
+						list($by, $dir) = explode(' ', $val);
+						$query->order_by('p.' . $by, $dir);
+					break;
 
-				default:
-					$query->where($key, $val);
-				break;
+					case 'category':
+						$query->where_in('c.id', $children);
+					break;
+
+					default:
+						$query->where($key, $val);
+					break;
+
+				}
 
 			}
 
-		}
+			// Run query
+			$results = $query->get()->result_array();
 
-		// Run query
-		$results = $query->get()->result_array();
+			// Get products
+			foreach( $results AS &$result )
+			{
+				$result = $this->products_m->get_product($result['id']);
+			}
 
-		// Get products
-		foreach( $results AS &$result )
-		{
-			$result = $this->products_m->get_product($result['id']);
+			// Add to cache
+			$this->cache->save($cache_key, $results, $this->firesale->cache_time);
 		}
 
 		// Return results

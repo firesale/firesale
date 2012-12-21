@@ -41,7 +41,7 @@ class Front_product extends Public_Controller {
 		
 			// General information
 			$this->data->product  = $product;
-			$this->data->category = $this->products_m->get_category($product);
+			$this->data->category = $this->pyrocache->model('products_m', 'get_category', array($product), $this->firesale->cache_time);
 			$this->data->folder   = '/' . UPLOAD_PATH . 'products/' . $this->data->product['id'] . '/';
 
 			// Fire event
@@ -59,15 +59,19 @@ class Front_product extends Public_Controller {
 			}
 
 			// Breadcrumbs
-			$cat_tree = $this->products_m->get_cat_path($this->data->category, true);
-			foreach( $cat_tree as $key => $cat )
+			$cats = $this->pyrocache->model('products_m', 'get_cat_path', array($this->data->category, true), $this->firesale->cache_time);
+			foreach( $cats as $key => $cat )
 			{
 				if( $key == 0 ) { $this->data->parent = $cat['id']; }
-				$this->template->set_breadcrumb($cat['title'], $this->routes_m->build_url('category', $cat['id']));
+				$url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
+				$this->template->set_breadcrumb($cat['title'], $url);
 			}
+
+			// Build page URL
+			$url = $this->pyrocache->model('routes_m', 'build_url', array('product', $this->data->product['id']), $this->firesale->cache_time);
 		
 			// Build Page
-			$this->template->set_breadcrumb($this->data->product['title'], $this->routes_m->build_url('product', $this->data->product['id']))
+			$this->template->set_breadcrumb($this->data->product['title'], $url)
 						   ->append_css('module::firesale.css')
 					   	   ->append_js('module::firesale.js')
 						   ->title($this->data->product['title'])
