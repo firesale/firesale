@@ -92,4 +92,3 @@ class Front_product extends Public_Controller {
 	}
     
 }
-

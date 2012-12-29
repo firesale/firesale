@@ -28,6 +28,7 @@
 	$lang['firesale:tabs:shipping']		= 'Pristatymas';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Atributai';
+	$lang['firesale:tabs:modifiers']	= 'Modifiers'; # translate
 	$lang['firesale:tabs:images']		= 'Nuotraukos';
 	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
 	
@@ -93,8 +94,29 @@
 	$lang['firesale:prod_delimg_error']     = 'Įvyko klaida šalinant paveiksliuką';
 	$lang['firesale:prod_button_quick_edit']= 'Greitas redagavimas';
 
-	// Product Modifiers
-	$lang['firesale:prod_modifiers:title'] = 'Modifiers'; # translate
+	// Product Modifiers & Variations
+	$lang['firesale:mods:title']          = 'Modifiers'; # translate
+	$lang['firesale:mods:create_success'] = 'New modifier created successfully'; # translate
+	$lang['firesale:mods:edit_success']   = 'Modifier edited successfully'; # translate
+	$lang['firesale:mods:delete_success'] = 'Modifier deleted successfully'; # translate
+	$lang['firesale:mods:create_error']   = 'Error creating new modifier'; # translate
+	$lang['firesale:mods:edit_error']     = 'Error editing the modifier'; # translate
+	$lang['firesale:mods:delete_error']   = 'Error deleting the modifier'; # translate
+	$lang['firesale:mods:create']         = 'Add a Modifier'; # translate
+	$lang['firesale:mods:edit']           = 'Edit Modifier'; # translate
+	$lang['firesale:mods:none']           = 'No Modifiers Found'; # translate
+	$lang['firesale:mods:nothere']        = 'You can\'t add modifiers to a variant'; # translate
+	$lang['firesale:vars:title']          = 'Variations'; # translate
+	$lang['firesale:vars:show_set']       = 'Show Variations'; # translate
+	$lang['firesale:vars:show_inst']      = 'Do you want to show variations on listings and search results?'; # translate
+	$lang['firesale:vars:create_success'] = 'New variation created successfully'; # translate
+	$lang['firesale:vars:edit_success']   = 'Variation edited successfully'; # translate
+	$lang['firesale:vars:delete_success'] = 'Variation deleted successfully'; # translate
+	$lang['firesale:vars:create_error']   = 'Error creating new variation'; # translate
+	$lang['firesale:vars:edit_error']     = 'Error editing the variation'; # translate
+	$lang['firesale:vars:delete_error']   = 'Error deleting the variation'; # translate
+	$lang['firesale:vars:none']           = 'No Variations Found'; # translate
+	$lang['firesale:vars:create']         = 'Add a Variation'; # translate
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Mažmeninė kaina prieš ir po PVM';
@@ -112,6 +134,7 @@
 	$lang['firesale:label_inst']          = 'Instructions'; # translate
 	$lang['firesale:label_category']	  = 'Kategorija';
 	$lang['firesale:label_parent']		  = 'Tėvinė kategorija';
+	$lang['firesale:label_options']		  = 'Options'; # translate
 	$lang['firesale:label_filtercat']	  = 'Filtruoti pagal kategoriją';
 	$lang['firesale:label_filtersel']	  = 'Pasirinkti kategoriją';
 	$lang['firesale:label_filterprod']    = 'Pasirinkti prekę';
@@ -130,7 +153,9 @@
 	$lang['firesale:label_mod_variant']   = 'Variant'; # translate
 	$lang['firesale:label_mod_input']     = 'Input'; # translate
 	$lang['firesale:label_mod_single']    = 'Single Product'; # translate
-
+	$lang['firesale:label_mod_price']     = 'Price Modifier'; # translate
+	$lang['firesale:label_mod_price_inst']= 'Some instructions'; # translate
+	
 	$lang['firesale:label_stock_short']		= 'Atsargų kiekis';
 	$lang['firesale:label_stock_status']	= 'Atsagų kiekis';
 	$lang['firesale:label_stock_in']		= 'Yra';
