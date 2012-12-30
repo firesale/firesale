@@ -73,6 +73,9 @@
 	$lang['firesale:cats_delete_success'] 	= 'Categoria cancellata con successo';
 	$lang['firesale:cats_delete_error'] 	= 'Impossibile cancellare la categoria';
 	$lang['firesale:cats_all_products']     = 'Tutti i prodotti';
+	$lang['firesale:category:uncategorised'] = 'Senza categoria';
+	$lang['firesale:category:uncategorised_slug'] = 'senza-categoria';
+
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Non sono stati trovati Prodotti';
