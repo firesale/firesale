@@ -4,6 +4,7 @@
 </section>
 
 <section class="item">
+	<dv class="content">
 	<?php if ( ! empty($gateways)): ?>
 		<table id="product_table">		    
 			<thead>
@@ -18,7 +19,7 @@
 						<tr>
 							<td><?php echo $gateway['name']; ?></td>
 							<td class="actions">
-								<a class="button small" href="<?php echo site_url('admin/firesale/gateways/install/'.$gateway['slug']); ?>"><?php echo lang('buttons.install'); ?></a>
+								<a class="btn green" href="<?php echo site_url('admin/firesale/gateways/install/'.$gateway['slug']); ?>"><?php echo lang('global:install'); ?></a>
 							</td>
 						</tr>
 					<?php endforeach; ?>
@@ -27,4 +28,5 @@
 	<?php else: ?>
 		<div class="no_data"><?php echo lang('firesale:gateways:no_uninstalled_gateways'); ?></div>
 	<?php endif; ?>
+	</div>
 </section>

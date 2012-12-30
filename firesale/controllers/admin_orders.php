@@ -215,8 +215,8 @@ class Admin_orders extends Admin_Controller
 		array_unshift($this->data->fields['general']['details'], $users);
 
 		// Move/format ship_to and bill_to
-		$bill = end(array_splice($this->data->fields['general']['details'], 8, 1));
-		$ship = end(array_splice($this->data->fields['general']['details'], 7, 1));
+		$bill = end(array_splice($this->data->fields['general']['details'], 10, 1));
+		$ship = end(array_splice($this->data->fields['general']['details'], 9, 1));
 		array_unshift($this->data->fields['ship']['details'], $ship);
 		array_unshift($this->data->fields['bill']['details'], $bill);
 

@@ -6,7 +6,7 @@
 	<?php echo form_open(uri_string()); ?>
 	
 		<section class="item">
-			<div class="form_inputs">
+			<div class="content form_inputs">
 			
 				<fieldset>
 					<ul>
@@ -36,7 +36,7 @@
 					</ul>	
 				</fieldset>
 				<button class="btn blue" value="install" name="btnAction" type="submit">
-					<span><?php echo lang('buttons.install'); ?></span>
+					<span><?php echo lang('global:install'); ?></span>
 				</button>
 
 			</div>

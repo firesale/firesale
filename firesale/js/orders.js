@@ -1,7 +1,7 @@
 $(function() {
 	
 	// Index
-	$('#filters select').change(function() { window.location = '/admin/firesale/orders'+( parseInt($(this).val()) > 0 ? '/'+$(this).attr('name')+'/' + $(this).val() : '' ); });
+	$('#filters select').change(function() { window.location = SITE_URL+'admin/firesale/orders'+( parseInt($(this).val()) > 0 ? '/'+$(this).attr('name')+'/' + $(this).val() : '' ); });
 	$('#price_sub, #price_ship, #price_total').before('<span>' + currency + '&nbsp;</span>');
 	$('#order_table').tablesorter({headers:{0:{sorter:false},8:{sorter:false}}, widgets:["saveSort"]});
 	$('a.show-filter').click(function() { $('#filters').slideToggle(500); });

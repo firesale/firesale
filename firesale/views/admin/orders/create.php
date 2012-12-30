@@ -12,7 +12,7 @@
 
     <section class="item">
 
-      <div class="tabs">
+      <div class="content tabs">
 
         <ul class="tab-menu">
           <li><a href="#general"><?php echo lang('firesale:title:general'); ?></a></li>
@@ -92,7 +92,7 @@
         </div>
 
         <br class="clear" />
-        <div class="buttons">
+        <div class="table_action_buttons">
           <?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'cancel') )); ?>
         </div>
 

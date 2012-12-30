@@ -7,6 +7,7 @@
 	<?php echo form_open($this->uri->uri_string() . '/status', 'class="crud" id="tabs"'); ?>
 
 		<section class="item">
+		<div class="content">
 <?php if( !empty($orders)): ?>
 
 			<fieldset id="filters" style="display: none">
@@ -58,9 +59,9 @@
 						<td><?php echo $order['price_ship']; ?></td>
 						<td class="actions">
 							<?php if (group_has_role('firesale', 'edit_orders')): ?>
-								<a class="btn orange small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>
+								<a class="btn orange" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('global:edit'); ?></a>
 							<?php endif; ?>
-							<a class="btn red small confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('buttons.delete'); ?></a>
+							<a class="btn red confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('global:delete'); ?></a>
 						</td>
 					</tr>
 <?php endforeach; ?>
@@ -90,6 +91,7 @@
 			<div class="no_data"><?php echo lang('firesale:orders:no_orders'); ?></div>
 <?php endif; ?>
 
+			</div>
 		</section>
 
 	<?php echo form_close(); ?>
