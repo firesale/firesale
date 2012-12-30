@@ -73,8 +73,8 @@
 	$lang['firesale:cats_delete_success'] 	= 'Category was deleted successfully';
 	$lang['firesale:cats_delete_error'] 	= 'There was a problem deleting that category';
 	$lang['firesale:cats_all_products']     = 'All Products';
-	$lang['firesale:category:uncategorised'] = 'Uncategorised';
-	$lang['firesale:category:uncategorised_slug'] = 'uncategorised';
+	$lang['firesale:category:uncategorized'] = 'Uncategorised';
+	$lang['firesale:category:uncategorized_slug'] = 'uncategorised';
 	
 	// Products
 	$lang['firesale:prod_none']				= 'No Products Found';
