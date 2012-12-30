@@ -260,7 +260,7 @@ class Admin_products extends Admin_Controller
 		$delete   = true;
 		$products = $this->input->post('action_to');
 
-		if( $this->input->post('btnAction') == 'delete' )
+		if( $this->input->post('btnAction') == 'delete' and ! empty($products) )
 		{
 		
 			for( $i = 0; $i < count($products); $i++ )
@@ -482,7 +482,7 @@ class Admin_products extends Admin_Controller
 		$products  = $this->input->post('action_to');
 		$latest    = 0;
 
-		if( $this->input->post('btnAction') == 'duplicate' )
+		if( $this->input->post('btnAction') == 'duplicate' and ! empty($products) )
 		{
 		
 			for( $i = 0; $i < count($products); $i++ )

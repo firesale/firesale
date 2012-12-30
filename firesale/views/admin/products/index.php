@@ -6,8 +6,10 @@
 	<?php echo form_open($this->uri->uri_string(), 'class="crud"'); ?>
 	
 		<section class="item">
+			<div class="content">
 <?php if( $count == 0 ): ?>
-			<div class="no_data"><?php echo lang('firesale:prod_none'); ?></div>
+				<div class="no_data"><?php echo lang('firesale:prod_none'); ?></div>
+			</div>
 		</section>
 <?php else: ?>
 
@@ -84,11 +86,12 @@
 			</table>
 
 			<br />
-			<div class="buttons">
+			<div class="table_action_buttons">
 				<?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
 				<button class="btn green" name="btnAction" value="duplicate"><span><?php echo lang('firesale:label_duplicate'); ?></span></button>
 			</div>
 
+			</div>
 		</section>
 <?php endif; ?>
 		
