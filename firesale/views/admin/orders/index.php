@@ -58,9 +58,9 @@
 						<td><?php echo $order['price_ship']; ?></td>
 						<td class="actions">
 							<?php if (group_has_role('firesale', 'edit_orders')): ?>
-								<a class="button small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>
+								<a class="btn orange small" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>
 							<?php endif; ?>
-							<a class="button small confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('buttons.delete'); ?></a>
+							<a class="btn red small confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('buttons.delete'); ?></a>
 						</td>
 					</tr>
 <?php endforeach; ?>
