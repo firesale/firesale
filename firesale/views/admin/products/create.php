@@ -9,7 +9,7 @@
 
 		<section class="item">
 
-			<div class="tabs">
+			<div class="content tabs">
 
 				<ul class="tab-menu">
 				<?php foreach( $tabs AS $tab ): ?>
@@ -106,6 +106,7 @@
 									</td>
 									<td><a href="#" title="Show/Hide this option" class="tooltip-s mod-min">Show/Hide</a></td>
 								<?php else: ?>
+										<a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>/<?php echo $modifier['id']; ?>" class="right modal btn orange"><?php echo lang('firesale:mods:edit'); ?></a>
 									</td>
 									<td></td>
 								<?php endif; ?>
