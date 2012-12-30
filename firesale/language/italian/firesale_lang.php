@@ -75,6 +75,7 @@
 	$lang['firesale:cats_all_products']     = 'Tutti i prodotti';
 	$lang['firesale:category:uncategorised'] = 'Senza categoria';
 	$lang['firesale:category:uncategorised_slug'] = 'senza-categoria';
+	$lang['firesale:category:uncategorised_description'] = 'Questa è la categoria di partenza, non può essere eliminata ma puoi rinominarla come preferisci.';
 
 	
 	// Products

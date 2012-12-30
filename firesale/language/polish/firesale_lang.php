@@ -75,7 +75,7 @@
 	$lang['firesale:cats_all_products']     = 'Wszystkie produkty';
 	$lang['firesale:category:uncategorised'] = 'Uncategorised'; #Translate
 	$lang['firesale:category:uncategorised_slug'] = 'uncategorised'; #Translate
-
+	$lang['firesale:category:uncategorised_description'] = 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.';# Translate
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Nie znaleziono produktów';

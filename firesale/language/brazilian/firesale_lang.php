@@ -72,7 +72,10 @@
 	$lang['firesale:cats_edit_error'] 		= 'Ocorreu um erro ao editar sua categoria';
 	$lang['firesale:cats_delete_success'] 	= 'Categoria excluída com sucesso';
 	$lang['firesale:cats_delete_error'] 	= 'Ocorreu um erro ao excluir esta categoria';
-	$lang['firesale:cats_all_products']     = 'All Products'; # Translate
+	$lang['firesale:cats_all_products']     = 'All Products'; # Translate	
+	$lang['firesale:category:uncategorised'] = 'Uncategorised';# Translate
+	$lang['firesale:category:uncategorised_slug'] = 'uncategorised';# Translate
+	$lang['firesale:category:uncategorised_description'] = 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.';# Translate
 
 	// Products
 	$lang['firesale:prod_none']				= 'Produtos não encontrados';
