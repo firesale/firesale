@@ -266,7 +266,7 @@ class Module_Firesale extends Module {
 		$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_categories` CHANGE `parent` `parent` INT( 11 ) NULL DEFAULT '0';");
 		
 		// Add an initial category
-		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => lang('firesale:category:uncategorized'), 'slug' => lang('firesale:category:uncategorized_slug'), 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
+		$cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => lang('firesale:category:uncategorised'), 'slug' => lang('firesale:category:uncategorised_slug'), 'description' => 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.');
 		$this->db->insert('firesale_categories', $cat);
 	
 		##############

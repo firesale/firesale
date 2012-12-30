@@ -73,8 +73,8 @@
 	$lang['firesale:cats_delete_success'] 	= 'Catégorie supprimée';
 	$lang['firesale:cats_delete_error'] 	= 'Impossible de supprimer la catégorie';
 	$lang['firesale:cats_all_products']     = 'Tous les produits';	
-	$lang['firesale:category:uncategorized'] = 'Uncategorised'; #Translate
-	$lang['firesale:category:uncategorized_slug'] = 'uncategorised'; #Translate
+	$lang['firesale:category:uncategorised'] = 'Uncategorised'; #Translate
+	$lang['firesale:category:uncategorised_slug'] = 'uncategorised'; #Translate
 	
 	// Products
 	$lang['firesale:prod_none']				= 'Aucun produit trouvé';

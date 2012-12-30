@@ -73,8 +73,8 @@
 	$lang['firesale:cats_delete_success'] 	= 'Kategorija sėkmingai ištrinta';
 	$lang['firesale:cats_delete_error'] 	= 'Įvyko klaida trinant kategoriją';
 	$lang['firesale:cats_all_products']     = 'Visos prekės';
-	$lang['firesale:category:uncategorized'] = 'Uncategorised'; #Translate
-	$lang['firesale:category:uncategorized_slug'] = 'uncategorised'; #Translate
+	$lang['firesale:category:uncategorised'] = 'Uncategorised'; #Translate
+	$lang['firesale:category:uncategorised_slug'] = 'uncategorised'; #Translate
 
 
 	// Products
