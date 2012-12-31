@@ -28,9 +28,9 @@
 	$lang['firesale:tabs:shipping']		= 'Spedizione';
 	$lang['firesale:tabs:metadata']		= 'Metadata';
 	$lang['firesale:tabs:attributes']	= 'Attributi';
-	$lang['firesale:tabs:modifiers']	= 'Modifiers'; # translate
+	$lang['firesale:tabs:modifiers']	= 'Opzioni prodotto';
 	$lang['firesale:tabs:images']		= 'Immagini';
-	$lang['firesale:tabs:assignments']  = 'Assignments'; #Translate
+	$lang['firesale:tabs:assignments']  = 'Assegnamenti';
 	
 	// Shortcuts
 	$lang['firesale:shortcuts:prod_create']		= 'Aggiungi Prodotto';
@@ -99,28 +99,28 @@
 	$lang['firesale:prod_button_quick_edit']= 'Modifica Veloce';
 
 	// Product Modifiers & Variations
-	$lang['firesale:mods:title']          = 'Modifiers'; # translate
-	$lang['firesale:mods:create_success'] = 'New modifier created successfully'; # translate
-	$lang['firesale:mods:edit_success']   = 'Modifier edited successfully'; # translate
-	$lang['firesale:mods:delete_success'] = 'Modifier deleted successfully'; # translate
-	$lang['firesale:mods:create_error']   = 'Error creating new modifier'; # translate
-	$lang['firesale:mods:edit_error']     = 'Error editing the modifier'; # translate
-	$lang['firesale:mods:delete_error']   = 'Error deleting the modifier'; # translate
-	$lang['firesale:mods:create']         = 'Add a Modifier'; # translate
-	$lang['firesale:mods:edit']           = 'Edit Modifier'; # translate
-	$lang['firesale:mods:none']           = 'No Modifiers Found'; # translate
-	$lang['firesale:mods:nothere']        = 'You can\'t add modifiers to a variant'; # translate
-	$lang['firesale:vars:title']          = 'Variations'; # translate
-	$lang['firesale:vars:show_set']       = 'Show Variations'; # translate
+	$lang['firesale:mods:title']          = 'Opzioni prodotto';
+	$lang['firesale:mods:create_success'] = 'Nuova opzione creata con successo';
+	$lang['firesale:mods:edit_success']   = 'Opzione modificata con successo';
+	$lang['firesale:mods:delete_success'] = 'Opzione cancellata con successo';
+	$lang['firesale:mods:create_error']   = 'Si è verificato un errore nel creare l\'opzione';
+	$lang['firesale:mods:edit_error']     = 'Si è verificato un errore nel modificare l\'opzione';
+	$lang['firesale:mods:delete_error']   = 'Si è verificato un errore nel cancellare l\'opzione';
+	$lang['firesale:mods:create']         = 'Aggiungi opzione';
+	$lang['firesale:mods:edit']           = 'Modifica variante'; 
+	$lang['firesale:mods:none']           = 'Non sono state trovate opzioni per il prodotto.';
+	$lang['firesale:mods:nothere']        = 'Non puoi aggiungere una opzione alla variante';
+	$lang['firesale:vars:title']          = 'Varianti';
+	$lang['firesale:vars:show_set']       = 'Mostra Varianti';
 	$lang['firesale:vars:show_inst']      = 'Do you want to show variations on listings and search results?'; # translate
-	$lang['firesale:vars:create_success'] = 'New variation created successfully'; # translate
-	$lang['firesale:vars:edit_success']   = 'Variation edited successfully'; # translate
-	$lang['firesale:vars:delete_success'] = 'Variation deleted successfully'; # translate
-	$lang['firesale:vars:create_error']   = 'Error creating new variation'; # translate
-	$lang['firesale:vars:edit_error']     = 'Error editing the variation'; # translate
-	$lang['firesale:vars:delete_error']   = 'Error deleting the variation'; # translate
-	$lang['firesale:vars:none']           = 'No Variations Found'; # translate
-	$lang['firesale:vars:create']         = 'Add a Variation'; # translate
+	$lang['firesale:vars:create_success'] = 'Nuova variante creata con successo';
+	$lang['firesale:vars:edit_success']   = 'Variazione modificata con successo';
+	$lang['firesale:vars:delete_success'] = 'Variazione cancellata con successo';
+	$lang['firesale:vars:create_error']   = 'Si è verificato un errore nel creare la variazione';
+	$lang['firesale:vars:edit_error']     = 'Si è verificato un errore nel modificare la variazione';
+	$lang['firesale:vars:delete_error']   = 'Si è verificato un errore nel cancelalre la variazione'; 
+	$lang['firesale:vars:none']           = 'Non ci sono varianti';
+	$lang['firesale:vars:create']         = 'Aggiungi variante';
 
 	// Instructions
 	$lang['firesale:inst_rrp']	 = 'Prezzo di vendita prima e dopo le tasse';
@@ -133,12 +133,12 @@
 	$lang['firesale:label_title'] 		  = 'Titolo';
 	$lang['firesale:label_slug'] 		  = 'Link';
 	$lang['firesale:label_status'] 		  = 'Stato';
-	$lang['firesale:label_type'] 		  = 'Type'; # translate
+	$lang['firesale:label_type'] 		  = 'Tipo'; 
 	$lang['firesale:label_description']	  = 'Descrizione';
-	$lang['firesale:label_inst']          = 'Instructions'; # translate
+	$lang['firesale:label_inst']          = 'Istruzioni';
 	$lang['firesale:label_category']	  = 'Categoria';
 	$lang['firesale:label_parent']		  = 'Categoria padre';
-	$lang['firesale:label_options']		  = 'Options'; # translate
+	$lang['firesale:label_options']		  = 'Opzioni';
 	$lang['firesale:label_filtercat']	  = 'Filtra per categoria';
 	$lang['firesale:label_filtersel']	  = 'Seleziona una categoria';
 	$lang['firesale:label_filterprod']    = 'Seleziona un prodotto';
@@ -154,11 +154,11 @@
 	$lang['firesale:label_drop_images']   = 'Trascina qui le immagini da caricare';
 	$lang['firesale:label_duplicate']     = 'Duplica';
 	$lang['firesale:label_showfilter']    = 'Mostra filtri';
-	$lang['firesale:label_mod_variant']   = 'Variant'; # translate
-	$lang['firesale:label_mod_input']     = 'Input'; # translate
-	$lang['firesale:label_mod_single']    = 'Single Product'; # translate
-	$lang['firesale:label_mod_price']     = 'Price Modifier'; # translate
-	$lang['firesale:label_mod_price_inst']= 'Some instructions'; # translate
+	$lang['firesale:label_mod_variant']   = 'Variante';
+	$lang['firesale:label_mod_input']     = 'Input';
+	$lang['firesale:label_mod_single']    = 'Singolo Prodotto';
+	$lang['firesale:label_mod_price']     = 'Incremento prezzo di';
+	$lang['firesale:label_mod_price_inst']= 'Alcune istruzioni'; 
 
 	$lang['firesale:label_stock_short']		= 'Livello scorte';
 	$lang['firesale:label_stock_status']	= 'Stato delle scorte';
