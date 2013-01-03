@@ -17,46 +17,54 @@ class Plugin_Firesale_brands extends Plugin
 
 		// Variables
 		$attributes = $this->attributes();
+		$cache_key  = md5(implode('|', $attributes));
 
-		// Build query
-		$query = $this->db->select('id')
-						  ->where('status', '1');
-
-		// Add to query
-		foreach( $attributes AS $key => $val )
+		if( ! $brands = $this->cache->get($cache_key) )
 		{
-
-			switch($key)
+			// Build query
+			$query = $this->db->select('id')
+							  ->where('status', '1');
+	
+			// Add to query
+			foreach( $attributes AS $key => $val )
 			{
-
-				case 'limit':
-					$query->limit($val);
-				break;
-
-				case 'order':
-					list($by, $dir) = explode(' ', $val);
-					$query->order_by($by, $dir);
-				break;
-
-				default:
-					$query->where($key, $val);
-				break;
-
+	
+				switch($key)
+				{
+	
+					case 'limit':
+						$query->limit($val);
+					break;
+	
+					case 'order':
+						list($by, $dir) = explode(' ', $val);
+						$query->order_by($by, $dir);
+					break;
+	
+					default:
+						$query->where($key, $val);
+					break;
+	
+				}
+	
+			}
+	
+			// Run query
+			$brands = $query->get('firesale_brands')->result_array();
+	
+			// Get brands
+			foreach( $brands AS &$result )
+			{
+				$result = $this->pyrocache->model('brands_m', 'get', ($result['id']), $this->firesale->cache_time);
 			}
 
-		}
+			// Add to cache
+			$this->cache->save($cache_key, $brands, $this->firesale->cache_time);
 
-		// Run query
-		$results = $query->get('firesale_brands')->result_array();
-
-		// Get brands
-		foreach( $results AS &$result )
-		{
-			$result = $this->brands_m->get($result['id']);
 		}
 
 		// Return results
-		return $results;
+		return $brands;
 	}
 
 }
