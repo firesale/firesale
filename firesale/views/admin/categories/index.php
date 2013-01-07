@@ -4,7 +4,7 @@
 			<h4><?php echo lang('firesale:cats_title'); ?></h4>
 		</section>
 		<section class="item">
-			<div id="category-sort">
+			<div id="content category-sort">
 			<ul class="sortable">
 				<?php foreach($cats as $cat): ?>
 						<li id="cat_<?php echo $cat['id']; ?>">
@@ -37,6 +37,8 @@
 		</section>
 
 		<section class="item">
+
+			<div class="content">
 
 			<div class="tabs">
 
@@ -85,6 +87,8 @@
 					</div>
 
 				<?php echo form_close(); ?>
+
+			</div>
 
 			</div>
 

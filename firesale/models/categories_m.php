@@ -55,7 +55,7 @@ class Categories_m extends MY_Model
 			$params	 = array(
 						'stream' 	=> 'firesale_categories',
 						'namespace'	=> 'firesale_categories',
-						'where'		=> "{$type} = '{$id_slug}'",
+						'where'		=> SITE_REF."_firesale_categories.{$type} = '{$id_slug}'",
 						'limit'		=> '1',
 						'order_by'	=> 'id',
 						'sort'		=> 'desc'

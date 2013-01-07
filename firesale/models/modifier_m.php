@@ -76,7 +76,6 @@ class Modifier_m extends MY_Model {
 		}
 
 		// Variables
-		$return = array();
 		$params	= array(
 					'stream' 	=> 'firesale_product_modifiers',
 					'namespace'	=> 'firesale_product_modifiers',

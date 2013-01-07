@@ -33,7 +33,7 @@ class Front_product extends Public_Controller {
 	{
 
 		// Get the product
-		$product = $this->products_m->get_product($product);
+		$product = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
 		
 		// Check it exists
 		if( $product !== FALSE )
@@ -42,7 +42,6 @@ class Front_product extends Public_Controller {
 			// General information
 			$this->data->product  = $product;
 			$this->data->category = $this->pyrocache->model('products_m', 'get_category', array($product), $this->firesale->cache_time);
-			$this->data->folder   = '/' . UPLOAD_PATH . 'products/' . $this->data->product['id'] . '/';
 
 			// Fire event
 			Events::trigger('product_viewed', array('id' => $product['id']));

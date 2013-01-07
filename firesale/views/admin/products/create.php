@@ -9,7 +9,9 @@
 
 		<section class="item">
 
-			<div class="content tabs">
+			<div class="content">
+
+			<div class="tabs">
 
 				<ul class="tab-menu">
 				<?php foreach( $tabs AS $tab ): ?>
@@ -210,6 +212,8 @@
 
 			<div class="buttons">
 				<?php $this->load->view('admin/partials/buttons', array('buttons' => array('save', 'save_exit', 'cancel') )); ?>
+			</div>
+
 			</div>
 
 		</section>

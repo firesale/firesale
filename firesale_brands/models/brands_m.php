@@ -36,15 +36,15 @@ class Brands_m extends MY_Model
 			$brand = current($brands['entries']);
 
 			// Get images
-			if( $folder_id = $this->products_m->get_file_folder_by_slug($brand['slug']) )
+			if( $folder = $this->products_m->get_file_folder_by_slug($brand['slug']) )
 			{
 				$query = $this->db->select('id, path')
 								   ->from('files')
-								   ->where('folder_id', $folder_id)
+								   ->where('folder_id', $folder->id)
 						  		   ->get();
 				$brand['images'] = $query->result_array();
 			}
-	
+
 			// Return it
 			return $brand;
 		}

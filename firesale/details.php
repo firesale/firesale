@@ -314,7 +314,7 @@ class Module_Firesale extends Module {
 						  CHANGE `rrp_tax` `rrp_tax` DECIMAL( 10, 3 ) DEFAULT '0.00',
 						  CHANGE `price` `price` DECIMAL( 10, 2 ) DEFAULT '0.00',
 						  CHANGE `price_tax` `price_tax` DECIMAL( 10, 3 ) DEFAULT '0.00';");
-
+		
 		#######################
 		## PRODUCT MODIFIERS ##
 		#######################
@@ -423,7 +423,7 @@ class Module_Firesale extends Module {
 		// Add fields
 		$fields   = array();
 		$template = array('namespace' => 'firesale_addresses', 'assign' => 'firesale_addresses', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
-		$fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'required' => FALSE);
+		$fields[] = array('name' => 'lang:firesale:label_address_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_company', 'slug' => 'company', 'extra' => array('max_length' => 255), 'required' => FALSE);
 		$fields[] = array('name' => 'lang:firesale:label_firstname', 'slug' => 'firstname', 'extra' => array('max_length' => 100));
 		$fields[] = array('name' => 'lang:firesale:label_lastname', 'slug' => 'lastname', 'extra' => array('max_length' => 100));
@@ -725,6 +725,9 @@ class Module_Firesale extends Module {
 
 			// Update Orders Items
 			$this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` TEXT NOT NULL");
+
+			// Finally update the bloody address title bollocks
+			$this->db->query("UPDATE `" . SITE_REF . "_data_fields` SET `field_name` = 'lang:firesale:label_address_title' WHERE `field_namespace` = 'firesale_addresses' AND `field_slug` = 'title'");
 
 			#######################
 			## PRODUCT MODIFIERS ##
