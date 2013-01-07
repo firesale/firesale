@@ -316,9 +316,10 @@ class Categories_m extends MY_Model
 			foreach($cat['children'] as $cat)
 			{
 
+				$url   = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
 				$tree .= '<li id="cat_' . $cat['id'] . '">' . "\n";
 				$tree .= '  <div>' . "\n";
-				$tree .= '    <a href="{{ url:base }}category/' . $cat['slug'] . '" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
+				$tree .= '    <a href="'.BASE_URL.$url.'" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
 				$tree .= '  </div>' . "\n";
 
 				if( isset($cat['children']) )
