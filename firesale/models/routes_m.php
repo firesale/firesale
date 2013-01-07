@@ -164,6 +164,9 @@ class Routes_m extends MY_Model
 			$old_title = ( $row['title'] != $input['title'] ? $row['title'] : false );
 			$this->write($input['title'], $input['route'], $input['translation'], $old_title);
 
+			// Clear cache data on save
+			$this->pyrocache->delete_all('routes_m');
+
 			return TRUE;
 		}
 
@@ -182,6 +185,9 @@ class Routes_m extends MY_Model
 		{
 			// Remove from file
 			$this->remove($row->title);
+
+			// Clear cache data on removal
+			$this->pyrocache->delete_all('routes_m');
 
 			// Success
 			return TRUE;
@@ -208,13 +214,11 @@ class Routes_m extends MY_Model
 		{
 			// Replace in string
 			$content = preg_replace($regex, $string, $content);
-			$type    = 'Update';
 		}
 		else
 		{
 			// Add to string
 			$content = str_replace($before, $string.$before, $content);
-			$type    = 'New';
 		}
 
 		// Fix mapping
