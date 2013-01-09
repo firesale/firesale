@@ -50,7 +50,7 @@ class Plugin_Firesale extends Plugin
 
 		// Variables
 		$attributes = $this->attributes();
-		$cache_key  = md5(implode('|', $attributes));
+		$cache_key  = md5(BASE_URL.implode('|', $attributes));
 		
 		// Get from cache
 		if( ! $categories = $this->cache->get($cache_key) )
@@ -130,7 +130,7 @@ class Plugin_Firesale extends Plugin
 		// Variables
 		$attributes      = $this->attributes();
 		$show_variations = (bool)$this->settings->get('firesale_show_variations');
-		$cache_key       = md5(implode('|', $attributes));
+		$cache_key       = md5(BASE_URL.implode('|', $attributes));
 		
 		// Get from cache
 		if( ! $results = $this->cache->get($cache_key) )

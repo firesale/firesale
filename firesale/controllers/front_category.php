@@ -97,7 +97,7 @@ class Front_category extends Public_Controller {
 
 			// Variables
 			$query     = $query->get_compiled_select();
-			$cache_key = md5($query);
+			$cache_key = md5(BASE_URL.$query);
 			$products  = array();
 
 			// Get from cache

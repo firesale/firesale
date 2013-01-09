@@ -17,7 +17,7 @@ class Plugin_Firesale_brands extends Plugin
 
 		// Variables
 		$attributes = $this->attributes();
-		$cache_key  = md5(implode('|', $attributes));
+		$cache_key  = md5(BASE_URL.implode('|', $attributes));
 
 		if( ! $brands = $this->cache->get($cache_key) )
 		{
