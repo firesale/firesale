@@ -266,7 +266,7 @@ class Orders_m extends MY_Model
 		{
 			$data = array(
 				'created'		 => date("Y-m-d H:i:s"),
-				'created_by'     => ( !empty($this->current_user) ? $this->current_user->id : null ),
+				'created_by'     => ( isset($this->current_user->id) ? $this->current_user->id : null ),
 				'ordering_count' => 0,
 				'order_id'		 => $order_id,
 				'product_id'	 => $product['id'],
@@ -275,7 +275,7 @@ class Orders_m extends MY_Model
 				'price'			 => $product['price'],
 				'qty'			 => $qty,
 				'tax_band'       => $product['tax_band']['id'],
-				'options'        => isset($product['options']) ? serialize($product['options']) : NULL
+				'options'        => isset($product['options']) ? serialize($product['options']) : null
 		 	);
 
 		 	if( $this->db->insert('firesale_orders_items', $data) )
