@@ -45,6 +45,6 @@ $(function() {
 		$($(this).attr('href')).click(); });
 	
 	// Addresses
-	$('input[name=ship_to]:checked, input[name=bill_to]:checked').change(function() { var p = $(this).parents('fieldset').find('ul.width-half'); p.hide(); if( $(this).val() == 'new' ) { p.show(); } }).change();
+	$('input[name=ship_to], input[name=bill_to]').change(function() { var p = $(this).parents('fieldset').find('ul.width-half'); p.hide(); if( $('input[name='+$(this).attr('name')+']:checked').val() == 'new' ) { p.show(); } }).change();
 
 });
