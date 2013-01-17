@@ -447,6 +447,6 @@
 	
 	// Install errors
 	$lang['firesale:install:wrong_version'] = 'Non è possibile installare il modulo FireSale, FireSale richiede PyroCMS v2.1.4 o superiore';
-	$lang['firesale:install:missing_multiple'] = 'FireSale richiede Multiple Relationships field type per funzionare. Puoi scaricarlo da <a target="_blank" href="https://github.com/parse19/PyroStreams-Multiple-Relationships">qui</a>';
+	$lang['firesale:install:missing_multiple'] = 'FireSale richiede Multiple Relationships field type per funzionare. Puoi scaricarlo da <a target="_blank" href="https://github.com/firesale/PyroStreams-Multiple-Relationships/zipball/master">qui</a>';
 	$lang['firesale:install:not_installed'] = 'Per favore installa prima il modulo FireSale e poi i suoi addons';
 	$lang['firesale:install:no_route_access']  = 'FireSale richiede l\'accesso al file system/cms/config/routes.php. Per favore imposta i permessi appropriati e riprova';
