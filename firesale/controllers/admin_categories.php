@@ -120,6 +120,12 @@ class Admin_categories extends Admin_Controller
 	
 		// Get the stream fields
 		$fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), $input, FALSE, FALSE, $skip, $extra);
+
+		if( is_string($fields) OR is_integer($fields) )
+		{
+			// Success, clear cache!
+			$this->pyrocache->delete_all('categories_m');
+		}
 	
 		// Set query paramaters
 		$params	= array(
@@ -197,6 +203,10 @@ class Admin_categories extends Admin_Controller
 		
 		if( $delete )
 		{
+
+			// Success, clear cache!
+			$this->pyrocache->delete_all('categories_m');
+
 			$this->session->set_flashdata('success', lang('firesale:cats_delete_success'));
 		}
 		else
@@ -236,6 +246,9 @@ class Admin_categories extends Admin_Controller
 				$this->products_m->make_square($status, $allow);
 			}
 
+			// Success, clear cache!
+			$this->pyrocache->delete_all('categories_m');
+			
 			// Ajax status
 			echo json_encode(array('status' => $status['status'], 'message' => $status['message']));
 			exit;
