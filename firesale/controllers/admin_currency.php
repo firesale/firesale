@@ -128,6 +128,9 @@ class Admin_currency extends Admin_Controller
 			// Run currency update function
 			$this->load->library('firesale/exchange');
 
+			// Success, clear cache!
+			$this->pyrocache->delete_all('currency_m');
+
 			// Redirect
 			if( $this->input->post('btnAction') == 'save_exit' )
 			{
@@ -242,8 +245,13 @@ class Admin_currency extends Admin_Controller
 		// Check deletion
 		if( $this->currency_m->can_delete($id) )
 		{
+
 			// Delete entry
 			$this->streams->entries->delete_entry($id, 'firesale_currency', 'firesale_currency');
+			
+			// Success, clear cache!
+			$this->pyrocache->delete_all('currency_m');
+
 			$this->session->set_flashdata('success', lang('firesale:currency:delete_success'));
 		}
 		else
