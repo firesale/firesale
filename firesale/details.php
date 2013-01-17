@@ -194,6 +194,44 @@ class Module_Firesale extends Module {
 		
 		return $info;
 	}
+
+    public function admin_menu(&$menu)
+    {
+
+    	// Create our main menu
+    	add_admin_menu_place('lang:firesale:title', 2);
+
+    	// Assign common items
+    	$menu['lang:firesale:title']['lang:firesale:sections:dashboard']  = 'admin/firesale';
+    	$menu['lang:firesale:title']['lang:firesale:sections:categories'] = 'admin/firesale/categories';
+    	$menu['lang:firesale:title']['lang:firesale:sections:products']   = 'admin/firesale/products';
+    	$menu['lang:firesale:title']['lang:firesale:sections:orders']     = 'admin/firesale/orders';
+
+    	// Add routes
+    	if (group_has_role('firesale', 'access_routes'))
+		{
+			$menu['lang:firesale:title']['lang:firesale:sections:routes'] = 'admin/firesale/routes';
+		}
+
+		// Add gateways
+		if (group_has_role('firesale', 'access_gateways'))
+		{
+			$menu['lang:firesale:title']['lang:firesale:sections:gateways'] = 'admin/firesale/gateways';
+		}
+
+		// Add currency
+		if (group_has_role('firesale', 'access_currency'))
+		{
+			$menu['lang:firesale:title']['lang:firesale:sections:currency'] = 'admin/firesale/currency';
+		}
+
+		// Add taxes
+		if (group_has_role('firesale', 'access_taxes'))
+		{
+			$menu['lang:firesale:title']['lang:firesale:sections:taxes'] = 'admin/firesale/taxes';
+		}
+
+    }
 	
 	public function install()
 	{
