@@ -14,7 +14,7 @@
 				<label for="ship_to_<?php echo $address['id']; ?>" class="order small">
 					<header>
 						<h3><?php echo $address['title']; ?></h3>
-        				<span class="right"><input name="ship_to" id="ship_to_<?php echo $address['id']; ?>" type="radio" value="<?php echo $address['id']; ?>"<?php echo ( $key == 0 ? ' selected="selected"' : '' ); ?> /></span>
+        				<span class="right"><input name="ship_to" id="ship_to_<?php echo $address['id']; ?>" type="radio" value="<?php echo $address['id']; ?>"<?php echo ( ( isset($_POST['ship_to']) && $_POST['ship_to'] == $address['id'] ) || $key == 0 ? ' checked="checked"' : '' ); ?> /></span>
               		</header>
               		<ul>
                   		<?php echo ( isset($address['firstname']) ? '<li>' . $address['firstname'] . ' ' . $address['lastname'] . '</li>' : '' ); ?>
@@ -29,7 +29,7 @@
 				<?php endforeach; ?>
 
             	<br class="clear" />
-      			<input name="ship_to" id="ship_to_new" type="radio" value="new" />
+      			<input name="ship_to" id="ship_to_new" type="radio" value="new"<?php echo ( isset($_POST['ship_to']) && $_POST['ship_to'] == 'new' ? ' checked="checked"' : '' ); ?> />
       			<label for="ship_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
       			<br class="clear" />
 
@@ -65,7 +65,7 @@
 				<label for="bill_to_<?php echo $address['id']; ?>" class="order small">
 					<header>
 						<h3><?php echo $address['title']; ?></h3>
-						<span class="right"><input name="bill_to" id="bill_to_<?php echo $address['id']; ?>" type="radio" value="<?php echo $address['id']; ?>"<?php echo ( $key == 0 ? ' selected="selected"' : '' ); ?> /></span>
+						<span class="right"><input name="bill_to" id="bill_to_<?php echo $address['id']; ?>" type="radio" value="<?php echo $address['id']; ?>"<?php echo ( ( isset($_POST['bill_to']) && $_POST['bill_to'] == $address['id'] ) || $key == 0  ? ' checked="checked"' : '' ); ?> /></span>
 					</header>
 					<ul>
                   		<?php echo ( isset($address['firstname']) ? '<li>' . $address['firstname'] . ' ' . $address['lastname'] . '</li>' : '' ); ?>
@@ -80,7 +80,7 @@
 				<?php endforeach; ?>
 
             	<br class="clear" />
-				<input name="bill_to" id="bill_to_new" type="radio" value="new" />
+				<input name="bill_to" id="bill_to_new" type="radio" value="new"<?php echo ( isset($_POST['bill_to']) && $_POST['bill_to'] == 'new' ? ' checked="checked"' : '' ); ?> />
 				<label for="bill_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
 				<br class="clear" />
 
