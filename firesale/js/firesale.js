@@ -24,7 +24,7 @@ $(function() {
 
 	// Link addresses
 	var linked = false;
-	$('#checkout fieldset:first ul:last').append('<li class="wide"><input type="checkbox" name="bill_details_same" id="bill_details_same" value="yes" /><label for="bill_details_same">My Billing and Shipping addresses are the same.</label></li>');
+	if( $('input[name=bill_details_same]').size() <= 0 ) { $('#checkout fieldset:first ul:last').append('<li class="wide"><input type="checkbox" name="bill_details_same" id="bill_details_same" value="yes" /><label for="bill_details_same">My Billing and Shipping addresses are the same.</label></li>'); }
 	$('#bill_details_same').change(function() {
 		if( $(this).attr('checked') == 'checked' ) { checked = true; } else { checked = false; }
 		if( checked == true ) {
