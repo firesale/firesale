@@ -173,9 +173,11 @@ class Admin_products extends Admin_Controller
 					Events::trigger('product_updated', $data);
 				}
 
+				// Everything went well, clear cache for front-end update
+				$this->pyrocache->delete_all('products_m');
+
 				// Redirect
 				redirect('admin/firesale/products'.( $input['btnAction'] != 'save_exit' ? '/edit/'.$id : '' ));
-
 			}
 
 		}
@@ -286,6 +288,10 @@ class Admin_products extends Admin_Controller
 		
 		if( $delete )
 		{
+
+			// Deleted, clear cache!
+			$this->pyrocache->delete_all('products_m');
+
 			$this->session->set_flashdata('success', lang('firesale:prod_delete_success'));
 		}
 		else
@@ -328,6 +334,10 @@ class Admin_products extends Admin_Controller
 			// Delete
 			if( $this->modifier_m->delete_modifier($id) )
 			{
+
+				// Deleted, clear cache!
+				$this->pyrocache->delete_all('products_m');
+
 				$this->session->set_flashdata('success', lang('firesale:mods:delete_success'));
 			}
 			else
@@ -355,6 +365,10 @@ class Admin_products extends Admin_Controller
 		// Check for success
 		if( is_string($fields) OR is_integer($fields) )
 		{
+
+			// Good news everyone, clear cache!
+			$this->pyrocache->delete_all('products_m');
+
 			redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
 		}
 
@@ -406,6 +420,10 @@ class Admin_products extends Admin_Controller
 			// Delete
 			if( $this->modifier_m->delete_variation($id) )
 			{
+
+				// Deleted, clear cache!
+				$this->pyrocache->delete_all('products_m');
+
 				$this->session->set_flashdata('success', lang('firesale:vars:delete_success'));
 			}
 			else
@@ -445,7 +463,10 @@ class Admin_products extends Admin_Controller
 				// Update the products for this option
 				$this->modifier_m->edit_variations($row, $input);
 			}
-			
+
+			// Updated, clear cache!
+			$this->pyrocache->delete_all('products_m');
+
 			// Send back to edit
 			redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
 		}
@@ -555,6 +576,9 @@ class Admin_products extends Admin_Controller
 				$this->products_m->make_square($status, $allow);
 			}
 
+			// Updated, clear cache!
+			$this->pyrocache->delete_all('products_m');
+
 			// Ajax status
 			echo json_encode(array('status' => $status['status'], 'message' => $status['message']));
 			exit;
@@ -571,6 +595,10 @@ class Admin_products extends Admin_Controller
 		// Delete file
 		if( Files::delete_file($id) )
 		{
+
+			// Deleted, clear cache!
+			$this->pyrocache->delete_all('products_m');
+
 			// Success
 			$this->session->set_flashdata('success', lang('firesale:prod_delimg_success'));
 		}
@@ -594,6 +622,10 @@ class Admin_products extends Admin_Controller
 	
 			if( isset($update) && $update == TRUE )
 			{
+
+				// Updated, clear cache!
+				$this->pyrocache->delete_all('products_m');
+
 				$this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
 				echo 'ok';
 				exit();
@@ -612,7 +644,7 @@ class Admin_products extends Admin_Controller
 	{
 		if( $this->input->is_ajax_request() )
 		{
-			echo json_encode($this->products_m->get_product($id));
+			echo json_encode($this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time));
 			exit();
 		}
 	}
@@ -627,11 +659,17 @@ class Admin_products extends Admin_Controller
 
 			if( strlen($order) > 0 )
 			{
+
 				$order = explode(',', $order);
+				
 				for( $i = 0; $i < count($order); $i++ )
 				{
 					$this->db->where('id', $order[$i])->update('files', array('sort' => $i));
 				}
+
+				// Updated, clear cache!
+				$this->pyrocache->delete_all('products_m');
+
 				echo 'ok';
 				exit();
 			}
@@ -652,7 +690,9 @@ class Admin_products extends Admin_Controller
 
 			if( strlen($order) > 0 )
 			{
+
 				$order = explode(',', $order);
+
 				for( $i = 0; $i < count($order); $i++ )
 				{
 					if( strlen($order[$i]) > 0 )
@@ -661,6 +701,10 @@ class Admin_products extends Admin_Controller
 						$this->db->where('id', $id)->update($table, array('ordering_count' => $i));
 					}
 				}
+
+				// Updated, clear cache!
+				$this->pyrocache->delete_all('products_m');
+
 				echo 'ok';
 				exit();
 			}
