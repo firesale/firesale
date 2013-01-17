@@ -96,6 +96,10 @@ class Admin_routes extends Admin_Controller
 			}
 			else
 			{
+
+				// Success, clear cache!
+				$this->pyrocache->delete_all('routes_m');
+
 				redirect('admin/firesale/routes/edit/'.$fields);
 			}
 
@@ -173,6 +177,10 @@ class Admin_routes extends Admin_Controller
 			}
 			else
 			{
+
+				// Success, clear cache!
+				$this->pyrocache->delete_all('routes_m');
+
 				redirect('admin/firesale/routes/edit/'.$id);
 			}
 
@@ -241,6 +249,10 @@ class Admin_routes extends Admin_Controller
 				// Remove it
 				if( $this->routes_m->delete($id) )
 				{
+
+					// Success, clear cache!
+					$this->pyrocache->delete_all('routes_m');
+
 					$this->session->set_flashdata('success', lang('firesale:routes:delete_success'));
 					redirect('admin/firesale/routes');
 				}
