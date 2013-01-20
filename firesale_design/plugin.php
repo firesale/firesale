@@ -2,6 +2,7 @@
 
 class Plugin_Firesale_design extends Plugin
 {
+
     public function form()
     {
 
@@ -14,9 +15,12 @@ class Plugin_Firesale_design extends Plugin
 
         // Build data
         $data          = new stdClass;
-        $data->layouts = $this->design_m->get_layouts();
+        $data->layouts = $this->template->get_layouts();
 
-        // Get
+        // Format names
+        foreach( $data->layouts as &$layout ) {
+            $layout = ucwords(str_replace(array('_', '.php', '.html'), array(' ', '', ''), $layout));
+        }
 
         // Build form
         return $this->parser->parse('firesale_design/form', $data, true);

@@ -18,7 +18,7 @@ class Events_Firesale_design
 
         // register the events
         Events::register('form_build', array($this, 'form_build'));
-        // Events::register('page_build', array($this, 'page_build'));
+        Events::register('page_build', array($this, 'page_build'));
 
     }
 
@@ -41,6 +41,13 @@ class Events_Firesale_design
             $controller->tabs['_images'] = array();
 
         }
+
+    }
+
+    public function page_build($template)
+    {
+
+        
 
     }
 
