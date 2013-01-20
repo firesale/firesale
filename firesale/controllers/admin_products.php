@@ -162,6 +162,10 @@ class Admin_products extends Admin_Controller
                 // Everything went well, clear cache for front-end update
                 $this->pyrocache->delete_all('products_m');
 
+                // Add to search
+                $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
+                $this->products_m->search($product);
+
                 // Redirect
                 redirect('admin/firesale/products'.( $input['btnAction'] != 'save_exit' ? '/edit/'.$id : '' ));
             }

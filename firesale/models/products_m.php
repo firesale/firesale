@@ -3,9 +3,9 @@
 /**
  * Products model
  *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Models
+ * @author  Jamie Holdroyd
+ * @author  Chris Harvey
+ * @package FireSale\Core\Models
  *
  */
 class Products_m extends MY_Model
@@ -33,13 +33,13 @@ class Products_m extends MY_Model
      * @access public
      */
     public $_stockstatus = array(
-                            1 => 'firesale:label_stock_in',
-                            2 => 'firesale:label_stock_low',
-                            3 => 'firesale:label_stock_out',
-                            4 => 'firesale:label_stock_order',
-                            5 => 'firesale:label_stock_ended',
-                            6 => 'firesale:label_stock_unlimited'
-                           );
+        1 => 'firesale:label_stock_in',
+        2 => 'firesale:label_stock_low',
+        3 => 'firesale:label_stock_out',
+        4 => 'firesale:label_stock_order',
+        5 => 'firesale:label_stock_ended',
+        6 => 'firesale:label_stock_unlimited'
+    );
 
     /**
      * Loads the parent constructor and gets an
@@ -163,13 +163,13 @@ class Products_m extends MY_Model
         } else {
 
             // Set params
-            $params	 = array(
-                        'stream' 	=> 'firesale_products',
-                        'namespace'	=> 'firesale_products',
-                        'where'		=> SITE_REF."_firesale_products.{$type} = '{$id_slug}'",
-                        'limit'		=> '1',
-                        'order_by'	=> 'id',
-                        'sort'		=> 'desc'
+            $params = array(
+                        'stream'    => 'firesale_products',
+                        'namespace' => 'firesale_products',
+                        'where'     => SITE_REF."_firesale_products.{$type} = '{$id_slug}'",
+                        'limit'     => '1',
+                        'order_by'  => 'id',
+                        'sort'      => 'desc'
                        );
 
             // Add to params if required
@@ -189,7 +189,7 @@ class Products_m extends MY_Model
             if ($product['total'] > 0) {
 
                 // Get and format product data
-                $product 			     = current($product['entries']);
+                $product                 = current($product['entries']);
                 $product['snippet']      = truncate_words($product['description']);
                 $product['category']     = $this->get_categories($product['id']);
                 $product['image']        = $this->get_single_image($product['id']);
@@ -334,10 +334,10 @@ class Products_m extends MY_Model
         // Variables
         $id   = $input['action_to'][0];
         $data = array(
-                    'code'	   => $input['id'],
-                    'title'	   => $input['title'],
-                    'stock'	   => $input['stock'],
-                    'price'	   => $input['price']
+                    'code'  => $input['id'],
+                    'title' => $input['title'],
+                    'stock' => $input['stock'],
+                    'price' => $input['price']
                 );
 
         // Update stock status
@@ -472,7 +472,29 @@ class Products_m extends MY_Model
     {
 
         // Check version
-        if (CMS_VERSION >= '2.2') {
+        if (CMS_VERSION >= '2.2' and $product !== false) {
+
+            // Load required items
+            $this->load->model('search/search_index_m');
+
+            // Try and remove it first
+            $this->search_index_m->drop_index('firesale', 'firesale:product', $product['id']);
+
+            // Add to search
+            return $this->search_index_m->index(
+                'firesale',
+                'firesale:product',
+                'firesale:products',
+                $product['id'],
+                $this->routes_m->build_url('product', $product['id']),
+                $product['title'],
+                strip_tags($product['description']),
+                array(
+                    'cp_edit_uri'   => 'admin/firesale/products/edit/'.$product['id'],
+                    'cp_delete_uri' => 'admin/firesale/products/delete/'.$product['id'],
+                    'keywords'      => ( isset($product['meta_keywords']) ? $product['meta_keywords'] : null ),
+                )
+            );
 
         }
 
@@ -774,18 +796,18 @@ class Products_m extends MY_Model
         // Variables
         $id    = $status['data']['id'];
         $w     = $status['data']['width'];
-        $h	   = $status['data']['height'];
+        $h     = $status['data']['height'];
         $mime  = str_replace('image/', '', $status['data']['mimetype']);
         $path  = $_SERVER['DOCUMENT_ROOT'] . '/uploads/' . SITE_REF . '/files/' . $status['data']['filename'];
 
         // Build background colour
         $colour = str_replace('#', '', $this->settings->get('image_background', 'ffffff'));
         $colour = ( strlen($colour) == 3 ? $colour : '' ) . $colour;
-          $bg     = array(
-                      'r' => hexdec(substr($colour, 0, 2)),
-                       'g' => hexdec(substr($colour, 2, 2)),
-                       'b' => hexdec(substr($colour, 4, 2))
-                    );
+        $bg     = array(
+                    'r' => hexdec(substr($colour, 0, 2)),
+                    'g' => hexdec(substr($colour, 2, 2)),
+                    'b' => hexdec(substr($colour, 4, 2))
+                );
 
         // Is it required?
         if ( $w != $h AND in_array($mime, $allow) ) {
@@ -797,8 +819,8 @@ class Products_m extends MY_Model
             $copy = 'imagecreatefrom' . $mime;
             $save = 'image' . $mime;
             $orig = $copy($path);
-            $x 	  = ( $w != $size ? round( ( $size - $w ) / 2 ) : 0 );
-            $y 	  = ( $h != $size ? round( ( $size - $h ) / 2 ) : 0 );
+            $x    = ( $w != $size ? round( ( $size - $w ) / 2 ) : 0 );
+            $y    = ( $h != $size ? round( ( $size - $h ) / 2 ) : 0 );
 
             // Build image
             imagefilledrectangle($img, 0, 0, $size, $size, $bg);
@@ -809,7 +831,6 @@ class Products_m extends MY_Model
 
             // Update files table
             $this->db->where('id', $id)->update('files', array('width' => $size, 'height' => $size));
-
         }
 
         return TRUE;
