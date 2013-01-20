@@ -267,7 +267,7 @@ class Categories_m extends MY_Model
                 $tmp[$row['parent']['id']]['children'][] =& $tmp[$row['id']];
             }
 
-            if ($row['parent'] == 0) {
+            if ($row['parent'] == 0 or ( array_key_exists('id', $row['parent']) and $row['parent']['id'] === null )) {
                 $tree[] =& $tmp[$row['id']];
             }
 

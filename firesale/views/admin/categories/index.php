@@ -4,24 +4,25 @@
             <h4><?php echo lang('firesale:cats_title'); ?></h4>
         </section>
         <section class="item">
-            <div id="content category-sort">
-            <ul class="sortable">
-                <?php foreach($cats as $cat): ?>
-                        <li id="cat_<?php echo $cat['id']; ?>">
-                            <div>
-                                <a href="#" rel="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
-                            </div>
-                        <?php if(isset($cat['children'])): ?>
-                            <ul>
-                                <?php $controller->categories_m->tree_builder($cat); ?>
-                            </ul>
-                        </li>
-                        <?php else: ?>
-                        </li>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-
-            </ul>
+            <div class="content">
+                <div id="category-sort">
+                <ul class="sortable">
+                    <?php foreach($cats as $cat): ?>
+                            <li id="cat_<?php echo $cat['id']; ?>">
+                                <div>
+                                    <a href="#" rel="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
+                                </div>
+                            <?php if(isset($cat['children'])): ?>
+                                <ul>
+                                    <?php $controller->categories_m->tree_builder($cat); ?>
+                                </ul>
+                            </li>
+                            <?php else: ?>
+                            </li>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </ul>
+                </div>
             </div>
         </section>
     </div>
@@ -32,7 +33,7 @@
             <h4><?php if( isset($input->id) && $input->id > 0 )
                         echo sprintf(lang('firesale:cats_edit_title'), $input->title);
                       else
-                           echo lang('firesale:cats_new');
+                        echo lang('firesale:cats_new');
             ?></h4>
         </section>
 
