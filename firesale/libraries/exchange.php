@@ -1,98 +1,93 @@
 <?php
 
-	class Exchange
-	{
+    class Exchange
+    {
 
-		// Variables
-		protected $ci     = NULL;
-		protected $base   = 'GBP';
-		protected $app_id = '';
-		protected $url    = 'http://openexchangerates.org/api/latest.json?app_id=';
+        // Variables
+        protected $ci     = NULL;
+        protected $base   = 'GBP';
+        protected $app_id = '';
+        protected $url    = 'http://openexchangerates.org/api/latest.json?app_id=';
 
-		public function __construct()
-		{
+        public function __construct()
+        {
 
-			// Get CI Instance
-			$this->ci =& get_instance();
+            // Get CI Instance
+            $this->ci =& get_instance();
 
-			// Add to settings soon
-			$this->app_id = $this->ci->settings->get('firesale_currency_key');
-			$this->url    = $this->url.$this->app_id;
-			
-			// Check key
-			if( !empty($this->app_id) )
-			{
+            // Add to settings soon
+            $this->app_id = $this->ci->settings->get('firesale_currency_key');
+            $this->url    = $this->url.$this->app_id;
 
-				// Get data
-				$json = $this->get($this->url);
-				
-				// Check data
-				if( $json !== FALSE )
-				{
-					$this->process($json);
-				}
+            // Check key
+            if ( !empty($this->app_id) ) {
 
-			}
+                // Get data
+                $json = $this->get($this->url);
 
-		}
+                // Check data
+                if ($json !== FALSE) {
+                    $this->process($json);
+                }
 
-		public function get($url)
-		{
+            }
 
-			// Get data
-			$ch = curl_init($url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			$data = curl_exec($ch);
-			curl_close($ch);
+        }
 
-			// Convert
-			$json = json_decode($data);
+        public function get($url)
+        {
 
-			// Check data
-			if( ! isset($json->error) )
-			{
-				return $json;
-			}
+            // Get data
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            $data = curl_exec($ch);
+            curl_close($ch);
 
-			// Problem
-			return FALSE;
-		}
+            // Convert
+            $json = json_decode($data);
 
-		public function process($json)
-		{
+            // Check data
+            if ( ! isset($json->error) ) {
+                return $json;
+            }
 
-			// Variables
-			$base = $this->ci->settings->get('firesale_currency') or $this->base;
+            // Problem
+            return FALSE;
+        }
 
-			// Get all currency options
-			$currencies = $this->ci->db->get('firesale_currency')->result_array();
+        public function process($json)
+        {
 
-			// Loop them
-			foreach( $currencies AS $currency )
-			{
-				//Added patch
-				$rate = 1;
+            // Variables
+            $base = $this->ci->settings->get('firesale_currency') or $this->base;
 
-				// Do we need to cross-convert?
-				if( $json->base != $this->base )
-				{
-					$new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$base ) );
-					$rate = round($new, 6);
-				}
+            // Get all currency options
+            $currencies = $this->ci->db->get('firesale_currency')->result_array();
 
-				// Perform modifications
-				list($op, $value) = explode('|', $currency['cur_mod']);
-				$rate             = eval('return ('.$rate.$op.$value.');');
+            // Loop them
+            foreach ($currencies AS $currency) {
+                //Added patch
+                $rate = 1;
 
-				// Update it
-				$this->ci->db->where('id', $currency['id'])->update('firesale_currency', array('exch_rate' => $rate));
+                // Do we need to cross-convert?
+                if ($json->base != $this->base) {
+                    $new  = ( $json->rates->$currency['cur_code'] * ( 1 / $json->rates->$base ) );
+                    $rate = round($new, 6);
+                }
 
-			}
+                // Perform modifications
+                list($op, $value) = explode('|', $currency['cur_mod']);
+                $rate             = eval('return ('.$rate.$op.$value.');');
 
-			// Update last checked time
-			$time = ( (int)( time() - $json->timestamp ) > 3600 ? time() : $json->timestamp );
-			$this->ci->settings->set('firesale_currency_updated', $time);
+                // Update it
+                $this->ci->db->where('id', $currency['id'])->update('firesale_currency', array('exch_rate' => $rate));
 
-		}
+            }
 
-	}
+            // Update last checked time
+            $time = ( (int) ( time() - $json->timestamp ) > 3600 ? time() : $json->timestamp );
+            $this->ci->settings->set('firesale_currency_updated', $time);
+
+        }
+
+    }

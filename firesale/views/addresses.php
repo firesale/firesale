@@ -25,5 +25,5 @@
       <br class="clear" />
 
     </div>
-    
+
     <a href="{{ firesale:url route="addresses" }}/create" class="btn"><span><?php echo lang('firesale:addresses:new_address'); ?></span></a>

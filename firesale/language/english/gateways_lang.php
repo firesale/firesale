@@ -3,11 +3,11 @@
 /*
  * This file stores the names and descriptions of the
  * default FireSale payment gateways.
- * 
+ *
  * The syntax is:
  * 		firesale:gateways:{slug}:name
  * 		firesale:gateways:{slug}:desc
- * 
+ *
  * The slug comes from the name of the gateway file.
  * 		e.g. merchant_paypal.php = paypal
  */

@@ -1,49 +1,49 @@
 
-	<form method="post" action="{{ firesale:url route='cart' }}/insert">
-		<input type="hidden" name="prd_code[]" value="<?php echo $product['id']; ?>" />
-		<fieldset>
-			<ul>
-			<?php if( ! empty($modifiers) ): ?>
-			<?php foreach( $modifiers as $modifier ): ?>
-				<li>
-					<label>
-						<?php echo $modifier['title']; ?>
-						<small><?php echo $modifier['instructions']; ?></small>
-					</label>
-					<div class="input">
-					<?php if( $modifier['type']['key'] != '2' ): ?>
-					<?php if( $type == 'select' ): ?>
-						<select name="options[<?php echo $modifier['id']; ?>]">
-					<?php endif; ?>
-					<?php foreach( $modifier['variations'] as $variation ): ?>
-					<?php if( $type == 'radio' ): ?>
-						<input type="radio" name="options[<?php echo $modifier['id']; ?>]" id="options_<?php echo $variation['id']; ?>" value="<?php echo $variation['id']; ?>" <?php echo $variation['selected']; ?>/>
-						<label for="options_<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</label>
-					<?php else: ?>
-							<option <?php echo $variation['selected']; ?>value="<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</option>
-					<?php endif; ?>
-					<?php endforeach; ?>
-					<?php if( $type == 'select' ): ?>
-						</select>
-					<?php endif; ?>
-					<?php else: ?>
-						<textarea name="options[<?php echo $modifier['id']; ?>]"></textarea>
-					<?php endif; ?>
-					</div>
-				</li>
-			<?php endforeach; ?>
-			<?php endif; ?>
-				<li>
-					<label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label>
-					<div class="input">
-						<input id="product_quantity" name="qty[]" size="3" value="1" type="text" />
-					</div>
-				</li>
-			</ul>
+    <form method="post" action="{{ firesale:url route='cart' }}/insert">
+        <input type="hidden" name="prd_code[]" value="<?php echo $product['id']; ?>" />
+        <fieldset>
+            <ul>
+            <?php if( ! empty($modifiers) ): ?>
+            <?php foreach( $modifiers as $modifier ): ?>
+                <li>
+                    <label>
+                        <?php echo $modifier['title']; ?>
+                        <small><?php echo $modifier['instructions']; ?></small>
+                    </label>
+                    <div class="input">
+                    <?php if( $modifier['type']['key'] != '2' ): ?>
+                    <?php if( $type == 'select' ): ?>
+                        <select name="options[<?php echo $modifier['id']; ?>]">
+                    <?php endif; ?>
+                    <?php foreach( $modifier['variations'] as $variation ): ?>
+                    <?php if( $type == 'radio' ): ?>
+                        <input type="radio" name="options[<?php echo $modifier['id']; ?>]" id="options_<?php echo $variation['id']; ?>" value="<?php echo $variation['id']; ?>" <?php echo $variation['selected']; ?>/>
+                        <label for="options_<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</label>
+                    <?php else: ?>
+                            <option <?php echo $variation['selected']; ?>value="<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</option>
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                    <?php if( $type == 'select' ): ?>
+                        </select>
+                    <?php endif; ?>
+                    <?php else: ?>
+                        <textarea name="options[<?php echo $modifier['id']; ?>]"></textarea>
+                    <?php endif; ?>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+            <?php endif; ?>
+                <li>
+                    <label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label>
+                    <div class="input">
+                        <input id="product_quantity" name="qty[]" size="3" value="1" type="text" />
+                    </div>
+                </li>
+            </ul>
 
-			<div class="buttons">
-				<button type="submit" name="btnAction" value="cart"><?php echo lang('firesale:product:label_add_to_cart'); ?></button>
-			</div>
+            <div class="buttons">
+                <button type="submit" name="btnAction" value="cart"><?php echo lang('firesale:product:label_add_to_cart'); ?></button>
+            </div>
 
-		</fieldset>
-	</form>
+        </fieldset>
+    </form>

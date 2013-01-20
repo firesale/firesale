@@ -35,57 +35,59 @@ require_once(MERCHANT_DRIVER_PATH.'/merchant_paypal_base.php');
 
 class Merchant_paypal_pro extends Merchant_paypal_base
 {
-	public function default_settings()
-	{
-		return array(
-			'username' => '',
-			'password' => '',
-			'signature' => '',
-			'test_mode' => FALSE,
-		);
-	}
-	
-	public function authorize()
-	{
-		$request = $this->_build_authorize_or_purchase('Authorization');
-		$response = $this->_post_paypal_request($request);
-		return new Merchant_paypal_api_response($response, Merchant_response::AUTHORIZED);
-	}
+    public function default_settings()
+    {
+        return array(
+            'username' => '',
+            'password' => '',
+            'signature' => '',
+            'test_mode' => FALSE,
+        );
+    }
 
-	public function purchase()
-	{
-		$request = $this->_build_authorize_or_purchase('Sale');
-		$response = $this->_post_paypal_request($request);
-		return new Merchant_paypal_api_response($response, Merchant_response::COMPLETE);
-	}
+    public function authorize()
+    {
+        $request = $this->_build_authorize_or_purchase('Authorization');
+        $response = $this->_post_paypal_request($request);
 
-	protected function _build_authorize_or_purchase($action)
-	{
-		$this->require_params('card_no', 'first_name', 'last_name', 'exp_month', 'exp_year', 'csc');
+        return new Merchant_paypal_api_response($response, Merchant_response::AUTHORIZED);
+    }
 
-		$request = $this->_new_request('DoDirectPayment');
-		$this->_add_request_details($request, $action);
+    public function purchase()
+    {
+        $request = $this->_build_authorize_or_purchase('Sale');
+        $response = $this->_post_paypal_request($request);
 
-		// add credit card details
-		$request['CREDITCARDTYPE'] = $this->param('card_type');
-		$request['ACCT'] = $this->param('card_no');
-		$request['EXPDATE'] = $this->param('exp_month').$this->param('exp_year');
-		$request['STARTDATE'] = $this->param('start_month').$this->param('start_year');
-		$request['CVV2'] = $this->param('csc');
-		$request['ISSUENUMBER'] = $this->param('card_issue');
-		$request['IPADDRESS'] = $this->CI->input->ip_address();
-		$request['FIRSTNAME'] = $this->param('first_name');
-		$request['LASTNAME'] = $this->param('last_name');
-		$request['EMAIL'] = $this->param('email');
-		$request['STREET'] = $this->param('address1');
-		$request['STREET2'] = $this->param('address2');
-		$request['CITY'] = $this->param('city');
-		$request['STATE'] = $this->param('region');
-		$request['ZIP'] = $this->param('postcode');
-		$request['COUNTRYCODE'] = strtoupper($this->param('country'));
+        return new Merchant_paypal_api_response($response, Merchant_response::COMPLETE);
+    }
 
-		return $request;
-	}
+    protected function _build_authorize_or_purchase($action)
+    {
+        $this->require_params('card_no', 'first_name', 'last_name', 'exp_month', 'exp_year', 'csc');
+
+        $request = $this->_new_request('DoDirectPayment');
+        $this->_add_request_details($request, $action);
+
+        // add credit card details
+        $request['CREDITCARDTYPE'] = $this->param('card_type');
+        $request['ACCT'] = $this->param('card_no');
+        $request['EXPDATE'] = $this->param('exp_month').$this->param('exp_year');
+        $request['STARTDATE'] = $this->param('start_month').$this->param('start_year');
+        $request['CVV2'] = $this->param('csc');
+        $request['ISSUENUMBER'] = $this->param('card_issue');
+        $request['IPADDRESS'] = $this->CI->input->ip_address();
+        $request['FIRSTNAME'] = $this->param('first_name');
+        $request['LASTNAME'] = $this->param('last_name');
+        $request['EMAIL'] = $this->param('email');
+        $request['STREET'] = $this->param('address1');
+        $request['STREET2'] = $this->param('address2');
+        $request['CITY'] = $this->param('city');
+        $request['STATE'] = $this->param('region');
+        $request['ZIP'] = $this->param('postcode');
+        $request['COUNTRYCODE'] = strtoupper($this->param('country'));
+
+        return $request;
+    }
 }
 
 /* End of file ./libraries/merchant/drivers/merchant_paypal_pro.php */

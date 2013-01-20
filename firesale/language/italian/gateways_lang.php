@@ -3,11 +3,11 @@
 /*
  * This file stores the names and descriptions of the
  * default FireSale payment gateways.
- * 
+ *
  * The syntax is:
  * 		firesale:gateways:{slug}:name
  * 		firesale:gateways:{slug}:desc
- * 
+ *
  * The slug comes from the name of the gateway file.
  * 		e.g. merchant_paypal.php = paypal
  */
@@ -61,7 +61,7 @@ $lang['firesale:gateways:payflow_pro:name'] = 'PayFlow';
 $lang['firesale:gateways:payflow_pro:desc'] = 'A payment gateway links your website to your processing network and merchant account. Like most gateways, Payflow payment gateway handles all major credit cards.';
 
 // Sage Pay Server
-$lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server'; 
+$lang['firesale:gateways:sagepay_server:name'] = 'Sage Pay Server';
 $lang['firesale:gateways:sagepay_server:desc'] = 'Sage Pay Go con integrazione Server è una combinazione vincente di flessibilità e facilità di integrazione. Hai la sicurezza dei pagamenti esterni al sito con la possibilità di gestire le transazioni e i resoconti dal tuo server.';
 
 // Sage Pay Direct
@@ -77,15 +77,15 @@ $lang['firesale:gateways:worldpay:name'] = 'WorldPay';
 $lang['firesale:gateways:worldpay:desc'] = 'Pagamento online, account venditore online e gestore di rischi dei prodotti per far crescere il tuo business online.';
 
 // Netaxept
-$lang['firesale:gateways:netaxept:name'] = 'Netaxept'; 
+$lang['firesale:gateways:netaxept:name'] = 'Netaxept';
 $lang['firesale:gateways:netaxept:desc'] = 'Metodo di pagamento Norvegese.';
 
 // Gocardless
-$lang['firesale:gateways:gocardless:name'] = 'GoCardless'; 
+$lang['firesale:gateways:gocardless:name'] = 'GoCardless';
 $lang['firesale:gateways:gocardless:desc'] = 'GoCardless rende facile ed economico accettare pagamenti online. Nessun account venditore. Nessun costo per carta di credito. Nessun problema.';
 
 // Cardsave
-$lang['firesale:gateways:cardsave:name'] = 'CardSave'; 
+$lang['firesale:gateways:cardsave:name'] = 'CardSave';
 $lang['firesale:gateways:cardsave:desc'] = 'CardSave rende facile il processo delel carte di credito con una gamma di soluzioni convenienti.';
 
 // Rabo OmniKassa

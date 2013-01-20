@@ -1,17 +1,17 @@
 <?php
 
-	$lang['firesale:sections:search'] 		  = 'Pesquisar';
-	$lang['firesale:sections:search_results'] = 'Resultados encontrados "%s"';
-	$lang['firesale:search:products_match']	  = 'Produtos relacionados com o critério de pesquisa';
-	$lang['firesale:search:products_none']	  = 'Nenhum produto encontrado para sua pesquisa';
-	
-	// Dashboard
-	$lang['firesale:elements:search_terms'] = 'Termos populares pesquisados';
-	$lang['firesale:search:no_terms']		= 'Nenhum termo disponível';
-	
-	// Search Frontend
-	$lang['firesale:search:label_search'] 			= 'Pesquisar';
-	$lang['firesale:search:label_nothing_found'] 	= 'Nenhum resultado encontrado';
+    $lang['firesale:sections:search'] 		  = 'Pesquisar';
+    $lang['firesale:sections:search_results'] = 'Resultados encontrados "%s"';
+    $lang['firesale:search:products_match']	  = 'Produtos relacionados com o critério de pesquisa';
+    $lang['firesale:search:products_none']	  = 'Nenhum produto encontrado para sua pesquisa';
 
-	// Routes
-	$lang['firesale:routes:search'] = 'Search'; #translate
+    // Dashboard
+    $lang['firesale:elements:search_terms'] = 'Termos populares pesquisados';
+    $lang['firesale:search:no_terms']		= 'Nenhum termo disponível';
+
+    // Search Frontend
+    $lang['firesale:search:label_search'] 			= 'Pesquisar';
+    $lang['firesale:search:label_nothing_found'] 	= 'Nenhum resultado encontrado';
+
+    // Routes
+    $lang['firesale:routes:search'] = 'Search'; #translate

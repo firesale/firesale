@@ -3,99 +3,94 @@
 class Brands_m extends MY_Model
 {
 
-	protected $cache = array();
+    protected $cache = array();
 
-	public function get($id_slug)
-	{
+    public function get($id_slug)
+    {
 
-		// Check cache
-		if( array_key_exists($id_slug, $this->cache) )
-		{
-			return $this->cache[$id_slug];
-		}
+        // Check cache
+        if ( array_key_exists($id_slug, $this->cache) ) {
+            return $this->cache[$id_slug];
+        }
 
-		// Variables
-		$type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
+        // Variables
+        $type = ( 0 + $id_slug > 0 ? 'id' : 'slug' );
 
-		// Set query paramaters
-		$params	 = array(
-					'stream' 	=> 'firesale_brands',
-					'namespace'	=> 'firesale_brands',
-					'where'		=> "{$type} = '{$id_slug}' AND status = '1'",
-					'limit'		=> '1'
-				   );
-		
-		// Get entries		
-		$brands = $this->streams->entries->get_entries($params);
+        // Set query paramaters
+        $params	 = array(
+                    'stream' 	=> 'firesale_brands',
+                    'namespace'	=> 'firesale_brands',
+                    'where'		=> "{$type} = '{$id_slug}' AND status = '1'",
+                    'limit'		=> '1'
+                   );
 
-		// Check entries
-		if( count($brands['entries']) == 1 )
-		{
+        // Get entries
+        $brands = $this->streams->entries->get_entries($params);
 
-			// Get brand
-			$brand = current($brands['entries']);
+        // Check entries
+        if ( count($brands['entries']) == 1 ) {
 
-			// Get images
-			if( $folder = $this->products_m->get_file_folder_by_slug($brand['slug']) )
-			{
-				$query = $this->db->select('id, path')
-								   ->from('files')
-								   ->where('folder_id', $folder->id)
-						  		   ->get();
-				$brand['images'] = $query->result_array();
-			}
+            // Get brand
+            $brand = current($brands['entries']);
 
-			// Return it
-			return $brand;
-		}
+            // Get images
+            if ( $folder = $this->products_m->get_file_folder_by_slug($brand['slug']) ) {
+                $query = $this->db->select('id, path')
+                                   ->from('files')
+                                   ->where('folder_id', $folder->id)
+                                     ->get();
+                $brand['images'] = $query->result_array();
+            }
 
-		// Nothing found
-		return FALSE;
-	}
+            // Return it
+            return $brand;
+        }
 
-	public function get_products($brand, $perpage, $start)
-	{
+        // Nothing found
+        return FALSE;
+    }
 
-		// Build query
-		$query = $this->db->select('id')
-						  ->from('firesale_products')
-						  ->where('brand', $brand)
-						  ->order_by('title', 'asc')
-						  ->limit($perpage, $start)
-						  ->get();
+    public function get_products($brand, $perpage, $start)
+    {
 
-		// Check for results
-		if( $query->num_rows() )
-		{
+        // Build query
+        $query = $this->db->select('id')
+                          ->from('firesale_products')
+                          ->where('brand', $brand)
+                          ->order_by('title', 'asc')
+                          ->limit($perpage, $start)
+                          ->get();
 
-			// Get results
-			$results = $query->result_array();
+        // Check for results
+        if ( $query->num_rows() ) {
 
-			// Loop
-			foreach( $results AS &$product )
-			{
-				// Get product
-				$product = $this->products_m->get_product($product['id']);
-			}
+            // Get results
+            $results = $query->result_array();
 
-			// Return
-			return $results;
-		}
+            // Loop
+            foreach ($results AS &$product) {
+                // Get product
+                $product = $this->products_m->get_product($product['id']);
+            }
 
-		// No results
-		return FALSE;
-	}
+            // Return
+            return $results;
+        }
 
-	public function get_count($brand)
-	{
+        // No results
+        return FALSE;
+    }
 
-		// Build query
-		$query = $this->db->select('id')
-						  ->from('firesale_products')
-						  ->where('brand', $brand)
-						  ->get();
+    public function get_count($brand)
+    {
 
-		return $query->num_rows();
-	}
+        // Build query
+        $query = $this->db->select('id')
+                          ->from('firesale_products')
+                          ->where('brand', $brand)
+                          ->get();
+
+        return $query->num_rows();
+    }
 
 }

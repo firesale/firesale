@@ -11,12 +11,12 @@
       <div class="firesale width-threefourth right last">
 
         <section id="listing-header">
-		
-		      <div class="left">
+
+              <div class="left">
             <a href="{{ firesale:url route="category-custom" after='style/grid' }}" class="grid{{ if layout == 'grid' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:grid'); ?></a>
             <a href="{{ firesale:url route="category-custom" after='style/list' }}" class="list{{ if layout == 'list' }} selected{{ endif }}"><span class="icon"></span><?php echo lang('firesale:categories:list'); ?></a>
           </div>
-		  
+
           <div class="right">
             <div id="listing-sort" class="switcher">
               <span>{{ order.title }}</span>
@@ -32,7 +32,7 @@
         </section>
 
         {{ pagination.links }}
-	
+
         <section id="listing" class="{{ layout }}">
 
 {{ if products }}
@@ -63,7 +63,7 @@
           <br class="clear" />
         </section>
 
-        {{ pagination.links }}        
+        {{ pagination.links }}
 
       </div>
 

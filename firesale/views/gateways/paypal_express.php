@@ -1,4 +1,4 @@
 <?php echo form_open(); ?>
-	<p>Payment processing is done on the PayPal website, so if you're happy with everything please click below to finalise your order!</p>
-	<button type="submit" class="btn"><span>Pay with PayPal Express</span></button>
-<?php echo form_close(); ?>
+    <p>Payment processing is done on the PayPal website, so if you're happy with everything please click below to finalise your order!</p>
+    <button type="submit" class="btn"><span>Pay with PayPal Express</span></button>
+<?php echo form_close();

@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
- 
+
 class Widget_FireSale_Categories extends Widgets
 {
 
@@ -9,13 +9,13 @@ class Widget_FireSale_Categories extends Widgets
     public $author      = 'Jamie Holdroyd';
     public $website     = 'http://www.getfiresale.org';
     public $version     = '1.1.0';
- 
+
     // Form Fields
     public $fields = array(
         'title'  => array('field' => 'title', 'label' => 'Title', 'rules' => 'required'),
         'parent' => array('field' => 'parent', 'label' => 'Parent', 'rules' => 'numeric')
     );
- 
+
     // Element Build
     public function run($options)
     {
@@ -33,8 +33,7 @@ class Widget_FireSale_Categories extends Widgets
                   );
 
         // Parent set?
-        if( $options['parent'] != 0 )
-        {
+        if ($options['parent'] != 0) {
             $params['where'] .= " AND parent = '{$options['parent']}'";
         }
 
@@ -44,7 +43,7 @@ class Widget_FireSale_Categories extends Widgets
         // Store the feed items
         return array('cats' => $categories, 'controller' => $this);
     }
- 
+
     // Options
     public function form()
     {

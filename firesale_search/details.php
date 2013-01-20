@@ -1,165 +1,159 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Module_Firesale_Search extends Module {
+class Module_Firesale_Search extends Module
+{
+    public $version = '1.1.0';
+    public $language_file = 'firesale_search/firesale';
 
-	public $version = '1.1.0';
-	public $language_file = 'firesale_search/firesale';
-	
-	public function __construct()
-	{
-		parent::__construct();
-		
-		// Load in the FireSale library
-		$this->load->library('firesale/firesale');
-	}
+    public function __construct()
+    {
+        parent::__construct();
 
-	public function information()
-	{
-		
-		$info = array(
-			'name' => array(
-				'en' => 'FireSale Search',
-				'fr' => 'FireSale Recherche',
-				'it' => 'FireSale Ricerca'
-			),
-			'description' => array(
-				'en' => 'Product and category search with ajax capabilities', 
-				'fr' => 'Recherche dans les produits et la catégories, dynamisée par AJAX',
-				'it' => 'Ricerca di prodotti e categorie, compatibile con AJAX'
-			),
-			'frontend' 		=> TRUE,
-			'backend' 		=> FALSE,
-			'firesale_core'	=> FALSE,
-			'menu'	   		=> 'FireSale',
-			'author' 		=> 'Jamie Holdroyd',
-			'elements' => array(
-				'dashboard' => array(
-					array(
-						'slug'		=> 'search_terms',
-						'title' 	=> 'firesale:elements:search_terms',
-						'function' 	=> 'search_terms',
-						'assets'	=> array(
-							array('type' => 'css', 'file' => 'dashboard_searchterms.css')
-						)
-					)
-				)
-			),
-			'events'			 => array(
-				'order_complete'     => array(
-					'model'		 => 'firesale_search/search_m',
-					'function'	 => 'order_complete'
-				)
-			)
-		);
-		
-		return $info;
-	}
-	
-	public function install()
-	{
-		if ($this->firesale->is_installed())
-		{
-			// Variables
-			$_return = TRUE;
+        // Load in the FireSale library
+        $this->load->library('firesale/firesale');
+    }
 
-			##################
-			## SEARCH TERMS ##
-			##################
+    public function information()
+    {
 
-			$search = array(
-						'id' 	=> array('type' => 'INT', 'constraint' => '6', 'auto_increment' => TRUE),
-						'term'	=> array('type' => 'VARCHAR', 'constraint' => '64'),
-						'count'	=> array('type' => 'INT', 'constraint' => '6'),
-						'sales'	=> array('type' => 'INT', 'constraint' => '6')
-					);
+        $info = array(
+            'name' => array(
+                'en' => 'FireSale Search',
+                'fr' => 'FireSale Recherche',
+                'it' => 'FireSale Ricerca'
+            ),
+            'description' => array(
+                'en' => 'Product and category search with ajax capabilities',
+                'fr' => 'Recherche dans les produits et la catégories, dynamisée par AJAX',
+                'it' => 'Ricerca di prodotti e categorie, compatibile con AJAX'
+            ),
+            'frontend' 		=> TRUE,
+            'backend' 		=> FALSE,
+            'firesale_core'	=> FALSE,
+            'menu'	   		=> 'FireSale',
+            'author' 		=> 'Jamie Holdroyd',
+            'elements' => array(
+                'dashboard' => array(
+                    array(
+                        'slug'		=> 'search_terms',
+                        'title' 	=> 'firesale:elements:search_terms',
+                        'function' 	=> 'search_terms',
+                        'assets'	=> array(
+                            array('type' => 'css', 'file' => 'dashboard_searchterms.css')
+                        )
+                    )
+                )
+            ),
+            'events'			 => array(
+                'order_complete'     => array(
+                    'model'		 => 'firesale_search/search_m',
+                    'function'	 => 'order_complete'
+                )
+            )
+        );
 
-			// Insert into the database
-			$this->dbforge->add_field($search);
-			$this->dbforge->add_key('id', TRUE);
-			if( !$this->dbforge->create_table('firesale_search') ) { $_return = FALSE; }
+        return $info;
+    }
 
-			// Add routes
-			$this->routes('add');
+    public function install()
+    {
+        if ($this->firesale->is_installed()) {
+            // Variables
+            $_return = TRUE;
 
-			// Return
-			return $_return;
-		}
-	}
+            ##################
+            ## SEARCH TERMS ##
+            ##################
 
-	public function uninstall()
-	{
+            $search = array(
+                        'id' 	=> array('type' => 'INT', 'constraint' => '6', 'auto_increment' => TRUE),
+                        'term'	=> array('type' => 'VARCHAR', 'constraint' => '64'),
+                        'count'	=> array('type' => 'INT', 'constraint' => '6'),
+                        'sales'	=> array('type' => 'INT', 'constraint' => '6')
+                    );
 
-		// Variables
-		$_return = TRUE;
-		
-		// Drop tables
-		if( !$this->dbforge->drop_table('firesale_search') ) { $_return = FALSE; }
+            // Insert into the database
+            $this->dbforge->add_field($search);
+            $this->dbforge->add_key('id', TRUE);
+            if ( !$this->dbforge->create_table('firesale_search') ) { $_return = FALSE; }
 
-		// Remove routes
-		$this->routes('remove');
+            // Add routes
+            $this->routes('add');
 
-		// Return
-		return $_return;
-	}
+            // Return
+            return $_return;
+        }
+    }
 
-	public function upgrade($old_version)
-	{
+    public function uninstall()
+    {
 
-		// Pre 1.1.1
-		if( $old_version < '1.1.1' )
-		{
+        // Variables
+        $_return = TRUE;
 
-			// Load requirements
-			$this->load->model('firesale/routes_m');
+        // Drop tables
+        if ( !$this->dbforge->drop_table('firesale_search') ) { $_return = FALSE; }
 
-			// Add search route
-			$route = array('is_core' => 1, 'title' => 'lang:firesale:routes:search', 'slug' => 'search', 'table' => '', 'map' => 'search/{{ any }}', 'route' => 'search(/:any)?', 'translation' => 'firesale_search/front/index$1');
-			$this->routes_m->create($route);
-		}
+        // Remove routes
+        $this->routes('remove');
 
-		return TRUE;
-	}
+        // Return
+        return $_return;
+    }
 
-	public function routes($action)
-	{
+    public function upgrade($old_version)
+    {
 
-		// Load requirements
-		$this->load->model('firesale/routes_m');
+        // Pre 1.1.1
+        if ($old_version < '1.1.1') {
 
-		// Route definitions
-		$routes   = array();
-		$routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:search', 'slug' => 'search', 'table' => '', 'map' => 'search/{{ any }}', 'route' => 'search(/:any)?', 'translation' => 'firesale_search/front/index$1');
+            // Load requirements
+            $this->load->model('firesale/routes_m');
 
-		// Perform
-		foreach( $routes AS $route )
-		{
+            // Add search route
+            $route = array('is_core' => 1, 'title' => 'lang:firesale:routes:search', 'slug' => 'search', 'table' => '', 'map' => 'search/{{ any }}', 'route' => 'search(/:any)?', 'translation' => 'firesale_search/front/index$1');
+            $this->routes_m->create($route);
+        }
 
-			// Check action
-			if( $action == 'add' )
-			{
-				// Add
-				$this->routes_m->create($route);
-			}
-			else if( $action == 'remove' )
-			{
-				// Remove
-				$this->routes_m->delete($route['slug']);
-			}
+        return TRUE;
+    }
 
-		}
+    public function routes($action)
+    {
 
-	}
-	
-	public function help()
-	{
-		// Return a string containing help info
-		// You could include a file and return it here.
-		return "Some Help Stuff";
-	}
-	
-	public function info()
-	{
-		return $this->firesale->info($this->information(), $this->language_file);
-	}
-	
+        // Load requirements
+        $this->load->model('firesale/routes_m');
+
+        // Route definitions
+        $routes   = array();
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:search', 'slug' => 'search', 'table' => '', 'map' => 'search/{{ any }}', 'route' => 'search(/:any)?', 'translation' => 'firesale_search/front/index$1');
+
+        // Perform
+        foreach ($routes AS $route) {
+
+            // Check action
+            if ($action == 'add') {
+                // Add
+                $this->routes_m->create($route);
+            } elseif ($action == 'remove') {
+                // Remove
+                $this->routes_m->delete($route['slug']);
+            }
+
+        }
+
+    }
+
+    public function help()
+    {
+        // Return a string containing help info
+        // You could include a file and return it here.
+        return "Some Help Stuff";
+    }
+
+    public function info()
+    {
+        return $this->firesale->info($this->information(), $this->language_file);
+    }
+
 }

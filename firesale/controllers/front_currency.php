@@ -10,61 +10,54 @@
  */
 class Front_currency extends Public_Controller
 {
-	
-	public function __construct()
+
+    public function __construct()
     {
 
         parent::__construct();
-		
-		// Load libraries
-		$this->lang->load('firesale');
-		$this->load->library('fs_cart');
-		$this->load->model('cart_m');
-		$this->load->model('orders_m');
-		$this->load->model('currency_m');
 
-	}
+        // Load libraries
+        $this->lang->load('firesale');
+        $this->load->library('fs_cart');
+        $this->load->model('cart_m');
+        $this->load->model('orders_m');
+        $this->load->model('currency_m');
 
-	public function change($id)
-	{
+    }
 
-		// Get currency
-		$currency = $this->currency_m->get($id);
+    public function change($id)
+    {
 
-		// Check it's valid
-		if( ! $currency )
-		{
-			$currency = $this->currency_m->get($id);
-		}
+        // Get currency
+        $currency = $this->currency_m->get($id);
 
-		// Update currency of cart
-		if( $this->fs_cart->total_items() AND ( !isset($this->fs_cart->currency) OR $currency->id != $this->fs_cart->currency->id ) )
-		{
-			$this->cart_m->update_currency($currency);
-		}
+        // Check it's valid
+        if (! $currency) {
+            $currency = $this->currency_m->get($id);
+        }
 
-		// Set it into session
-		$this->session->set_userdata('currency', $id);
+        // Update currency of cart
+        if ( $this->fs_cart->total_items() AND ( !isset($this->fs_cart->currency) OR $currency->id != $this->fs_cart->currency->id ) ) {
+            $this->cart_m->update_currency($currency);
+        }
 
-		// Order in progress?
-		if( $order_id = $this->session->userdata('order_id') )
-		{
-			$this->orders_m->update_order_cost($order_id);
-		}
+        // Set it into session
+        $this->session->set_userdata('currency', $id);
 
-		// Successful?
-		if( $id == $currency->id )
-		{
-			$this->session->set_flashdata('success', 'Currency changed successfully');
-		}
-		else
-		{
-			$this->session->set_flashdata('error', 'Error changing currency');
-		}
+        // Order in progress?
+        if ( $order_id = $this->session->userdata('order_id') ) {
+            $this->orders_m->update_order_cost($order_id);
+        }
 
-		// Redirect
-		redirect(( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'home' ));
-	}
-    
+        // Successful?
+        if ($id == $currency->id) {
+            $this->session->set_flashdata('success', 'Currency changed successfully');
+        } else {
+            $this->session->set_flashdata('error', 'Error changing currency');
+        }
+
+        // Redirect
+        redirect(( isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'home' ));
+    }
+
 }
-

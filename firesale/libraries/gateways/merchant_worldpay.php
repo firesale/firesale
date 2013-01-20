@@ -33,80 +33,75 @@
 
 class Merchant_worldpay extends Merchant_driver
 {
-	const PROCESS_URL = 'https://secure.worldpay.com/wcc/purchase';
-	const PROCESS_URL_TEST = 'https://secure-test.worldpay.com/wcc/purchase';
+    const PROCESS_URL = 'https://secure.worldpay.com/wcc/purchase';
+    const PROCESS_URL_TEST = 'https://secure-test.worldpay.com/wcc/purchase';
 
-	public function default_settings()
-	{
-		return array(
-			'installation_id' => '',
-			'secret' => '',
-			'payment_response_password' => '',
-			'test_mode' => FALSE,
-		);
-	}
+    public function default_settings()
+    {
+        return array(
+            'installation_id' => '',
+            'secret' => '',
+            'payment_response_password' => '',
+            'test_mode' => FALSE,
+        );
+    }
 
-	public function purchase()
-	{
-		$request = array();
-		$request['instId'] = $this->setting('installation_id');
-		$request['cartId'] = $this->param('order_id');
-		$request['desc'] = $this->param('description');
-		$request['amount'] = $this->amount_dollars();
-		$request['currency'] = $this->param('currency');
-		$request['testMode'] = $this->setting('test_mode') ? 100 : 0;
-		$request['MC_callback'] = $this->param('return_url');
-		$request['name'] = $this->param('name');
-		$request['address1'] = $this->param('address1');
-		$request['address2'] = $this->param('address2');
-		$request['town'] = $this->param('city');
-		$request['region'] = $this->param('region');
-		$request['postcode'] = $this->param('postcode');
-		$request['country'] = $this->param('country');
-		$request['tel'] = $this->param('phone');
-		$request['email'] = $this->param('email');
+    public function purchase()
+    {
+        $request = array();
+        $request['instId'] = $this->setting('installation_id');
+        $request['cartId'] = $this->param('order_id');
+        $request['desc'] = $this->param('description');
+        $request['amount'] = $this->amount_dollars();
+        $request['currency'] = $this->param('currency');
+        $request['testMode'] = $this->setting('test_mode') ? 100 : 0;
+        $request['MC_callback'] = $this->param('return_url');
+        $request['name'] = $this->param('name');
+        $request['address1'] = $this->param('address1');
+        $request['address2'] = $this->param('address2');
+        $request['town'] = $this->param('city');
+        $request['region'] = $this->param('region');
+        $request['postcode'] = $this->param('postcode');
+        $request['country'] = $this->param('country');
+        $request['tel'] = $this->param('phone');
+        $request['email'] = $this->param('email');
 
-		if ($this->setting('secret'))
-		{
-			$request['signatureFields'] = 'instId:amount:currency:cartId';
-			$signature_data = array($this->setting('secret'),
-				$request['instId'], $request['amount'], $request['currency'], $request['cartId']);
-			$request['signature'] = md5(implode(':', $signature_data));
-		}
+        if ($this->setting('secret')) {
+            $request['signatureFields'] = 'instId:amount:currency:cartId';
+            $signature_data = array($this->setting('secret'),
+                $request['instId'], $request['amount'], $request['currency'], $request['cartId']);
+            $request['signature'] = md5(implode(':', $signature_data));
+        }
 
-		$this->redirect($this->_process_url().'?'.http_build_query($request));
-	}
+        $this->redirect($this->_process_url().'?'.http_build_query($request));
+    }
 
-	public function purchase_return()
-	{
-		$callback_pw = (string)$this->CI->input->post('callbackPW');
-		if ($callback_pw != $this->setting('payment_response_password'))
-		{
-			return new Merchant_response(Merchant_response::FAILED, lang('merchant_invalid_response'));
-		}
+    public function purchase_return()
+    {
+        $callback_pw = (string) $this->CI->input->post('callbackPW');
+        if ($callback_pw != $this->setting('payment_response_password')) {
+            return new Merchant_response(Merchant_response::FAILED, lang('merchant_invalid_response'));
+        }
 
-		$status = $this->CI->input->post('transStatus');
-		if (empty($status))
-		{
-			return new Merchant_response(Merchant_response::FAILED, lang('merchant_invalid_response'));
-		}
-		elseif ($status != 'Y')
-		{
-			$message = $this->CI->input->post('rawAuthMessage');
-			return new Merchant_response(Merchant_response::FAILED, $message);
-		}
-		else
-		{
-			$transaction_id = $this->CI->input->post('transId');
-			$amount = $this->CI->input->post('authAmount');
-			return new Merchant_response(Merchant_response::COMPLETE, NULL, $transaction_id, $amount);
-		}
-	}
+        $status = $this->CI->input->post('transStatus');
+        if (empty($status)) {
+            return new Merchant_response(Merchant_response::FAILED, lang('merchant_invalid_response'));
+        } elseif ($status != 'Y') {
+            $message = $this->CI->input->post('rawAuthMessage');
 
-	private function _process_url()
-	{
-		return $this->setting('test_mode') ? self::PROCESS_URL_TEST : self::PROCESS_URL;
-	}
+            return new Merchant_response(Merchant_response::FAILED, $message);
+        } else {
+            $transaction_id = $this->CI->input->post('transId');
+            $amount = $this->CI->input->post('authAmount');
+
+            return new Merchant_response(Merchant_response::COMPLETE, NULL, $transaction_id, $amount);
+        }
+    }
+
+    private function _process_url()
+    {
+        return $this->setting('test_mode') ? self::PROCESS_URL_TEST : self::PROCESS_URL;
+    }
 }
 
 /* End of file ./libraries/merchant/drivers/merchant_worldpay.php */

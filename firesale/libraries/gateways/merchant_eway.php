@@ -33,82 +33,81 @@
 
 class Merchant_eway extends Merchant_driver
 {
-	const PROCESS_URL = 'https://www.eway.com.au/gateway_cvn/xmlpayment.asp';
-	const PROCESS_URL_TEST =  'https://www.eway.com.au/gateway_cvn/xmltest/testpage.asp';
+    const PROCESS_URL = 'https://www.eway.com.au/gateway_cvn/xmlpayment.asp';
+    const PROCESS_URL_TEST =  'https://www.eway.com.au/gateway_cvn/xmltest/testpage.asp';
 
-	public function default_settings()
-	{
-		return array(
-			'customer_id' => '',
-			'test_mode' => FALSE
-		);
-	}
+    public function default_settings()
+    {
+        return array(
+            'customer_id' => '',
+            'test_mode' => FALSE
+        );
+    }
 
-	public function purchase()
-	{
-		$request = $this->_build_purchase();
-		$response = $this->post_request($this->_process_url(), $request->asXML());
-		return new Merchant_eway_response($response);
-	}
+    public function purchase()
+    {
+        $request = $this->_build_purchase();
+        $response = $this->post_request($this->_process_url(), $request->asXML());
 
-	protected function _build_purchase()
-	{
-		// eway thows HTML formatted error if customerid is missing
-		if ( ! $this->setting('customer_id'))
-		{
-			return new Merchant_response(Merchant_response::FAILED, 'Missing Customer ID!');
-		}
+        return new Merchant_eway_response($response);
+    }
 
-		$this->require_params('card_no', 'name', 'exp_month', 'exp_year', 'csc');
+    protected function _build_purchase()
+    {
+        // eway thows HTML formatted error if customerid is missing
+        if ( ! $this->setting('customer_id')) {
+            return new Merchant_response(Merchant_response::FAILED, 'Missing Customer ID!');
+        }
 
-		$request = new SimpleXMLElement('<ewaygateway></ewaygateway>');
-		$request->ewayCustomerID = $this->setting('customer_id');
-		$request->ewayCustomerInvoiceDescription = $this->param('description');
-		$request->ewayCustomerInvoiceRef = $this->param('order_id');
-		$request->ewayTotalAmount = $this->amount_cents();
-		$request->ewayCardHoldersName = $this->param('name');
-		$request->ewayCardNumber = $this->param('card_no');
-		$request->ewayCardExpiryMonth = $this->param('exp_month');
-		$request->ewayCardExpiryYear = $this->param('exp_year') % 100;
-		$request->ewayCVN = $this->param('csc');
-		$request->ewayCustomerFirstName = $this->param('first_name');
-		$request->ewayCustomerLastName = $this->param('last_name');
-		$request->ewayCustomerEmail = $this->param('email');
-		$request->ewayCustomerAddress = trim($this->param('address1')." \n".$this->param('address2'));
-		$request->ewayCustomerPostcode = $this->param('postcode');
+        $this->require_params('card_no', 'name', 'exp_month', 'exp_year', 'csc');
 
-		// these need to be submitted, otherwise we get errors
-		$request->ewayTrxnNumber = '';
-		$request->ewayOption1 = '';
-		$request->ewayOption2 = '';
-		$request->ewayOption3 = '';
+        $request = new SimpleXMLElement('<ewaygateway></ewaygateway>');
+        $request->ewayCustomerID = $this->setting('customer_id');
+        $request->ewayCustomerInvoiceDescription = $this->param('description');
+        $request->ewayCustomerInvoiceRef = $this->param('order_id');
+        $request->ewayTotalAmount = $this->amount_cents();
+        $request->ewayCardHoldersName = $this->param('name');
+        $request->ewayCardNumber = $this->param('card_no');
+        $request->ewayCardExpiryMonth = $this->param('exp_month');
+        $request->ewayCardExpiryYear = $this->param('exp_year') % 100;
+        $request->ewayCVN = $this->param('csc');
+        $request->ewayCustomerFirstName = $this->param('first_name');
+        $request->ewayCustomerLastName = $this->param('last_name');
+        $request->ewayCustomerEmail = $this->param('email');
+        $request->ewayCustomerAddress = trim($this->param('address1')." \n".$this->param('address2'));
+        $request->ewayCustomerPostcode = $this->param('postcode');
 
-		return $request;
-	}
+        // these need to be submitted, otherwise we get errors
+        $request->ewayTrxnNumber = '';
+        $request->ewayOption1 = '';
+        $request->ewayOption2 = '';
+        $request->ewayOption3 = '';
 
-	protected function _process_url()
-	{
-		return $this->setting('test_mode') ? self::PROCESS_URL_TEST : self::PROCESS_URL;
-	}
+        return $request;
+    }
+
+    protected function _process_url()
+    {
+        return $this->setting('test_mode') ? self::PROCESS_URL_TEST : self::PROCESS_URL;
+    }
 }
 
 class Merchant_eway_response extends Merchant_response
 {
-	protected $_response;
+    protected $_response;
 
-	public function __construct($response)
-	{
-		$this->_response = simplexml_load_string($response);
+    public function __construct($response)
+    {
+        $this->_response = simplexml_load_string($response);
 
-		$this->_status = self::FAILED;
-		$this->_message = (string)$this->_response->ewayTrxnError;
-		$this->_reference = (string)$this->_response->ewayTrxnNumber;
+        $this->_status = self::FAILED;
+        $this->_message = (string) $this->_response->ewayTrxnError;
+        $this->_reference = (string) $this->_response->ewayTrxnNumber;
 
-		if ((string)$this->_response->ewayTrxnStatus == 'True')
-		{
-			$this->_status = self::COMPLETE;
-		}
-	}
+        if ((string) $this->_response->ewayTrxnStatus == 'True') {
+            $this->_status = self::COMPLETE;
+        }
+    }
 }
 
 /* End of file ./libraries/merchant/drivers/merchant_eway.php */

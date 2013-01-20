@@ -32,26 +32,23 @@
 
 class Merchant_dummy extends Merchant_driver
 {
-	const DUMMY_CARD = '4111111111111111';
+    const DUMMY_CARD = '4111111111111111';
 
-	public function default_settings()
-	{
-		return array();
-	}
+    public function default_settings()
+    {
+        return array();
+    }
 
-	public function purchase()
-	{
-		$this->require_params('card_no', 'name', 'exp_month', 'exp_year', 'csc');
+    public function purchase()
+    {
+        $this->require_params('card_no', 'name', 'exp_month', 'exp_year', 'csc');
 
-		if ($this->param('card_no') == self::DUMMY_CARD)
-		{
-			return new Merchant_response(Merchant_response::COMPLETE);
-		}
-		else
-		{
-			return new Merchant_response(Merchant_response::FAILED, 'The transaction was declined');
-		}
-	}
+        if ($this->param('card_no') == self::DUMMY_CARD) {
+            return new Merchant_response(Merchant_response::COMPLETE);
+        } else {
+            return new Merchant_response(Merchant_response::FAILED, 'The transaction was declined');
+        }
+    }
 }
 
 /* End of file ./libraries/merchant/drivers/merchant_dummy.php */

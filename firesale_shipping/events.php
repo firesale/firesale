@@ -3,36 +3,35 @@
 class Events_Firesale_shipping
 {
 
-	protected $ci;
-	
-	public function __construct()
-	{
+    protected $ci;
 
-		$this->ci =& get_instance();
-		
-		// register the events
-		Events::register('form_build', array($this, 'form_build'));
-	
-	}
+    public function __construct()
+    {
+
+        $this->ci =& get_instance();
+
+        // register the events
+        Events::register('form_build', array($this, 'form_build'));
+
+    }
 
     public function form_build($controller)
     {
 
-		// Check we're in products
-		if( isset($controller->section) AND $controller->section == 'products' )
-		{
+        // Check we're in products
+        if ( isset($controller->section) AND $controller->section == 'products' ) {
 
-			// Remove images (needs to be last)
-		    unset($controller->tabs['_images']);
+            // Remove images (needs to be last)
+            unset($controller->tabs['_images']);
 
-		    // Add metadata to tabs
-		    $controller->tabs['shipping'] = array('ship_req', 'shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth');
+            // Add metadata to tabs
+            $controller->tabs['shipping'] = array('ship_req', 'shipping_weight', 'shipping_height', 'shipping_width', 'shipping_depth');
 
-		    // Add images back in
-		    $controller->tabs['_images'] = array();
+            // Add images back in
+            $controller->tabs['_images'] = array();
 
-		}
+        }
 
     }
-	
+
 }

@@ -33,47 +33,46 @@
 
 class Merchant_bitpay extends Merchant_driver
 {
-	const PROCESS_URL = 'https://bitpay.com/api';
+    const PROCESS_URL = 'https://bitpay.com/api';
 
-	public function default_settings()
-	{
-		return array(
-			'api_key'     => '',
-			'trans_speed' => 'high',
-			'test_mode'   => FALSE
-		);
-	}
+    public function default_settings()
+    {
+        return array(
+            'api_key'     => '',
+            'trans_speed' => 'high',
+            'test_mode'   => FALSE
+        );
+    }
 
-	public function purchase()
-	{
+    public function purchase()
+    {
 
-		$data = array(
-			'price'            => $this->amount_dollars(),
-			'currency'         => $this->param('currency'),
-			'posData'          => array('ref' => $this->param('order_id'), 'hash' => md5($this->amount_dollars().$this->setting('api_key'))),
-			'notificationURL'  => '',
-			'transactionSpeed' => $this->setting('trans_speed'),
-			'redirectURL'      => $this->param('return_url'),
-			'orderID'          => $this->param('order_id'),
-			'buyerName'        => $this->param('first_name').' '.$this->param('last_name'),
-			'buyerAddress1'    => $this->param('address1'),
-			'buyerAddress2'    => $this->param('address2'),
-			'buyerCity'        => $this->param('city'),
-			'buyerZip'         => $this->param('postcode'),
-			'buyerCountry'     => $this->param('country'),
-			'buyerEmail'       => $this->param('email')
-		);
+        $data = array(
+            'price'            => $this->amount_dollars(),
+            'currency'         => $this->param('currency'),
+            'posData'          => array('ref' => $this->param('order_id'), 'hash' => md5($this->amount_dollars().$this->setting('api_key'))),
+            'notificationURL'  => '',
+            'transactionSpeed' => $this->setting('trans_speed'),
+            'redirectURL'      => $this->param('return_url'),
+            'orderID'          => $this->param('order_id'),
+            'buyerName'        => $this->param('first_name').' '.$this->param('last_name'),
+            'buyerAddress1'    => $this->param('address1'),
+            'buyerAddress2'    => $this->param('address2'),
+            'buyerCity'        => $this->param('city'),
+            'buyerZip'         => $this->param('postcode'),
+            'buyerCountry'     => $this->param('country'),
+            'buyerEmail'       => $this->param('email')
+        );
 
-		// Build URL
-		$url = $this->_process_url().'/invoice/'.$this->setting('api_key');
+        // Build URL
+        $url = $this->_process_url().'/invoice/'.$this->setting('api_key');
 
-		// Make request
-		$response = $this->post_request($url, json_encode($data));
+        // Make request
+        $response = $this->post_request($url, json_encode($data));
 
-		var_dump($response);
-		exit();
+        var_dump($response);
+        exit();
 
-	}
-
+    }
 
 }

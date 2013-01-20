@@ -29,7 +29,7 @@
 
         <br class="clear" />
         <br />
-    
+
         <h2><?php echo lang('firesale:orders:label_products'); ?></h2>
 
         <table class="firesale standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">

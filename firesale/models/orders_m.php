@@ -11,536 +11,497 @@
 class Orders_m extends MY_Model
 {
 
-	public function __construct()
-	{
-		parent::__construct();
+    public function __construct()
+    {
+        parent::__construct();
 
-		$this->load->model('firesale/products_m');
-	}
-  
+        $this->load->model('firesale/products_m');
+    }
+
     /**
      * Gets the products for a given order
      *
-     * @param integer $order_id The Order ID to query
-     * @return array The products from the Order
+     * @param  integer $order_id The Order ID to query
+     * @return array   The products from the Order
      * @access public
      */
-	public function order_products($order_id)
-	{
+    public function order_products($order_id)
+    {
 
-		$total = 0; 
-		$items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`, i.`options`
-								   FROM `' . SITE_REF . '_firesale_orders_items` AS i
-						  		   INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
-						 		   WHERE i.`order_id` = ' . $order_id . '
-								   GROUP BY i.`product_id`
-								   ORDER BY `count` DESC')->result_array();
+        $total = 0;
+        $items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`, i.`options`
+                                   FROM `' . SITE_REF . '_firesale_orders_items` AS i
+                                     INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
+                                    WHERE i.`order_id` = ' . $order_id . '
+                                   GROUP BY i.`product_id`
+                                   ORDER BY `count` DESC')->result_array();
 
-		// Build overall count and add image
-		foreach( $items AS &$item )
-		{
-			$total          += $item['count'];
-			$item['image']   = $this->products_m->get_single_image($item['id']);
-			$item['options'] = ! empty($item['options']) ? unserialize($item['options']) : NULL;
-		}
-		
-		// Return
-		return array('count' => $total, 'products' => $items);
-	}
+        // Build overall count and add image
+        foreach ($items AS &$item) {
+            $total          += $item['count'];
+            $item['image']   = $this->products_m->get_single_image($item['id']);
+            $item['options'] = ! empty($item['options']) ? unserialize($item['options']) : NULL;
+        }
 
-	/**
-	 * Deletes a given order and the products contained in it
-	 *
-     * @param integer $order_id The Order ID to query
+        // Return
+        return array('count' => $total, 'products' => $items);
+    }
+
+    /**
+     * Deletes a given order and the products contained in it
+     *
+     * @param  integer $order_id The Order ID to query
      * @return boolean TRUE or FALSE on successful delete
      * @access public
      */
-	public function delete_order($order_id)
-	{
-
-		if( $this->db->where('id', $order_id)->delete('firesale_orders') )
-		{
-			if( $this->db->where('order_id', $order_id)->delete('firesale_orders_items') )
-			{
-				return TRUE;
-			}
-		}
-
-		return FALSE;
-	}
-
-	/**
-	 * Builds the user field used in the order administration section.
-	 *
-	 * @param integer $id (Optional) User ID to pre-select
-	 * @return array The user input to be slotted into the streams array
-	 * @access public
-	 */
-	public function user_field($id = NULL)
-	{
-
-		// Variables
-		$array = array(
-					'input_title'  => 'lang:firesale:label_user_order',
-					'input_slug'   => 'created_by',
-					'instructions' => '',
-					'value'		   => $id,
-					'input'		   => '',
-					'input_parts'  => '',
-					'error_raw'	   => '',
-					'error'		   => '',
-					'required'	   => '<span>*</span>',
-					'odd_even'	   => 'odd'
-				);
-
-		// Build user list
-		$users = $this->db->select('u.id, u.email, p.display_name')
-						  ->from('users AS u')
-						  ->join('profiles AS p', 'p.user_id = u.id', 'inner')
-						  ->get()
-						  ->result_array();
-
-		// Start building list
-		$list  = array('0' => lang('firesale:label_user_order'));
-
-		// Loop users
-		foreach( $users AS $user )
-		{
-			$list[$user['id']] = $user['display_name'] . ' ( ' . $user['email'] . ' )';
-		}
-
-		// Assign it to the array
-		$array['input'] = form_dropdown('created_by', $list, $id);
-
-		// Return
-		return $array;
-	}
-
-	/**
-	 * Builds the status field used in the order administration section.
-	 *
-	 * @return array The status input to be turned into a dropdown
-	 * @access public
-	 */
-	public function status_field()
-	{
-
-		// Start building list
-		$list  = array('0' => lang('firesale:label_order_status'));
-
-		// Get data from streams
-		$query = $this->db->select('field_data')
-						  ->where('field_namespace', 'firesale_orders')
-						  ->where('field_slug', 'order_status')
-						  ->get('data_fields')
-						  ->result_array();
-
-		// Check for results
-		if( !empty($query) )
-		{
-
-			// Get field data
-			$result = current($query);
-			$data   = unserialize($result['field_data']);
-
-			// Get options
-			$options = explode("\n", $data['choice_data']);
-
-			// Loop and assign
-			foreach( $options AS $option )
-			{
-				list($key, $val) = explode(' : ', $option);
-				$list[$key]      = lang(substr($val, 5));
-			}
-
-		}
-
-		return $list;
-	}
-
-
-	/**
-	 * Builds the product field used in the order administration section.
-	 *
-	 * @param integer $id (Optional) Product ID to pre-select
-	 * @return array The product dropdowm
-	 * @access public
-	 */
-	public function product_dropdown($id = NULL)
-	{
-
-		// Variables
-		$list = array('0' => lang('firesale:label_product_order'));
-		$drop = '';
-
-		// Get products
-		$products = $this->db->select('id, title')->order_by('id')->get('firesale_products')->result_array();
-
-		// Loop products
-		foreach( $products AS $product )
-		{
-			$list[$product['id']] = $product['title'];
-		}
-
-		// Build the dropbown
-		$drop = form_dropdown('products', $list, $id);
-
-		// Return it
-		return $drop;
-	}
-
-	/**
-	 * Inserts an order and its' products into the database
-	 *
-	 * @param array $input A POST array containing all of the order information
-	 * @return integer Either an int containing the order ID or FALSE on failure
-	 * @access public
-	 */
-	public function insert_order($input)
-	{
-
-		// Remove address input
-		$remove = array('bill_', 'ship_', 'btnAc');
-		$ignore = array('shipping', 'ship_to', 'bill_to');
-		foreach( $input AS $key => $val )
-		{
-			if( in_array(substr($key, 0, 5), $remove) AND !in_array($key, $ignore) )
-			{
-				unset($input[$key]);
-			}
-		}
-
-		// Check shipping is set
-		if( !isset($input['shipping']) OR empty($input['shipping']) )
-		{
-			$input['shipping'] = 0;
-		}
-
-		// Get currency
-		$user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
-		$currency      = $this->currency_m->get($user_currency);
-
-		// Append input
-		$input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
-		$input['price_ship']   	 = str_replace(',', '', $input['price_ship']);
-		$input['price_total']    = str_replace(',', '', $input['price_total']);
-		$input['ip']			 = $_SERVER['REMOTE_ADDR'];
-		$input['created'] 		 = date("Y-m-d H:i:s");
-		$input['ordering_count'] = 0;
-		$input['currency']       = $user_currency;
-		$input['exchange_rate']  = $currency->exch_rate;
-		unset($input['btnAction']);
-		unset($input['bill_details_same']);
-
-		// Insert it
-		if( $this->db->insert('firesale_orders', $input) )
-		{
-			return $this->db->insert_id();
-		}
-
-		return FALSE;
-	}
-
-	/**
-	 * Inserts or Updates a product in the given order.
-	 *
-	 * @param integer $order_id The Order ID to modify
-	 * @param array $product The product data to use
-	 * @param integer $qty The quantity to add
-	 * @return boolean TRUE or FALSE on failure or success
-	 * @access public
-	 */
-	public function insert_update_order_item($order_id, $product, $qty)
-	{
-		$this->db->from('firesale_orders_items')
-				 ->where("order_id", $order_id)
-				 ->where("product_id", $product['id']);
-
-		// Stock?
-		if( isset($product['stock']) AND $product['stock_status']['key'] != 6 AND $qty > $product['stock'] )
-		{
-			$qty = $product['stock'];
-		}
-					
-		if( $this->db->count_all_results() == 0 )
-		{
-			$data = array(
-				'created'		 => date("Y-m-d H:i:s"),
-				'created_by'     => ( isset($this->current_user->id) ? $this->current_user->id : null ),
-				'ordering_count' => 0,
-				'order_id'		 => $order_id,
-				'product_id'	 => $product['id'],
-				'code'			 => $product['code'],
-				'name'			 => ( isset($product['title']) ? $product['title'] : $product['name'] ),
-				'price'			 => $product['price'],
-				'qty'			 => $qty,
-				'tax_band'       => $product['tax_band']['id'],
-				'options'        => isset($product['options']) ? serialize($product['options']) : null
-		 	);
-
-		 	if( $this->db->insert('firesale_orders_items', $data) )
-			{
-				return TRUE;
-			}
-
-		}
-		else
-		{
-
-			if( $this->db->where('order_id', $order_id)->where('product_id', $product['id'])->update('firesale_orders_items', array('qty' => $qty)) )
-			{
-				return TRUE;
-			}
-
-		}
-
-		return FALSE;
-	}
-
-	/**
-	 * Updates the cost of the order based on the current cart contents.
-	 *
-	 * @param integer $order_id The order ID to update
-	 * @param boolean $update (Optional) Should the database be updated
-	 * @param boolean $cart (Optional) Should the cart be updated
-	 * @return void
-	 * @access public
-	 */
-	public function update_order_cost($order_id, $update = TRUE, $cart = TRUE)
-	{
-
-		// Get tax rate
-		$user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
-		$currency      = $this->currency_m->get($user_currency);
-
-		// Variables
-		$total = 0;
-		$tax   = $currency->cur_tax;
-
-		// Run through cart items
-		if( $cart == TRUE )
-		{
-			foreach( $this->fs_cart->contents() AS $item )
-			{
-				$total += ( $item['qty'] * $item['price'] );
-			}
-		}
-		// Otherwise use DB entries
-		else
-		{
-			$products = $this->db->where('order_id', $order_id)->get('firesale_orders_items')->result_array();
-			foreach( $products AS $product )
-			{
-				$total += ( $product['qty'] * $product['price'] );
-			}
-		}
-
-		// Format
-		$total = round($total, 2);
-		$sub   = round($total - ( ( $total / 100 ) * $tax ), 2);
-
-		// Update cart
-		if( $cart == TRUE )
-		{
-			$this->fs_cart->total    = number_format($total, 2);
-			$this->fs_cart->subtotal = number_format($sub, 2);
-			$this->fs_cart->tax 	 = number_format(( $total - $sub), 2);
-		}
-
-		// Update?
-		if( $update == TRUE )
-		{
-			$this->db->where('id', $order_id)->update('firesale_orders', array('price_total' => $total, 'price_sub' => $sub));
-		}
-
-	}
-
-	/**
-	 * Removes an item from the given order.
-	 *
-	 * @param integer $order_id The Order ID to update
-	 * @param integer $product_id The Product ID to remove
-	 * @return void
-	 * @access public
-	 */
-	public function remove_order_item($order_id, $product_id)
-	{
-		$this->db->where("order_id", $order_id)
-				 ->where("product_id", $product_id)
-				 ->delete('firesale_orders_items');
-	}
-
-	/**
-	 * Gets the last order placed by a given user
-	 *
-	 * @param integer $user_id The User ID to query
-	 * @return array
-	 * @access public
-	 */
-	public function get_last_order($user_id)
-	{
-		$previous_order = $this->db->order_by('created', 'desc')
-								   ->get_where('firesale_orders', array('created_by' => $user_id), 1);
-					
-		if( $previous_order->num_rows() )
-		{
-			return $previous_order->row_array();
-		}
-
-		return FALSE;
-	}
-
-	/**
-	 * Gets the number of different products in a given order
-	 *
-	 * @param integer $order_id The Order ID to query
-	 * @return integer
-	 * @access public
-	 */
-	public function get_product_count($order_id)
-	{
-
-		$query = $this->db->select('id')->where("order_id = {$order_id}")->get('firesale_orders_items');
-		return $query->num_rows();
-	}
-
-	/**
-	 * Gets an order and its' products by ID
-	 *
-	 * @param integer $order_id The Order ID to query
-	 * @return array
-	 * @access public
-	 */
-	public function get_order_by_id($order_id)
-	{
-
-		// Set query paramaters
-		$params	 = array(
-					'stream' 	=> 'firesale_orders',
-					'namespace'	=> 'firesale_orders',
-					'where'		=> "id = '{$order_id}'",
-					'limit'		=> 1
-				   );
-		
-		// Get entries		
-		$order = $this->streams->entries->get_entries($params);
-
-		if( $order['total'] == 1 )
-		{
-
-			$order 			    = $order['entries'][0];
-			$order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int)$order_id))->result_array();
-			$order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['price_ship'] ), 2);
-
-			foreach( $order['items'] AS $key => &$item )
-			{
-
-				// Get the product
-				$product       = $this->products_m->get_product($item['product_id']);
-
-				// Check it exists
-				if( $product !== FALSE )
-				{
-					$item['id']	   = $product['id'];
-					$item          = array_merge($product, $item);
-					$item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
-					$item['no']	   = ( $key + 1 );
-				}
-
-			}
-
-			return $order;
-		}
-		
-		return FALSE;
-	}
-
-	/**
-	 * Updates a products stock level and status based on it.
-	 *
-	 * @param integer $id The Product ID to update
-	 * @param integer $stock The stock level to remove
-	 * @return boolean TRUE or FALSE on successful update
-	 * @access public
-	 */
-	public function update_product_stock($id, $stock)
-	{
-
-		// Variables
-		$low	 = 10; // Move to settings
-		$product = $this->products_m->get_product($id);
-
-		if( $product )
-		{
-
-			$data = array();
-			$data['stock']  = ( $product['stock'] - $stock );
-
-			// Get status
-			if( $product['stock_status']['key'] == 6 )
-			{
-				// Unlimited, do nothing
-				return TRUE;
-			}
-			else if( $data['stock'] < 0 )
-			{
-				// We dun fucked up
-				$data['stock_status'] = 3;
-			}
-			else if( $data['stock'] == 0 )
-			{
-				$data['stock_status'] = 3;
-			}
-			else if( $data['stock'] <= $low )
-			{
-				$data['stock_status'] = 2;
-			}
-			else
-			{
-				$data['stock_status'] = 1;
-			}
-
-			// Update table
-			$this->db->where("id = '{$product['id']}'")->update('firesale_products', $data);
-			return TRUE;
-
-		}
-
-		return FALSE;
-	}
-
-	/**
-	 * Updates the status of a given order
-	 *
-	 * @param integer $order_id The Order ID to update
-	 * @param integer $status (Optional) The status code to set it to
-	 * @param boolean TRUE or FALSE on successful update
-	 * @access public
-	 */
-	public function update_status($order_id, $status = 0)
-	{
-
-		// Update order status
-		if( $this->db->where('id', $order_id)->update('firesale_orders', array('order_status' => $status)) )
-		{
-
-			// Email update for dispatched
-			if( $status == 3 )
-			{
-
-				// Get the order
-				$order = $this->orders_m->get_order_by_id($order_id);
-
-				// Email the user
-				Events::trigger('email', array_merge($order, array('slug' => 'order-dispatched', 'to' => $order['bill_to']['email'])), 'array');
-
-			}
-
-
-			return TRUE;
-		}
-
-		return FALSE;
-	}
+    public function delete_order($order_id)
+    {
+
+        if ( $this->db->where('id', $order_id)->delete('firesale_orders') ) {
+            if ( $this->db->where('order_id', $order_id)->delete('firesale_orders_items') ) {
+                return TRUE;
+            }
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Builds the user field used in the order administration section.
+     *
+     * @param  integer $id (Optional) User ID to pre-select
+     * @return array   The user input to be slotted into the streams array
+     * @access public
+     */
+    public function user_field($id = NULL)
+    {
+
+        // Variables
+        $array = array(
+                    'input_title'  => 'lang:firesale:label_user_order',
+                    'input_slug'   => 'created_by',
+                    'instructions' => '',
+                    'value'		   => $id,
+                    'input'		   => '',
+                    'input_parts'  => '',
+                    'error_raw'	   => '',
+                    'error'		   => '',
+                    'required'	   => '<span>*</span>',
+                    'odd_even'	   => 'odd'
+                );
+
+        // Build user list
+        $users = $this->db->select('u.id, u.email, p.display_name')
+                          ->from('users AS u')
+                          ->join('profiles AS p', 'p.user_id = u.id', 'inner')
+                          ->get()
+                          ->result_array();
+
+        // Start building list
+        $list  = array('0' => lang('firesale:label_user_order'));
+
+        // Loop users
+        foreach ($users AS $user) {
+            $list[$user['id']] = $user['display_name'] . ' ( ' . $user['email'] . ' )';
+        }
+
+        // Assign it to the array
+        $array['input'] = form_dropdown('created_by', $list, $id);
+
+        // Return
+        return $array;
+    }
+
+    /**
+     * Builds the status field used in the order administration section.
+     *
+     * @return array The status input to be turned into a dropdown
+     * @access public
+     */
+    public function status_field()
+    {
+
+        // Start building list
+        $list  = array('0' => lang('firesale:label_order_status'));
+
+        // Get data from streams
+        $query = $this->db->select('field_data')
+                          ->where('field_namespace', 'firesale_orders')
+                          ->where('field_slug', 'order_status')
+                          ->get('data_fields')
+                          ->result_array();
+
+        // Check for results
+        if ( !empty($query) ) {
+
+            // Get field data
+            $result = current($query);
+            $data   = unserialize($result['field_data']);
+
+            // Get options
+            $options = explode("\n", $data['choice_data']);
+
+            // Loop and assign
+            foreach ($options AS $option) {
+                list($key, $val) = explode(' : ', $option);
+                $list[$key]      = lang(substr($val, 5));
+            }
+
+        }
+
+        return $list;
+    }
+
+    /**
+     * Builds the product field used in the order administration section.
+     *
+     * @param  integer $id (Optional) Product ID to pre-select
+     * @return array   The product dropdowm
+     * @access public
+     */
+    public function product_dropdown($id = NULL)
+    {
+
+        // Variables
+        $list = array('0' => lang('firesale:label_product_order'));
+        $drop = '';
+
+        // Get products
+        $products = $this->db->select('id, title')->order_by('id')->get('firesale_products')->result_array();
+
+        // Loop products
+        foreach ($products AS $product) {
+            $list[$product['id']] = $product['title'];
+        }
+
+        // Build the dropbown
+        $drop = form_dropdown('products', $list, $id);
+
+        // Return it
+        return $drop;
+    }
+
+    /**
+     * Inserts an order and its' products into the database
+     *
+     * @param  array   $input A POST array containing all of the order information
+     * @return integer Either an int containing the order ID or FALSE on failure
+     * @access public
+     */
+    public function insert_order($input)
+    {
+
+        // Remove address input
+        $remove = array('bill_', 'ship_', 'btnAc');
+        $ignore = array('shipping', 'ship_to', 'bill_to');
+        foreach ($input AS $key => $val) {
+            if ( in_array(substr($key, 0, 5), $remove) AND !in_array($key, $ignore) ) {
+                unset($input[$key]);
+            }
+        }
+
+        // Check shipping is set
+        if ( !isset($input['shipping']) OR empty($input['shipping']) ) {
+            $input['shipping'] = 0;
+        }
+
+        // Get currency
+        $user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $currency      = $this->currency_m->get($user_currency);
+
+        // Append input
+        $input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
+        $input['price_ship']   	 = str_replace(',', '', $input['price_ship']);
+        $input['price_total']    = str_replace(',', '', $input['price_total']);
+        $input['ip']			 = $_SERVER['REMOTE_ADDR'];
+        $input['created'] 		 = date("Y-m-d H:i:s");
+        $input['ordering_count'] = 0;
+        $input['currency']       = $user_currency;
+        $input['exchange_rate']  = $currency->exch_rate;
+        unset($input['btnAction']);
+        unset($input['bill_details_same']);
+
+        // Insert it
+        if ( $this->db->insert('firesale_orders', $input) ) {
+            return $this->db->insert_id();
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Inserts or Updates a product in the given order.
+     *
+     * @param  integer $order_id The Order ID to modify
+     * @param  array   $product  The product data to use
+     * @param  integer $qty      The quantity to add
+     * @return boolean TRUE or FALSE on failure or success
+     * @access public
+     */
+    public function insert_update_order_item($order_id, $product, $qty)
+    {
+        $this->db->from('firesale_orders_items')
+                 ->where("order_id", $order_id)
+                 ->where("product_id", $product['id']);
+
+        // Stock?
+        if ( isset($product['stock']) AND $product['stock_status']['key'] != 6 AND $qty > $product['stock'] ) {
+            $qty = $product['stock'];
+        }
+
+        if ( $this->db->count_all_results() == 0 ) {
+            $data = array(
+                'created'		 => date("Y-m-d H:i:s"),
+                'created_by'     => ( isset($this->current_user->id) ? $this->current_user->id : null ),
+                'ordering_count' => 0,
+                'order_id'		 => $order_id,
+                'product_id'	 => $product['id'],
+                'code'			 => $product['code'],
+                'name'			 => ( isset($product['title']) ? $product['title'] : $product['name'] ),
+                'price'			 => $product['price'],
+                'qty'			 => $qty,
+                'tax_band'       => $product['tax_band']['id'],
+                'options'        => isset($product['options']) ? serialize($product['options']) : null
+             );
+
+             if ( $this->db->insert('firesale_orders_items', $data) ) {
+                return TRUE;
+            }
+
+        } else {
+
+            if ( $this->db->where('order_id', $order_id)->where('product_id', $product['id'])->update('firesale_orders_items', array('qty' => $qty)) ) {
+                return TRUE;
+            }
+
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Updates the cost of the order based on the current cart contents.
+     *
+     * @param  integer $order_id The order ID to update
+     * @param  boolean $update   (Optional) Should the database be updated
+     * @param  boolean $cart     (Optional) Should the cart be updated
+     * @return void
+     * @access public
+     */
+    public function update_order_cost($order_id, $update = TRUE, $cart = TRUE)
+    {
+
+        // Get tax rate
+        $user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+        $currency      = $this->currency_m->get($user_currency);
+
+        // Variables
+        $total = 0;
+        $tax   = $currency->cur_tax;
+
+        // Run through cart items
+        if ($cart == TRUE) {
+            foreach ( $this->fs_cart->contents() AS $item ) {
+                $total += ( $item['qty'] * $item['price'] );
+            }
+        }
+        // Otherwise use DB entries
+        else {
+            $products = $this->db->where('order_id', $order_id)->get('firesale_orders_items')->result_array();
+            foreach ($products AS $product) {
+                $total += ( $product['qty'] * $product['price'] );
+            }
+        }
+
+        // Format
+        $total = round($total, 2);
+        $sub   = round($total - ( ( $total / 100 ) * $tax ), 2);
+
+        // Update cart
+        if ($cart == TRUE) {
+            $this->fs_cart->total    = number_format($total, 2);
+            $this->fs_cart->subtotal = number_format($sub, 2);
+            $this->fs_cart->tax 	 = number_format(( $total - $sub), 2);
+        }
+
+        // Update?
+        if ($update == TRUE) {
+            $this->db->where('id', $order_id)->update('firesale_orders', array('price_total' => $total, 'price_sub' => $sub));
+        }
+
+    }
+
+    /**
+     * Removes an item from the given order.
+     *
+     * @param  integer $order_id   The Order ID to update
+     * @param  integer $product_id The Product ID to remove
+     * @return void
+     * @access public
+     */
+    public function remove_order_item($order_id, $product_id)
+    {
+        $this->db->where("order_id", $order_id)
+                 ->where("product_id", $product_id)
+                 ->delete('firesale_orders_items');
+    }
+
+    /**
+     * Gets the last order placed by a given user
+     *
+     * @param  integer $user_id The User ID to query
+     * @return array
+     * @access public
+     */
+    public function get_last_order($user_id)
+    {
+        $previous_order = $this->db->order_by('created', 'desc')
+                                   ->get_where('firesale_orders', array('created_by' => $user_id), 1);
+
+        if ( $previous_order->num_rows() ) {
+            return $previous_order->row_array();
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Gets the number of different products in a given order
+     *
+     * @param  integer $order_id The Order ID to query
+     * @return integer
+     * @access public
+     */
+    public function get_product_count($order_id)
+    {
+
+        $query = $this->db->select('id')->where("order_id = {$order_id}")->get('firesale_orders_items');
+
+        return $query->num_rows();
+    }
+
+    /**
+     * Gets an order and its' products by ID
+     *
+     * @param  integer $order_id The Order ID to query
+     * @return array
+     * @access public
+     */
+    public function get_order_by_id($order_id)
+    {
+
+        // Set query paramaters
+        $params	 = array(
+                    'stream' 	=> 'firesale_orders',
+                    'namespace'	=> 'firesale_orders',
+                    'where'		=> "id = '{$order_id}'",
+                    'limit'		=> 1
+                   );
+
+        // Get entries
+        $order = $this->streams->entries->get_entries($params);
+
+        if ($order['total'] == 1) {
+
+            $order 			    = $order['entries'][0];
+            $order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int) $order_id))->result_array();
+            $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['price_ship'] ), 2);
+
+            foreach ($order['items'] AS $key => &$item) {
+
+                // Get the product
+                $product       = $this->products_m->get_product($item['product_id']);
+
+                // Check it exists
+                if ($product !== FALSE) {
+                    $item['id']	   = $product['id'];
+                    $item          = array_merge($product, $item);
+                    $item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
+                    $item['no']	   = ( $key + 1 );
+                }
+
+            }
+
+            return $order;
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Updates a products stock level and status based on it.
+     *
+     * @param  integer $id    The Product ID to update
+     * @param  integer $stock The stock level to remove
+     * @return boolean TRUE or FALSE on successful update
+     * @access public
+     */
+    public function update_product_stock($id, $stock)
+    {
+
+        // Variables
+        $low	 = 10; // Move to settings
+        $product = $this->products_m->get_product($id);
+
+        if ($product) {
+
+            $data = array();
+            $data['stock']  = ( $product['stock'] - $stock );
+
+            // Get status
+            if ($product['stock_status']['key'] == 6) {
+                // Unlimited, do nothing
+                return TRUE;
+            } elseif ($data['stock'] < 0) {
+                // We dun fucked up
+                $data['stock_status'] = 3;
+            } elseif ($data['stock'] == 0) {
+                $data['stock_status'] = 3;
+            } elseif ($data['stock'] <= $low) {
+                $data['stock_status'] = 2;
+            } else {
+                $data['stock_status'] = 1;
+            }
+
+            // Update table
+            $this->db->where("id = '{$product['id']}'")->update('firesale_products', $data);
+
+            return TRUE;
+
+        }
+
+        return FALSE;
+    }
+
+    /**
+     * Updates the status of a given order
+     *
+     * @param integer $order_id The Order ID to update
+     * @param integer $status   (Optional) The status code to set it to
+     * @param boolean TRUE or FALSE on successful update
+     * @access public
+     */
+    public function update_status($order_id, $status = 0)
+    {
+
+        // Update order status
+        if ( $this->db->where('id', $order_id)->update('firesale_orders', array('order_status' => $status)) ) {
+
+            // Email update for dispatched
+            if ($status == 3) {
+
+                // Get the order
+                $order = $this->orders_m->get_order_by_id($order_id);
+
+                // Email the user
+                Events::trigger('email', array_merge($order, array('slug' => 'order-dispatched', 'to' => $order['bill_to']['email'])), 'array');
+
+            }
+
+            return TRUE;
+        }
+
+        return FALSE;
+    }
 
 }

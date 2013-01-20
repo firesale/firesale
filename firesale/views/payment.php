@@ -26,7 +26,7 @@
             <li>{{ bill_to.country.name }}</li>
           </ul>
         </div>
-    
+
         <div class="firesale width-onethird payment last">
           <h2>Payment Details</h2>
 {{ payment }}
@@ -34,7 +34,7 @@
 
         <br class="clear" />
         <br />
-    
+
         <h2>Products</h2>
 
         <table class="firesale standard orders" width="100%" cellpadding="0" cellspacing="0" border="0">

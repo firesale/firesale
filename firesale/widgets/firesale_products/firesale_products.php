@@ -1,5 +1,5 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
- 
+
 class Widget_FireSale_Products extends Widgets
 {
 
@@ -9,7 +9,7 @@ class Widget_FireSale_Products extends Widgets
     public $author      = 'Jamie Holdroyd';
     public $website     = 'http://www.getfiresale.org';
     public $version     = '1.1.0';
- 
+
     // Form Fields
     public $fields  =  array(
         'title'     => array('field' => 'title', 'label' => 'Title', 'rules' => 'required'),
@@ -17,7 +17,7 @@ class Widget_FireSale_Products extends Widgets
         'sale_only' => array('field' => 'sale_only', 'label' => 'Sale Items', 'rules' => 'numeric'),
         'limit'     => array('field' => 'limit', 'label' => 'Number to Show', 'rules' => 'numeric|required'),
     );
- 
+
     // Element Build
     public function run($options)
     {
@@ -32,13 +32,11 @@ class Widget_FireSale_Products extends Widgets
         $params = array();
 
         // Add paramaters
-        if( $options['category'] != '0' )
-        {
+        if ($options['category'] != '0') {
             $params['category'] = $options['category'];
         }
 
-        if( $options['sale_only'] == '1' )
-        {
+        if ($options['sale_only'] == '1') {
             $params['sale'] = '1';
         }
 
@@ -46,10 +44,8 @@ class Widget_FireSale_Products extends Widgets
         $products = $this->products_m->get_products($params, $start, $limit);
 
         // Assign products
-        if( !empty($products) )
-        {
-            foreach( $products AS &$product )
-            {
+        if ( !empty($products) ) {
+            foreach ($products AS &$product) {
                 $product = $this->products_m->get_product($product['id']);
             }
         }
@@ -57,7 +53,7 @@ class Widget_FireSale_Products extends Widgets
         // Store the feed items
         return array('products' => $products);
     }
- 
+
     // Options
     public function form()
     {

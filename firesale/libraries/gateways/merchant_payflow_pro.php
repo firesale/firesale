@@ -33,131 +33,129 @@
 
 class Merchant_payflow_pro extends Merchant_driver
 {
-	const PROCESS_URL = 'https://payflowpro.paypal.com';
-	const PROCESS_URL_TEST = 'https://pilot-payflowpro.paypal.com';
+    const PROCESS_URL = 'https://payflowpro.paypal.com';
+    const PROCESS_URL_TEST = 'https://pilot-payflowpro.paypal.com';
 
-	public function default_settings()
-	{
-		return array(
-			'vendor' => '',
-			'username' => '',
-			'password' => '',
-			'partner' => 'PayPal',
-			'test_mode' => FALSE
-		);
-	}
+    public function default_settings()
+    {
+        return array(
+            'vendor' => '',
+            'username' => '',
+            'password' => '',
+            'partner' => 'PayPal',
+            'test_mode' => FALSE
+        );
+    }
 
-	public function authorize()
-	{
-		$request = $this->_build_authorize_or_purchase('A');
-		$response = $this->post_request($this->_process_url(), $request);
-		return new Merchant_payflow_pro_response($response, Merchant_response::AUTHORIZED);
-	}
+    public function authorize()
+    {
+        $request = $this->_build_authorize_or_purchase('A');
+        $response = $this->post_request($this->_process_url(), $request);
 
-	public function capture()
-	{
-		$request = $this->_build_capture_or_refund('D');
-		$response = $this->post_request($this->_process_url(), $request);
-		return new Merchant_payflow_pro_response($response, Merchant_response::COMPLETE);
-	}
+        return new Merchant_payflow_pro_response($response, Merchant_response::AUTHORIZED);
+    }
 
-	public function purchase()
-	{
-		$request = $this->_build_authorize_or_purchase('S');
-		$response = $this->post_request($this->_process_url(), $request);
-		return new Merchant_payflow_pro_response($response, Merchant_response::COMPLETE);
-	}
+    public function capture()
+    {
+        $request = $this->_build_capture_or_refund('D');
+        $response = $this->post_request($this->_process_url(), $request);
 
-	public function refund()
-	{
-		$request = $this->_build_capture_or_refund('C');
-		$response = $this->post_request($this->_process_url(), $request);
-		return new Merchant_payflow_pro_response($response, Merchant_response::REFUNDED);
-	}
+        return new Merchant_payflow_pro_response($response, Merchant_response::COMPLETE);
+    }
 
-	protected function _build_authorize_or_purchase($method)
-	{
-		$this->require_params('card_no', 'first_name', 'last_name', 'exp_month', 'exp_year', 'csc');
+    public function purchase()
+    {
+        $request = $this->_build_authorize_or_purchase('S');
+        $response = $this->post_request($this->_process_url(), $request);
 
-		$request = $this->_new_request($method);
-		$request['TENDER'] = 'C';
-		$request['ACCT'] = $this->param('card_no');
-		$request['AMT'] = $this->amount_dollars();
-		$request['EXPDATE'] = $this->param('exp_month').($this->param('exp_year') % 100);
-		$request['COMMENT1'] = $this->param('description');
-		$request['CVV2'] = $this->param('csc');
-		$request['BILLTOFIRSTNAME'] = $this->param('first_name');
-		$request['BILLTOLASTNAME'] = $this->param('last_name');
-		$request['BILLTOSTREET'] = trim($this->param('address1')." \n".$this->param('address2'));
-		$request['BILLTOCITY'] = $this->param('city');
-		$request['BILLTOSTATE'] = $this->param('region');
-		$request['BILLTOZIP'] = $this->param('postcode');
-		$request['BILLTOCOUNTRY'] = $this->param('country');
+        return new Merchant_payflow_pro_response($response, Merchant_response::COMPLETE);
+    }
 
-		return $request;
-	}
+    public function refund()
+    {
+        $request = $this->_build_capture_or_refund('C');
+        $response = $this->post_request($this->_process_url(), $request);
 
-	protected function _build_capture_or_refund($method)
-	{
-		$this->require_params('reference', 'amount');
+        return new Merchant_payflow_pro_response($response, Merchant_response::REFUNDED);
+    }
 
-		$request = $this->_new_request($method);
-		$request['AMT'] = $this->amount_dollars();
-		$request['ORIGID'] = $this->param('reference');
+    protected function _build_authorize_or_purchase($method)
+    {
+        $this->require_params('card_no', 'first_name', 'last_name', 'exp_month', 'exp_year', 'csc');
 
-		return $request;
-	}
+        $request = $this->_new_request($method);
+        $request['TENDER'] = 'C';
+        $request['ACCT'] = $this->param('card_no');
+        $request['AMT'] = $this->amount_dollars();
+        $request['EXPDATE'] = $this->param('exp_month').($this->param('exp_year') % 100);
+        $request['COMMENT1'] = $this->param('description');
+        $request['CVV2'] = $this->param('csc');
+        $request['BILLTOFIRSTNAME'] = $this->param('first_name');
+        $request['BILLTOLASTNAME'] = $this->param('last_name');
+        $request['BILLTOSTREET'] = trim($this->param('address1')." \n".$this->param('address2'));
+        $request['BILLTOCITY'] = $this->param('city');
+        $request['BILLTOSTATE'] = $this->param('region');
+        $request['BILLTOZIP'] = $this->param('postcode');
+        $request['BILLTOCOUNTRY'] = $this->param('country');
 
-	protected function _new_request($method)
-	{
-		$request = array();
-		$request['TRXTYPE'] = $method;
-		$request['VENDOR'] = $this->setting('vendor');
-		$request['PWD'] = $this->setting('password');
-		$request['PARTNER'] = $this->setting('partner');
+        return $request;
+    }
 
-		if ($this->setting('username'))
-		{
-			$request['USER'] = $this->setting('username');
-		}
-		else
-		{
-			$request['USER'] = $this->setting('vendor');
-		}
+    protected function _build_capture_or_refund($method)
+    {
+        $this->require_params('reference', 'amount');
 
-		return $request;
-	}
+        $request = $this->_new_request($method);
+        $request['AMT'] = $this->amount_dollars();
+        $request['ORIGID'] = $this->param('reference');
 
-	protected function _process_url()
-	{
-		return $this->setting('test_mode') ? self::PROCESS_URL_TEST : self::PROCESS_URL;
-	}
+        return $request;
+    }
+
+    protected function _new_request($method)
+    {
+        $request = array();
+        $request['TRXTYPE'] = $method;
+        $request['VENDOR'] = $this->setting('vendor');
+        $request['PWD'] = $this->setting('password');
+        $request['PARTNER'] = $this->setting('partner');
+
+        if ($this->setting('username')) {
+            $request['USER'] = $this->setting('username');
+        } else {
+            $request['USER'] = $this->setting('vendor');
+        }
+
+        return $request;
+    }
+
+    protected function _process_url()
+    {
+        return $this->setting('test_mode') ? self::PROCESS_URL_TEST : self::PROCESS_URL;
+    }
 }
 
 class Merchant_payflow_pro_response extends Merchant_response
 {
-	protected $_response;
+    protected $_response;
 
-	public function __construct($response, $success_status)
-	{
-		$this->_response = array();
-		parse_str($response, $this->_response);
+    public function __construct($response, $success_status)
+    {
+        $this->_response = array();
+        parse_str($response, $this->_response);
 
-		if (isset($this->_response['RESULT']) AND $this->_response['RESULT'] == '0')
-		{
-			// because the payflow response doesn't specify the state of the transaction,
-			// we need to specify the expected status in the constructor
-			$this->_status = $success_status;
-			$this->_reference = $this->_response['PNREF'];
-		}
-		else
-		{
-			$this->_status = self::FAILED;
-			$this->_message = isset($this->_response['RESPMSG']) ?
-				$this->_response['RESPMSG'] :
-				lang('merchant_invalid_response');
-		}
-	}
+        if (isset($this->_response['RESULT']) AND $this->_response['RESULT'] == '0') {
+            // because the payflow response doesn't specify the state of the transaction,
+            // we need to specify the expected status in the constructor
+            $this->_status = $success_status;
+            $this->_reference = $this->_response['PNREF'];
+        } else {
+            $this->_status = self::FAILED;
+            $this->_message = isset($this->_response['RESPMSG']) ?
+                $this->_response['RESPMSG'] :
+                lang('merchant_invalid_response');
+        }
+    }
 }
 
 /* End of file ./libraries/merchant/drivers/merchant_payflow_pro.php */

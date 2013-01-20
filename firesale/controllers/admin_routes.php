@@ -11,32 +11,32 @@
 class Admin_routes extends Admin_Controller
 {
 
-	public $section = 'routes';
+    public $section = 'routes';
 
-	public function __construct()
-	{
+    public function __construct()
+    {
 
-		parent::__construct();
+        parent::__construct();
 
-		// Does the user have access?
-		role_or_die('firesale', 'access_routes');
+        // Does the user have access?
+        role_or_die('firesale', 'access_routes');
 
-		// Load libraries, drivers & models
-		$this->load->driver('Streams');
-		$this->load->model('routes_m');
+        // Load libraries, drivers & models
+        $this->load->driver('Streams');
+        $this->load->model('routes_m');
 
-		// Initialise data
-		$this->data = new stdClass();
+        // Initialise data
+        $this->data = new stdClass();
 
-		// Get the stream
-		$this->stream = $this->streams->streams->get_stream('firesale_routes', 'firesale_routes');
+        // Get the stream
+        $this->stream = $this->streams->streams->get_stream('firesale_routes', 'firesale_routes');
 
-	}
+    }
 
-	public function index()
-	{
+    public function index()
+    {
 
-		// Variables
+        // Variables
         $params = array(
             'stream'       => 'firesale_routes',
             'namespace'    => 'firesale_routes',
@@ -47,85 +47,80 @@ class Admin_routes extends Admin_Controller
         // Assign routes
         $this->data->routes = $this->streams->entries->get_entries($params);
 
-		// Add page data
-		$this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:routes'))
-					   ->set($this->data);
+        // Add page data
+        $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:routes'))
+                       ->set($this->data);
 
-		// Fire events
-		Events::trigger('page_build', $this->template);
+        // Fire events
+        Events::trigger('page_build', $this->template);
 
-		// Build page
-		$this->template->build('admin/routes/index');
+        // Build page
+        $this->template->build('admin/routes/index');
 
-	}
+    }
 
-	public function create()
-	{
+    public function create()
+    {
 
-		// Variables
-		$input = $this->input->post();
-		$skip  = array('btnAction');
-		$extra = array(
+        // Variables
+        $input = $this->input->post();
+        $skip  = array('btnAction');
+        $extra = array(
             'return'          => false,
             'success_message' => lang('firesale:routes:add_success'),
             'failure_message' => lang('firesale:routes:add_error'),
             'title'           => lang('firesale:routes:new')
         );
 
-		// Build the form
-		$fields = $this->fields->build_form($this->stream, 'new', $input, false, false, $skip, $extra);
-		
-		// Posted
-		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
-		{
+        // Build the form
+        $fields = $this->fields->build_form($this->stream, 'new', $input, false, false, $skip, $extra);
 
-			// Check access
-			role_or_die('firesale', 'create_edit_routes');
+        // Posted
+        if ( substr($this->input->post('btnAction'), 0, 4) == 'save' ) {
 
-			// Got an ID back
-			if( is_numeric($fields) )
-			{
-				// Add the route
-				$this->routes_m->write($input['title'], $input['route'], $input['translation']);
-			}
+            // Check access
+            role_or_die('firesale', 'create_edit_routes');
 
-			// Redirect
-			if( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) )
-			{
-				redirect('admin/firesale/routes');
-			}
-			else
-			{
+            // Got an ID back
+            if ( is_numeric($fields) ) {
+                // Add the route
+                $this->routes_m->write($input['title'], $input['route'], $input['translation']);
+            }
 
-				// Success, clear cache!
-				$this->pyrocache->delete_all('routes_m');
+            // Redirect
+            if ( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) ) {
+                redirect('admin/firesale/routes');
+            } else {
 
-				redirect('admin/firesale/routes/edit/'.$fields);
-			}
+                // Success, clear cache!
+                $this->pyrocache->delete_all('routes_m');
 
-		}
+                redirect('admin/firesale/routes/edit/'.$fields);
+            }
 
-		// Assign data
-		$this->data->fields = $fields;
+        }
 
-		// Build the page
+        // Assign data
+        $this->data->fields = $fields;
+
+        // Build the page
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:new'))
-        			   ->set($this->data)
-        			   ->append_css('module::routes.css')
-        			   ->append_js('module::jquery.caret.js')
-					   ->append_js('module::routes.js')
-        			   ->build('admin/routes/create');
-	
-	}
+                       ->set($this->data)
+                       ->append_css('module::routes.css')
+                       ->append_js('module::jquery.caret.js')
+                       ->append_js('module::routes.js')
+                       ->build('admin/routes/create');
 
-	public function edit($id)
-	{
+    }
 
-		// Variables
-		$row   = $this->row_m->get_row($id, $this->stream, false);
-		$input = $this->input->post();
-		$skip  = array('btnAction');
-		$extra = array(
+    public function edit($id)
+    {
+
+        // Variables
+        $row   = $this->row_m->get_row($id, $this->stream, false);
+        $input = $this->input->post();
+        $skip  = array('btnAction');
+        $extra = array(
             'return'          => false,
             'success_message' => lang('firesale:routes:edit_success'),
             'failure_message' => lang('firesale:routes:edit_error'),
@@ -133,10 +128,9 @@ class Admin_routes extends Admin_Controller
         );
 
         // Not found
-        if( empty($row) )
-        {
-        	$this->session->set_flashdata('error', lang('firesale:routes:not_found'));
-        	redirect('admin/firesale/routes/create');
+        if ( empty($row) ) {
+            $this->session->set_flashdata('error', lang('firesale:routes:not_found'));
+            redirect('admin/firesale/routes/create');
         }
 
         // Don't allow title and slug to be changed
@@ -144,69 +138,63 @@ class Admin_routes extends Admin_Controller
         $_POST['slug']  = $row->slug;
         $_POST['table'] = $row->table;
 
-		// Build the form
-		$fields = $this->fields->build_form($this->stream, 'edit', $row, false, false, $skip, $extra);
+        // Build the form
+        $fields = $this->fields->build_form($this->stream, 'edit', $row, false, false, $skip, $extra);
 
-		// Remove title and slug
-		if( is_array($fields) )
-		{
-			// Remove title, slug and table
-			unset($fields[0]);
-			unset($fields[1]);
-			unset($fields[2]);
-		}
-		
-		// Posted
-		if( substr($this->input->post('btnAction'), 0, 4) == 'save' )
-		{
+        // Remove title and slug
+        if ( is_array($fields) ) {
+            // Remove title, slug and table
+            unset($fields[0]);
+            unset($fields[1]);
+            unset($fields[2]);
+        }
 
-			// Check access
-			role_or_die('firesale', 'create_edit_routes');
+        // Posted
+        if ( substr($this->input->post('btnAction'), 0, 4) == 'save' ) {
 
-			// Got an ID back
-			if( is_numeric($fields) )
-			{
-				// Add the route
-				$this->routes_m->write($row->title, $input['route'], $input['translation']);
-			}
+            // Check access
+            role_or_die('firesale', 'create_edit_routes');
 
-			// Redirect
-			if( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) )
-			{
-				redirect('admin/firesale/routes');
-			}
-			else
-			{
+            // Got an ID back
+            if ( is_numeric($fields) ) {
+                // Add the route
+                $this->routes_m->write($row->title, $input['route'], $input['translation']);
+            }
 
-				// Success, clear cache!
-				$this->pyrocache->delete_all('routes_m');
+            // Redirect
+            if ( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) ) {
+                redirect('admin/firesale/routes');
+            } else {
 
-				redirect('admin/firesale/routes/edit/'.$id);
-			}
+                // Success, clear cache!
+                $this->pyrocache->delete_all('routes_m');
 
-		}
+                redirect('admin/firesale/routes/edit/'.$id);
+            }
 
-		// Assign data
-		$this->data->row    = $row;
-		$this->data->fields = $fields;
+        }
 
-		// Build title
-		$title = sprintf(lang('firesale:routes:edit'), ( substr($row->title, 0, 5) == 'lang:' ? lang(substr($row->title, 5)) : $row->title ));
+        // Assign data
+        $this->data->row    = $row;
+        $this->data->fields = $fields;
 
-		// Build the page
+        // Build title
+        $title = sprintf(lang('firesale:routes:edit'), ( substr($row->title, 0, 5) == 'lang:' ? lang(substr($row->title, 5)) : $row->title ));
+
+        // Build the page
         $this->template->title(lang('firesale:title').' '.$title)
-        			   ->set($this->data)
-        			   ->append_css('module::routes.css')
-        			   ->append_js('module::jquery.caret.js')
-					   ->append_js('module::routes.js')
-        			   ->build('admin/routes/edit');
-	
-	}
+                       ->set($this->data)
+                       ->append_css('module::routes.css')
+                       ->append_js('module::jquery.caret.js')
+                       ->append_js('module::routes.js')
+                       ->build('admin/routes/edit');
 
-	public function rebuild()
-	{
+    }
 
-		// Variables
+    public function rebuild()
+    {
+
+        // Variables
         $params = array(
             'stream'       => 'firesale_routes',
             'namespace'    => 'firesale_routes',
@@ -218,52 +206,48 @@ class Admin_routes extends Admin_Controller
         $routes = $this->streams->entries->get_entries($params);
 
         // Loop routes
-        foreach( $routes['entries'] AS $route )
-        {
-        	// Rebuild
-        	$this->routes_m->write($route['title'], $route['route'], $route['translation']);
+        foreach ($routes['entries'] AS $route) {
+            // Rebuild
+            $this->routes_m->write($route['title'], $route['route'], $route['translation']);
         }
 
         // Flash and redirect
         $this->session->set_flashdata('success', lang('firesale:routes:build_success'));
         redirect('admin/firesale/routes');
-	}
+    }
 
-	public function delete($id)
-	{
+    public function delete($id)
+    {
 
-		// Get route
-		$query = $this->db->where('id', $id)->get('firesale_routes');
+        // Get route
+        $query = $this->db->where('id', $id)->get('firesale_routes');
 
-		// Check if exists
-		if( $query->num_rows() )
-		{
+        // Check if exists
+        if ( $query->num_rows() ) {
 
-			// Get the route
-			$route = current($query->result_array());
+            // Get the route
+            $route = current($query->result_array());
 
-			// Check if it's core
-			if( $route['is_core'] != '1' )
-			{
+            // Check if it's core
+            if ($route['is_core'] != '1') {
 
-				// Remove it
-				if( $this->routes_m->delete($id) )
-				{
+                // Remove it
+                if ( $this->routes_m->delete($id) ) {
 
-					// Success, clear cache!
-					$this->pyrocache->delete_all('routes_m');
+                    // Success, clear cache!
+                    $this->pyrocache->delete_all('routes_m');
 
-					$this->session->set_flashdata('success', lang('firesale:routes:delete_success'));
-					redirect('admin/firesale/routes');
-				}
+                    $this->session->set_flashdata('success', lang('firesale:routes:delete_success'));
+                    redirect('admin/firesale/routes');
+                }
 
-			}
+            }
 
-		}
+        }
 
-		// Something went wrong
-		$this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
-		redirect('admin/firesale/routes');
-	}
+        // Something went wrong
+        $this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
+        redirect('admin/firesale/routes');
+    }
 
 }

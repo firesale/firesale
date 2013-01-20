@@ -34,93 +34,90 @@ require_once(MERCHANT_DRIVER_PATH.'/merchant_sagepay_base.php');
 
 class Merchant_sagepay_direct extends Merchant_sagepay_base
 {
-	public function authorize()
-	{
-		$request = $this->_build_authorize_or_purchase('DEFERRED');
-		return $this->_submit_request($request);
-	}
+    public function authorize()
+    {
+        $request = $this->_build_authorize_or_purchase('DEFERRED');
 
-	public function authorize_return()
-	{
-		return $this->_direct3d_return('DEFERRED');
-	}
+        return $this->_submit_request($request);
+    }
 
-	public function purchase()
-	{
-		$request = $this->_build_authorize_or_purchase('PAYMENT');
-		return $this->_submit_request($request);
-	}
+    public function authorize_return()
+    {
+        return $this->_direct3d_return('DEFERRED');
+    }
 
-	/**
-	 * Only used for returning from Direct 3D Authentication
-	 */
-	public function purchase_return()
-	{
-		return $this->_direct3d_return('PAYMENT');
-	}
+    public function purchase()
+    {
+        $request = $this->_build_authorize_or_purchase('PAYMENT');
 
-	protected function _build_authorize_or_purchase($method)
-	{
-		$this->require_params('card_no', 'name', 'card_type', 'exp_month', 'exp_year', 'csc');
+        return $this->_submit_request($request);
+    }
 
-		$request = parent::_build_authorize_or_purchase($method);
+    /**
+     * Only used for returning from Direct 3D Authentication
+     */
+    public function purchase_return()
+    {
+        return $this->_direct3d_return('PAYMENT');
+    }
 
-		$request['CardHolder'] = $this->param('name');
-		$request['CardNumber'] = $this->param('card_no');
-		$request['CV2'] = $this->param('csc');
-		$request['ExpiryDate'] = $this->param('exp_month').($this->param('exp_year') % 100);
+    protected function _build_authorize_or_purchase($method)
+    {
+        $this->require_params('card_no', 'name', 'card_type', 'exp_month', 'exp_year', 'csc');
 
-		$request['CardType'] = strtoupper($this->param('card_type'));
-		if ($request['CardType'] == 'MASTERCARD')
-		{
-			$request['CardType'] = 'MC';
-		}
+        $request = parent::_build_authorize_or_purchase($method);
 
-		if ($this->param('start_month') AND $this->param('start_year'))
-		{
-			$request['StartDate'] = $this->param('start_month').($this->param('start_year') % 100);
-		}
+        $request['CardHolder'] = $this->param('name');
+        $request['CardNumber'] = $this->param('card_no');
+        $request['CV2'] = $this->param('csc');
+        $request['ExpiryDate'] = $this->param('exp_month').($this->param('exp_year') % 100);
 
-		if ($this->param('card_issue'))
-		{
-			$request['IssueNumber'] = $this->param('card_issue');
-		}
+        $request['CardType'] = strtoupper($this->param('card_type'));
+        if ($request['CardType'] == 'MASTERCARD') {
+            $request['CardType'] = 'MC';
+        }
 
-		return $request;
-	}
+        if ($this->param('start_month') AND $this->param('start_year')) {
+            $request['StartDate'] = $this->param('start_month').($this->param('start_year') % 100);
+        }
 
-	protected function _direct3d_return($TxType)
-	{
-		$data = array(
-			'MD' => $this->CI->input->post('MD'),
-			'PARes' => $this->CI->input->post('PaRes'), // inconsistent caps are intentional
-		);
+        if ($this->param('card_issue')) {
+            $request['IssueNumber'] = $this->param('card_issue');
+        }
 
-		if (empty($data['MD']) OR empty($data['PARes']))
-		{
-			return new Merchant_response(Merchant_response::FAILED, lang('merchant_invalid_response'));
-		}
+        return $request;
+    }
 
-		$response = $this->post_request($this->_process_url('direct3dcallback'), $data);
-		$response = $this->_decode_response($response);
+    protected function _direct3d_return($TxType)
+    {
+        $data = array(
+            'MD' => $this->CI->input->post('MD'),
+            'PARes' => $this->CI->input->post('PaRes'), // inconsistent caps are intentional
+        );
 
-		// add the TxType and VendorTxCode so we can use them in the response class
-		$response['TxType'] = $TxType;
-		$response['VendorTxCode'] = $this->param('transaction_id');
+        if (empty($data['MD']) OR empty($data['PARes'])) {
+            return new Merchant_response(Merchant_response::FAILED, lang('merchant_invalid_response'));
+        }
 
-		return new Merchant_sagepay_response($response);
-	}
+        $response = $this->post_request($this->_process_url('direct3dcallback'), $data);
+        $response = $this->_decode_response($response);
 
-	protected function _process_url($service)
-	{
-		$service = strtolower($service);
-		if ($service == 'payment' OR $service == 'deferred')
-		{
-			$service = 'vspdirect-register';
-		}
+        // add the TxType and VendorTxCode so we can use them in the response class
+        $response['TxType'] = $TxType;
+        $response['VendorTxCode'] = $this->param('transaction_id');
 
-		return parent::_process_url($service);
-	}
+        return new Merchant_sagepay_response($response);
+    }
+
+    protected function _process_url($service)
+    {
+        $service = strtolower($service);
+        if ($service == 'payment' OR $service == 'deferred') {
+            $service = 'vspdirect-register';
+        }
+
+        return parent::_process_url($service);
+    }
 }
 
 /* End of file ./libraries/merchant/drivers/merchant_sagepay_direct.php */

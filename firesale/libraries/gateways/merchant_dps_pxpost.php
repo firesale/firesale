@@ -33,111 +33,113 @@
 
 class Merchant_dps_pxpost extends Merchant_driver
 {
-	const PROCESS_URL = 'https://sec.paymentexpress.com/pxpost.aspx';
+    const PROCESS_URL = 'https://sec.paymentexpress.com/pxpost.aspx';
 
-	public function default_settings()
-	{
-		return array(
-			'username' => '',
-			'password' => '',
-			'enable_token_billing' => FALSE,
-		);
-	}
+    public function default_settings()
+    {
+        return array(
+            'username' => '',
+            'password' => '',
+            'enable_token_billing' => FALSE,
+        );
+    }
 
-	public function authorize()
-	{
-		$request = $this->_build_authorize_or_purchase('Auth');
-		$response = $this->post_request(self::PROCESS_URL, $request->asXML());
-		return new Merchant_dps_pxpost_response($response);
-	}
+    public function authorize()
+    {
+        $request = $this->_build_authorize_or_purchase('Auth');
+        $response = $this->post_request(self::PROCESS_URL, $request->asXML());
 
-	public function capture()
-	{
-		$request = $this->_build_capture_or_refund('Complete');
-		$response = $this->post_request(self::PROCESS_URL, $request->asXML());
-		return new Merchant_dps_pxpost_response($response);
-	}
+        return new Merchant_dps_pxpost_response($response);
+    }
 
-	public function purchase()
-	{
-		$request = $this->_build_authorize_or_purchase('Purchase');
-		$response = $this->post_request(self::PROCESS_URL, $request->asXML());
-		return new Merchant_dps_pxpost_response($response);
-	}
+    public function capture()
+    {
+        $request = $this->_build_capture_or_refund('Complete');
+        $response = $this->post_request(self::PROCESS_URL, $request->asXML());
 
-	public function refund()
-	{
-		$request = $this->_build_capture_or_refund('Refund');
-		$response = $this->post_request(self::PROCESS_URL, $request->asXML());
-		return new Merchant_dps_pxpost_response($response);
-	}
+        return new Merchant_dps_pxpost_response($response);
+    }
 
-	private function _build_authorize_or_purchase($method)
-	{
-		$this->require_params('card_no', 'name', 'exp_month', 'exp_year', 'csc');
+    public function purchase()
+    {
+        $request = $this->_build_authorize_or_purchase('Purchase');
+        $response = $this->post_request(self::PROCESS_URL, $request->asXML());
 
-		$request = new SimpleXMLElement('<Txn></Txn>');
-		$request->PostUsername = $this->setting('username');
-		$request->PostPassword = $this->setting('password');
-		$request->TxnType = $method;
-		$request->CardNumber = $this->param('card_no');
-		$request->CardHolderName = $this->param('name');
-		$request->Amount = $this->amount_dollars();
-		$request->DateExpiry = $this->param('exp_month').($this->param('exp_year') % 100);
-		$request->Cvc2 = $this->param('csc');
-		$request->InputCurrency = $this->param('currency');
-		$request->MerchantReference = $this->param('description');
-		$request->EnableAddBillCard = (int)$this->setting('enable_token_billing');
+        return new Merchant_dps_pxpost_response($response);
+    }
 
-		return $request;
-	}
+    public function refund()
+    {
+        $request = $this->_build_capture_or_refund('Refund');
+        $response = $this->post_request(self::PROCESS_URL, $request->asXML());
 
-	private function _build_capture_or_refund($method)
-	{
-		$this->require_params('reference', 'amount');
+        return new Merchant_dps_pxpost_response($response);
+    }
 
-		$request = new SimpleXMLElement('<Txn></Txn>');
-		$request->PostUsername = $this->setting('username');
-		$request->PostPassword = $this->setting('password');
-		$request->TxnType = $method;
-		$request->DpsTxnRef = $this->param('reference');
-		$request->Amount = $this->amount_dollars();
+    private function _build_authorize_or_purchase($method)
+    {
+        $this->require_params('card_no', 'name', 'exp_month', 'exp_year', 'csc');
 
-		return $request;
-	}
+        $request = new SimpleXMLElement('<Txn></Txn>');
+        $request->PostUsername = $this->setting('username');
+        $request->PostPassword = $this->setting('password');
+        $request->TxnType = $method;
+        $request->CardNumber = $this->param('card_no');
+        $request->CardHolderName = $this->param('name');
+        $request->Amount = $this->amount_dollars();
+        $request->DateExpiry = $this->param('exp_month').($this->param('exp_year') % 100);
+        $request->Cvc2 = $this->param('csc');
+        $request->InputCurrency = $this->param('currency');
+        $request->MerchantReference = $this->param('description');
+        $request->EnableAddBillCard = (int) $this->setting('enable_token_billing');
+
+        return $request;
+    }
+
+    private function _build_capture_or_refund($method)
+    {
+        $this->require_params('reference', 'amount');
+
+        $request = new SimpleXMLElement('<Txn></Txn>');
+        $request->PostUsername = $this->setting('username');
+        $request->PostPassword = $this->setting('password');
+        $request->TxnType = $method;
+        $request->DpsTxnRef = $this->param('reference');
+        $request->Amount = $this->amount_dollars();
+
+        return $request;
+    }
 }
 
 class Merchant_dps_pxpost_response extends Merchant_response
 {
-	protected $_response;
+    protected $_response;
 
-	public function __construct($response)
-	{
-		$this->_response = simplexml_load_string($response);
+    public function __construct($response)
+    {
+        $this->_response = simplexml_load_string($response);
 
-		$this->_status = self::FAILED;
-		$this->_message = (string)$this->_response->HelpText;
-		$this->_reference = (string)$this->_response->DpsTxnRef;
+        $this->_status = self::FAILED;
+        $this->_message = (string) $this->_response->HelpText;
+        $this->_reference = (string) $this->_response->DpsTxnRef;
 
-		if ((string)$this->_response->Success == '1')
-		{
-			switch ((string)$this->_response->Transaction->TxnType)
-			{
-				case 'Auth':
-					$this->_status = self::AUTHORIZED;
-					break;
-				case 'Complete':
-					$this->_status = self::COMPLETE;
-					break;
-				case 'Purchase':
-					$this->_status = self::COMPLETE;
-					break;
-				case 'Refund':
-					$this->_status = self::REFUNDED;
-					break;
-			}
-		}
-	}
+        if ((string) $this->_response->Success == '1') {
+            switch ((string) $this->_response->Transaction->TxnType) {
+                case 'Auth':
+                    $this->_status = self::AUTHORIZED;
+                    break;
+                case 'Complete':
+                    $this->_status = self::COMPLETE;
+                    break;
+                case 'Purchase':
+                    $this->_status = self::COMPLETE;
+                    break;
+                case 'Refund':
+                    $this->_status = self::REFUNDED;
+                    break;
+            }
+        }
+    }
 }
 
 /* End of file ./libraries/merchant/drivers/merchant_dps_pxpost.php */

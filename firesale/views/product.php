@@ -1,4 +1,4 @@
-      
+
       <div class="width-threefourth firesale product">
         <section class="product-images">
           <ul>
@@ -34,7 +34,7 @@
           <section class="price-round large"><span class="rrp">{{ if product.rrp > product.price }}{{ product.rrp_formatted }}{{ endif }}</span><span class="price">{{ product.price_formatted }}</span></section>
           <br class="clear" />
         </section>
-		    <section class="product-buy">
+            <section class="product-buy">
           {{ firesale:modifier_form type="select" product=product.id }}
         </section>
         <section id="product-description">
