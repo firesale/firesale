@@ -468,7 +468,7 @@ class Products_m extends MY_Model
         return $id;
     }
 
-    public function search($product, $action = 'add')
+    public function search($product, $add = false)
     {
 
         // Check version
@@ -477,24 +477,26 @@ class Products_m extends MY_Model
             // Load required items
             $this->load->model('search/search_index_m');
 
-            // Try and remove it first
+            // Try and remove existing item
             $this->search_index_m->drop_index('firesale', 'firesale:product', $product['id']);
 
-            // Add to search
-            return $this->search_index_m->index(
-                'firesale',
-                'firesale:product',
-                'firesale:products',
-                $product['id'],
-                $this->routes_m->build_url('product', $product['id']),
-                $product['title'],
-                strip_tags($product['description']),
-                array(
-                    'cp_edit_uri'   => 'admin/firesale/products/edit/'.$product['id'],
-                    'cp_delete_uri' => 'admin/firesale/products/delete/'.$product['id'],
-                    'keywords'      => ( isset($product['meta_keywords']) ? $product['meta_keywords'] : null ),
-                )
-            );
+            if ($add) {
+                // Add to search
+                $this->search_index_m->index(
+                    'firesale',
+                    'firesale:product',
+                    'firesale:products',
+                    $product['id'],
+                    $this->routes_m->build_url('product', $product['id']),
+                    $product['title'],
+                    strip_tags($product['description']),
+                    array(
+                        'cp_edit_uri'   => 'admin/firesale/products/edit/'.$product['id'],
+                        'cp_delete_uri' => 'admin/firesale/products/delete/'.$product['id'],
+                        'keywords'      => ( isset($product['meta_keywords']) ? $product['meta_keywords'] : null ),
+                    )
+                );
+            }
 
         }
 

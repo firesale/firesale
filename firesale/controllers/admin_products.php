@@ -164,7 +164,7 @@ class Admin_products extends Admin_Controller
 
                 // Add to search
                 $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
-                $this->products_m->search($product);
+                $this->products_m->search($product, true);
 
                 // Redirect
                 redirect('admin/firesale/products'.( $input['btnAction'] != 'save_exit' ? '/edit/'.$id : '' ));
@@ -256,12 +256,22 @@ class Admin_products extends Admin_Controller
                     $delete = false;
                 }
 
+                // Remove from search
+                if ($delete === true) {
+                    $this->products_m->search(array('id' => $products[$i]));
+                }
+
             }
 
         } elseif ($prod_id !== null) {
 
             if ( !$this->products_m->delete_product($prod_id) ) {
                 $delete = false;
+            }
+
+            // Remove from search
+            if ($delete === true) {
+                $this->products_m->search(array('id' => $prod_id));
             }
 
         }
