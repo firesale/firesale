@@ -3,7 +3,7 @@
 * Website: http://www.getfiresale.org
 * Documentation: http://www.getfiresale.org/documentation
 * License: MIT License, a copy of which is included with this package
-* Version: 1.1.0
+* Version: 1.2.0-dev
 
 ## Team
 
