@@ -468,6 +468,16 @@ class Products_m extends MY_Model
         return $id;
     }
 
+    public function search($product, $action = 'add')
+    {
+
+        // Check version
+        if (CMS_VERSION >= '2.2') {
+
+        }
+
+    }
+
     /**
      * Updates the mulitple categories for a Product.
      * Required at the moment since the Streams Multiple field type doesn't seem
