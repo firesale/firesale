@@ -1,6 +1,5 @@
-thead tr td {
-    height: 20px;
-    padding-top: 0px;
+thead tr th .actions {
+	float: right;
 }
 
 input[type="text"] {

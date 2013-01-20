@@ -14,6 +14,22 @@ class Admin_taxes extends Admin_Controller
 
     public $tabs = array('general' => array());
 
+    public function __construct()
+    {
+
+        parent::__construct();
+
+        // Does the user have access?
+        role_or_die('firesale', 'access_taxes');
+
+        // Load libraries, drivers & models
+        $this->load->model('taxes_m');
+
+        // Initialise data
+        $this->data = new stdClass();
+
+    }
+
     public function index()
     {
         $action = $this->input->post('btnAction');
