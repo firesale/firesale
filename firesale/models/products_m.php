@@ -468,6 +468,13 @@ class Products_m extends MY_Model
         return $id;
     }
 
+    /**
+     * Removes and creates core search indexing for a product.
+     *
+     * @param array $product Product data array
+     * @param boolean [$add] Should this be added to the index
+     * @access public
+     */
     public function search($product, $add = false)
     {
 
