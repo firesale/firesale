@@ -1,7 +1,7 @@
 /* Gneral */
 .chzn-container .chzn-single span,.chzn-container li{color:#666;font-weight:400;}
 .loading{min-height:22px;background:url(img/loading.gif) no-repeat 50% 50%!important;}
-a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-repeat; float: right; cursor: pointer; margin: -3px 0 0 0; }
+a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-repeat; float: right; cursor: pointer; margin: 0 15px 0 0; }
 #filters > ul { width: 100%; display: block; }
 #filters > ul > li:first-child { margin-top: 0 !important; }
 #filters > ul > li > center > input[type="text"] { width: 220px !important; }

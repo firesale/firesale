@@ -8,7 +8,9 @@
 			<a class="tooltip-s toggle" title="Toggle this element"></a>
 		</section>
 		<section class="item">
-			<?php echo $item['content']; ?>
+			<div class="content">
+				<?php echo $item['content']; ?>
+			</div>
 		</section>
 	</div>
 
