@@ -154,7 +154,7 @@
     $lang['firesale:label_price']          = 'Current Price';
     $lang['firesale:label_price_tax']      = 'Current Price (before tax)';
     $lang['firesale:label_stock']          = 'Current Stock Level';
-    $lang['firesale:label_drop_images']    = 'Drop images here to upload';
+    $lang['firesale:label_drop_images']    = 'Drop images here or click to upload';
     $lang['firesale:label_duplicate']      = 'Duplicate';
     $lang['firesale:label_showfilter']     = 'Show Filters';
     $lang['firesale:label_mod_variant']    = 'Variation';

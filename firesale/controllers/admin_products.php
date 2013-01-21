@@ -531,7 +531,7 @@ class Admin_products extends Admin_Controller
             $this->pyrocache->delete_all('products_m');
 
             // Ajax status
-            echo json_encode(array('status' => $status['status'], 'message' => $status['message']));
+            echo json_encode(array('status' => (bool)$status['status'], 'message' => $status['message']));
             exit;
         }
 
