@@ -78,12 +78,12 @@
                     <br class="clear" />
                     <div class="buttons">
                     <?php if( isset($input->id) ): ?>
-                        <button type="submit" class="btn blue" value="save" name="btnAction"><span><?php echo lang('firesale:cats_edit'); ?></span></button>
+                        <button type="submit" class="btn blue" value="save" name="btnAction"><span><?php echo lang('save_label'); ?></span></button>
                     <?php if( $input->id > 1 ): ?>
-                        <button type="submit" class="btn red confirm" value="save" name="btnAction"><span><?php echo lang('firesale:cats_delete'); ?></span></button>
+                        <button type="submit" class="btn red confirm" value="save" name="btnAction"><span><?php echo lang('global:delete'); ?></span></button>
                     <?php endif; ?>
                     <?php else: ?>
-                        <button type="submit" class="btn blue" value="save" name="btnAction"><span><?php echo lang('firesale:cats_new'); ?></span></button>
+                        <button type="submit" class="btn blue" value="save" name="btnAction"><span><?php echo lang('save_label'); ?></span></button>
                     <?php endif; ?>
                     </div>
 

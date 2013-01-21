@@ -46,7 +46,7 @@ $(function(){
 
 			$('button.delete').remove();
 			$('.one_half.last .title h4').text('Edit "' + data.title + '"');
-			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
+			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Save</span></button>')
 			.append(( data.id != 1 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 
 			tabs.tabs('add', '#images', 'Images');
