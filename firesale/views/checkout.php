@@ -35,14 +35,14 @@
 
             <?php endif; ?>
 
-            <?php foreach( $fields AS $subtitle => $section ): ?>
+            <?php foreach( $ship_fields AS $subtitle => $section ): ?>
 
                 <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
                     <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
                 <?php foreach( $section AS $field ): ?>
                     <li>
                         <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
-                        <?php echo str_replace(array('id="', 'name="'), array('id="ship_', 'name="ship_'), $field['input']); ?>
+                        <?php echo $field['input']; ?>
                     </li>
                 <?php endforeach; ?>
                 </ul>
@@ -86,14 +86,14 @@
 
             <?php endif; ?>
 
-            <?php foreach( $fields AS $subtitle => $section ): ?>
+            <?php foreach( $bill_fields AS $subtitle => $section ): ?>
 
                 <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
                     <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
                 <?php foreach( $section AS $field ): ?>
                     <li>
                         <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
-                        <?php echo str_replace(array('id="', 'name="'), array('id="bill_', 'name="bill_'), $field['input']); ?>
+                        <?php echo $field['input']; ?>
                     </li>
                 <?php endforeach; ?>
                 </ul>

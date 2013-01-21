@@ -56,7 +56,7 @@ class Plugin_Firesale extends Plugin
 
             // Build query
             $query = $this->db->select('id')
-                                ->from('firesale_categories')
+                              ->from('firesale_categories')
                               ->where('status', '1');
 
             // Add to query
@@ -79,6 +79,9 @@ class Plugin_Firesale extends Plugin
                                               FROM ' . $this->db->dbprefix('firesale_products_firesale_categories') . '
                                               WHERE firesale_categories_id=' . $this->db->dbprefix('firesale_categories.id') . ') >', 0);
                         }
+                    break;
+
+                    case 'parse_params':
                     break;
 
                     default:

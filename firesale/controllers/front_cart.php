@@ -394,24 +394,45 @@ class Front_cart extends Public_Controller
                 $extra  = array();
 
                 // Check if the user has placed an order before and use these details.
-                if (isset($this->current_user->id) AND $user_id = $this->current_user->id) {
-                    $input = (object) $this->orders_m->get_last_order($user_id);
+                if (isset($this->current_user->id)) {
+                    $input = (object) $this->orders_m->get_last_order($this->current_user->id);
                 }
 
             }
 
+            if( isset($this->current_user->id) ) {
+                
+                // Get available bliing and shipping options
+                $data['addresses'] = $this->address_m->get_addresses($this->current_user->id);
+
+                // Possibly first time, pre-populate some things
+                if( empty($_POST) ) {
+
+                    $_POST = array(
+                        'ship_email'     => $this->current_user->email,
+                        'ship_firstname' => $this->current_user->first_name,
+                        'ship_lastname'  => $this->current_user->last_name,
+                        'ship_company'   => $this->current_user->company,
+                        'ship_phone'     => $this->current_user->phone,
+                        'bill_email'     => $this->current_user->email,
+                        'bill_firstname' => $this->current_user->first_name,
+                        'bill_lastname'  => $this->current_user->last_name,
+                        'bill_company'   => $this->current_user->company,
+                        'bill_phone'     => $this->current_user->phone
+                    );
+
+                    $input = $_POST;
+                }
+            }
+
             // Get fields
-            $data['fields'] = $this->address_m->get_address_form();
+            $data['ship_fields'] = $this->address_m->get_address_form('ship', 'new', ( $input ? $input : null ));
+            $data['bill_fields'] = $this->address_m->get_address_form('bill', 'new', ( $input ? $input : null ));
 
             // Get available shipping methods
             if ( isset($this->firesale->roles['shipping']) AND $data['ship_req'] ) {
                 $role = $this->firesale->roles['shipping'];
                 $data['shipping'] = $this->$role['model']->calculate_methods($this->fs_cart->contents());
-            }
-
-            // Get available bliing and shipping options
-            if ( isset($this->current_user->id) ) {
-                $data['addresses'] = $this->address_m->get_addresses($this->current_user->id);
             }
 
             // Check for shipping option set in cart

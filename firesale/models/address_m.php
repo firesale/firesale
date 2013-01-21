@@ -215,23 +215,46 @@ class Address_m extends MY_Model
      */
     public function get_address_form($type = NULL, $mode = 'new', $input = NULL)
     {
-
+    
         // Variables
+        $tmp     = $input;
+        $data    = array();
         $address = array('address1', 'address2', 'city', 'county', 'postcode', 'country');
         $tabs    = array('details' => array(), 'address' => array());
         $stream  = $this->streams->streams->get_stream('firesale_addresses', 'firesale_addresses');
-        $fields  = $this->fields->build_form($stream, $mode, ( $input != NULL ? $input : $this->input->post() ), FALSE, FALSE, array(), array());
+        
+        // Pull out post data
+        if ( $input !== null ) {
+
+            // Loop post data
+            foreach( $input as $key => $val ) {
+                if( substr($key, 0, 5) == $type.'_' ) {
+                    $data[substr($key, 5)] = $val;
+                }
+            }
+
+            // Set into post
+            $_POST = $data;
+        }
+
+        // Get fields
+        $fields = $this->fields->build_form($stream, $mode, $data, FALSE, FALSE, array(), array());
 
         // Format fields
-        foreach ($fields AS $field) {
+        foreach( $fields AS $field )
+        {
             $key = ( in_array($field['input_slug'], $address) ? 'address' : 'details' );
-            if ($type != NULL) {
+            if( $type != NULL )
+            {
                 $field['input'] = str_replace(array('id="', 'name="'), array('id="' . $type . '_', 'name="' . $type . '_'), $field['input']);
             }
             $tabs[$key][] = $field;
         }
 
-        return $tabs;
+        // Reset post
+        $_POST = $input;
+        
+        return $tabs;   
     }
 
 }
