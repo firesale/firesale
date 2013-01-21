@@ -157,8 +157,12 @@ class Admin_routes extends Admin_Controller
 
             // Got an ID back
             if ( is_numeric($fields) ) {
+
                 // Add the route
                 $this->routes_m->write($row->title, $input['route'], $input['translation']);
+
+                // Update search index
+                $this->routes_m->search_update($this->input->post('slug'));
             }
 
             // Redirect

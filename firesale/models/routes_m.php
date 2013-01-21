@@ -105,6 +105,34 @@ class Routes_m extends MY_Model
     }
 
     /**
+     * Updates the search results URLs based on which route was just edited.
+     * This enables everything to be kept in sync.
+     *
+     * @param string $route The route being edited
+     * @access public
+     */
+    public function search_update($route)
+    {
+
+        // Get indexes
+        $query = $this->db->select('id, entry_id')->where('entry_key', 'firesale:'.$route)->get('search_index');
+
+        // Check results
+        if ( $query->num_rows() ) {
+
+            $results = $query->result_array();
+
+            // Loop and update
+            foreach ( $results as $result ) {
+                $uri = $this->build_url($route, $result['entry_id']);
+                $this->db->where('id', $result['id'])->update('search_index', array('uri' => $uri));
+            }
+
+        }
+
+    }
+
+    /**
      * Creates a new route by adding it to the databaes and then adding it to the
      * routes file to be cached and used by the system.
      *
