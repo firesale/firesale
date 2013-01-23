@@ -90,4 +90,24 @@ class Fs_cart extends CI_Cart
     {
         return $this->subtotal = ($this->total(TRUE) - $this->tax());
     }
+
+    public function set($row_id, $params = array())
+    {
+        $data = array_merge($this->_cart_contents[$row_id], $params);
+        $this->remove($row_id);
+        $this->insert($data);
+    }
+
+    public function clear($row_id, $key) {
+
+        if( isset($this->_cart_contents[$row_id][$key]) ) {
+
+            $data = $this->_cart_contents[$row_id];
+            unset($data[$key]);
+            $this->remove($row_id);
+            $this->insert($data);
+
+        }
+    }
+
 }

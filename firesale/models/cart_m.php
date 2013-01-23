@@ -72,6 +72,48 @@ class Cart_m extends MY_Model
         return $changed;
     }
 
+    public function check_price()
+    {
+
+        // Variables
+        $changed  = FALSE;
+        $products = $this->fs_cart->contents();
+
+        // Check price
+        foreach ($products AS $row_id => $item) {
+            
+            // Get product
+            $product = $this->pyrocache->model('products_m', 'get_product', array('id' => $item['id']), $this->firesale->cache_time);
+
+            // Check prices
+            if (round($item['price'], 1) != round($product['price'], 1)) {
+
+                $changed           = true;
+                $data              = array();
+                $data['price']     = $product['price'];
+                $data['old_price'] = $item['price'];
+                $data['old_sub']   = number_format(( $item['qty'] * $item['price'] ), 2);
+                $data['subtotal']  = number_format(( $item['qty'] * $data['price'] ), 2);
+               
+                $this->fs_cart->set($row_id, $data);
+
+            } else if( isset($item['old_price']) ) {
+
+                $this->fs_cart->clear($row_id, 'old_price');
+                $this->fs_cart->clear($row_id, 'old_sub');
+
+            }
+
+        }
+
+        // Check changed
+        if( $changed === true )
+        {
+            $this->session->set_userdata('flash:old:error', lang('firesale:cart:price_changed'));
+        }
+
+    }
+
     /**
      * Dynamically builds the validation for the checkout process depending on what
      * has been submitted. This is to ensure that the address chosen exists and is

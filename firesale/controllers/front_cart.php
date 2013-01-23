@@ -77,6 +77,10 @@ class Front_cart extends Public_Controller
 
     public function index()
     {
+
+        // Check for price change
+        $this->cart_m->check_price();
+
         // Assign Variables
         $data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
         $data['tax']   		 = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);

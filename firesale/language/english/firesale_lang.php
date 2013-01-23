@@ -317,6 +317,7 @@
     $lang['firesale:cart:empty']                      = 'There are currently no items in your cart';
     $lang['firesale:cart:login_required']             = 'You must be logged in before you can do that';
     $lang['firesale:cart:qty_too_low']                = 'Stock level is too low to add that quantity to your cart';
+    $lang['firesale:cart:price_changed']              = 'The price of some items in your cart has changed, please check them before continuing';
     $lang['firesale:checkout:title']                  = 'Checkout';
     $lang['firesale:checkout:error_callback']         = 'There seems to have been a problem with your order, please try again, possibly using another payment method.';
     $lang['firesale:payment:title']                   = 'Confirm Details';

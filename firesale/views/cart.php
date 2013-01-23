@@ -28,8 +28,8 @@
                     {{ /options }}
                     </td>
                     <td><input type="text" name="item[{{ rowid }}][qty]" value="{{ qty }}" /></td>
-                    <td>{{ price }}</td>
-                    <td>{{ subtotal }}</td>
+                    <td>{{ if old_price }}<del>{{ old_price }}</del> {{ endif }}{{ price }}</td>
+                    <td>{{ if old_sub }}<del>{{ old_sub }}</del> {{ endif }}{{ subtotal }}</td>
                 </tr>
 {{ /contents }}
 {{ else }}
