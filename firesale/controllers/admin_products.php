@@ -136,6 +136,13 @@ class Admin_products extends Admin_Controller
 
         }
 
+        if ( substr($this->input->post('btnAction'), 0, 4) == 'save' ) {
+            $data = $this->db->where('id', $id)
+                             ->get('firesale_products')
+                             ->row();
+            Events::trigger('before_product_updated', $data);
+        }
+
         // Get the stream fields
         $fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
 
