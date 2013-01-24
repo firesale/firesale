@@ -113,6 +113,10 @@ class Routes_m extends MY_Model
      */
     public function search_update($route)
     {
+        // Check version
+        if (CMS_VERSION < "2.2.0") {
+            return FALSE;
+        }
 
         // Get indexes
         $query = $this->db->select('id, entry_id')->where('entry_key', 'firesale:'.$route)->get('search_index');
