@@ -93,13 +93,14 @@ class Fs_cart extends CI_Cart
 
     public function set($row_id, $params = array())
     {
-        $data = array_merge($this->_cart_contents[$row_id], $params);
+        $contents = $this->contents();
+        $data     = array_merge($contents[$row_id], $params);
         $this->remove($row_id);
         $this->insert($data);
     }
 
-    public function clear($row_id, $key) {
-
+    public function clear($row_id, $key)
+    {
         if( isset($this->_cart_contents[$row_id][$key]) ) {
 
             $data = $this->_cart_contents[$row_id];
