@@ -405,7 +405,7 @@ class Front_cart extends Public_Controller
             }
 
             if( isset($this->current_user->id) ) {
-                
+
                 // Get available bliing and shipping options
                 $data['addresses'] = $this->address_m->get_addresses($this->current_user->id);
 

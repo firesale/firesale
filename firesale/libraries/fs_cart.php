@@ -98,8 +98,8 @@ class Fs_cart extends CI_Cart
         $this->insert($data);
     }
 
-    public function clear($row_id, $key) {
-
+    public function clear($row_id, $key)
+    {
         if( isset($this->_cart_contents[$row_id][$key]) ) {
 
             $data = $this->_cart_contents[$row_id];

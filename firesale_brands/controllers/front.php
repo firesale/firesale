@@ -35,7 +35,7 @@ class front extends Public_Controller
         $brand = $this->brands_m->get($id_slug);
 
         // Check it was found
-        if ($brand) {
+        if( $brand ) {
 
             // Build route
             $route = $this->routes_m->build_url('brand', $brand['id']);
@@ -62,11 +62,15 @@ class front extends Public_Controller
                            ->append_js('firesale::firesale.js')
                            ->set($this->data);
 
+            // Assign accessible information
+            $this->template->design = 'brand';
+            $this->template->id     = $this->data->brand['id'];
+
             // Fire events
-            Events::trigger('page_build', $this->template);
+            $overload = Events::trigger('page_build', $this->template);
 
             // Build page
-            $this->template->build('index');
+            $this->template->build(( $overload ? $overload : 'index' ));
 
         } else {
             show_404();

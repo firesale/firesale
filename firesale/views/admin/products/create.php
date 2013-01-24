@@ -168,6 +168,7 @@
                 <?php elseif( substr($slug, 0, 1) == '_' && isset($id) && $id > 0 ): ?>
                 <div id="<?php echo strtolower(str_replace(array(' ', '_'), '', $slug)); ?>" class="form_inputs">
                     <fieldset>
+                        <ul>
                         <?php if (is_array($field)): ?>
                             <?php foreach( $field AS $input ): ?>
                                 <li class="<?php echo alternator('even', ''); ?>">
@@ -181,6 +182,7 @@
                         <?php else: ?>
                             <?php echo $field; ?>
                         <?php endif; ?>
+                        </ul>
                     </fieldset>
                 </div>
 

@@ -47,7 +47,7 @@ class Events_Firesale_design
     public function page_build($template)
     {
 
-        
+
 
     }
 

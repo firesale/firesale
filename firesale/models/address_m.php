@@ -215,14 +215,14 @@ class Address_m extends MY_Model
      */
     public function get_address_form($type = NULL, $mode = 'new', $input = NULL)
     {
-    
+
         // Variables
         $tmp     = $input;
         $data    = array();
         $address = array('address1', 'address2', 'city', 'county', 'postcode', 'country');
         $tabs    = array('details' => array(), 'address' => array());
         $stream  = $this->streams->streams->get_stream('firesale_addresses', 'firesale_addresses');
-        
+
         // Pull out post data
         if ( $input !== null ) {
 
@@ -241,11 +241,9 @@ class Address_m extends MY_Model
         $fields = $this->fields->build_form($stream, $mode, $data, FALSE, FALSE, array(), array());
 
         // Format fields
-        foreach( $fields AS $field )
-        {
+        foreach( $fields AS $field ) {
             $key = ( in_array($field['input_slug'], $address) ? 'address' : 'details' );
-            if( $type != NULL )
-            {
+            if( $type != NULL ) {
                 $field['input'] = str_replace(array('id="', 'name="'), array('id="' . $type . '_', 'name="' . $type . '_'), $field['input']);
             }
             $tabs[$key][] = $field;
@@ -253,8 +251,8 @@ class Address_m extends MY_Model
 
         // Reset post
         $_POST = $input;
-        
-        return $tabs;   
+
+        return $tabs;
     }
 
 }

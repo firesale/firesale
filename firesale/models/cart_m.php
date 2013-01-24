@@ -81,7 +81,7 @@ class Cart_m extends MY_Model
 
         // Check price
         foreach ($products AS $row_id => $item) {
-            
+
             // Get product
             $product = $this->pyrocache->model('products_m', 'get_product', array('id' => $item['id']), $this->firesale->cache_time);
 
@@ -94,7 +94,7 @@ class Cart_m extends MY_Model
                 $data['old_price'] = $item['price'];
                 $data['old_sub']   = number_format(( $item['qty'] * $item['price'] ), 2);
                 $data['subtotal']  = number_format(( $item['qty'] * $data['price'] ), 2);
-               
+
                 $this->fs_cart->set($row_id, $data);
 
             } else if( isset($item['old_price']) ) {
@@ -107,8 +107,7 @@ class Cart_m extends MY_Model
         }
 
         // Check changed
-        if( $changed === true )
-        {
+        if( $changed === true ) {
             $this->session->set_userdata('flash:old:error', lang('firesale:cart:price_changed'));
         }
 

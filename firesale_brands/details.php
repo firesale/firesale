@@ -87,7 +87,7 @@ class Module_Firesale_brands extends Module
             $fields[] = array('name' => 'lang:firesale:label_description', 'slug' => 'description', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'));
 
             // Combine
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
+            foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
 
             // Add fields to stream
             $this->streams->fields->add_fields($fields);
@@ -99,7 +99,7 @@ class Module_Firesale_brands extends Module
             $fields   = array();
             $template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_brand', 'slug' => 'brand', 'type' => 'relationship', 'extra' => array('choose_stream' => $brands->id), 'required' => FALSE);
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
+            foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
             $this->streams->fields->add_fields($fields);
 
             ################
@@ -126,11 +126,11 @@ class Module_Firesale_brands extends Module
 
         // Remove brand images
         $brand_folder = $this->products_m->get_file_folder_by_slug('brand-images');
-        if ($brand_folder != FALSE) {
+        if( $brand_folder != FALSE ) {
 
             // Get files in folder
             $files = Files::folder_contents($brand_folder->id);
-            foreach ($files['data']['file'] AS $file) {
+            foreach( $files['data']['file'] AS $file ) {
                 Files::delete_file($file->id);
             }
 

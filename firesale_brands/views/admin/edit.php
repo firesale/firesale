@@ -43,15 +43,19 @@
                 <div id="<?php echo strtolower(str_replace(' ', '', $slug)); ?>" class="form_inputs">
                     <fieldset>
                         <ul>
-                        <?php foreach( $field AS $input ): ?>
-                            <li class="<?php echo alternator('even', ''); ?>">
-                                <label for="<?php echo $input['input_slug']; ?>">
-                                    <?php echo lang(substr($input['input_title'], 5)); ?> <?php echo $input['required']; ?>
-                                    <small><?php echo lang(substr($input['instructions'], 5)); ?></small>
-                                </label>
-                                <div class="input"><?php echo $input['input']; ?></div>
-                            </li>
-                        <?php endforeach; ?>
+                        <?php if (is_array($field)): ?>
+                            <?php foreach( $field AS $input ): ?>
+                                <li class="<?php echo alternator('even', ''); ?>">
+                                    <label for="<?php echo $input['input_slug']; ?>">
+                                        <?php echo lang(substr($input['input_title'], 5)) ? lang(substr($input['input_title'], 5)) : $input['input_title']; ?> <?php echo $input['required']; ?>
+                                        <small><?php echo lang(substr($input['instructions'], 5)) ? lang(substr($input['instructions'], 5)) : $input['instructions']; ?></small>
+                                    </label>
+                                    <div class="input"><?php echo $input['input']; ?></div>
+                                </li>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <?php echo $field; ?>
+                        <?php endif; ?>
                         </ul>
                     </fieldset>
                 </div>
