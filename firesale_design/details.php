@@ -52,7 +52,22 @@ class Module_Firesale_design extends Module
             ###################
 
             // Create design stream
-            // if( !$this->streams->streams->add_stream(lang('firesale:sections:design'), 'firesale_design', 'firesale_design', NULL, NULL) ) return FALSE;
+            if( !$this->streams->streams->add_stream(lang('firesale:design:title'), 'firesale_design', 'firesale_design', NULL, NULL) ) return FALSE;
+
+            // Add fields
+            $fields   = array();
+            $template = array('namespace' => 'firesale_design', 'assign' => 'firesale_design', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+            $fields[] = array('name' => 'lang:firesale:design:label_element', 'slug' => 'element', 'type' => 'integer');
+            $fields[] = array('name' => 'lang:firesale:design:label_type', 'slug' => 'type');
+            $fields[] = array('name' => 'lang:firesale:design:enable', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 1));
+            $fields[] = array('name' => 'lang:firesale:design:label_layout', 'slug' => 'layout');
+            $fields[] = array('name' => 'lang:firesale:design:label_view', 'slug' => 'view');
+
+            // Combine
+            foreach( $fields AS &$field ) { $field = array_merge($template, $field); }
+
+            // Add fields to stream
+            $this->streams->fields->add_fields($fields);
 
             #####################
             ## CREATE SETTINGS ##
@@ -60,9 +75,9 @@ class Module_Firesale_design extends Module
 
             // Add pages
             $pages   = array();
-            $pages[] = 'products='.lang('firesale:design:pages:products');
-            $pages[] = 'categories='.lang('firesale:design:pages:categories');
-            $pages[] = 'brands='.lang('firesale:design:pages:brands');
+            $pages[] = 'product='.lang('firesale:design:pages:products');
+            $pages[] = 'category='.lang('firesale:design:pages:categories');
+            $pages[] = 'brand='.lang('firesale:design:pages:brands');
 
             // Create setting
             $setting = array(
@@ -91,6 +106,9 @@ class Module_Firesale_design extends Module
 
         // Load required items
         $this->load->driver('Streams');
+
+        // Remove table
+        $this->streams->utilities->remove_namespace('firesale_design');
 
         // Remove setting
         $this->db->where_in('slug', array('firesale_design_enable'))->delete('settings');

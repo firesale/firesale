@@ -73,11 +73,15 @@ class Front_product extends Public_Controller
                            ->title($this->data->product['title'])
                            ->set($this->data);
 
+            // Assign accessible information
+            $this->template->design = 'product';
+            $this->template->id     = $this->data->product['id'];
+
             // Fire events
-            Events::trigger('page_build', $this->template);
+            $overload = Events::trigger('page_build', $this->template);
 
             // Build page
-            $this->template->build('product');
+            $this->template->build(( $overload ? $overload : 'product' ));
 
         } else {
             show_404();

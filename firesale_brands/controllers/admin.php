@@ -35,7 +35,7 @@ class admin extends Admin_Controller
     {
 
         // Check for btnAction
-        if ( $action = $this->input->post('btnAction') ) {
+        if( $action = $this->input->post('btnAction') ) {
             $this->$action();
         }
 
@@ -51,7 +51,7 @@ class admin extends Admin_Controller
         $this->data->brands = $this->streams->entries->get_entries($params);
 
         // Add images
-        foreach ($this->data->brands['entries'] AS &$brand) {
+        foreach( $this->data->brands['entries'] AS &$brand ) {
             $folder = $this->products_m->get_file_folder_by_slug($brand['slug']);
             $images = Files::folder_contents($folder->id);
             $brand['image'] = $images['data']['file'][0];
@@ -86,6 +86,9 @@ class admin extends Admin_Controller
         // Build the form
         $fields = $this->fields->build_form($this->stream, 'new', $input, false, false, $skip, $extra);
 
+        // Fire build event
+        Events::trigger('form_build', $this);
+
         // Assign data
         $this->data->fields = fields_to_tabs($fields, $this->tabs);
         $this->data->tabs	= array_keys($this->data->fields);
@@ -117,13 +120,16 @@ class admin extends Admin_Controller
         );
 
         // Not found
-        if ( empty($row) ) {
+        if( empty($row) ) {
             $this->session->set_flashdata('error', lang('firesale:brands:not_found'));
             redirect('admin/firesale_brands/create');
         }
 
         // Build the form
         $fields = $this->fields->build_form($this->stream, 'edit', $row, false, false, $skip, $extra);
+
+        // Fire build event
+        Events::trigger('form_build', $this);
 
         // Assign data
         $this->data->id     = $row->id;
@@ -138,6 +144,7 @@ class admin extends Admin_Controller
 
         // Build the template
         $this->template->title(lang('firesale:title').' '.sprintf(lang('firesale:brands:edit'), $row->title))
+                       ->enable_parser(true)
                        ->set($this->data);
 
         // Fire events
@@ -156,20 +163,20 @@ class admin extends Admin_Controller
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
         // Create folder?
-        if (!$folder) {
+        if( !$folder ) {
             $parent = $this->products_m->get_file_folder_by_slug('brand-images');
             $folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
-            $folder = (object) $folder['data'];
+            $folder = (object)$folder['data'];
         }
 
         // Check for folder
-        if ( is_object($folder) AND ! empty($folder) ) {
+        if( is_object($folder) AND ! empty($folder) ) {
 
             // Upload it
             $status = Files::upload($folder->id);
 
             // Make square?
-            if ( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 ) {
+            if( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 ) {
                 $this->products_m->make_square($status, $allow);
             }
 
@@ -190,20 +197,20 @@ class admin extends Admin_Controller
         $success = TRUE;
 
         // Check for array
-        if ($id != NULL) {
+        if( $id != NULL ) {
             $brands = array($id);
         } else {
             $brands = $this->input->post('action_to');
         }
 
         // Loop brands
-        foreach ($brands AS $id) {
+        foreach( $brands AS $id ) {
 
             // Get brand
             $query = $this->db->where('id', $id)->get('firesale_brands');
 
             // Check it exists
-            if ( $query->num_rows() ) {
+            if( $query->num_rows() ) {
 
                 // Get the brand
                 $brand = current($query->result_array());
@@ -213,11 +220,11 @@ class admin extends Admin_Controller
 
                 // Remove images
                 $folder = $this->products_m->get_file_folder_by_slug($brand['slug']);
-                if ($folder != FALSE) {
+                if( $folder != FALSE ) {
 
                     // Get files in folder
                     $files = Files::folder_contents($folder->id);
-                    foreach ($files['data']['file'] AS $file) {
+                    foreach( $files['data']['file'] AS $file ) {
                         Files::delete_file($file->id);
                     }
 
@@ -226,7 +233,7 @@ class admin extends Admin_Controller
                 }
 
                 // Delete the brand
-                if ( ! $this->db->where('id', $id)->delete('firesale_brands') ) {
+                if( ! $this->db->where('id', $id)->delete('firesale_brands') ) {
                     $success = FALSE;
                 }
 
@@ -235,7 +242,7 @@ class admin extends Admin_Controller
         }
 
         // Result
-        if ($success) {
+        if( $success ) {
             $this->session->set_flashdata('success', lang('firesale:brands:delete_success'));
         } else {
             $this->session->set_flashdata('error', lang('firesale:brands:delete_error'));

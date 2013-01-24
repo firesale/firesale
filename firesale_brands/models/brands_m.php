@@ -9,7 +9,7 @@ class Brands_m extends MY_Model
     {
 
         // Check cache
-        if ( array_key_exists($id_slug, $this->cache) ) {
+        if( array_key_exists($id_slug, $this->cache) ) {
             return $this->cache[$id_slug];
         }
 
@@ -28,7 +28,7 @@ class Brands_m extends MY_Model
         $brands = $this->streams->entries->get_entries($params);
 
         // Check entries
-        if ( count($brands['entries']) == 1 ) {
+        if( count($brands['entries']) == 1 ) {
 
             // Get brand
             $brand = current($brands['entries']);
@@ -36,9 +36,9 @@ class Brands_m extends MY_Model
             // Get images
             if ( $folder = $this->products_m->get_file_folder_by_slug($brand['slug']) ) {
                 $query = $this->db->select('id, path')
-                                   ->from('files')
-                                   ->where('folder_id', $folder->id)
-                                     ->get();
+                                  ->from('files')
+                                  ->where('folder_id', $folder->id)
+                                  ->get();
                 $brand['images'] = $query->result_array();
             }
 
@@ -62,13 +62,13 @@ class Brands_m extends MY_Model
                           ->get();
 
         // Check for results
-        if ( $query->num_rows() ) {
+        if( $query->num_rows() ) {
 
             // Get results
             $results = $query->result_array();
 
             // Loop
-            foreach ($results AS &$product) {
+            foreach( $results AS &$product ) {
                 // Get product
                 $product = $this->products_m->get_product($product['id']);
             }

@@ -7,6 +7,8 @@
 
         <?php echo form_open_multipart($this->uri->uri_string(), 'class="crud"'); ?>
 
+
+
             <div class="tabs">
 
                 <ul class="tab-menu">
