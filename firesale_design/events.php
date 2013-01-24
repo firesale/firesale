@@ -54,7 +54,7 @@ class Events_Firesale_design
                     'created_by'     => $this->ci->current_user->id,
                     'ordering_count' => 0,
                     'type'           => $type,
-                    'element'        => $id,
+                    'element'        => ( $id > 0 ? $id : $this->ci->db->insert_id() ),
                     'enabled'        => $this->ci->input->post('design_enabled'),
                     'layout'         => $this->ci->input->post('design_layout'),
                     'view'           => $this->ci->input->post('design_view')

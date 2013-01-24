@@ -14,7 +14,7 @@ class Plugin_Firesale_design extends Plugin
         $id   = (int)$this->attribute('id');
 
         // Check attributes
-        if( $type and $id ) {
+        if( $type ) {
 
             $theme   = $this->settings->get('default_theme');
             $layouts = $this->template->get_theme_layouts($theme);

@@ -144,11 +144,15 @@ class Front_category extends Public_Controller
                            ->append_js('module::firesale.js')
                            ->set($this->data);
 
+            // Assign accessible information
+            $this->template->design = 'category';
+            $this->template->id     = $this->data->category['id'];
+
             // Fire events
-            Events::trigger('page_build', $this->template);
+            $overload = Events::trigger('page_build', $this->template);
 
             // Build page
-            $this->template->build('category');
+            $this->template->build(( $overload ? $overload : 'category' ));
 
         } else {
             set_status_header(404);

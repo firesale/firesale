@@ -139,7 +139,8 @@ class Admin_categories extends Admin_Controller
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:categories'))
-                       ->set($this->data);
+                       ->set($this->data)
+                       ->enable_parser(true);
 
         // Fire events
         Events::trigger('page_build', $this->template);
