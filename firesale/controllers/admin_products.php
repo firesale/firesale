@@ -158,14 +158,14 @@ class Admin_products extends Admin_Controller
                         $this->products_m->update_folder_slug($row->slug, $input['slug']);
                     }
 
+                    // Everything went well, clear cache for front-end update
+                    $this->pyrocache->delete_all('routes_m');
+                    $this->pyrocache->delete_all('products_m');
+
                     // Fire event
                     $data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
                     Events::trigger('product_updated', $data);
                 }
-
-                // Everything went well, clear cache for front-end update
-                $this->pyrocache->delete_all('routes_m');
-                $this->pyrocache->delete_all('products_m');
 
                 // Add to search
                 $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
