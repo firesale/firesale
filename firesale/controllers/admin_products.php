@@ -128,19 +128,16 @@ class Admin_products extends Admin_Controller
                         'error_message'   => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
                       );
 
-            // Clear out current categories to prevent duplicate db entries
-            // Will fix this in multiple itself
+            // Editing
             if ($id !== NULL) {
+
+                // Clear out current categories to prevent duplicate db entries
                 $input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
+
+                // Just incase
+                Events::trigger('pre_product_updated', $data);
             }
 
-        }
-
-        if ( substr($this->input->post('btnAction'), 0, 4) == 'save' ) {
-            $data = $this->db->where('id', $id)
-                             ->get('firesale_products')
-                             ->row();
-            Events::trigger('before_product_updated', $data);
         }
 
         // Get the stream fields
