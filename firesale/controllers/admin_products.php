@@ -135,7 +135,7 @@ class Admin_products extends Admin_Controller
                 $input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
 
                 // Just incase
-                Events::trigger('pre_product_updated', $data);
+                Events::trigger('pre_product_updated', $id);
             }
 
         }
