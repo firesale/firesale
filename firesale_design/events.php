@@ -20,6 +20,7 @@ class Events_Firesale_design
         Events::register('admin_controller', array($this, 'admin_controller'));
         Events::register('form_build', array($this, 'form_build'));
         Events::register('page_build', array($this, 'page_build'));
+        Events::register('product_get', array($this, 'product_get'));
         Events::register('category_get', array($this, 'category_get'));
 
     }
@@ -118,19 +119,34 @@ class Events_Firesale_design
 
                 // Set JS
 
-                // Send back view
-                return $design['view'];
             }
 
         }
 
     }
 
+    public function product_get($product)
+    {
+
+        // Get design
+        $design = $this->ci->pyrocache->model('design_m', 'get_design', array('product', $product['id']), $this->ci->firesale->cache_time);
+
+        // Check we have data
+        if( $design ) {
+
+            // Return for merge
+            return array('design' => $design);
+        }
+
+        // Add nothing
+        return array();
+    }
+
     public function category_get($category)
     {
 
         // Get design
-        $design = $this->ci->design_m->get_design('category', $category['id']);
+        $design = $this->ci->pyrocache->model('design_m', 'get_design', array('category', $category['id']), $this->ci->firesale->cache_time);
 
         // Check we have data
         if( $design ) {

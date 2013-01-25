@@ -78,10 +78,10 @@ class Front_product extends Public_Controller
             $this->template->id     = $this->data->product['id'];
 
             // Fire events
-            $overload = Events::trigger('page_build', $this->template);
+            Events::trigger('page_build', $this->template);
 
             // Build page
-            $this->template->build(( $overload ? $overload : 'product' ));
+            $this->template->build(( isset($product['design']) && $product['design']['enabled'] == '1' ? $product['design']['view'] : 'product' ));
 
         } else {
             show_404();
