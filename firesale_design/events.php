@@ -20,6 +20,7 @@ class Events_Firesale_design
         Events::register('admin_controller', array($this, 'admin_controller'));
         Events::register('form_build', array($this, 'form_build'));
         Events::register('page_build', array($this, 'page_build'));
+        Events::register('category_get', array($this, 'category_get'));
 
     }
 
@@ -123,6 +124,30 @@ class Events_Firesale_design
 
         }
 
+    }
+
+    public function category_get($category)
+    {
+
+        // Get design
+        $design = $this->ci->design_m->get_design('category', $category['id']);
+
+        // Check we have data
+        if( $design ) {
+
+            // Build data to be assigned
+            $data = array(
+                'design_enabled' => $design['enabled'],
+                'design_layout'  => array('id' => $design['layout'], 'key' => $design['layout']),
+                'design_view'    => array('id' => $design['view'], 'key' => $design['view'])
+            );
+
+            // Return for merge
+            return $data;
+        }
+
+        // Unset enabled
+        return array('design_enabled' => false);
     }
 
 }

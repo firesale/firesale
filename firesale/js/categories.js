@@ -38,7 +38,10 @@ $(function(){
 					 	var obj = $('#tabs select[name='+k+']'); obj.val(data[k].key); obj.trigger('liszt:updated');
 					}
 				} else if( $('#tabs input[name='+k+']').length > 0 ) {
-					$('#tabs input[name='+k+']').val(data[k]);
+					var obj = $('#tabs input[name='+k+']');
+					if( obj.attr('type') == 'checkbox' ) {
+						if( data[k] ) { obj.attr('checked', 'checked'); } else { obj.removeAttr('checked'); }
+					} else { obj.val(data[k]); }
 				} else if( $('#tabs textarea[name='+k+']').length > 0 ) {
 					$('#tabs textarea[name='+k+']').val(data[k]);
 				}
@@ -46,7 +49,7 @@ $(function(){
 
 			$('button.delete').remove();
 			$('.one_half.last .title h4').text('Edit "' + data.title + '"');
-			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Save</span></button>')
+			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
 			.append(( data.id != 1 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 
 			tabs.tabs('add', '#images', 'Images');
