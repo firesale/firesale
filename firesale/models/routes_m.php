@@ -114,7 +114,8 @@ class Routes_m extends MY_Model
     public function search_update($route)
     {
         // Check version
-        if (CMS_VERSION < "2.2.0") {
+        if (CMS_VERSION < "2.2.0")
+        {
             return FALSE;
         }
 
@@ -230,6 +231,11 @@ class Routes_m extends MY_Model
         $map     = preg_replace('/\$([0-9]+)/si', '\$__$1', $map);
         $string  = "\n/* FireSale - {$title} */\n\$route['{$route}'] = '{$map}';\n";
 
+        if (! is_writeable($file)) {
+            $this->session->set_flashdata('error', lang('firesale:routes:write_error'));
+            redirect($_SERVER['HTTP_REFERER']);
+        }        
+        
         // Existing route
         if ( preg_match($regex, $content) ) {
             // Replace in string
@@ -253,6 +259,11 @@ class Routes_m extends MY_Model
         $file    = APPPATH.'config/routes.php';
         $content = file_get_contents($file);
         $regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
+
+        if (! is_writeable($file)) {
+            $this->session->set_flashdata('error', lang('firesale:routes:write_error'));
+            redirect($_SERVER['HTTP_REFERER']);
+        }
 
         // Replace in string
         $content = preg_replace($regex, '', $content);

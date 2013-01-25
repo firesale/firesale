@@ -344,6 +344,7 @@
     $lang['firesale:routes:delete_error']   = 'Error removing route';
     $lang['firesale:routes:build_success']  = 'Successfully rebuilt the routes file';
     $lang['firesale:routes:build_error']    = 'There was an error rebuilding the routes file';
+    $lang['firesale:routes:write_error']    = 'Access Denied: Please ensure config/routes.php is writable and try again';
 
     // Route Labels
     $lang['firesale:routes:category_custom'] = 'Category Customisation';
