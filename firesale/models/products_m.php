@@ -200,14 +200,10 @@ class Products_m extends MY_Model
 
                 // Format product pricing
                 $pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency);
-
-                // Assign pricing
-                foreach ($pricing AS $key => $val) {
-                    $product[$key] = $val;
-                }
+                $product = array_merge($product, $pricing);
 
                 // Append data from other modules
-                $results = Events::trigger('product_get', $product['id'], 'array');
+                $results = Events::trigger('product_get', $product, 'array');
                 foreach ($results as $result) {
                     $product = array_merge($product, $result);
                 }
