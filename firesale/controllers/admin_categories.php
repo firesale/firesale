@@ -117,7 +117,9 @@ class Admin_categories extends Admin_Controller
 
         if ( is_string($fields) OR is_integer($fields) ) {
             // Success, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('categories_m');
+            $this->pyrocache->delete_all('products_m');
         }
 
         // Set query paramaters
@@ -196,7 +198,9 @@ class Admin_categories extends Admin_Controller
         if ($delete) {
 
             // Success, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('categories_m');
+            $this->pyrocache->delete_all('products_m');
 
             $this->session->set_flashdata('success', lang('firesale:cats_delete_success'));
         } else {
@@ -233,7 +237,9 @@ class Admin_categories extends Admin_Controller
             }
 
             // Success, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('categories_m');
+            $this->pyrocache->delete_all('products_m');
 
             // Ajax status
             echo json_encode(array('status' => $status['status'], 'message' => $status['message']));

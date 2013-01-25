@@ -3,9 +3,9 @@
 /**
  * Products admin controller
  *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Controllers
+ * @author      Jamie Holdroyd
+ * @author      Chris Harvey
+ * @package     FireSale\Core\Controllers
  *
  */
 class Admin_products extends Admin_Controller
@@ -14,9 +14,9 @@ class Admin_products extends Admin_Controller
     public $stream  = NULL;
     public $perpage = 30;
     public $section = 'products';
-    public $tabs	= array('description' => array('description'),
+    public $tabs    = array('description' => array('description'),
                             '_modifiers'  => array(),
-                            '_images'	  => array());
+                            '_images'     => array());
 
     public function __construct()
     {
@@ -81,9 +81,9 @@ class Admin_products extends Admin_Controller
         }
 
         // Assign variables
-        $this->data->products 	  = $products;
+        $this->data->products     = $products;
         $this->data->count        = $this->products_m->get_products(( isset($filter) ? $filter : array() ), 0, 0);
-        $this->data->count		  = ( $this->data->count ? count($this->data->count) : 0 );
+        $this->data->count        = ( $this->data->count ? count($this->data->count) : 0 );
         $this->data->pagination   = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
         $this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + $this->categories_m->dropdown_values();
         $this->data->status       = $this->products_m->status_dropdown(( $type == 'status' ? $value : -1 ));
@@ -120,9 +120,9 @@ class Admin_products extends Admin_Controller
         if ( substr($this->input->post('btnAction'), 0, 4) == 'save' ) {
 
             // Variables
-            $input 	= $this->input->post();
-            $skip	= array('btnAction');
-            $extra 	= array(
+            $input  = $this->input->post();
+            $skip   = array('btnAction');
+            $extra  = array(
                         'return'          => FALSE,
                         'success_message' => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
                         'error_message'   => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
@@ -164,6 +164,7 @@ class Admin_products extends Admin_Controller
                 }
 
                 // Everything went well, clear cache for front-end update
+                $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
 
                 // Add to search
@@ -196,9 +197,9 @@ class Admin_products extends Admin_Controller
         }
 
         // Assign variables
-        $this->data->id		= $id;
+        $this->data->id     = $id;
         $this->data->fields = fields_to_tabs($fields, $this->tabs);
-        $this->data->tabs	= array_keys($this->data->fields);
+        $this->data->tabs   = array_keys($this->data->fields);
         $this->data->symbol = $this->currency_m->get_symbol();
 
         // Add metadata
@@ -283,6 +284,7 @@ class Admin_products extends Admin_Controller
         if ($delete) {
 
             // Deleted, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
 
             $this->session->set_flashdata('success', lang('firesale:prod_delete_success'));
@@ -306,9 +308,9 @@ class Admin_products extends Admin_Controller
         if ( $this->input->post('btnAction') == 'save' ) {
 
             // Update variables
-            $input 	= $this->input->post();
-            $skip	= array('btnAction');
-            $extra 	= array(
+            $input  = $this->input->post();
+            $skip   = array('btnAction');
+            $extra  = array(
                         'return'          => FALSE,
                         'success_message' => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_success'),
                         'error_message'   => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_error')
@@ -323,6 +325,7 @@ class Admin_products extends Admin_Controller
             if ( $this->modifier_m->delete_modifier($id) ) {
 
                 // Deleted, clear cache!
+                $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
 
                 $this->session->set_flashdata('success', lang('firesale:mods:delete_success'));
@@ -350,6 +353,7 @@ class Admin_products extends Admin_Controller
         if ( is_string($fields) OR is_integer($fields) ) {
 
             // Good news everyone, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
 
             redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
@@ -384,9 +388,9 @@ class Admin_products extends Admin_Controller
         if ( $this->input->post('btnAction') == 'save' ) {
 
             // Update variables
-            $input 	= $this->input->post();
-            $skip	= array('btnAction');
-            $extra 	= array(
+            $input  = $this->input->post();
+            $skip   = array('btnAction');
+            $extra  = array(
                         'return'          => FALSE,
                         'success_message' => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_success'),
                         'error_message'   => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_error')
@@ -401,6 +405,7 @@ class Admin_products extends Admin_Controller
             if ( $this->modifier_m->delete_variation($id) ) {
 
                 // Deleted, clear cache!
+                $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
 
                 $this->session->set_flashdata('success', lang('firesale:vars:delete_success'));
@@ -437,6 +442,7 @@ class Admin_products extends Admin_Controller
             }
 
             // Updated, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
 
             // Send back to edit
@@ -532,6 +538,7 @@ class Admin_products extends Admin_Controller
             }
 
             // Updated, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
 
             // Ajax status
@@ -551,6 +558,7 @@ class Admin_products extends Admin_Controller
         if ( Files::delete_file($id) ) {
 
             // Deleted, clear cache!
+            $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
 
             // Success
@@ -574,6 +582,7 @@ class Admin_products extends Admin_Controller
             if ( isset($update) && $update == TRUE ) {
 
                 // Updated, clear cache!
+                $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
 
                 $this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
@@ -612,6 +621,7 @@ class Admin_products extends Admin_Controller
                 }
 
                 // Updated, clear cache!
+                $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
 
                 echo 'ok';
@@ -643,6 +653,7 @@ class Admin_products extends Admin_Controller
                 }
 
                 // Updated, clear cache!
+                $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
 
                 echo 'ok';
