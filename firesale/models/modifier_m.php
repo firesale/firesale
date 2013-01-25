@@ -3,9 +3,9 @@
 /**
  * Modifier model
  *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Models
+ * @author      Jamie Holdroyd
+ * @author      Chris Harvey
+ * @package     FireSale\Core\Models
  *
  */
 class Modifier_m extends MY_Model
@@ -70,12 +70,12 @@ class Modifier_m extends MY_Model
         }
 
         // Variables
-        $params	= array(
-                    'stream' 	=> 'firesale_product_modifiers',
-                    'namespace'	=> 'firesale_product_modifiers',
-                    'where'		=> "parent = '{$product}'",
-                    'order_by'	=> 'ordering_count',
-                    'sort'		=> 'asc'
+        $params = array(
+                    'stream'    => 'firesale_product_modifiers',
+                    'namespace' => 'firesale_product_modifiers',
+                    'where'     => "parent = '{$product}'",
+                    'order_by'  => 'ordering_count',
+                    'sort'      => 'asc'
                   );
 
         // Get the modifiers
@@ -112,21 +112,29 @@ class Modifier_m extends MY_Model
         }
 
         // Variables
-        $return = array();
-        $params	= array(
-                    'stream' 	=> 'firesale_product_variations',
-                    'namespace'	=> 'firesale_product_variations',
-                    'where'		=> "parent = '{$parent}'",
-                    'order_by'	=> 'ordering_count',
-                    'sort'		=> 'asc'
-                  );
+        $return   = array();
+        $currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
+        $params   = array(
+                      'stream'    => 'firesale_product_variations',
+                      'namespace' => 'firesale_product_variations',
+                      'where'     => "parent = '{$parent}'",
+                      'order_by'  => 'ordering_count',
+                      'sort'      => 'asc'
+                    );
 
         // Get the variations
         $variations = $this->streams->entries->get_entries($params);
         $tmp = array();
 
-        // Loop and reassign with id as key
         foreach ($variations['entries'] as &$variation) {
+
+            // Add and format difference
+            $before = ( substr($variation['price'], 0, 1) == '-' ? '-' : ( 0 + $variation['price'] > 0 ? '+' : '' ) );
+            $price  = str_replace('-', '', $variation['price']);
+            $variation['difference'] = $before.$this->currency_m->format_string($price, $currency);
+
+            // Reassign with id as key
             $tmp[$variation['id']] = $variation;
         }
 

@@ -77,6 +77,12 @@ class Categories_m extends MY_Model
                 $images = Files::folder_contents($folder->id);
                 $category['images'] = $images['data']['file'];
 
+                // Append data from other modules
+                $results = Events::trigger('category_get', $category, 'array');
+                foreach ($results as $result) {
+                    $category = array_merge($category, $result);
+                }
+
                 // Add to cache
                 $this->cache['id'][$category['id']]     = $category;
                 $this->cache['slug'][$category['slug']] = $category;

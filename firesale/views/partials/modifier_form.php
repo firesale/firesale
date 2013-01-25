@@ -18,9 +18,9 @@
                     <?php foreach( $modifier['variations'] as $variation ): ?>
                     <?php if( $type == 'radio' ): ?>
                         <input type="radio" name="options[<?php echo $modifier['id']; ?>]" id="options_<?php echo $variation['id']; ?>" value="<?php echo $variation['id']; ?>" <?php echo $variation['selected']; ?>/>
-                        <label for="options_<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</label>
+                        <label for="options_<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (<?php echo $variation['difference']; ?>)</label>
                     <?php else: ?>
-                            <option <?php echo $variation['selected']; ?>value="<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (+<?php echo str_replace('{{ price }}', $variation['price'], $product['currency']->cur_format); ?>)</option>
+                            <option <?php echo $variation['selected']; ?>value="<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (<?php echo $variation['difference']; ?>)</option>
                     <?php endif; ?>
                     <?php endforeach; ?>
                     <?php if( $type == 'select' ): ?>

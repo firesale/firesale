@@ -96,7 +96,7 @@
                                                 <tr id="var_<?php echo $variation['id']; ?>">
                                                     <td><span class="var-mover"></span></td>
                                                     <td><?php echo $variation['title']; ?></td>
-                                                    <td><?php echo $symbol.$variation['price']; ?></td>
+                                                    <td><?php echo $variation['difference']; ?></td>
                                                     <td><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $id; ?>/<?php echo $variation['id']; ?>" class="modal btn orange"><?php echo lang('global:edit'); ?></a></td>
                                                 </tr>
                                             <?php endforeach; ?>
