@@ -681,6 +681,27 @@ class Products_m extends MY_Model
         return implode(',', $cats);
     }
 
+    public function build_breadcrumbs($category, &$template)
+    {
+
+        // Variables
+        $parent     = null;
+        $categories = $this->get_cat_path($category, true);
+
+        // Loop categories
+        foreach ($categories as $category) {
+
+            if ($parent === null) {
+                $parent = $category['id'];
+            }
+
+            $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $category['id']), $this->firesale->cache_time);
+            $template->set_breadcrumb($category['title'], $url);
+        }
+
+        return $parent;
+    }
+
     /**
      * Gets a Files folder object based on the Product/Name slug.
      *
@@ -756,6 +777,21 @@ class Products_m extends MY_Model
             return $query->row()->id;
 
         return FALSE;
+    }
+
+    public function get_images($slug)
+    {
+
+        $folder = $this->get_file_folder_by_slug($slug);
+        $images = Files::folder_contents($folder->id);
+
+        if (!empty($images['data']['file'])) {
+            foreach ($images['data']['file'] AS $key => &$image) {
+                $image->position = $key;
+            }
+        }
+
+        return $images['data']['file'];
     }
 
     /**
