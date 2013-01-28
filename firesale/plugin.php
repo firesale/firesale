@@ -198,6 +198,31 @@ class Plugin_Firesale extends Plugin
         return $results;
     }
 
+    public function bestsellers()
+    {
+        $limit = $this->attribute('limit', 10);
+        $order = $this->attribute('order', 'p.created asc');
+
+        list($order, $order_dir) = explode(' ', $order);
+
+        $result = $this->db
+            ->select("COUNT(oo.product_id) as count, p.id")
+            ->from('firesale_products AS p')
+            ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
+            ->order_by('count', 'desc')
+            ->order_by($order, $order_dir)
+            ->limit($limit)
+            ->get()
+            ->result();
+
+        foreach ($result as &$product)
+        {
+            $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
+        }
+
+        return $result;
+    }
+
     public function modifier_form()
     {
 
