@@ -76,8 +76,8 @@
                             <center><ul class="split-button">
                                 <li><strong>Action</strong></li>
                                 <li><a href="#" class="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a></li>
-                                <li><a href="<?php echo site_url(); ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="edit"><?php echo lang('global:edit'); ?></a></li>
-                                <li><a href="<?php echo site_url(); ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="confirm"><?php echo lang('global:delete'); ?></a></li>
+                                <li><a href="<?php echo site_url() . $index_seperator; ?>admin/firesale/products/edit/<?php echo $product['id']; ?>" class="edit"><?php echo lang('global:edit'); ?></a></li>
+                                <li><a href="<?php echo site_url() . $index_seperator; ?>admin/firesale/products/delete/<?php echo $product['id']; ?>" class="confirm"><?php echo lang('global:delete'); ?></a></li>
                             </ul></center>
                         </td>
                     </tr>
