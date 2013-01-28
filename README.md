@@ -45,7 +45,7 @@ Before attempting installation please ensure you meet the following requirements
 
 ### Optional Steps
 
-After FireSale is installed you can also install the two additional modules provided with the core to enable Shipping and Search. These require no extra requirements and should just work after being enabled.
+After FireSale is installed you can also install the two additional modules provided with the core to enable Shipping and Search. These modules have no extra requirements and should just work after being enabled.
 
 ## Feedback and issues
 
