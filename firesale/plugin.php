@@ -167,6 +167,10 @@ class Plugin_Firesale extends Plugin
                         $query->where_in('c.id', $children);
                     break;
 
+                    case 'where':
+                        $query->where($val, null, false);
+                    break;
+
                     case 'parse_params':
                     break;
 
