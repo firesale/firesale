@@ -51,7 +51,11 @@
                         <td><input type="checkbox" name="action_to[]" value="<?php echo $order['id']; ?>"  /></td>
                         <td><?php echo $order['id']; ?></td>
                         <td><?php echo date('Y-m-d H:i:s', $order['created']); ?></td>
+                    <?php if( is_array($order['ship_to']) ): ?>
                         <td><?php echo $order['ship_to']['firstname'] . ' ' . $order['ship_to']['lastname']; ?></td>
+                    <?php else: ?>
+                        <td><?php echo $order['created_by']['display_name']; ?></td>
+                    <?php endif; ?>
                         <td><?php echo $order['order_status']['value']; ?></td>
                         <td><?php echo $order['products']; ?></td>
                         <td><?php echo $order['ship_to']['country']['name']; ?></td>

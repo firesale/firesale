@@ -106,7 +106,7 @@ class Admin_orders extends Admin_Controller
 
         // Assign filtering
         $users  = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
-        $prods  = $this->products_m->build_dropdown(( $type == 'product' ? $query : NULL));
+        $prods  = $this->orders_m->build_product_dropdown();
         $status = $this->orders_m->status_field();
         $this->data->filter_users  = $users['input'];
         $this->data->filter_status = form_dropdown('order_status', $status, ( $type == 'order_status' ? $query : NULL ));

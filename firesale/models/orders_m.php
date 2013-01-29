@@ -48,6 +48,33 @@ class Orders_m extends MY_Model
     }
 
     /**
+     * Gets a dropdown compatible list of products that have been purchased
+     *
+     * @return array The products list
+     * @access public
+     */
+    public function build_product_dropdown()
+    {
+
+        // Variables
+        $data = array();
+
+        // Query
+        $items = $this->db->query('SELECT *, SUM(qty) AS `count`
+                                   FROM `' . SITE_REF . '_firesale_orders_items`
+                                   GROUP BY `product_id`
+                                   ORDER BY `name` ASC')->result_array();
+
+        // Loop and format
+        foreach( $items as $item ) {
+            $data[$item['product_id']] = $item['name'].' ('.$item['count'].')';
+        }
+
+        // Return
+        return $data;
+    }
+
+    /**
      * Deletes a given order and the products contained in it
      *
      * @param  integer $order_id The Order ID to query
