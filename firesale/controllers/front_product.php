@@ -79,6 +79,7 @@ class Front_product extends Public_Controller
 
             // Build data for return
             $data = array(
+                'code'            => $product['code'],
                 'stock'           => $product['stock'],
                 'stock_status'    => $product['stock_status'],
                 'rrp_rounded'     => $product['rrp_rounded'],
