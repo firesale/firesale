@@ -5,6 +5,7 @@
         </section>
         <section class="item">
             <div class="content">
+            <?php if( isset($cats) && ! empty($cats) ): ?>
                 <div id="category-sort">
                 <ul class="sortable">
                     <?php foreach($cats as $cat): ?>
@@ -23,6 +24,9 @@
                     <?php endforeach; ?>
                 </ul>
                 </div>
+            <?php else: ?>
+                <div class="no_data"><?php echo lang('firesale:cats_none'); ?></div>
+            <?php endif; ?>
             </div>
         </section>
     </div>
