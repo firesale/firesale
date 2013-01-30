@@ -67,4 +67,33 @@ class Front_product extends Public_Controller
         $this->template->build($view);
     }
 
+    public function ajax_modifier_data()
+    {
+
+        // Check for data
+        if ( $this->input->post() ) {
+
+            // Get product data
+            $data    = $this->pyrocache->model('modifier_m', 'cart_variation', array($this->input->post()), $this->firesale->cache_time);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($data['prd_code'][0], null, 1), $this->firesale->cache_time);
+
+            // Build data for return
+            $data = array(
+                'stock'           => $product['stock'],
+                'stock_status'    => $product['stock_status'],
+                'rrp_rounded'     => $product['rrp_rounded'],
+                'rrp_formatted'   => $product['rrp_formatted'],
+                'price_rounded'   => $product['price_rounded'],
+                'price_formatted' => $product['price_formatted'],
+                'diff_rounded'    => $product['diff_rounded'],
+                'diff_formatted'  => $product['diff_formatted']
+            );
+            
+            // Spit out data
+            echo json_encode($data);
+            exit();
+        }
+
+    }
+
 }
