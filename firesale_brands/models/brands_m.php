@@ -34,7 +34,7 @@ class Brands_m extends MY_Model
             $brand = current($brands['entries']);
 
             // Get images
-            if ( $folder = $this->products_m->get_file_folder_by_slug($brand['slug']) ) {
+            if ( $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($brand['slug']), $this->firesale->cache_time) ) {
                 $query = $this->db->select('id, path')
                                   ->from('files')
                                   ->where('folder_id', $folder->id)
@@ -52,14 +52,23 @@ class Brands_m extends MY_Model
 
     public function get_products($brand, $perpage, $start)
     {
+        // Variations
+        $show_variations = (bool) $this->settings->get('firesale_show_variations');
 
         // Build query
         $query = $this->db->select('id')
                           ->from('firesale_products')
                           ->where('brand', $brand)
                           ->order_by('title', 'asc')
-                          ->limit($perpage, $start)
-                          ->get();
+                          ->limit($perpage, $start);
+
+        // Hide variations
+        if ( ! $show_variations ) {
+            $query->where('is_variation', '0');
+        }
+
+        // Run the query
+        $query = $query->get();
 
         // Check for results
         if( $query->num_rows() ) {
@@ -70,7 +79,7 @@ class Brands_m extends MY_Model
             // Loop
             foreach( $results AS &$product ) {
                 // Get product
-                $product = $this->products_m->get_product($product['id']);
+                $product = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
             }
 
             // Return

@@ -32,19 +32,19 @@ class front extends Public_Controller
     {
 
         // Variables
-        $brand = $this->brands_m->get($id_slug);
+        $brand = $this->pyrocache->model('brands_m', 'get', array($id_slug), $this->firesale->cache_time);
 
         // Check it was found
         if( $brand ) {
 
             // Build route
-            $route = $this->routes_m->build_url('brand', $brand['id']);
+            $route = $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time);
 
             // Get products
-            $products = $this->brands_m->get_products($brand['id'], $this->perpage, $page);
+            $products = $this->pyrocache->model('brands_m', 'get_products', array($brand['id'], $this->perpage, $page), $this->firesale->cache_time);
 
             // Build pagination
-            $count      = $this->brands_m->get_count($brand['id']);
+            $count      = $this->pyrocache->model('brands_m', 'get_count', array($brand['id']), $this->firesale->cache_time);
             $pagination = create_pagination($route.'/',  $count, $this->perpage, 3);
 
             // Assign data
@@ -57,7 +57,7 @@ class front extends Public_Controller
 
             // Add page content
             $this->template->title($brand['title'])
-                           ->set_breadcrumb($brand['title'], $this->routes_m->build_url('brand', $brand['id']))
+                           ->set_breadcrumb($brand['title'], $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time))
                            ->append_css('firesale::firesale.css')
                            ->append_js('firesale::firesale.js')
                            ->set($this->data);
