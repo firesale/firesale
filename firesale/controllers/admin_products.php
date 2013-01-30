@@ -40,7 +40,7 @@ class Admin_products extends Admin_Controller
 
         // Add data object
         $this->data = new stdClass;
-
+        $this->data->index_seperator = $this->config->item('index_page') ? '/' : '' ;
         // Add metadata
         $this->template->append_css('module::products.css')
                        ->append_js('module::jquery.tablesort.js')
@@ -110,7 +110,8 @@ class Admin_products extends Admin_Controller
 
     public function create($id = NULL, $row = NULL)
     {
-
+        $CI = & get_instance();
+        
         // Variables
         $input = FALSE;
         $skip  = array();
@@ -139,7 +140,6 @@ class Admin_products extends Admin_Controller
             }
 
         }
-
         // Get the stream fields
         $fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), ( $id == NULL ? $input : $row ), FALSE, FALSE, $skip, $extra);
 
@@ -235,7 +235,6 @@ class Admin_products extends Admin_Controller
 
     public function edit($id)
     {
-
         // Get row
         if ( $row = $this->row_m->get_row($id, $this->stream, FALSE) ) {
             // Load form
