@@ -110,35 +110,31 @@ class Currency_m extends MY_Model
         $rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
         $price_tax = ( $price * $currency->exch_rate );
         $price     = ( $price * $currency->exch_rate ) * $tax_mod;
-
-        // Format prices
-        $rrp_f       = $this->format_string($rrp, $currency);       // RRP With tax
-        $rrp_tax_f   = $this->format_string($rrp_tax, $currency);   // RRP Without tax
-        $price_f     = $this->format_string($price, $currency);     // With tax
-        $price_tax_f = $this->format_string($price_tax, $currency); // Without tax
-
-        // Round prices (if required)
-        $rrp_r       = $this->format_string($rrp, $currency, TRUE, FALSE, FALSE);       // RRP With tax
-        $rrp_tax_r   = $this->format_string($rrp_tax, $currency, TRUE, FALSE, FALSE);   // RRP Without tax
-        $price_r     = $this->format_string($price, $currency, TRUE, FALSE, FALSE);     // With tax
-        $price_tax_r = $this->format_string($price_tax, $currency, TRUE, FALSE, FALSE); // Without tax
+        $diff      = ( $rrp_r > $price_r ? ( $rrp_r - $price_r ) : 0.00 );
+        $diff_tax  = ( $rrp_tax_r > $price_tax_r ? ( $rrp_tax_r - $price_tax_r ) : 0.00 );
 
         // Prepare return
         $return = array(
-                    'currency'            => $currency,
-                    'rrp_tax'             => $rrp_tax,
-                    'rrp_tax_formatted'   => $rrp_tax_f,
-                    'rrp_tax_rounded'     => $rrp_tax_r,
-                    'rrp'                 => $rrp,
-                    'rrp_formatted'       => $rrp_f,
-                    'rrp_rounded'         => $rrp_r,
-                    'price_tax'           => $price_tax,
-                    'price_tax_formatted' => $price_tax_f,
-                    'price_tax_rounded'   => $price_tax_r,
-                    'price'               => $price,
-                    'price_formatted'     => $price_f,
-                    'price_rounded'       => $price_r
-                  );
+            'currency'            => $currency,
+            'rrp_tax'             => $rrp_tax,
+            'rrp_tax_formatted'   => $this->format_string($rrp_tax, $currency),                       // RRP Without tax
+            'rrp_tax_rounded'     => $this->format_string($rrp_tax, $currency, TRUE, FALSE, FALSE),   // RRP Without tax
+            'rrp'                 => $rrp,
+            'rrp_formatted'       => $this->format_string($rrp, $currency),                           // RRP With tax
+            'rrp_rounded'         => $this->format_string($rrp, $currency, TRUE, FALSE, FALSE),       // RRP With tax
+            'price_tax'           => $price_tax,
+            'price_tax_formatted' => $this->format_string($price_tax, $currency),                     // Without tax
+            'price_tax_rounded'   => $this->format_string($price_tax, $currency, TRUE, FALSE, FALSE), // Without tax
+            'price'               => $price,
+            'price_formatted'     => $this->format_string($price, $currency),                         // With tax
+            'price_rounded'       => $this->format_string($price, $currency, TRUE, FALSE, FALSE),     // With tax
+            'diff'                => $diff,
+            'diff_formatted'      => $this->format_string($diff, $currency),                          // Difference With Tax
+            'diff_rounded'        => $this->format_string($diff, $currency, TRUE, FALSE, FALSE),      // Difference With Tax
+            'diff_tax'            => $diff_tax,
+            'diff_tax_formatted'  => $this->format_string($diff_tax, $currency),                      // Difference Without Tax
+            'diff_tax_rounded'    => $this->format_string($diff_tax, $currency, TRUE, FALSE, FALSE)   // Difference Without Tax
+        );
 
         return $return;
     }
@@ -161,7 +157,7 @@ class Currency_m extends MY_Model
                 break;
 
                 default:
-                    $price = ( floor($price * 100) / 100 );
+                    $price = ( floor(( $price + 0.004 ) * 100) / 100 );
                 break;
             }
         }
@@ -169,11 +165,10 @@ class Currency_m extends MY_Model
         // Apply tax if required
         if ($apply_tax) {
             $this->load->model('taxes_m');
+            
             $percentage = $this->taxes_m->get_percentage($tax_band);
-
-            $tax_mod = 1 - ($percentage / 100);
-
-            $price = $price * (($percentage / 100) + 1);
+            $tax_mod    = 1 - ($percentage / 100);
+            $price      = $price * (($percentage / 100) + 1);
         }
 
         if ( ! $format)
