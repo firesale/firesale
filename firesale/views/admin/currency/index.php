@@ -40,14 +40,14 @@
                         <td><?php echo $currency['exch_rate']; ?></td>
                         <td><?php echo number_format($currency['cur_tax'], 2).'%'; ?></td>
                         <td><center>
-                            <a href="<?php echo site_url(); ?>admin/firesale/currency/edit/<?php echo $currency['id']; ?>" class="btn blue"><?php echo lang('global:edit'); ?></a>
+                            <a href="<?php echo site_url('admin/firesale/currency/edit/'.$currency['id']); ?>" class="btn blue"><?php echo lang('global:edit'); ?></a>
                         <?php if( $currency['enabled']['key'] == '1' ): ?>
-                            <a href="<?php echo site_url(); ?>admin/firesale/currency/disable/<?php echo $currency['id']; ?>" class="btn orange"><?php echo lang('firesale:currency:disable'); ?></a>
+                            <a href="<?php echo site_url('admin/firesale/currency/disable/'.$currency['id']); ?>" class="btn orange"><?php echo lang('firesale:currency:disable'); ?></a>
                         <?php else: ?>
-                            <a href="<?php echo site_url(); ?>admin/firesale/currency/enable/<?php echo $currency['id']; ?>" class="btn green"><?php echo lang('firesale:currency:enable'); ?></a>
+                            <a href="<?php echo site_url('admin/firesale/currency/enable/'.$currency['id']); ?>" class="btn green"><?php echo lang('firesale:currency:enable'); ?></a>
                         <?php endif; ?>
                         <?php if( $currency['delete'] ): ?>
-                            <a href="<?php echo site_url(); ?>admin/firesale/currency/delete/<?php echo $currency['id']; ?>" class="btn red confirm" title="<?php echo lang('firesale:currency:delete_warn'); ?>"><?php echo lang('global:delete'); ?></a>
+                            <a href="<?php echo site_url('admin/firesale/currency/delete/'.$currency['id']); ?>" class="btn red confirm" title="<?php echo lang('firesale:currency:delete_warn'); ?>"><?php echo lang('global:delete'); ?></a>
                         <?php endif; ?>
                         </center></td>
                     </tr>

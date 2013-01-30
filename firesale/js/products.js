@@ -4,36 +4,40 @@ $(function() {
 	** DASHBOARD **
 	**************/
 
-	$('#price-slider').slider({
-		range: true,
-		min: parseFloat($('.ui-slider-cont .left span').text()),
-		max: parseFloat($('.ui-slider-cont .right span').text()),
-		step: 0.5,
-		values: [parseFloat($('.ui-slider-cont .left span').text()), parseFloat($('.ui-slider-cont .right span').text())],
-		slide: function(event, ui) {
-			$('.ui-slider-cont .left span').html(ui.values[0].toFixed(2));
-			$('.ui-slider-cont .right span').html(ui.values[1].toFixed(2));
-		},
-		stop: function(event, ui) {
-			var data = {filter:'price',value:ui.values[0]+'-'+ui.values[1]};
-			update_products(data);
+	if( $('#product_table').size() > 0 ) {
+
+		$('#price-slider').slider({
+			range: true,
+			min: parseFloat($('.ui-slider-cont .left span').text()),
+			max: parseFloat($('.ui-slider-cont .right span').text()),
+			step: 0.5,
+			values: [parseFloat($('.ui-slider-cont .left span').text()), parseFloat($('.ui-slider-cont .right span').text())],
+			slide: function(event, ui) {
+				$('.ui-slider-cont .left span').html(ui.values[0].toFixed(2));
+				$('.ui-slider-cont .right span').html(ui.values[1].toFixed(2));
+			},
+			stop: function(event, ui) {
+				var data = {filter:'price',value:ui.values[0]+'-'+ui.values[1]};
+				update_products(data);
+			}
+		});
+
+		var prices = $('#price-slider').slider('values');
+		if( typeof prices == 'array' ) {
+			$('.ui-slider-cont .left span').html(prices[0].toFixed(2));
+			$('.ui-slider-cont .right span').html(prices[1].toFixed(2));
 		}
-	});
 
-	var prices = $('#price-slider').slider('values');
-	if( typeof prices == 'array' ) {
-		$('.ui-slider-cont .left span').html(prices[0].toFixed(2));
-		$('.ui-slider-cont .right span').html(prices[1].toFixed(2));
+		$('#filters select, #filters input').change(function() {
+			var data = {filter: $(this).attr('name'), value: $(this).val()};
+			update_products(data);
+		});
+
+	    $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
+		$('#product_table').tablesorter({headers:{0:{sorter:false},2:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
+		build_quickedit();
+
 	}
-
-	$('#filters select, #filters input').change(function() {
-		var data = {filter: $(this).attr('name'), value: $(this).val()};
-		update_products(data);
-	});
-
-    $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
-	$('#product_table').tablesorter({headers:{0:{sorter:false},2:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
-	build_quickedit();
 
 	/*************
 	** CREATION **
@@ -43,7 +47,7 @@ $(function() {
 		$('#tabs').tabs("select", '#generaloptions');
 	}
 
-	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
+	// pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
 	
 	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
