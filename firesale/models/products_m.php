@@ -196,10 +196,10 @@ class Products_m extends MY_Model
 
                 // Get variation and modifer data
                 $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
-                $product['modifiers']    = $this->modifier_m->product_variations($product['id'], $product['is_variation']);
+                $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
 
                 // Format product pricing
-                $pricing = $this->currency_m->format_price($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency);
+                $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
                 $product = array_merge($product, $pricing);
 
                 // Append data from other modules
@@ -490,7 +490,7 @@ class Products_m extends MY_Model
                     'firesale:product',
                     'firesale:products',
                     $product['id'],
-                    $this->routes_m->build_url('product', $product['id']),
+                    $this->pyrocache->model('routes_m', 'build_url', array('product', $product['id']), $this->firesale->cache_time),
                     $product['title'],
                     strip_tags($product['description']),
                     array(
@@ -532,7 +532,7 @@ class Products_m extends MY_Model
             list($ignore, $id) = explode('_', $categories[$i]);
 
             // Check for valid category
-            if ( ( 0 + $id ) > 0 AND $this->categories_m->get_category($id) !== FALSE ) {
+            if ( ( 0 + $id ) > 0 AND $this->pyrocache->model('categories_m', 'get_category', array($id), $this->firesale->cache_time) !== FALSE ) {
 
                 // Build data
                 $data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => trim($id));
@@ -577,7 +577,7 @@ class Products_m extends MY_Model
 
             // Get categories
             foreach ($results AS $category) {
-                $categories[] = $this->categories_m->get_category($category['id']);
+                $categories[] = $this->pyrocache->model('categories_m', 'get_category', array($category['id']), $this->firesale->cache_time);
             }
 
             // Return
