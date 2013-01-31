@@ -101,8 +101,8 @@ class Front_orders extends Public_Controller
 
             // Format products
             foreach ($order['items'] AS &$item) {
+                $item['total'] = $this->currency_m->format_string(($item['price']*$item['qty']), (object) $order['currency'], FALSE, FALSE);
                 $item['price'] = $this->currency_m->format_string($item['price'], (object) $order['currency'], FALSE, FALSE);
-                $item['total'] = $this->currency_m->format_string($item['total'], (object) $order['currency'], FALSE, FALSE);
             }
 
             // Build page
