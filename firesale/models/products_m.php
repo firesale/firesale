@@ -252,7 +252,7 @@ class Products_m extends MY_Model
             if ( $key == 'category' AND (int) $value > 0 ) {
                 $query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
                       ->where('pc.firesale_categories_id', $value);
-            } elseif ($key == 'search') {
+            } elseif ($key == 'search' AND strlen($value) > 0 ) {
                 $query->like('title', $value)
                       ->or_like('code', $value);
             } elseif ($key == 'sale' AND $value == '1') {
@@ -261,7 +261,7 @@ class Products_m extends MY_Model
                 list($from, $to) = explode('-', $value);
                 $query->where('p.price >=', $from)
                       ->where('p.price <=', $to);
-            } else {
+            } elseif( strlen($value) > 0 AND $value != '-1' ) {
                 $query->where($key, $value);
             }
         }

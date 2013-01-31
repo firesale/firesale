@@ -35,6 +35,7 @@
                                 <label class="right"><?php echo $this->settings->get('currency'); ?><span><?php echo $min_max['max']; ?></span></label>
                                 <div id="price-slider"></div>
                             </div>
+                            <input type="hidden" name="price" value="<?php echo $min_max['min']; ?>-<?php echo $min_max['max']; ?>" />
                         </center>
                     </li>
                 </ul>

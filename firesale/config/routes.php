@@ -1,7 +1,6 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-    $route['firesale/admin/products(?:(/[category|status|stock_status|na]+/[0-9na]+(?:(/[0-9]+)?)))?'] = 'admin_products/index$1'; // Fuck you pagination and filtering
-
+    $route['firesale/admin/products(/[0-9]+)?']              = 'admin_products/index$1';
     $route['firesale/admin/categories(/:any)?']              = 'admin_categories$1';
     $route['firesale/admin/taxes(/:num)?']                   = 'admin_taxes/index$1';
     $route['firesale/admin/taxes(/:any)?']                   = 'admin_taxes$1';
@@ -16,4 +15,5 @@
     $route['firesale/admin/orders/delete(/:any)?']           = 'admin_orders/delete$1';
     $route['firesale/admin/orders(/:any)?']                  = 'admin_orders/index$1';
     $route['firesale/admin/gateways(/:any)?']                = 'admin_gateways$1';
+    $route['firesale/admin/liveedit(/:any)']                 = 'admin_liveedit$1';
     $route['firesale/admin']                                 = 'firesale/admin/index';

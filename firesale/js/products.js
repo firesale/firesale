@@ -15,10 +15,10 @@ $(function() {
 			slide: function(event, ui) {
 				$('.ui-slider-cont .left span').html(ui.values[0].toFixed(2));
 				$('.ui-slider-cont .right span').html(ui.values[1].toFixed(2));
+				$('input[name=price]').val(ui.values[0].toFixed(2)+'-'+ui.values[1].toFixed(2));
 			},
 			stop: function(event, ui) {
-				var data = {filter:'price',value:ui.values[0]+'-'+ui.values[1]};
-				update_products(data);
+				update_products();
 			}
 		});
 
@@ -29,8 +29,7 @@ $(function() {
 		}
 
 		$('#filters select, #filters input').change(function() {
-			var data = {filter: $(this).attr('name'), value: $(this).val()};
-			update_products(data);
+			update_products();
 		});
 
 	    $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
@@ -47,7 +46,7 @@ $(function() {
 		$('#tabs').tabs("select", '#generaloptions');
 	}
 
-	// pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
+	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
 	
 	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
 
@@ -209,30 +208,41 @@ $(function() {
 		});
 	}
 
-	function update_products(data)
+	function update_products(extra)
 	{
 
-		$.post(SITE_URL+'admin/firesale/products' + ( parseInt(data.value) != -1 ? '/'+data.filter+'/'+data.value : '' ), function(p) {
+		$.post(SITE_URL+'firesale/admin_products/ajax_filter/'+extra, $('#filters').serialize(), function(json) {
 			
 			// Variables
-			var products = $.parseJSON(p), tar = $('#product_table tbody'), row = '';
+			var data = $.parseJSON(json), tar = $('#product_table tbody'), row = '';
 
 			// Clear table
 			tar.html('');
 
 			// Check products
-			if( products != null && products.length > 0 )
+			if( data != null && data.products.length > 0 )
 			{
 
 				$('.no_data').remove();
 				tar.parent().show();
 
+				// Update pagination
+				$('#product_table tfoot td div').html(data.pagination.links);
+				$('#product_table tfoot td div a').click(function(e) {
+					e.preventDefault();
+					var page = $(this).attr('href').split('/');
+						page = page[page.length-1];
+					if( $('#filters input[name=start]').size() > 0 ) { $('#filters input[name=start]').val(page); }
+					else { $('#filters').append('<input type="hidden" name="start" value="'+page+'" />'); }
+					update_products(page);
+				});
+
 				// Loop new products
-				for( var k in products )
+				for( var k in data.products )
 				{
 
 					// Variables
-					var p   = products[k];
+					var p   = data.products[k];
 					var str = '';
 
 					// Categories
@@ -248,7 +258,7 @@ $(function() {
 							  '  '+str+
 							  ' </td>'+
 							  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
-							  ' <td>'+currency+'<span class="item-price">'+p.price+'</span></td>'+
+							  ' <td><span class="item-price">'+p.price_formatted+'</span></td>'+
 							  ' <td class="actions">'+
 							  '  <ul class="split-button">'+
 							  '   <li><strong>Action</strong></li>'+
