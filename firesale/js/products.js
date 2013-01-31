@@ -138,6 +138,8 @@ $(function() {
 	
 });
 	
+	var req = null;
+
 	function tax_link(price, before)
 	{
 		var tmp = before.clone();before.parent().parent().remove();
@@ -211,7 +213,9 @@ $(function() {
 	function update_products(extra)
 	{
 
-		$.post(SITE_URL+'firesale/admin_products/ajax_filter/'+extra, $('#filters').serialize(), function(json) {
+		if( req != null ) { req.abort(); }
+
+		req = $.ajax({ type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, global: false, data: $('#filters').serialize(), success: function(json) {
 			
 			// Variables
 			var data = $.parseJSON(json), tar = $('#product_table tbody'), row = '';
@@ -286,6 +290,6 @@ $(function() {
 				$('<div class="no_data">No Products Found</div>').insertAfter(tar.parent());
 			}
 
-		});
+		}});
 
 	}
