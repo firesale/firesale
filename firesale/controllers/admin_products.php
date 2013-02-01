@@ -58,7 +58,7 @@ class Admin_products extends Admin_Controller
 
     }
 
-    public function index($type = 'na', $value = 'na', $start = 0)
+    public function index($start = 0)
     {
 
         // Check for btnAction
@@ -66,14 +66,8 @@ class Admin_products extends Admin_Controller
             $this->$action();
         }
 
-        // Get filter if set
-        if ($type != 'na' AND $value != 'na') {
-            $filter   = array($type => $value);
-            $products = $this->pyrocache->model('products_m', 'get_products', array($filter, $start, $this->perpage), $this->firesale->cache_time);
-            $this->data->$type = $value;
-        } else {
-            $products = $this->pyrocache->model('products_m', 'get_products', array(array(), $start, $this->perpage), $this->firesale->cache_time);
-        }
+        // Get product IDs
+        $products = $this->pyrocache->model('products_m', 'get_products', array(array(), $start, $this->perpage), $this->firesale->cache_time);
 
         // Build product data
         foreach ($products AS &$product) {
@@ -84,7 +78,7 @@ class Admin_products extends Admin_Controller
         $this->data->products     = $products;
         $this->data->count        = $this->pyrocache->model('products_m', 'get_products', array(( isset($filter) ? $filter : array() ), 0, 0), $this->firesale->cache_time);
         $this->data->count        = ( $this->data->count ? count($this->data->count) : 0 );
-        $this->data->pagination   = create_pagination('/admin/firesale/products/' . ( $type != 'na' ? $type : 'na' ) . '/' . ( $value != 'na' ? $value : 'na' ) . '/', $this->data->count, $this->perpage, 6);
+        $this->data->pagination   = create_pagination('/admin/firesale/products/', $this->data->count, $this->perpage, 4);
         $this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + $this->pyrocache->model('categories_m', 'dropdown_values', array(), $this->firesale->cache_time);
         $this->data->status       = $this->pyrocache->model('products_m', 'status_dropdown', array(( $type == 'status' ? $value : -1 ), $this->firesale->cache_time));
         $this->data->stock_status = $this->pyrocache->model('products_m', 'stock_status_dropdown', array(( $type == 'stock_status' ? $value : -1 ), $this->firesale->cache_time));
@@ -94,18 +88,17 @@ class Admin_products extends Admin_Controller
         if ( $this->input->is_ajax_request() ) {
             echo json_encode($this->data->products);
             exit();
-        } else {
-            // Add page data
-            $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
-                           ->set($this->data);
-
-            // Fire events
-            Events::trigger('page_build', $this->template);
-
-            // Build page
-            $this->template->build('admin/products/index');
         }
 
+        // Add page data
+        $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
+                        ->set($this->data);
+
+        // Fire events
+        Events::trigger('page_build', $this->template);
+
+        // Build page
+        $this->template->build('admin/products/index');
     }
 
     public function create($id = NULL, $row = NULL)
@@ -671,10 +664,30 @@ class Admin_products extends Admin_Controller
         $this->ajax_order_modifiers('firesale_product_variations', 'var_');
     }
 
-    public function ajax_filter()
+    public function ajax_filter($page)
     {
         if ( $this->input->is_ajax_request() ) {
-            echo json_encode($this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time));
+
+            // Variables
+            $data  = array('products' => array(), 'pagination' => '');
+            $start = ( isset($_POST['start']) ? $_POST['start'] : 0 );
+
+            unset($_POST['start']);
+
+            // Get filtered product IDs
+            $count    = $this->pyrocache->model('products_m', 'get_products', array($this->input->post()), $this->firesale->cache_time);
+            $products = $this->pyrocache->model('products_m', 'get_products', array($this->input->post(), $start, $this->perpage), $this->firesale->cache_time);
+
+            // Get product data
+            foreach ( $products as $product ) {
+                $data['products'][] = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
+            }
+
+            // Build pagination
+            $data['pagination'] = create_pagination('admin/firesale/products/', count($count), $this->perpage, 4);
+
+            // For JSON
+            echo json_encode($data);
             exit();
         }
     }
