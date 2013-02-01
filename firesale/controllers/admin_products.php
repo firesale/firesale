@@ -91,7 +91,7 @@ class Admin_products extends Admin_Controller
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
-                        ->set($this->data);
+                       ->set($this->data);
 
         // Fire events
         Events::trigger('page_build', $this->template);
@@ -278,6 +278,8 @@ class Admin_products extends Admin_Controller
             // Deleted, clear cache!
             $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
+            $this->pyrocache->delete_all('row_m');
+            $this->pyrocache->delete_all('modifier_m');
 
             $this->session->set_flashdata('success', lang('firesale:prod_delete_success'));
         } else {
@@ -314,11 +316,13 @@ class Admin_products extends Admin_Controller
         } elseif ( $id != null and $this->input->post('btnAction') == 'delete' ) {
 
             // Delete
-            if ( $this->pyrocache->model('modifier_m', 'delete_modifier', array($id), $this->firesale->cache_time) ) {
+            if ( $this->modifier_m->delete_modifier($id) ) {
 
                 // Deleted, clear cache!
                 $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
+                $this->pyrocache->delete_all('row_m');
+                $this->pyrocache->delete_all('modifier_m');
 
                 $this->session->set_flashdata('success', lang('firesale:mods:delete_success'));
             } else {
@@ -347,6 +351,8 @@ class Admin_products extends Admin_Controller
             // Good news everyone, clear cache!
             $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
+            $this->pyrocache->delete_all('row_m');
+            $this->pyrocache->delete_all('modifier_m');
 
             redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
         }
@@ -399,6 +405,8 @@ class Admin_products extends Admin_Controller
                 // Deleted, clear cache!
                 $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
+                $this->pyrocache->delete_all('row_m');
+                $this->pyrocache->delete_all('modifier_m');
 
                 $this->session->set_flashdata('success', lang('firesale:vars:delete_success'));
             } else {
@@ -427,15 +435,17 @@ class Admin_products extends Admin_Controller
             // If we're in creation mode
             if ($id == NULL and $parent->type == '1') {
                 // Check for variant type
-                $this->pyrocache->model('modifier_m', 'build_variations', array($parent->parent, $stream), $this->firesale->cache_time);
+                $this->modifier_m->build_variations($parent->parent, $stream);
             } elseif ($id != NULL) {
                 // Update the products for this option
-                $this->pyrocache->model('modifier_m', 'edit_variations', array($row, $input), $this->firesale->cache_time);
+                $this->modifier_m->edit_variations($row, $input);
             }
 
             // Updated, clear cache!
             $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
+            $this->pyrocache->delete_all('row_m');
+            $this->pyrocache->delete_all('modifier_m');
 
             // Send back to edit
             redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
