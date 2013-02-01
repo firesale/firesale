@@ -173,7 +173,7 @@ class Products_m extends MY_Model
                        );
 
             // Add to params if required
-            if ( $this->uri->segment('1') != 'admin' ) {
+            if ( $this->uri->rsegment('1') != 'admin_products' ) {
                 $params['where'] .= ' AND status = 1';
             }
 

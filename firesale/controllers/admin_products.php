@@ -55,7 +55,6 @@ class Admin_products extends Admin_Controller
 
         // Get the stream
         $this->stream = $this->streams->streams->get_stream('firesale_products', 'firesale_products');
-
     }
 
     public function index($start = 0)
