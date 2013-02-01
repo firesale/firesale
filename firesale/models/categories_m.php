@@ -126,6 +126,25 @@ class Categories_m extends MY_Model
     }
 
     /**
+     * Gets all children of a parent category
+     *
+     * @param integer $parent The current category ID
+     * @return array
+     * @access public
+     */
+    public function get_all_children($parent)
+    {
+
+        $children = $this->get_children($parent);
+
+        foreach ($children as $child) {
+            $children = array_unique(array_merge($children, $this->get_all_children($child)));
+        }
+
+        return $children;
+    }
+
+    /**
      * Builds the product query for use in other functions
      *
      * @param  array            $category The Category object to query
@@ -136,9 +155,9 @@ class Categories_m extends MY_Model
     {
         $show_variations = (bool) $this->settings->get('firesale_show_variations');
 
-        // Get children
+        // Get ALL THE CHILDREN!
         if ( isset($category['id']) AND $category['id'] != NULL ) {
-            $children = $this->get_children($category['id']);
+            $children = $this->pyrocache->model('categories_m', 'get_all_children', array($category['id']), $this->firesale->cache_time);
         }
 
         // Build the initial query
