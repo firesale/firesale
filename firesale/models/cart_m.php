@@ -85,8 +85,8 @@ class Cart_m extends MY_Model
             // Get product
             $product = $this->pyrocache->model('products_m', 'get_product', array($item['id'], NULL, 1), $this->firesale->cache_time);
 
-            // Check prices
-            if (round($item['price'], 1) != round($product['price'], 1)) {
+            // if cart has not been modified (e.g. discount codes) and price has changed
+            if ( ( ! isset($item['modified']) or ! $item['modified']) and round($item['price'], 1) != round($product['price'], 1)) {
 
                 $changed           = true;
                 $data              = array();
