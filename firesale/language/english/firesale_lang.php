@@ -386,6 +386,8 @@
     $lang['firesale:taxes:edit_success']        = 'Tax band edited successfully';
     $lang['firesale:taxes:edit_error']          = 'There was an error whilst editing the tax band';
     $lang['firesale:taxes:assignments_updated'] = 'Tax band assignments were updated successfully';
+    $lang['firesale:taxes:access_taxes']        = 'Access Taxes';
+    $lang['firesale:taxes:add_edit_taxes']      = 'Create/Edit Taxes';
 
     // Addresses
     $lang['firesale:addresses:title']        = 'My Addresses';
