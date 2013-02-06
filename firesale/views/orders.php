@@ -1,4 +1,3 @@
-
     <div class="firesale">
 
 {{ orders }}
@@ -8,7 +7,7 @@
           <h3 class="right">{{ status.value }}</h3>
         </header>
         <ul>
-          <li><strong><?php echo lang('firesale:orders:label_date_placed'); ?>:</strong> {{ helper:date timestamp=created format="d/m/Y" }}
+          <li><strong><?php echo lang('firesale:orders:label_date_placed'); ?>:</strong> {{ helper:date timestamp=created format="d/m/Y" }}</li>
           <li><strong><?php echo lang('firesale:orders:label_customer'); ?>:</strong> {{ created_by.display_name }}</li>
           <li><strong><?php echo lang('firesale:orders:label_products'); ?>:</strong> {{ count }}</li>
         </ul>
