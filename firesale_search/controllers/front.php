@@ -21,6 +21,9 @@ class front extends Public_Controller
         $this->load->model('search_m');
         $this->load->helper('firesale/general');
 
+        // Set data object
+        $this->data = new stdClass;
+
         // Get perpage option
         $this->perpage = (int) $this->settings->get('firesale_perpage', 15);
 
@@ -34,7 +37,7 @@ class front extends Public_Controller
             $category = $this->input->post('category');
             $term	  = $this->input->post('search');
             unset($_POST);
-            redirect($this->routes_m->build_url('search').$category.'/'.$term);
+            redirect($this->routes_m->build_url('search').($category?$category:'all').'/'.$term);
         }
 
         // Assign base variables

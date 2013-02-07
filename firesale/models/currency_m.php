@@ -110,8 +110,8 @@ class Currency_m extends MY_Model
         $rrp       = ( $rrp   * $currency->exch_rate ) * $tax_mod;
         $price_tax = ( $price * $currency->exch_rate );
         $price     = ( $price * $currency->exch_rate ) * $tax_mod;
-        $diff      = ( $rrp_r > $price_r ? ( $rrp_r - $price_r ) : 0.00 );
-        $diff_tax  = ( $rrp_tax_r > $price_tax_r ? ( $rrp_tax_r - $price_tax_r ) : 0.00 );
+        $diff      = ( $rrp > $price ? ( $rrp - $price ) : 0.00 );
+        $diff_tax  = ( $rrp_tax > $price_tax ? ( $rrp_tax - $price_tax ) : 0.00 );
 
         // Prepare return
         $return = array(

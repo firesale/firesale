@@ -146,9 +146,10 @@ $(function() {
 		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="link linked">Link</button>&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
 		price.change(function() {
+			$(this).val(parseFloat($(this).val())+0.004);
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
 			if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3 )); }
-		}).blur(function() { $(this).val(( $(this).val().length > 0 ? decimal($(this).val(), 2) : '0.00' )); });
+		}).blur(function() { $(this).val(( $(this).val().length > 0 ? decimal($(this).val(), 2) : '0.00' )); }).change().blur();
 		$('#' + tmp.attr('id')).change(function() {
 			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
 			if( linked ) { $(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2 )); }
