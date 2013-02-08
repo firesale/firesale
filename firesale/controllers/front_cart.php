@@ -755,12 +755,61 @@ class Front_cart extends Public_Controller
         call_user_func_array(array($this, '_order_authorized'), $args);
     }
 
-    public function success()
+    public function success($gateway = null)
     {
 
         if ( $order_id = $this->session->userdata('order_id') ) {
 
             $order = $this->orders_m->get_order_by_id($order_id);
+
+            if ( ! is_null($gateway)) {
+                $this->merchant->load($gateway);
+                $this->merchant->initialize($this->gateways->settings($gateway));
+
+                $params = array_merge(array(
+                    'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback'),
+                    'return_url' => site_url($this->routes_m->build_url('cart') . '/success'),
+                    'cancel_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
+                ), array(
+                    'currency_code'  => $this->fs_cart->currency()->cur_code,
+                    'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
+                    'order_id'       => $order_id,
+                    'transaction_id' => $order_id,
+                    'reference'      => 'Order #' . $order_id,
+                    'description'    => 'Order #' . $order_id,
+                    'first_name'     => $order['bill_to']['firstname'],
+                    'last_name'      => $order['bill_to']['lastname'],
+                    'address1'       => $order['ship_to']['address1'],
+                    'address2'       => $order['ship_to']['address2'],
+                    'city'           => $order['ship_to']['city'],
+                    'region'         => $order['ship_to']['county'],
+                    'country'        => $order['ship_to']['country']['code'],
+                    'postcode'       => $order['ship_to']['postcode'],
+                    'phone'          => $order['ship_to']['phone'],
+                    'email'          => $order['ship_to']['email'],
+                ));
+
+                $response = $this->merchant->purchase_return($params);
+
+                $status = '_order_' . $response->status();
+
+                $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
+                $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
+                
+                if ( ! $processed) {
+                    // Check status
+                    if ($response->status() == 'authorized' or $response->status() == 'complete') {
+                        if (method_exists($response, 'amount')) {
+                            if ($response->amount() != $order['price_total']) {
+                                $status = '_order_mismatch';
+                            }
+                        }
+                    }
+
+                    // Run status function
+                    $this->$status($order, FALSE);
+                }
+            }
 
             $this->fs_cart->destroy();
 
