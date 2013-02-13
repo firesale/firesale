@@ -59,6 +59,7 @@ class Brands_m extends MY_Model
         $query = $this->db->select('id')
                           ->from('firesale_products')
                           ->where('brand', $brand)
+                          ->where('status', '1')
                           ->order_by('title', 'asc')
                           ->limit($perpage, $start);
 
