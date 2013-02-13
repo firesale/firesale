@@ -114,8 +114,7 @@ class Routes_m extends MY_Model
     public function search_update($route)
     {
         // Check version
-        if (CMS_VERSION < "2.2.0")
-        {
+        if (CMS_VERSION < "2.2.0") {
             return FALSE;
         }
 
@@ -234,8 +233,8 @@ class Routes_m extends MY_Model
         if (! is_writeable($file)) {
             $this->session->set_flashdata('error', lang('firesale:routes:write_error'));
             redirect($_SERVER['HTTP_REFERER']);
-        }        
-        
+        }
+
         // Existing route
         if ( preg_match($regex, $content) ) {
             // Replace in string

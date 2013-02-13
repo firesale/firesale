@@ -158,7 +158,7 @@ class Module_Firesale extends Module
 
         if (group_has_role('firesale', 'access_taxes')) {
             $info['sections']['taxes'] = array(
-                'name' => 'firesale:taxes:access_taxes',
+                'name' => 'firesale:sections:taxes',
                 'uri'  => 'admin/firesale/taxes',
                 'shortcuts' => array()
             );
@@ -167,7 +167,7 @@ class Module_Firesale extends Module
         if (group_has_role('firesale', 'add_edit_taxes')) {
             $info['sections']['taxes']['shortcuts'] = array(
                 array(
-                    'name' 	=> 'firesale:taxes:add_edit_taxes',
+                    'name' 	=> 'firesale:shortcuts:add_tax_band',
                     'uri'	=> 'admin/firesale/taxes/create',
                     'class' => 'add'
                 )
@@ -821,7 +821,7 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'firesale_current_currency', 'title' => lang('firesale:settings_current_currency'), 'description' => lang('firesale:settings_current_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale' );
         $settings[] = array('slug' => 'firesale_currency_updated', 'title' => lang('firesale:settings_currency_updated'), 'description' => lang('firesale:settings_currency_updated_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_perpage', 'title' => lang('firesale:settings_perpage'), 'description' => lang('firesale:settings_perpage_inst'), 'default' => '15', 'value' => '15', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
-        $settings[] = array('slug' => 'firesale_show_variations', 'title' => lang('firesale:vars:show_set'), 'description' => lang('firesale:prod_variations:show_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_show_variations', 'title' => lang('firesale:prod_variations:show_set'), 'description' => lang('firesale:prod_variations:show_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'image_square', 'title' => lang('firesale:settings_image_square'), 'description' => lang('firesale:settings_image_square_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'image_background', 'title' => lang('firesale:settings_image_background'), 'description' => lang('firesale:settings_image_background_inst'), 'default' => 'ffffff', 'value' => 'ffffff', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');

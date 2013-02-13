@@ -123,6 +123,7 @@ class Admin_currency extends Admin_Controller
 
             // Success, clear cache!
             $this->pyrocache->delete_all('currency_m');
+            $this->cache->clean();
 
             // Redirect
             if ( $this->input->post('btnAction') == 'save_exit' ) {
@@ -226,6 +227,7 @@ class Admin_currency extends Admin_Controller
 
             // Success, clear cache!
             $this->pyrocache->delete_all('currency_m');
+            $this->cache->clean();
 
             $this->session->set_flashdata('success', lang('firesale:currency:delete_success'));
         } else {

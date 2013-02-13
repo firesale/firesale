@@ -3,9 +3,9 @@
 /**
  * Categories model
  *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Models
+ * @author      Jamie Holdroyd
+ * @author      Chris Harvey
+ * @package     FireSale\Core\Models
  *
  */
 class Categories_m extends MY_Model
@@ -49,13 +49,13 @@ class Categories_m extends MY_Model
             $this->load->library('files/files');
 
             // Set params
-            $params	 = array(
-                        'stream' 	=> 'firesale_categories',
-                        'namespace'	=> 'firesale_categories',
-                        'where'		=> SITE_REF."_firesale_categories.{$type} = '{$id_slug}'",
-                        'limit'		=> '1',
-                        'order_by'	=> 'id',
-                        'sort'		=> 'desc'
+            $params  = array(
+                        'stream'    => 'firesale_categories',
+                        'namespace' => 'firesale_categories',
+                        'where'     => SITE_REF."_firesale_categories.{$type} = '{$id_slug}'",
+                        'limit'     => '1',
+                        'order_by'  => 'id',
+                        'sort'      => 'desc'
                        );
 
             // Add to params if required
@@ -126,12 +126,12 @@ class Categories_m extends MY_Model
     }
 
     /**
-     * Gets all children of a parent category
-     *
-     * @param integer $parent The current category ID
-     * @return array
-     * @access public
-     */
+    * Gets all children of a parent category
+    *
+    * @param integer $parent The current category ID
+    * @return array
+    * @access public
+    */
     public function get_all_children($parent)
     {
 
@@ -357,7 +357,7 @@ class Categories_m extends MY_Model
      * tree when categories are moved.
      *
      * @param array $cat An array of categories and children
-     *					 to be set as children of the parent.
+     *                   to be set as children of the parent.
      * @return void
      * @access public
      */
@@ -369,7 +369,7 @@ class Categories_m extends MY_Model
                 // Variables
                 $id     = str_replace('cat_', '', $child['id']);
                 $parent = str_replace('cat_', '', $cat['id']);
-                $update = array('parent' => ( $parent != $id ? $parent : "0" ), 'ordering_count' => $i);
+                $update = array('parent' => (string)( $parent != $id ? $parent : "0" ), 'ordering_count' => $i);
 
                 // Update
                 $this->db->where('id', $id)->update('firesale_categories', $update);

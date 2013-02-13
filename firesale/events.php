@@ -17,7 +17,6 @@ class Events_Firesale
 
     public function public_controller()
     {
-
         // Update currency after an hour has passed since last update to api
         if ( ( time() - $this->ci->settings->get('firesale_currency_updated') ) > 3600 ) {
             // Load required items

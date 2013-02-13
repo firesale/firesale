@@ -26,7 +26,6 @@ class Front_product extends Public_Controller
 
         // Assign data object
         $this->data = new stdClass;
-
     }
 
     public function index($product)
@@ -89,7 +88,7 @@ class Front_product extends Public_Controller
                 'diff_rounded'    => $product['diff_rounded'],
                 'diff_formatted'  => $product['diff_formatted']
             );
-            
+
             // Spit out data
             echo json_encode($data);
             exit();

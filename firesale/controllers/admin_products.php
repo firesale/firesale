@@ -153,6 +153,7 @@ class Admin_products extends Admin_Controller
                     // Everything went well, clear cache for front-end update
                     $this->pyrocache->delete_all('routes_m');
                     $this->pyrocache->delete_all('products_m');
+                    $this->cache->clean();
 
                     // Fire event
                     $data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
@@ -280,6 +281,7 @@ class Admin_products extends Admin_Controller
             $this->pyrocache->delete_all('products_m');
             $this->pyrocache->delete_all('row_m');
             $this->pyrocache->delete_all('modifier_m');
+            $this->cache->clean();
 
             $this->session->set_flashdata('success', lang('firesale:prod_delete_success'));
         } else {
@@ -323,6 +325,7 @@ class Admin_products extends Admin_Controller
                 $this->pyrocache->delete_all('products_m');
                 $this->pyrocache->delete_all('row_m');
                 $this->pyrocache->delete_all('modifier_m');
+                $this->cache->clean();
 
                 $this->session->set_flashdata('success', lang('firesale:mods:delete_success'));
             } else {
@@ -353,6 +356,7 @@ class Admin_products extends Admin_Controller
             $this->pyrocache->delete_all('products_m');
             $this->pyrocache->delete_all('row_m');
             $this->pyrocache->delete_all('modifier_m');
+            $this->cache->clean();
 
             redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
         }
@@ -407,6 +411,7 @@ class Admin_products extends Admin_Controller
                 $this->pyrocache->delete_all('products_m');
                 $this->pyrocache->delete_all('row_m');
                 $this->pyrocache->delete_all('modifier_m');
+                $this->cache->clean();
 
                 $this->session->set_flashdata('success', lang('firesale:vars:delete_success'));
             } else {
@@ -446,6 +451,7 @@ class Admin_products extends Admin_Controller
             $this->pyrocache->delete_all('products_m');
             $this->pyrocache->delete_all('row_m');
             $this->pyrocache->delete_all('modifier_m');
+            $this->cache->clean();
 
             // Send back to edit
             redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
@@ -542,6 +548,7 @@ class Admin_products extends Admin_Controller
             // Updated, clear cache!
             $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
+            $this->cache->clean();
 
             // Ajax status
             echo json_encode(array('status' => (bool)$status['status'], 'message' => $status['message']));
@@ -562,6 +569,7 @@ class Admin_products extends Admin_Controller
             // Deleted, clear cache!
             $this->pyrocache->delete_all('routes_m');
             $this->pyrocache->delete_all('products_m');
+            $this->cache->clean();
 
             // Success
             $this->session->set_flashdata('success', lang('firesale:prod_delimg_success'));
@@ -586,6 +594,7 @@ class Admin_products extends Admin_Controller
                 // Updated, clear cache!
                 $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
+                $this->cache->clean();
 
                 $this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
                 echo 'ok';
@@ -625,6 +634,7 @@ class Admin_products extends Admin_Controller
                 // Updated, clear cache!
                 $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
+                $this->cache->clean();
 
                 echo 'ok';
                 exit();
@@ -657,6 +667,7 @@ class Admin_products extends Admin_Controller
                 // Updated, clear cache!
                 $this->pyrocache->delete_all('routes_m');
                 $this->pyrocache->delete_all('products_m');
+                $this->cache->clean();
 
                 echo 'ok';
                 exit();

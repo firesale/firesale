@@ -4,9 +4,9 @@ class firesale
 {
     private $_CI;
     protected $sections   = array();
-    public 	  $elements   = array();
+    public $elements   = array();
     public $assets     = array();
-    public $roles	  = array('shipping' => NULL);
+    public $roles     = array('shipping' => NULL);
     public $cache_time = 86400;
 
     public function __construct()
@@ -19,6 +19,23 @@ class firesale
 
     public function info($info, $lang_file = NULL)
     {
+
+        // Register roles
+        if ( isset($info['role']) AND $this->roles[$info['role']] == NULL ) {
+            $this->roles[$info['role']] = array('module' => strtolower(str_replace(' ', '_', $info['name']['en'])), 'model' => strtolower($info['role']) . '_m');
+        }
+
+        // Add the FireSale asset paths
+        $dir = ADDONPATH.'/modules/';
+        if ( file_exists(SHARED_ADDONPATH.'modules/firesale/details.php') ) {
+            $dir = SHARED_ADDONPATH.'modules/';
+        }
+
+        Asset::add_path('firesale', $dir . 'firesale/');
+
+        if ($this->_CI->uri->segment(1) != "admin")
+            return $info;
+
         // Load in the language file if one was specified
         if ($lang_file != NULL)
             $this->_CI->load->language($lang_file);
@@ -31,19 +48,17 @@ class firesale
         if ( ! class_exists('Module_Firesale'))
             return $info;
 
-        // Add the FireSale asset paths
-        $dir = ADDONPATH.'/modules/';
-        if ( file_exists(SHARED_ADDONPATH.'modules/firesale/details.php') ) {
-            $dir = SHARED_ADDONPATH.'modules/';
-        }
-
-        Asset::add_path('firesale', $dir . 'firesale/');
-
         // Retrieve the FireSale sub-modules
         $this->_CI->db->where("(`is_backend` = 0 OR `slug` = 'firesale')", NULL, FALSE)->order_by('CASE WHEN `slug`="firesale" THEN 0 ELSE 1 END', NULL, FALSE)->order_by('id', 'asc');
         $subs = $this->_CI->db->get_where('modules', array('menu' => 'FireSale', 'installed' => '1', 'enabled' => '1'));
 
         if ($subs->num_rows()) {
+
+            $this->_CI->load->model('permissions/permission_m');
+
+            $group_id = $this->_CI->session->userdata('group_id');
+            $group    = $this->_CI->session->userdata('group');
+
             foreach ($subs->result() as $module) {
                 $class = 'Module_'.ucfirst($module->slug);
 
@@ -55,8 +70,13 @@ class firesale
                     $module_info = $module_class->information();
 
                     // Add the modules sections if it has any.
-                    if (isset($module_info['sections']) && is_array($module_info['sections']))
-                        $this->sections = array_merge($this->sections, $module_info['sections']);
+                    if (isset($module_info['sections']) && is_array($module_info['sections'])) {
+                        if ($this->_CI->permission_m->check_access($group_id, $module->slug) or $group === 'admin') {
+                            $this->sections = array_merge($this->sections, $module_info['sections']);
+                        } else {
+                           // $this->sections =
+                        }
+                    }
 
                     // Sorry settings, you're last!
                     if (isset($this->sections['settings'])) {

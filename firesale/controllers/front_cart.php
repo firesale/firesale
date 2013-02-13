@@ -709,6 +709,18 @@ class Front_cart extends Public_Controller
         // Fire events
         Events::trigger('order_complete', $order);
 
+        // Format order
+        foreach ($order['items'] as &$item) {
+            $item['price_formatted'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
+            $item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
+        }
+
+        // Format currency
+        $order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+        $order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+        $order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
+        $order['price_tax'] = $this->currency_m->format_string($order['price_tax'], $this->fs_cart->currency(), FALSE);
+
         // Email (user)
         Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user', 'to' => $order['bill_to']['email'])), 'array');
 
@@ -718,17 +730,6 @@ class Front_cart extends Public_Controller
         if (! $callback) {
             // Clear cart
             $this->fs_cart->destroy();
-
-            // Format order
-            foreach ($order['items'] as &$item) {
-                $item['price'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
-                $item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
-            }
-
-            // Format currency
-            $order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
-            $order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
-            $order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
 
             // Build page
             $this->template->title(lang('firesale:payment:title_success'))
@@ -795,7 +796,7 @@ class Front_cart extends Public_Controller
 
                 $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
                 $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
-                
+
                 if ( ! $processed) {
                     // Check status
                     if ($response->status() == 'authorized' or $response->status() == 'complete') {
