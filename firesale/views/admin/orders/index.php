@@ -4,12 +4,11 @@
         <a class="tooltip-s show-filter" original-title="<?php echo lang('firesale:label_showfilter'); ?>"></a>
     </section>
 
-    <?php echo form_open($this->uri->uri_string() . '/status', 'class="crud" id="tabs"'); ?>
-
-        <section class="item">
-        <div class="content">
+    <section class="item">
+    <div class="content">
 <?php if( !empty($orders)): ?>
 
+       <?php echo form_open(site_url('admin/firesale/orders/ajax_filter'), 'class="crud" id="filters_form"'); ?>
             <fieldset id="filters" style="display: none">
                 <legend><?php echo lang('global:filters'); ?></legend>
                 <ul>
@@ -22,9 +21,27 @@
                     <li>
                         <center><?php echo $filter_prods; ?></center>
                     </li>
+                    <li>
+                        <center>
+                            <input type="text" name="date[from]" placeholder="From..." class="datepicker" id="date_from" />
+                            <input type="text" name="date[to]" placeholder="To..." class="datepicker" id="date_to" />
+                        </center>
+                    </li>
+                    <li class="wide">
+                        <center>
+                            <div class="ui-slider-cont">
+                                <label class="left"><?php echo $this->settings->get('currency'); ?><span><?php echo $min_max['min']; ?></span></label>
+                                <label class="right"><?php echo $this->settings->get('currency'); ?><span><?php echo $min_max['max']; ?></span></label>
+                                <div id="price-slider"></div>
+                            </div>
+                            <input type="hidden" name="price_total" value="<?php echo $min_max['min']; ?>-<?php echo $min_max['max']; ?>" />
+                        </center>
+                    </li>
                 </ul>
             </fieldset>
+        <?php echo form_close(); ?>
 
+        <?php echo form_open(site_url('admin/firesale/orders/status'), 'class="crud" id="tabs"'); ?>
             <table id="order_table">
                 <thead>
                     <tr>
@@ -91,11 +108,11 @@
                 </button>
             </div>
 
+        <?php echo form_close(); ?>
+
 <?php else: ?>
             <div class="no_data"><?php echo lang('firesale:orders:no_orders'); ?></div>
 <?php endif; ?>
 
-            </div>
-        </section>
-
-    <?php echo form_close(); ?>
+    </div>
+    </section>

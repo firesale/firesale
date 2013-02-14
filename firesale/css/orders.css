@@ -4,7 +4,6 @@ tbody tr:last-child { border: none; }
 .actions { width: 115px; }
 #filters > ul { width: 100%; display: block; }
 #filters > ul > li:first-child { margin-top: 0 !important; }
-#filters > ul > li > center > input[type="text"] { width: 220px !important; }
 #filters > ul > li > center .chzn-single li span { text-align: left !important; }
 .chzn-container .chzn-single span, .chzn-container li { text-align: left !important; }
 
@@ -13,6 +12,7 @@ ul.width-half { width: 50% !important; display: block; float: left; }
 ul.width-half > li { min-height: 44px; }
 #price_sub, #price_ship, #price_total { min-width: 70px !important; width: 70px !important; }
 #products input { width: 60px; min-width: 60px; }
+#filters .datepicker { width: 100px !important; min-width: 100px !important; }
 
 /* Create */
 .items { line-height: 32px; margin: 0 0 -10px 0; height: 32px; padding: 20px 0 0 0; }
@@ -29,6 +29,20 @@ table.tablesorter thead tr .tablesorter-headerSortDown{background-image:url(img/
 table.tablesorter thead tr .tablesorter-headerSortDown, table.tablesorter thead tr .tablesorter-headerSortUp{background-color:#f3f3f3;color:#000;}
 table.tablesorter input[type=search] { width: 100% !important; min-width: 100% !important; }
 table.tablesorter tbody tr.status-2 { background: #F0FBEA; }
+
+/* Slider */
+.ui-slider-cont { width: 550px; padding: 20px 0 0 0; }
+.ui-slider-cont label { width: 100px; height: 14px; line-height: 14px; padding: 0 0 10px 0; }
+.ui-slider-cont label.left { float: left; text-align: left; }
+.ui-slider-cont label.right { float: right; text-align: right; }
+.ui-slider { position: relative; text-align: left; width: 100%; clear: both; border: 1px solid #d8d8d8; background: #f1f1f1; border-radius: 4px; }
+.ui-slider .ui-slider-handle { position: absolute; z-index: 1; width: 1.2em; height: 1.2em; cursor: default; border: 1px solid #aaa; background: #fff; border-radius: 4px; }
+.ui-slider .ui-slider-range { position: absolute; z-index: 1; font-size: .7em; display: block; border: 0; background-position: 0 0; background: #F08E28; }
+.ui-slider-horizontal { height: .8em; }
+.ui-slider-horizontal .ui-slider-handle { height: 1.2em; top: -.3em; margin-left: -.6em; transition: 0s; -moz-transition: 0s; -webkit-transition: 0s; -o-transition: 0s; }
+.ui-slider-horizontal .ui-slider-range { top: 0; height: 100%; }
+.ui-slider-horizontal .ui-slider-range-min { left: 0; }
+.ui-slider-horizontal .ui-slider-range-max { right: 0; }
 
 /* Responsive */
 @media only screen and (min-width: 281px) {

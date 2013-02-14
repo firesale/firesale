@@ -1,26 +1,48 @@
 $(function() {
 	
 	// Index
-	$('#filters select').change(function() { window.location = SITE_URL+'admin/firesale/orders'+( parseInt($(this).val()) > 0 ? '/'+$(this).attr('name')+'/' + $(this).val() : '' ); });
+	$('#filters select, #filters input').change(function() {
+		$.post($('#filters_form').attr('action'), $('#filters_form').serialize(), function(data) {
+			if( $(data).find('#order_table').size() > 0 ) {
+				$('#order_table tbody').html($(data).find('#order_table tbody').html());
+				$('#order_table tfoot').html($(data).find('#order_table tfoot').html());
+			} else if( $(data).find('.no_data').size() > 0 ) {
+				$('#order_table tbody').html('<tr><td colspan="10"><div class="no_data">'+$(data).find('.no_data').html()+'</div></td></tr>');
+				$('#order_table tfoot').html('');
+			} else {
+				alert(data);
+			}
+		});
+	});
+
 	$('#price_sub, #price_ship, #price_total').before('<span>' + currency + '&nbsp;</span>');
 	$('#order_table').tablesorter({headers:{0:{sorter:false},8:{sorter:false}}, widgets:["saveSort"]});
 	$('a.show-filter').click(function() { $('#filters').slideToggle(500); });
+	$(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+
+	$('#price-slider').slider({
+		range: true,
+		min: parseFloat($('.ui-slider-cont .left span').text()),
+		max: parseFloat($('.ui-slider-cont .right span').text()),
+		step: 0.5,
+		values: [parseFloat($('.ui-slider-cont .left span').text()), parseFloat($('.ui-slider-cont .right span').text())],
+		slide: function(event, ui) {
+			$('.ui-slider-cont .left span').html(ui.values[0].toFixed(2));
+			$('.ui-slider-cont .right span').html(ui.values[1].toFixed(2));
+			$('input[name=price_total]').val(ui.values[0].toFixed(2)+'-'+ui.values[1].toFixed(2));
+		},
+		stop: function(event, ui) {
+			$('#filters select:first, #filters input:first').change();
+		}
+	});
 
 	// Change address
 	$('#ship_to, #bill_to').change(function() {
 		var pre = $(this).attr('id').replace('_to', '');
-		$.getJSON('/admin/firesale/orders/ajax_get_address/' + $('select[name=created_by]').val() + '/' + $(this).val(), function(data) {
-			if( data != 'false' )
-			{
-				for( var k in data )
-				{
-					$('#' + pre + '_' + k).val(data[k]);
-				}
-			}
-			else
-			{
-				notif('error', 'Error retrieving address');
-			}
+		$.getJSON('/admin/firesale/orders/ajax_address/' + $('select[name=created_by]').val() + '/' + $(this).val(), function(data) {
+			if( data != 'false' ) {
+				for( var k in data ) { $('#' + pre + '_' + k).val(data[k]); }
+			} else { notif('error', 'Error retrieving address'); }
 		});
 	});
 

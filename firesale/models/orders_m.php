@@ -48,33 +48,6 @@ class Orders_m extends MY_Model
     }
 
     /**
-     * Gets a dropdown compatible list of products that have been purchased
-     *
-     * @return array The products list
-     * @access public
-     */
-    public function build_product_dropdown()
-    {
-
-        // Variables
-        $data = array();
-
-        // Query
-        $items = $this->db->query('SELECT *, SUM(qty) AS `count`
-                                   FROM `' . SITE_REF . '_firesale_orders_items`
-                                   GROUP BY `product_id`
-                                   ORDER BY `name` ASC')->result_array();
-
-        // Loop and format
-        foreach( $items as $item ) {
-            $data[$item['product_id']] = $item['name'].' ('.$item['count'].')';
-        }
-
-        // Return
-        return $data;
-    }
-
-    /**
      * Deletes a given order and the products contained in it
      *
      * @param  integer $order_id The Order ID to query
@@ -91,6 +64,87 @@ class Orders_m extends MY_Model
         }
 
         return FALSE;
+    }
+
+    /**
+     * Returns the minimum and maximum order prices
+     *
+     * @return array containing min and max prices
+     * @access public
+     */
+    public function min_max_price()
+    {
+
+        // Run query
+        $query = $this->db->select('MIN(price_total) AS min, MAX(price_total) AS max')->get('firesale_orders');
+
+        // Check and return results
+        if ( $query->num_rows() ) {
+            return current($query->result_array());
+        }
+
+        // Nothing found
+        return array('min' => '0.00', 'max' => '0.00');
+    }
+
+    /**
+     * Compiles an array into a where clause to filter orders
+     *
+     * @param array $data $_POST data for parsing
+     * @return string where clause to be used in streams
+     * @access public
+     */
+    public function add_filters($data)
+    {
+
+        // Variables
+        $where = array();
+
+        // Loop options
+        foreach ( $data as $column => $value ) {
+            if ( $value != '0' and $value != '-1' and ( is_array($value) or strlen($value) > 0 ) ) {
+                switch($column) {
+
+                    case 'product':
+
+                        // Get possible IDs
+                        $query = $this->db->select('order_id')->where('product_id', $query)->group_by('order_id')->get('firesale_orders_items')->result_array();
+                        $ids   = array();
+
+                        // Loop IDs
+                        foreach ($query AS $order) { $ids[] = $order['order_id']; }
+
+                        // Add to query
+                        if ( ! empty($ids) ) {
+                            $where[] = '`id` IN ('.implode(',', $ids).')';
+                        } else {
+                            $where[] = '`id` = -1';
+                        }
+
+                    break;
+
+                    case 'date':
+                        if ( strlen($value['from']) > 0 or strlen($value['to']) > 0 ) {
+                            $from = strtotime('00:00:01 '.( strlen($value['from']) > 0 ? $value['from'] : $value['to'] ));
+                            $to   = strtotime('23:59:59 '.( strlen($value['to']) > 0 ? $value['to'] : $value['from'] ));
+                            $where[] = "UNIX_TIMESTAMP(`created`) >= {$from} AND UNIX_TIMESTAMP(`created`) <= {$to}";
+                        }
+                    break;
+
+                    case 'price_total':
+                        list($min, $max) = explode('-', $value);
+                        $where[] = "`price_total` >= {$min} AND `price_total` <= {$max}";
+                    break;
+
+                    default:
+                        $where[] = "`{$column}` = '{$value}'";
+                    break;
+                }
+            }
+        }
+
+        // Return data
+        return implode(' AND ', $where);
     }
 
     /**
@@ -125,7 +179,7 @@ class Orders_m extends MY_Model
                           ->result_array();
 
         // Start building list
-        $list  = array('0' => lang('firesale:label_user_order'));
+        $list  = array('-1' => lang('firesale:label_user_order'));
 
         // Loop users
         foreach ($users AS $user) {
@@ -149,7 +203,7 @@ class Orders_m extends MY_Model
     {
 
         // Start building list
-        $list  = array('0' => lang('firesale:label_order_status'));
+        $list  = array('-1' => lang('firesale:label_order_status'));
 
         // Get data from streams
         $query = $this->db->select('field_data')
@@ -176,6 +230,8 @@ class Orders_m extends MY_Model
 
         }
 
+        ksort($list);
+
         return $list;
     }
 
@@ -183,29 +239,73 @@ class Orders_m extends MY_Model
      * Builds the product field used in the order administration section.
      *
      * @param  integer $id (Optional) Product ID to pre-select
+     * @param  boolean $all (Optional) Return all products or just those ordered
+     * @param  boolean $build (Optional) Build the dropdown or return list
      * @return array   The product dropdowm
      * @access public
      */
-    public function product_dropdown($id = NULL)
+    public function product_dropdown($id = NULL, $all = true, $build = true)
     {
 
         // Variables
-        $list = array('0' => lang('firesale:label_product_order'));
-        $drop = '';
+        $list = array('-1' => lang('firesale:label_filterprod'));
 
         // Get products
-        $products = $this->db->select('id, title')->order_by('id')->get('firesale_products')->result_array();
+        if ( $all === true ) {
 
-        // Loop products
-        foreach ($products AS $product) {
+            $products = $this->db->select('id, title')->order_by('id')->get('firesale_products')->result_array();
+        } else {
+
+            $products = $this->db->query('SELECT `product_id` as `id`, `name` as `title`
+                                          FROM `' . SITE_REF . '_firesale_orders_items`
+                                          GROUP BY `product_id`
+                                          ORDER BY `name` ASC')->result_array();
+        }
+
+        // Loop and assign
+        foreach ( $products AS $product ) {
             $list[$product['id']] = $product['title'];
         }
 
+        ksort($list);
+
         // Build the dropbown
-        $drop = form_dropdown('products', $list, $id);
+        if ( $build === true ) {
+            $list = form_dropdown('products', $list, $id);
+        }
 
         // Return it
-        return $drop;
+        return $list;
+    }
+
+    /**
+     * Formats an order entries array to fix prices, urls and additional data
+     *
+     * @param array $orders containing a range of orders
+     * @return array updated orders
+     * @access public
+     */
+    public function format_order($orders)
+    {
+
+        // Get product count
+        foreach ($orders AS &$order) {
+
+            // Get product count
+            $order['products'] = $this->pyrocache->model('orders_m', 'get_product_count', array($order['id']), $this->firesale->cache_time);
+
+            // No currency set?
+            if ($order['currency'] == NULL) {
+                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(1), $this->firesale->cache_time);
+            }
+
+            // Format prices
+            $order['price_sub']   = $this->pyrocache->model('currency_m', 'format_string', array($order['price_sub'],   (object) $order['currency'], FALSE), $this->firesale->cache_time);
+            $order['price_ship']  = $this->pyrocache->model('currency_m', 'format_string', array($order['price_ship'],  (object) $order['currency'], FALSE), $this->firesale->cache_time);
+            $order['price_total'] = $this->pyrocache->model('currency_m', 'format_string', array($order['price_total'], (object) $order['currency'], FALSE), $this->firesale->cache_time);
+        }
+
+        return $orders;
     }
 
     /**
@@ -441,11 +541,11 @@ class Orders_m extends MY_Model
 
                 // Check it exists
                 if ($product !== FALSE) {
-                    $item['id']	   = $product['id'];
-                    $item          = array_merge($product, $item);
-                    $item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
-                    $item['price_formatted'] = number_format($item['price'], 2);
-                    $item['no']	   = ( $key + 1 );
+                    $item['id']              = $product['id'];
+                    $item                    = array_merge($product, $item);
+                    $item['total']           = number_format(( $item['price'] * $item['qty'] ), 2);
+                    $item['price_formatted'] = $item['total'];
+                    $item['no']              = ( $key + 1 );
                 }
 
             }
@@ -493,11 +593,11 @@ class Orders_m extends MY_Model
 
             // Update table
             $this->db->where('id', $product['id'])->update('firesale_products', $data);
-            return TRUE;
 
+            return true;
         }
 
-        return FALSE;
+        return false;
     }
 
     /**
