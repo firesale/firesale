@@ -22,6 +22,7 @@ class Events_Firesale_design
         Events::register('page_build', array($this, 'page_build'));
         Events::register('product_get', array($this, 'product_get'));
         Events::register('category_get', array($this, 'category_get'));
+        Events::register('clear_cache', array($this, 'clear_cache'));
 
     }
 
@@ -164,6 +165,11 @@ class Events_Firesale_design
 
         // Unset enabled
         return array('design_enabled' => false);
+    }
+
+    public function clear_cache()
+    {
+        $this->ci->pyrocache->delete_all('address_m');       
     }
 
 }

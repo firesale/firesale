@@ -60,9 +60,7 @@ class Admin_taxes extends Admin_Controller
             }
 
             // Success, clear all the cache!
-            $this->pyrocache->delete_all('taxes_m');
-            $this->pyrocache->delete_all('currency_m');
-            $this->pyrocache->delete_all('products_m');
+            Events::trigger('clear_cache');
 
             $this->session->set_flashdata('success', lang('firesale:taxes:assignments_updated'));
 
@@ -95,9 +93,7 @@ class Admin_taxes extends Admin_Controller
         if ( ! is_array($fields)) {
 
             // Success, clear all the cache!
-            $this->pyrocache->delete_all('taxes_m');
-            $this->pyrocache->delete_all('currency_m');
-            $this->pyrocache->delete_all('products_m');
+            Events::trigger('clear_cache');
 
             // Redirect
             if ( $this->input->post('btnAction') == 'save_exit' ) {
@@ -148,9 +144,7 @@ class Admin_taxes extends Admin_Controller
         }
 
         // Success, clear all the cache!
-        $this->pyrocache->delete_all('taxes_m');
-        $this->pyrocache->delete_all('currency_m');
-        $this->pyrocache->delete_all('products_m');
+        Events::trigger('clear_cache');
 
         if ($redirect) {
             redirect('admin/firesale/taxes');

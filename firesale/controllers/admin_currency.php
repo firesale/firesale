@@ -122,8 +122,7 @@ class Admin_currency extends Admin_Controller
             $this->load->library('firesale/exchange');
 
             // Success, clear cache!
-            $this->pyrocache->delete_all('currency_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             // Redirect
             if ( $this->input->post('btnAction') == 'save_exit' ) {
@@ -226,8 +225,7 @@ class Admin_currency extends Admin_Controller
             $this->streams->entries->delete_entry($id, 'firesale_currency', 'firesale_currency');
 
             // Success, clear cache!
-            $this->pyrocache->delete_all('currency_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             $this->session->set_flashdata('success', lang('firesale:currency:delete_success'));
         } else {

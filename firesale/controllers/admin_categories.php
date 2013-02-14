@@ -107,10 +107,7 @@ class Admin_categories extends Admin_Controller
             $input->parent = ( $_POST['parent'] == null ? '0' : $_POST['parent'] );
             $_POST['parent'] = $input->parent;
 
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->pyrocache->delete_all('categories_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
         } elseif ( $this->input->post('btnAction') == 'delete' ) {
             $this->delete($this->input->post('id'));
@@ -125,10 +122,7 @@ class Admin_categories extends Admin_Controller
 
         if ( is_string($fields) OR is_integer($fields) ) {
             // Success, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('categories_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
         }
 
         // Set query paramaters
@@ -207,10 +201,7 @@ class Admin_categories extends Admin_Controller
         if ($delete) {
 
             // Success, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('categories_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             $this->session->set_flashdata('success', lang('firesale:cats_delete_success'));
         } else {
@@ -247,10 +238,7 @@ class Admin_categories extends Admin_Controller
             }
 
             // Success, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('categories_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             // Ajax status
             echo json_encode(array('status' => $status['status'], 'message' => $status['message']));

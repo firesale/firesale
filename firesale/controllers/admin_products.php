@@ -151,9 +151,7 @@ class Admin_products extends Admin_Controller
                     }
 
                     // Everything went well, clear cache for front-end update
-                    $this->pyrocache->delete_all('routes_m');
-                    $this->pyrocache->delete_all('products_m');
-                    $this->cache->clean();
+                    Events::trigger('clear_cache');
 
                     // Fire event
                     $data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
@@ -277,11 +275,7 @@ class Admin_products extends Admin_Controller
         if ($delete) {
 
             // Deleted, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->pyrocache->delete_all('row_m');
-            $this->pyrocache->delete_all('modifier_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             $this->session->set_flashdata('success', lang('firesale:prod_delete_success'));
         } else {
@@ -321,11 +315,7 @@ class Admin_products extends Admin_Controller
             if ( $this->modifier_m->delete_modifier($id) ) {
 
                 // Deleted, clear cache!
-                $this->pyrocache->delete_all('routes_m');
-                $this->pyrocache->delete_all('products_m');
-                $this->pyrocache->delete_all('row_m');
-                $this->pyrocache->delete_all('modifier_m');
-                $this->cache->clean();
+                Events::trigger('clear_cache');
 
                 $this->session->set_flashdata('success', lang('firesale:mods:delete_success'));
             } else {
@@ -352,11 +342,7 @@ class Admin_products extends Admin_Controller
         if ( is_string($fields) OR is_integer($fields) ) {
 
             // Good news everyone, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->pyrocache->delete_all('row_m');
-            $this->pyrocache->delete_all('modifier_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
         }
@@ -407,11 +393,7 @@ class Admin_products extends Admin_Controller
             if ( $this->pyrocache->model('modifier_m', 'delete_variation', array($id), $this->firesale->cache_time) ) {
 
                 // Deleted, clear cache!
-                $this->pyrocache->delete_all('routes_m');
-                $this->pyrocache->delete_all('products_m');
-                $this->pyrocache->delete_all('row_m');
-                $this->pyrocache->delete_all('modifier_m');
-                $this->cache->clean();
+                Events::trigger('clear_cache');
 
                 $this->session->set_flashdata('success', lang('firesale:vars:delete_success'));
             } else {
@@ -447,11 +429,7 @@ class Admin_products extends Admin_Controller
             }
 
             // Updated, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->pyrocache->delete_all('row_m');
-            $this->pyrocache->delete_all('modifier_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             // Send back to edit
             redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
@@ -546,9 +524,7 @@ class Admin_products extends Admin_Controller
             }
 
             // Updated, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             // Ajax status
             echo json_encode(array('status' => (bool)$status['status'], 'message' => $status['message']));
@@ -567,9 +543,7 @@ class Admin_products extends Admin_Controller
         if ( Files::delete_file($id) ) {
 
             // Deleted, clear cache!
-            $this->pyrocache->delete_all('routes_m');
-            $this->pyrocache->delete_all('products_m');
-            $this->cache->clean();
+            Events::trigger('clear_cache');
 
             // Success
             $this->session->set_flashdata('success', lang('firesale:prod_delimg_success'));
@@ -591,10 +565,7 @@ class Admin_products extends Admin_Controller
 
             if ( isset($update) && $update == TRUE ) {
 
-                // Updated, clear cache!
-                $this->pyrocache->delete_all('routes_m');
-                $this->pyrocache->delete_all('products_m');
-                $this->cache->clean();
+                Events::trigger('clear_cache');
 
                 $this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
                 echo 'ok';
@@ -632,9 +603,7 @@ class Admin_products extends Admin_Controller
                 }
 
                 // Updated, clear cache!
-                $this->pyrocache->delete_all('routes_m');
-                $this->pyrocache->delete_all('products_m');
-                $this->cache->clean();
+                Events::trigger('clear_cache');
 
                 echo 'ok';
                 exit();
@@ -665,9 +634,7 @@ class Admin_products extends Admin_Controller
                 }
 
                 // Updated, clear cache!
-                $this->pyrocache->delete_all('routes_m');
-                $this->pyrocache->delete_all('products_m');
-                $this->cache->clean();
+                Events::trigger('clear_cache');
 
                 echo 'ok';
                 exit();
