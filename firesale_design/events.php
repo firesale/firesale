@@ -169,7 +169,7 @@ class Events_Firesale_design
 
     public function clear_cache()
     {
-        $this->ci->pyrocache->delete_all('address_m');       
+        $this->ci->pyrocache->delete_all('design_m');       
     }
 
 }
