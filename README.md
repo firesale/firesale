@@ -9,6 +9,7 @@
 
 * [Jamie Holdroyd](http://www.jholdroyd.co.uk)
 * [Chris Harvey](http://www.chrisnharvey.com)
+* [Adam Sturrock] (http://www.adamsturrock.co.uk)
 
 ## Description
 
