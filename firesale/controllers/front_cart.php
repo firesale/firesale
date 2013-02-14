@@ -133,7 +133,7 @@ class Front_cart extends Public_Controller
                 foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code) {
 
                     // Get product
-                    $product = $this->products_m->get_product($prd_code, null, true);
+                    $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
 
                     // Increase price based on options
                     $product['price_rounded'] += $this->input->post('price') or 0;
@@ -150,7 +150,7 @@ class Front_cart extends Public_Controller
 
         } else {
 
-            $product = $this->products_m->get_product($prd_code);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
 
             if ($product != FALSE AND ( $product['stock_status']['key'] == 6 OR $qty > 0 )) {
                 $data[] = $this->cart_m->build_data($product, $qty);
@@ -216,7 +216,7 @@ class Front_cart extends Public_Controller
 
                     } else {
 
-                        $product = $this->products_m->get_product($cart[$row_id]['id'], null, true);
+                        $product = $this->pyrocache->model('products_m', 'get_product', array($cart[$row_id]['id'], null, true), $this->firesale->cache_time);
 
                         if ($product) {
 
@@ -708,6 +708,7 @@ class Front_cart extends Public_Controller
 
         // Fire events
         Events::trigger('order_complete', $order);
+        Events::trigger('clear_cache');
 
         // Format order
         foreach ($order['items'] as &$item) {
@@ -716,10 +717,10 @@ class Front_cart extends Public_Controller
         }
 
         // Format currency
-        $order['price_sub'] = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
-        $order['price_ship'] = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
-        $order['price_total'] = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
-        $order['price_tax'] = $this->currency_m->format_string($order['price_tax'], $this->fs_cart->currency(), FALSE);
+        $order['price_sub']     = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
+        $order['price_ship']    = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
+        $order['price_total']   = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
+        $order['price_tax']     = $this->currency_m->format_string($order['price_tax'], $this->fs_cart->currency(), FALSE);
 
         // Email (user)
         Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user', 'to' => $order['bill_to']['email'])), 'array');

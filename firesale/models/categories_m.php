@@ -3,9 +3,9 @@
 /**
  * Categories model
  *
- * @author      Jamie Holdroyd
- * @author      Chris Harvey
- * @package     FireSale\Core\Models
+ * @author		Jamie Holdroyd
+ * @author		Chris Harvey
+ * @package		FireSale\Core\Models
  *
  */
 class Categories_m extends MY_Model
@@ -49,14 +49,14 @@ class Categories_m extends MY_Model
             $this->load->library('files/files');
 
             // Set params
-            $params  = array(
-                        'stream'    => 'firesale_categories',
-                        'namespace' => 'firesale_categories',
-                        'where'     => SITE_REF."_firesale_categories.{$type} = '{$id_slug}'",
-                        'limit'     => '1',
-                        'order_by'  => 'id',
-                        'sort'      => 'desc'
-                       );
+            $params = array(
+                'stream'    => 'firesale_categories',
+                'namespace' => 'firesale_categories',
+                'where'     => SITE_REF."_firesale_categories.{$type} = '{$id_slug}'",
+                'limit'     => '1',
+                'order_by'  => 'id',
+                'sort'      => 'desc'
+            );
 
             // Add to params if required
             if ( $this->uri->segment('1') != 'admin' ) {
@@ -357,7 +357,7 @@ class Categories_m extends MY_Model
      * tree when categories are moved.
      *
      * @param array $cat An array of categories and children
-     *                   to be set as children of the parent.
+     * to be set as children of the parent.
      * @return void
      * @access public
      */

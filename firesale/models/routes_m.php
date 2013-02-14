@@ -187,7 +187,7 @@ class Routes_m extends MY_Model
             $this->write($input['title'], $input['route'], $input['translation'], $old_title);
 
             // Clear cache data on save
-            $this->pyrocache->delete_all('routes_m');
+            Events::trigger('clear_cache');
 
             return TRUE;
         }
@@ -208,7 +208,7 @@ class Routes_m extends MY_Model
             $this->remove($row->title);
 
             // Clear cache data on removal
-            $this->pyrocache->delete_all('routes_m');
+            Events::trigger('clear_cache');
 
             // Success
             return TRUE;

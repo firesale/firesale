@@ -437,13 +437,14 @@ class Orders_m extends MY_Model
             foreach ($order['items'] AS $key => &$item) {
 
                 // Get the product
-                $product       = $this->products_m->get_product($item['product_id']);
+                $product = $this->pyrocache->model('products_m', 'get_product', array($item['product_id'], null, true), $this->firesale->cache_time);
 
                 // Check it exists
                 if ($product !== FALSE) {
                     $item['id']	   = $product['id'];
                     $item          = array_merge($product, $item);
                     $item['total'] = number_format(( $item['price'] * $item['qty'] ), 2);
+                    $item['price_formatted'] = number_format($item['price'], 2);
                     $item['no']	   = ( $key + 1 );
                 }
 
@@ -468,7 +469,7 @@ class Orders_m extends MY_Model
 
         // Variables
         $low	 = 10; // Move to settings
-        $product = $this->products_m->get_product($id);
+        $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
 
         if ($product) {
 
@@ -491,8 +492,7 @@ class Orders_m extends MY_Model
             }
 
             // Update table
-            $this->db->where("id = '{$product['id']}'")->update('firesale_products', $data);
-
+            $this->db->where('id', $product['id'])->update('firesale_products', $data);
             return TRUE;
 
         }
