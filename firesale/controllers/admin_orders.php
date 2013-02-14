@@ -19,7 +19,7 @@ class Admin_orders extends Admin_Controller
 
         parent::__construct();
 
-        // CH: Instantiate the StdClass object to fix E_STRICT errors
+        // Assign data object
         $this->data = new StdClass;
 
         // Load the models
@@ -44,7 +44,7 @@ class Admin_orders extends Admin_Controller
                                          "\n</script>");
     }
 
-    public function index($type = NULL, $query = NULL, $start = 0)
+    public function index($start = 0)
     {
 
         // Set query paramaters
@@ -57,60 +57,22 @@ class Admin_orders extends Admin_Controller
                     'sort'		=> 'desc'
                    );
 
-        // Get by category if set
-        if ($type != NULL AND $query != NULL) {
-
-            if ($type == 'product') {
-
-                // Get possible IDs
-                $query = $this->db->select('order_id')->where('product_id', $query)->group_by('order_id')->get('firesale_orders_items')->result_array();
-                $ids   = array();
-
-                // Loop IDs
-                foreach ($query AS $order) {
-                    $ids[] = $order['order_id'];
-                }
-
-                // Add to query
-                $params['where'] = 'id IN ('.implode(',',$ids).') ';
-
-            } else {
-                $params['where'] = $type . '=' . $query;
-            }
-
-        }
-
         // Get entries
-        $orders = $this->streams->entries->get_entries($params);
+        $orders            = $this->streams->entries->get_entries($params);
+        $orders['entries'] = $this->orders_m->format_order($orders['entries']);
 
-        // Get product count
-        foreach ($orders['entries'] AS &$order) {
-
-            // Get product count
-            $order['products'] = $this->orders_m->get_product_count($order['id']);
-
-            // No currency set?
-            if ($order['currency'] == NULL) {
-                $order['currency'] = $this->currency_m->get(1);
-            }
-
-            // Format prices
-            $order['price_sub']   = $this->currency_m->format_string($order['price_sub'],   (object) $order['currency'], FALSE);
-            $order['price_ship']  = $this->currency_m->format_string($order['price_ship'],  (object) $order['currency'], FALSE);
-            $order['price_total'] = $this->currency_m->format_string($order['price_total'], (object) $order['currency'], FALSE);
-        }
+        // Get filter data
+        $users    = $this->pyrocache->model('orders_m', 'user_field', array(( $type == 'created_by' ? $query : NULL), $this->firesale->cache_time));
+        $products = $this->pyrocache->model('orders_m', 'product_dropdown', array(null, false, false), $this->firesale->cache_time);
+        $status   = $this->pyrocache->model('orders_m', 'status_field', array(), $this->firesale->cache_time);
 
         // Assign variables
-        $this->data->orders     = $orders['entries'];
-        $this->data->pagination = $orders['pagination'];
-
-        // Assign filtering
-        $users  = $this->orders_m->user_field(( $type == 'created_by' ? $query : NULL));
-        $prods  = $this->orders_m->build_product_dropdown();
-        $status = $this->orders_m->status_field();
+        $this->data->orders        = $orders['entries'];
+        $this->data->pagination    = $orders['pagination'];
         $this->data->filter_users  = $users['input'];
-        $this->data->filter_status = form_dropdown('order_status', $status, ( $type == 'order_status' ? $query : NULL ));
-        $this->data->filter_prods  = form_dropdown('product', $prods, ( $type == 'product' ? $query : NULL ));
+        $this->data->filter_status = form_dropdown('order_status', $status, null);
+        $this->data->filter_prods  = form_dropdown('product', $products, null);
+        $this->data->min_max       = $this->orders_m->min_max_price();
 
         // Build template
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:orders'))
@@ -127,9 +89,9 @@ class Admin_orders extends Admin_Controller
             $input 	= $this->input->post();
             $skip	= array('btnAction');
             $extra 	= array(
-                        'return' 			=> 'admin/firesale/orders/edit/-id-',
-                        'success_message'	=> lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-                        'error_message'		=> lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+                        'return'          => 'admin/firesale/orders/edit/-id-',
+                        'success_message' => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
+                        'error_message'   => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
                       );
 
             // Check for products
@@ -137,14 +99,16 @@ class Admin_orders extends Admin_Controller
 
                 // Loop order items
                 foreach ($input['item'] AS $product => $item) {
+
                     // Remove product?
                     if ( $id != NULL AND isset($item['remove']) AND $item['remove'] == 1 ) {
                         $this->orders_m->remove_order_item($id, $product);
                     }
+
                     // Update quantity
                     elseif ($id != NULL) {
                         // Get product
-                        $product = (array) $this->products_m->get_product($product);
+                        $product = (array) $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
 
                         // Update/add product
                         $this->orders_m->insert_update_order_item($id, $product, $item['qty']);
@@ -160,7 +124,7 @@ class Admin_orders extends Admin_Controller
             }
 
             // Create hash
-            list($ship_hash, $bill_hash) = $this->address_m->input_hash($input);
+            list($ship_hash, $bill_hash) = $this->pyrocache->model('address_m', 'input_hash', array($input), $this->firesale->cache_time);
 
             // Check for addresses
             $ship = $this->address_m->update_address($input['ship_to'], $input, 'ship');
@@ -189,12 +153,12 @@ class Admin_orders extends Admin_Controller
         $this->data->id		= $id;
         $this->data->fields = array(
                                 'general' => array('details' => $fields),
-                                'ship'	  => $this->address_m->get_address_form('ship', ( $row != NULL && $row->ship_to > 0 ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->ship_to) : NULL )),
-                                'bill'	  => $this->address_m->get_address_form('bill', ( $row != NULL && $row->bill_to > 0 ? 'edit' : 'new' ), ( $row != NULL ? $this->address_m->get_address($row->bill_to) : NULL ))
+                                'ship'	  => $this->pyrocache->model('address_m', 'get_address_form', array('ship', ( $row != NULL && $row->ship_to > 0 ? 'edit' : 'new' ), $this->firesale->cache_time), ( $row != NULL ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : NULL )),
+                                'bill'	  => $this->pyrocache->model('address_m', 'get_address_form', array('bill', ( $row != NULL && $row->bill_to > 0 ? 'edit' : 'new' ), $this->firesale->cache_time), ( $row != NULL ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : NULL ))
                               );
 
         // Add users as first general field
-        $users = $this->orders_m->user_field(( $row != NULL ? $row->created_by : NULL ));
+        $users = $this->pyrocache->model('orders_m', 'user_field', array(( $row != NULL ? $row->created_by : NULL ), $this->firesale->cache_time));
         array_unshift($this->data->fields['general']['details'], $users);
 
         // Move/format ship_to and bill_to
@@ -204,22 +168,22 @@ class Admin_orders extends Admin_Controller
         array_unshift($this->data->fields['bill']['details'], $bill);
 
         // Get currency
-        $this->data->currency = $this->currency_m->get(( $id != NULL && $row->currency != NULL ? $row->currency : 1 ));
+        $this->data->currency = $this->pyrocache->model('currency_m', 'get', array(( $id != NULL && $row->currency != NULL ? $row->currency : 1 ), $this->firesale->cache_time));
 
         // Get products
         if ($id != NULL) {
 
             // Get and format products
-            $products = $this->orders_m->order_products($id);
+            $products = $this->pyrocache->model('orders_m', 'order_products', array($id), $this->firesale->cache_time);
             foreach ($products['products'] AS &$product) {
                 $price            = $product['price'];
-                $product['price'] = $this->currency_m->format_string($price, $this->data->currency, false);
-                $product['total'] = $this->currency_m->format_string($price * $product['qty'], $this->data->currency, false);
+                $product['price'] = $this->pyrocache->model('currency_m', 'format_string', array($price, $this->data->currency, false), $this->firesale->cache_time);
+                $product['total'] = $this->pyrocache->model('currency_m', 'format_string', array($price * $product['qty'], $this->data->currency, false), $this->firesale->cache_time);
             }
 
             // Assign products
             $this->data->products  = $products['products'];
-            $this->data->prod_drop = $this->products_m->build_dropdown();
+            $this->data->prod_drop = $this->pyrocache->model('products_m', 'build_dropdown', array(), $this->firesale->cache_time);
         }
 
         // Build the page
@@ -234,7 +198,7 @@ class Admin_orders extends Admin_Controller
         role_or_die('firesale', 'edit_orders');
 
         // Get row
-        if ( $row = $this->row_m->get_row($id, $this->stream, FALSE) ) {
+        if ( $row = $this->row_m->get_row($id, $this->stream, false) ) {
             // Load form
             $this->create($id, $row);
         } else {
@@ -298,15 +262,16 @@ class Admin_orders extends Admin_Controller
 
         if ( $this->input->is_ajax_request() ) {
             // Get order
-            $order_info = $this->orders_m->get_order_by_id($order);
+            $order_info = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order), $this->firesale->cache_time);
 
             // Get product
-            $product = (array) $this->products_m->get_product($id, $order_info['currency']['id']);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($id, $order_info['currency']['id']), $this->firesale->cache_time);
 
             // Insert/Update item
             if ( $this->orders_m->insert_update_order_item($order, $product, $qty) ) {
+                
                 // Update price
-                $this->orders_m->update_order_cost($order, TRUE, FALSE);
+                $this->orders_m->update_order_cost($order, true, false);
 
                 // Return to the browser
                 $qty = ( $product['stock_status']['key'] != 6 && $qty > $product['stock'] ? $product['stock'] : $qty );
@@ -320,18 +285,46 @@ class Admin_orders extends Admin_Controller
         exit();
     }
 
-    public function ajax_get_address($user, $id)
+    public function ajax_address($user, $id)
     {
 
         if ( $this->input->is_ajax_request() ) {
             // Get Address
-            $address = $this->address_m->get_address($id, $user);
+            $address = $this->pyrocache->model('address_m', 'get_address', array($id, $user), $this->firesale->cache_time);
             echo json_encode($address);
             exit();
         }
 
         echo 'false';
         exit();
+    }
+
+    public function ajax_filter()
+    {
+        if ( $this->input->is_ajax_request() ) {
+
+            // Variables
+            $start = ( isset($_POST['start']) ? $_POST['start'] : 0 );
+            $where = array();
+
+            unset($_POST['start']);
+
+            // Set query paramaters
+            $params = array('stream' => 'firesale_orders', 'namespace' => 'firesale_orders', 'limit' => $this->perpage, 'offset' => $start, 'order_by' => 'id', 'sort' => 'desc');
+
+            // Add filter params
+            $params['where'] = $this->orders_m->add_filters($_POST);
+
+            // Get entries
+            $orders = $this->streams->entries->get_entries($params);
+
+            // Assign variables
+            $this->data->orders     = $this->orders_m->format_order($orders['entries']);
+            $this->data->pagination = $orders['pagination'];
+
+            // Build page
+            $this->template->set_layout(false)->build('admin/orders/index', $this->data);
+        }
     }
 
 }
