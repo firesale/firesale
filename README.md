@@ -7,7 +7,7 @@
 
 ## Team
 
-* [Jamie Holdroyd](http://www.jholdroyd.co.uk)
+* [Jamie Holdroyd](http://www.jholdroyd.com)
 * [Chris Harvey](http://www.chrisnharvey.com)
 * [Adam Sturrock] (http://www.adamsturrock.co.uk)
 
@@ -20,8 +20,10 @@ Through a slightly modified version of the standard details file found in any Py
 ## Features
 * Highly powerful product and category creation
 * Complete order tracking
+* Product variations and modifiers
 * Informative dashboard with more information added via modules
 * Available in 6 (and counting) Languages
+* Total design control over pages
 * Simple and intuative interface
 * 15 Payment Gateways, powered by CI-Merchant and easily extended
 * Complete route management and custom URLs
@@ -36,7 +38,7 @@ Through a slightly modified version of the standard details file found in any Py
 Before attempting installation please ensure you meet the following requirements and you have:
 
 1. PyroCMS Version 2.1.5 or greater
-2. The [Multiple Relationship](https://github.com/parse19/PyroStreams-Multiple-Relationships) field type pre-installed (we'll try and do this for you, but sometimes that's just not possible)
+2. The [Multiple Relationship](https://github.com/firesale/PyroStreams-Multiple-Relationships) field type pre-installed (we'll try and do this for you, but sometimes that's just not possible)
 
 ## Installation
 
@@ -46,7 +48,7 @@ Before attempting installation please ensure you meet the following requirements
 
 ### Optional Steps
 
-After FireSale is installed you can also install the two additional modules provided with the core to enable Shipping and Search. These modules have no extra requirements and should just work after being enabled.
+After FireSale is installed you can also install the three additional modules provided with the core to enable Design, Shipping and Search. These modules have no extra requirements and should just work after being enabled.
 
 ## Feedback and issues
 
