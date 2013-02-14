@@ -124,7 +124,7 @@ class Admin_products extends Admin_Controller
             if ($id !== NULL) {
 
                 // Clear out current categories to prevent duplicate db entries
-                $input['category'] = $_POST['category'] = $this->pyrocache->model('products_m', 'category_fix', array($id, $input['category']), $this->firesale->cache_time);
+                $input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
 
                 // Just incase
                 Events::trigger('pre_product_updated', $id);
@@ -146,17 +146,23 @@ class Admin_products extends Admin_Controller
 
                 // Update image folder?
                 if ( ! empty($row) ) {
+                    // Update Folder Slug
                     if ($row->slug != $input['slug']) {
-                        $this->pyrocache->model('products_m', 'update_folder_slug', array($row->slug, $input['slug']), $this->firesale->cache_time);
+                        $this->products_m->update_folder_slug($row->slug, $input['slug']);
                     }
 
-                    // Everything went well, clear cache for front-end update
-                    Events::trigger('clear_cache');
+                    // Update variation
+                    if ($row->price != $input['price'] ) {
+                        $this->modifier_m->edit_price($row, $input['price'], $input['rrp']);
+                    }
 
                     // Fire event
                     $data = array_merge(array('id' => $id, 'stream' => 'firesale_products'), $input);
                     Events::trigger('product_updated', $data);
                 }
+
+                // Everything went well, clear cache for front-end update
+                Events::trigger('clear_cache');
 
                 // Add to search
                 $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);

@@ -200,6 +200,46 @@ class Modifier_m extends MY_Model
 
     }
 
+    public function edit_price($product, $price, $rrp)
+    {
+        $stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+
+        // Get all products that are part of this variation
+        $query = $this->db->select('p.id, v.price, p.tax_band')
+                          ->from('firesale_product_modifiers AS m')
+                          ->join('firesale_product_variations as v', 'm.id = v.parent', 'inner')
+                          ->join('firesale_product_variations_firesale_products as pv', 'v.id = pv.row_id')
+                          ->join('firesale_products as p', 'p.id = pv.firesale_products_id', 'inner')
+                          ->where('m.parent', $product->id)
+                          ->where('pv.firesale_product_variations_id', $stream->id)
+                          ->get();
+
+        // Check for results
+        if ( $query->num_rows() ) {
+            foreach ($query->result_array() as $variation) {
+
+                // Calculate pre tax prices
+                $tax       = $this->taxes_m->get_percentage($variation['tax_band']);
+                $tax       = (100+$tax)/100;
+                $rrp_tax   = ($rrp + $variation['price'])/$tax;
+                $price_tax = ($price + $variation['price'])/$tax;
+                $mod       = $this->currency_m->format_price($price_tax, $rrp_tax);
+
+                // Build update array
+                $update = array();
+                $update['price']     = round($mod['price']+0.004, 3);
+                $update['price_tax'] = round($mod['price_tax']+0.004, 3);
+                $update['rrp']       = round($mod['rrp']+0.004, 3);
+                $update['rrp_tax']   = round($mod['rrp_tax']+0.004, 3);
+
+                // Update the product variation
+                $this->db->where('id', $variation['id'])->update('firesale_products', $update);
+
+            }
+        }
+
+    }
+
     public function delete_modifier($id)
     {
 
