@@ -507,14 +507,14 @@ class Front_cart extends Public_Controller
                     'description'    => 'Order #' . $this->session->userdata('order_id'),
                     'first_name'     => $order['bill_to']['firstname'],
                     'last_name'      => $order['bill_to']['lastname'],
-                    'address1'       => $order['ship_to']['address1'],
-                    'address2'       => $order['ship_to']['address2'],
-                    'city'           => $order['ship_to']['city'],
-                    'region'         => $order['ship_to']['county'],
-                    'country'        => $order['ship_to']['country']['code'],
-                    'postcode'       => $order['ship_to']['postcode'],
-                    'phone'          => $order['ship_to']['phone'],
-                    'email'          => $order['ship_to']['email'],
+                    'address1'       => $order['bill_to']['address1'],
+                    'address2'       => $order['bill_to']['address2'],
+                    'city'           => $order['bill_to']['city'],
+                    'region'         => $order['bill_to']['county'],
+                    'country'        => $order['bill_to']['country']['code'],
+                    'postcode'       => $order['bill_to']['postcode'],
+                    'phone'          => $order['bill_to']['phone'],
+                    'email'          => $order['bill_to']['email'],
                 ));
 
                 $process = $this->merchant->purchase($params);
@@ -797,7 +797,7 @@ class Front_cart extends Public_Controller
 
                 $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
                 $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
-
+                
                 if ( ! $processed) {
                     // Check status
                     if ($response->status() == 'authorized' or $response->status() == 'complete') {
