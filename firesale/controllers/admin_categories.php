@@ -183,6 +183,7 @@ class Admin_categories extends Admin_Controller
                 $this->categories_m->set_children($cat);
             }
 
+            Events::trigger('clear_cache');
         }
 
     }
