@@ -13,6 +13,11 @@ $(function(){
 	$details 	= $('div#category-sort');
 	$details.append('<input type="hidden" name="cat-id" id="cat-id" value="" />');
 	$details_id	= $('div#category-sort #cat-id');
+
+	if ( $('input[name=id]').val() > 0 ) {
+		$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
+			.append(( $('input[name=id]').val() > 2 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
+	}
 		
 	$item_list.find('li a').live('click', function(e) {
 
@@ -50,7 +55,7 @@ $(function(){
 			$('button.delete').remove();
 			$('.one_half.last .title h4').text('Edit "' + data.title + '"');
 			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
-			.append(( data.id != 1 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
+			.append(( data.id > 2 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 
 			tabs.tabs('add', '#images', 'Images');
 			$("#images").load(SITE_URL+'admin/firesale/categories/ajax_cat_images/' + $details_id.val(), function() {
