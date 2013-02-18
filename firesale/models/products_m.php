@@ -190,10 +190,6 @@ class Products_m extends MY_Model
 
                 // Get and format product data
                 $product                 = current($product['entries']);
-                
-                // make sure slug is lowercase
-                $product['slug'] = strtolower($product['slug']);
-                
                 $product['snippet']      = truncate_words($product['description']);
                 $product['category']     = $this->get_categories($product['id']);
                 $product['image']        = $this->get_single_image($product['id']);
