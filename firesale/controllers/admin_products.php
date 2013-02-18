@@ -490,6 +490,10 @@ class Admin_products extends Admin_Controller
         }
 
         if ($duplicate) {
+           
+            // Updated, clear cache!
+            Events::trigger('clear_cache');
+
             $this->session->set_flashdata('success', lang('firesale:prod_duplicate_success'));
         } else {
             $this->session->set_flashdata('error', lang('firesale:prod_duplicate_error'));

@@ -190,6 +190,10 @@ class Products_m extends MY_Model
 
                 // Get and format product data
                 $product                 = current($product['entries']);
+                
+                // make sure slug is lowercase
+                $product['slug'] = strtolower($product['slug']);
+                
                 $product['snippet']      = truncate_words($product['description']);
                 $product['category']     = $this->get_categories($product['id']);
                 $product['image']        = $this->get_single_image($product['id']);
@@ -328,13 +332,17 @@ class Products_m extends MY_Model
     {
 
         // Variables
-        $id   = $input['action_to'][0];
-        $data = array(
-                    'code'  => $input['id'],
-                    'title' => $input['title'],
-                    'stock' => $input['stock'],
-                    'price' => $input['price']
-                );
+        $id      = $input['action_to'][0];
+        $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
+        $tax     = $this->pyrocache->model('taxes_m', 'get_percentage', array($product['tax_band']['id']), $this->firesale->cache_time);
+        $tax     = ( 100 + $tax ) / 100;
+        $data    = array(
+            'code'      => $input['id'],
+            'title'     => $input['title'],
+            'stock'     => $input['stock'],
+            'price'     => $input['price'],
+            'price_tax' => round(( $input['price'] / $tax ), 3)
+        );
 
         // Update stock status
         if ($data['stock'] == 0) {
