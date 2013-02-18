@@ -3,17 +3,17 @@
 class firesale
 {
     private $_CI;
-    protected $sections   = array();
-    public $elements   = array();
-    public $assets     = array();
-    public $roles     = array('shipping' => NULL);
-    public $cache_time = 86400;
+    protected $sections = array();
+    public $elements    = array();
+    public $assets      = array();
+    public $roles       = array('shipping' => NULL);
+    public $cache_time  = 86400;
 
     public function __construct()
     {
         // Get an instance of CodeIgniter
         $this->_CI =& get_instance();
-        $this->_CI->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+        $this->_CI->load->driver('cache', array('adapter' => ( function_exists('apc_fetch') ? 'apc' : 'file' ), 'backup' => 'file'));
         $this->_CI->lang->load('firesale/firesale');
     }
 
