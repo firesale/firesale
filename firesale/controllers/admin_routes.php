@@ -211,6 +211,11 @@ class Admin_routes extends Admin_Controller
 
         // Loop routes
         foreach ($routes['entries'] AS $route) {
+
+            // Format data
+            $route['route']       = html_entity_decode($route['route']);
+            $route['translation'] = html_entity_decode($route['translation']);
+            
             // Rebuild
             $this->routes_m->write($route['title'], $route['route'], $route['translation']);
         }

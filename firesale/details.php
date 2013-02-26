@@ -587,7 +587,7 @@ class Module_Firesale extends Module
 
     public function uninstall()
     {
-
+        
         // Load required items
         $this->load->driver('Streams');
         $this->load->model('firesale/categories_m');
@@ -652,6 +652,9 @@ class Module_Firesale extends Module
         $this->dbforge->drop_table('firesale_gateway_settings');
         $this->dbforge->drop_table('firesale_orders_items');
         $this->dbforge->drop_table('firesale_transactions');
+
+        //clear the firesale cache
+        Events::trigger('clear_cache');
 
         // Return
         return TRUE;
@@ -749,7 +752,7 @@ class Module_Firesale extends Module
             #######################
 
             // Create product modifiers stream
-            if( !$this->streams->streams->add_stream(lang('firesale:prod_modifiers:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
+            if( !$this->streams->streams->add_stream(lang('firesale:mods:title'), 'firesale_product_modifiers', 'firesale_product_modifiers', NULL, NULL) ) return FALSE;
 
             // Add fields
             $fields   = array();
@@ -773,7 +776,7 @@ class Module_Firesale extends Module
             $products = $this->streams->streams->get_stream('firesale_products', 'firesale_products');
 
             // Create product modifiers stream
-            if( !$this->streams->streams->add_stream(lang('firesale:prod_variations:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
+            if( !$this->streams->streams->add_stream(lang('firesale:vars:title'), 'firesale_product_variations', 'firesale_product_variations', NULL, NULL) ) return FALSE;
 
             // Add fields
             $fields   = array();
