@@ -11,6 +11,7 @@ class Module_Firesale extends Module
 
         // Load in the FireSale library
         $this->load->library('firesale/firesale');
+        $this->load->helper('firesale/general');
     }
 
     public function information()
@@ -236,7 +237,9 @@ class Module_Firesale extends Module
             AND ! is_dir(ADDONPATH . 'field_types/multiple')
             AND ! is_dir(APPPATH . 'modules/streams_core/field_types/multiple'))
         {
-            if ( ! $this->install_multiple() ) {
+            $url  = 'https://github.com/adamfairholm/PyroStreams-Multiple-Relationships/zipball/master';
+            $path = SHARED_ADDONPATH . 'field_types/';
+            if ( ! install_from_remote($url, $path, 'multiple') ) {
                 $this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
                 redirect('admin/'.$redirect);
 
@@ -1101,52 +1104,6 @@ class Module_Firesale extends Module
             $this->db->where_in('slug', $templates)->delete('email_templates');
         }
 
-    }
-
-    public function install_multiple()
-    {
-
-        // Load required items
-        $this->load->library('unzip');
-
-        // Variables
-        $url    = 'https://github.com/firesale/PyroStreams-Multiple-Relationships/zipball/master';
-        $path   = SHARED_ADDONPATH . 'field_types/';
-        $before = scandir($path);
-
-        // Perform checks before continuing
-        if( extension_loaded('zlib') AND
-            function_exists('copy') AND
-            function_exists('rename') AND
-            function_exists('unlink') AND
-            is_writable($path) )
-        {
-
-            // Download to temp folder
-            $temp = tempnam(sys_get_temp_dir(), 'multiple');
-            copy($url, $temp);
-
-            // Unzip
-            $this->unzip->extract($temp, $path);
-
-            // Rename folder
-            $after  = scandir($path);
-            $new    = array_diff($after, $before);
-            $folder = current($new);
-            rename($path.$folder, $path.'multiple');
-
-            // Remove temp file
-            @unlink($temp);
-
-            // Check it all went well
-            if ( is_dir($path.'multiple') ) {
-                return TRUE;
-            }
-
-        }
-
-        // Something went wrong
-        return FALSE;
     }
 
     public function info()
