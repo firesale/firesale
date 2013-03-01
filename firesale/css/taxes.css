@@ -1,3 +1,7 @@
+
+.sections_bar { display: none; }
+#container section#content { margin-top: 135px !important; }
+
 thead tr th .actions {
 	float: right;
 }

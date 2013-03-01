@@ -1,3 +1,7 @@
+
+.sections_bar { display: none; }
+#container section#content { margin-top: 135px !important; }
+
 /* General */
 .clear { clear: both; height: 0; line-height: 0; }
 tbody tr:last-child { border: none; }

@@ -11,10 +11,11 @@ class Module_Firesale extends Module
 
         // Load in the FireSale library
         $this->load->library('firesale/firesale');
+        $this->lang->load($this->language_file);
         $this->load->helper('firesale/general');
     }
 
-    public function information()
+    public function info()
     {
 
         $info = array(
@@ -38,8 +39,6 @@ class Module_Firesale extends Module
             ),
             'frontend'		=> TRUE,
             'backend'		=> TRUE,
-            'firesale_core'	=> TRUE,
-            'menu'	   => 'FireSale',
             'author'   => 'Jamie Holdroyd & Chris Harvey',
             'roles' => array(
                 'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways',
@@ -47,76 +46,37 @@ class Module_Firesale extends Module
                 'access_taxes', 'add_edit_taxes'
             ),
             'sections' => array(
-                'dashboard' => array(
-                    'name'	=> 'firesale:sections:dashboard',
-                    'uri'	=> 'admin/firesale',
-                ),
                 'categories' => array(
-                    'name'   => 'firesale:sections:categories',
-                    'uri' 	 => 'admin/firesale/categories',
                     'shortcuts' => array(
                         array(
-                            'name' 	=> 'firesale:shortcuts:cat_create',
-                            'uri'	=> 'admin/firesale/categories',
+                            'name'  => 'firesale:shortcuts:cat_create',
+                            'uri'   => 'admin/firesale/categories',
                             'class' => 'add'
                         )
                     )
                 ),
                 'products' => array(
-                    'name' => 'firesale:sections:products',
-                    'uri'  => 'admin/firesale/products',
                     'shortcuts' => array(
                         array(
-                            'name' 	=> 'firesale:shortcuts:prod_create',
-                            'uri'	=> 'admin/firesale/products/create',
+                            'name'  => 'firesale:shortcuts:prod_create',
+                            'uri'   => 'admin/firesale/products/create',
                             'class' => 'add'
                         )
                     )
                 ),
                 'orders' => array(
-                    'name' => 'firesale:sections:orders',
-                    'uri'  => 'admin/firesale/orders',
                     'shortcuts' => array(
                         array(
-                            'name' 	=> 'firesale:shortcuts:create_order',
-                            'uri'	=> 'admin/firesale/orders/create',
+                            'name'  => 'firesale:shortcuts:create_order',
+                            'uri'   => 'admin/firesale/orders/create',
                             'class' => 'add'
-                        )
-                    )
-                )
-            ),
-            'elements' => array(
-                'dashboard' => array(
-                    array(
-                        'slug'		=> 'product_sales',
-                        'title' 	=> 'firesale:elements:product_sales',
-                        'function' 	=> 'product_sales',
-                        'assets'	=> array(
-                            array('type' => 'css', 'file' => 'dashboard_productsales.css'),
-                            array('type' => 'js', 'file' => 'dashboard_productsales.js')
-                        )
-                    ),
-                    array(
-                        'slug'		=> 'low_stock',
-                        'title'		=> 'firesale:elements:low_stock',
-                        'function'	=> 'low_stock',
-                        'assets'	=> array(
-                            array('type' => 'css', 'file' => 'dashboard_lowstock.css')
                         )
                     )
                 )
             )
         );
 
-        if (group_has_role('firesale', 'access_routes')) {
-            $info['sections']['routes'] = array(
-                'name' => 'firesale:sections:routes',
-                'uri'  => 'admin/firesale/routes',
-                'shortcuts' => array()
-            );
-        }
-
-        if (group_has_role('firesale', 'create_edit_routes') AND isset($info['sections']['routes'])) {
+        if (group_has_role('firesale', 'create_edit_routes')) {
             $info['sections']['routes']['shortcuts'] = array(
                 array(
                     'name' 	=> 'firesale:shortcuts:create_routes',
@@ -131,37 +91,13 @@ class Module_Firesale extends Module
             );
         }
 
-        if (group_has_role('firesale', 'access_gateways')) {
-            $info['sections']['gateways'] = array(
-                'name' => 'firesale:sections:gateways',
-                'uri'  => 'admin/firesale/gateways',
-                'shortcuts' => array()
-            );
-        }
-
-        if (group_has_role('firesale', 'install_uninstall_gateways') AND isset($info['sections']['gateways'])) {
+        if (group_has_role('firesale', 'install_uninstall_gateways')) {
             $info['sections']['gateways']['shortcuts'] = array(
                 array(
                     'name' 	=> 'firesale:shortcuts:install_gateway',
                     'uri'	=> 'admin/firesale/gateways/add',
                     'class' => 'add'
                 )
-            );
-        }
-
-        if (group_has_role('firesale', 'access_currency')) {
-            $info['sections']['currency'] = array(
-                'name' => 'firesale:sections:currency',
-                'uri'  => 'admin/firesale/currency',
-                'shortcuts' => array()
-            );
-        }
-
-        if (group_has_role('firesale', 'access_taxes')) {
-            $info['sections']['taxes'] = array(
-                'name' => 'firesale:sections:taxes',
-                'uri'  => 'admin/firesale/taxes',
-                'shortcuts' => array()
             );
         }
 
@@ -175,7 +111,7 @@ class Module_Firesale extends Module
             );
         }
 
-        if (group_has_role('firesale', 'install_uninstall_currency') AND isset($info['sections']['currency'])) {
+        if (group_has_role('firesale', 'install_uninstall_currency')) {
             $info['sections']['currency']['shortcuts'] = array(
                 array(
                     'name' 	=> 'firesale:currency:create',
@@ -237,7 +173,7 @@ class Module_Firesale extends Module
             AND ! is_dir(ADDONPATH . 'field_types/multiple')
             AND ! is_dir(APPPATH . 'modules/streams_core/field_types/multiple'))
         {
-            $url  = 'https://github.com/adamfairholm/PyroStreams-Multiple-Relationships/zipball/master';
+            $url  = 'https://github.com/adamfairholm/PyroStreams-Multiple-Relationships/zipball/2.0/develop';
             $path = SHARED_ADDONPATH . 'field_types/';
             if ( ! install_from_remote($url, $path, 'multiple') ) {
                 $this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
@@ -1104,11 +1040,6 @@ class Module_Firesale extends Module
             $this->db->where_in('slug', $templates)->delete('email_templates');
         }
 
-    }
-
-    public function info()
-    {
-        return $this->firesale->info($this->information(), $this->language_file);
     }
 
 }

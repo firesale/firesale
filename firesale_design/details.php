@@ -11,9 +11,10 @@ class Module_Firesale_design extends Module
 
         // Load in the FireSale library
         $this->load->library('firesale/firesale');
+        $this->lang->load($this->language_file);
     }
 
-    public function information()
+    public function info()
     {
 
         $info = array(
@@ -30,11 +31,6 @@ class Module_Firesale_design extends Module
         );
 
         return $info;
-    }
-
-    public function info()
-    {
-        return $this->firesale->info($this->information(), $this->language_file);
     }
 
     public function install()

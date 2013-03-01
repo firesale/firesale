@@ -27,51 +27,59 @@ class admin extends Admin_Controller
         $this->template->append_css('module::dashboard.css')
                        ->append_js('module::flot.js')
                        ->append_js('module::dashboard.js');
-
     }
 
     public function index()
     {
 
         // CH: If we're not on the FireSale dashboard, redirect to it.
-        if ( ! $this->uri->segment(2)) {
+        if ( ! $this->uri->segment(2) ) {
             redirect('admin/firesale');
         }
 
         // Variables
-        $items  = array();
-        $hidden = array();
+        $items   = Events::trigger('firesale_dashboard', array(), 'array');
+        $order   = explode('|', $this->input->cookie('firesale_dashboard_order'));
+        $hidden  = explode('|', $this->input->cookie('firesale_dashboard_hidden'));
+        $display = array();
 
-        // Get element data from core
-        if ( isset($this->firesale->elements['dashboard']) AND !empty($this->firesale->elements['dashboard']) ) {
-
-            $_tmp = $this->firesale->elements['dashboard'];
-
-            // Order dashboard items
-            if ($this->input->cookie('firesale_dashboard_order')) {
-                $order = explode('|', $this->input->cookie('firesale_dashboard_order'));
-                foreach ($order AS $slug) {
-                    if ( strlen($slug) > 0 ) {
-                        if ( isset($_tmp[$slug]) ) {
-                            $items[$slug] = $_tmp[$slug];
-                        }
-                    }
-                }
+        // Check and loop items
+        foreach ( $items as $key => $item ) {
+           
+            // Ordering
+            if ( ! empty($order) and ( $newkey = array_search($item['id'], $order) ) >= 0 ) {
+                $key              = $newkey;
+                $display[$newkey] = $item;
             } else {
-                $items = $_tmp;
+                $display[( 100 + $key )] = $item;
             }
 
-            if ( isset($this->firesale->elements['dashboard']) ) {
-                $this->firesale->retrieve_assets('dashboard', $this);
+            // Hidden
+            if ( ! empty($hidden) and in_array($item['id'], $hidden) ) {
+                $display[$key]['hidden'] = true;
+            }
+
+            // Assets
+            if ( isset($item['assets']) and ! empty($item['assets']) ) {
+                foreach ( $item['assets'] as $asset ) {
+                    if ( $asset['type'] == 'js' ) {
+                        $this->template->append_js($asset['file']);
+                    } else if ( $asset['type'] == 'css' ) {
+                        $this->template->append_css($asset['file']);
+                    }
+                }
             }
 
         }
 
+        // Sort the array
+        ksort($display);
+
         // Assign variables
         $this->data->controller = $this;
-        $this->data->items      = $items;
-        $this->data->shown		= count($items);
-        $this->data->count		= ( isset($_tmp) ? count($_tmp) : $this->data->shown );
+        $this->data->items      = $display;
+        $this->data->shown		= count($display);
+        $this->data->count		= count($items);
 
         // Build the page
         $this->template->enable_parser(true)

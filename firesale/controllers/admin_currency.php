@@ -70,6 +70,7 @@ class Admin_currency extends Admin_Controller
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:currency'))
+                       ->append_css('module::currency.css')
                        ->set($this->data);
 
         // Fire events

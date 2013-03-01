@@ -1,4 +1,7 @@
 
+.sections_bar { display: none; }
+#container section#content { margin-top: 135px !important; }
+
 #sortable .one_half:nth-child(2n) { margin-right: 0 !important; float: right !important; }
 #sortable .one_half:nth-child(2n+1) { clear: both; }
 

@@ -149,12 +149,10 @@ class Products_m extends MY_Model
             $show_variations = (bool) $this->settings->get('firesale_show_variations');
         }
 
-        $user_currency = $this->session->userdata('currency');
-
-        $currency = $currency ? $currency : ($user_currency ? $user_currency : 1);
-
         // Variables
-        $type = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
+        $user_currency = $this->session->userdata('currency');
+        $currency      = $currency ? $currency : ($user_currency ? $user_currency : 1);        
+        $type          = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
 
         // Check cache
         if ( array_key_exists($id_slug, $this->cache[$type]) ) {
@@ -164,13 +162,13 @@ class Products_m extends MY_Model
 
             // Set params
             $params = array(
-                        'stream'    => 'firesale_products',
-                        'namespace' => 'firesale_products',
-                        'where'     => SITE_REF."_firesale_products.{$type} = '{$id_slug}'",
-                        'limit'     => '1',
-                        'order_by'  => 'id',
-                        'sort'      => 'desc'
-                       );
+                'stream'    => 'firesale_products',
+                'namespace' => 'firesale_products',
+                'where'     => SITE_REF."_firesale_products.{$type} = '{$id_slug}'",
+                'limit'     => '1',
+                'order_by'  => 'id',
+                'sort'      => 'desc'
+            );
 
             // Add to params if required
             if ( $this->uri->segment('1') != 'admin' ) {
@@ -196,7 +194,7 @@ class Products_m extends MY_Model
 
                 // Get variation and modifer data
                 $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
-                $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
+                // $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
 
                 // Format product pricing
                 $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);

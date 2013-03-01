@@ -49,6 +49,7 @@ class Admin_routes extends Admin_Controller
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:routes'))
+                       ->append_css('module::routes.css')
                        ->set($this->data);
 
         // Fire events
