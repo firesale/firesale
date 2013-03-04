@@ -1,13 +1,14 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class firesale
+class Firesale
 {
-    private $_CI;
-    protected $sections = array();
-    public $elements    = array();
-    public $assets      = array();
-    public $roles       = array('shipping' => NULL);
-    public $cache_time  = 86400;
+
+    protected $sections    = array();
+    private   $_CI         = null;
+    public    $elements    = array();
+    public    $assets      = array();
+    public    $roles       = array('shipping' => NULL);
+    public    $cache_time  = 86400;
 
     public function __construct()
     {
@@ -19,21 +20,21 @@ class firesale
 
     public function is_installed()
     {
-        if (module_exists('firesale')) {
-            $installed = $this->_CI->db->where('installed', 1)
-                ->where('slug', 'firesale')
-                ->count_all_results('modules');
 
-            if ($installed) {
+        if ( module_exists('firesale') ) {
+            
+            $installed = $this->_CI->db->where('installed', 1)
+                                       ->where('slug', 'firesale')
+                                       ->count_all_results('modules');
+
+            if ( $installed ) {
                 return TRUE;
             }
         }
 
+        // Not installed
         $this->_CI->session->set_flashdata('error', lang('firesale:install:not_installed'));
-
         redirect('admin/modules');
-
-        return FALSE;
     }
 
 }
