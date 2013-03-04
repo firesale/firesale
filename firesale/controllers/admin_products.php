@@ -672,20 +672,20 @@ class Admin_products extends Admin_Controller
             unset($_POST['start']);
 
             // Get filtered product IDs
-            $count    = $this->pyrocache->model('products_m', 'get_products', array($this->input->post()), $this->firesale->cache_time);
-            $products = $this->pyrocache->model('products_m', 'get_products', array($this->input->post(), $start, $this->perpage), $this->firesale->cache_time);
+            $data['count'] = $this->pyrocache->model('products_m', 'get_products', array($this->input->post()), $this->firesale->cache_time);
+            $products      = $this->pyrocache->model('products_m', 'get_products', array($this->input->post(), $start, $this->perpage), $this->firesale->cache_time);
 
             // Get product data
             foreach ( $products as $product ) {
                 $data['products'][] = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
             }
 
-            // Build pagination
-            $data['pagination'] = create_pagination('admin/firesale/products/', count($count), $this->perpage, 4);
+            // Assign data
+            $data['count']      = ( $data['count'] ? count($data['count']) : 0 );
+            $data['pagination'] = create_pagination('admin/firesale/products/', $data['count'], $this->perpage, 4);
 
-            // For JSON
-            echo json_encode($data);
-            exit();
+            // Build page
+            $this->template->set_layout(false)->set($data)->build('admin/products/index');
         }
     }
 

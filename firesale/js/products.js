@@ -33,8 +33,9 @@ $(function() {
 		});
 
 	    $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
-		$('#product_table').tablesorter({headers:{0:{sorter:false},2:{sorter:false},7:{sorter:false}}, widgets:["saveSort"]});
+		$('#product_table').tablesorter({widgets:["saveSort"]});
 		build_quickedit();
+		bind_pagination();
 
 	}
 
@@ -146,20 +147,18 @@ $(function() {
 		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="link linked">Link</button>&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
 		price.change(function() {
-			$(this).val(parseFloat($(this).val())+0.004);
-			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
-			if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3 )); }
-		}).blur(function() { $(this).val(( $(this).val().length > 0 ? decimal($(this).val(), 2) : '0.00' )); }).change().blur();
+			if( $(this).val() > 0 ) { var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false ); if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3 )); } }
+			else { $(this).val('0.00'); }
+		}).blur(function() { $(this).val(decimal($(this).val(), 2)); }).change().blur();
 		$('#' + tmp.attr('id')).change(function() {
-			var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false );
-			if( linked ) { $(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2 )); }
-		}).blur(function() { $(this).val(( $(this).val().length > 0 ? decimal($(this).val(), 3) : '0.00' )); });
+			if( $(this).val() > 0 ) { var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false ); if( linked ) { $(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2 )); } }
+			else { $(this).val('0.00'); }
+		}).blur(function() { $(this).val(decimal($(this).val(), 3)); });
 	}
 
 	function decimal(no, places) { return new Number(parseFloat(no)).toFixed(places); }
 
-	function build_quickedit()
-	{
+	function build_quickedit() {
 		$('.quickedit').click(function() {
 
 			$('<li><a href="#" class="reload">Cancel</a></li>').insertAfter($(this).parent());
@@ -211,86 +210,33 @@ $(function() {
 		});
 	}
 
-	function update_products(extra)
-	{
+	function bind_pagination() {
+		$('#product_table tfoot td div a').click(function(e) {
+			e.preventDefault();
+			var page = $(this).attr('href').split('/');
+				page = page[page.length-1];
+			if( $('#filters input[name=start]').size() > 0 ) { $('#filters input[name=start]').val(page); }
+			else { $('#filters').append('<input type="hidden" name="start" value="'+page+'" />'); }
+			update_products(page);
+		});
+	}
 
+	function update_products(extra) {
 		if( req != null ) { req.abort(); }
-
-		req = $.ajax({ type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, global: false, data: $('#filters').serialize(), success: function(json) {
-			
-			// Variables
-			var data = $.parseJSON(json), tar = $('#product_table tbody'), row = '';
-
-			// Clear table
-			tar.html('');
-
-			// Check products
-			if( data != null && data.products.length > 0 )
-			{
-
-				$('.no_data').remove();
-				tar.parent().show();
-
-				// Update pagination
-				$('#product_table tfoot td div').html(data.pagination.links);
-				$('#product_table tfoot td div a').click(function(e) {
-					e.preventDefault();
-					var page = $(this).attr('href').split('/');
-						page = page[page.length-1];
-					if( $('#filters input[name=start]').size() > 0 ) { $('#filters input[name=start]').val(page); }
-					else { $('#filters').append('<input type="hidden" name="start" value="'+page+'" />'); }
-					update_products(page);
-				});
-
-				// Loop new products
-				for( var k in data.products )
-				{
-
-					// Variables
-					var p   = data.products[k];
-					var str = '';
-
-					// Categories
-					for( var c in p.category ) { var cat = p.category[c]; str += ( str.length == 0 ? '' : ', ' ) + '<span data-id="'+cat.id+'">'+cat.title+'</span>'; }
-
-					// Build row
-					row    += '<tr class="cat_'+p.category.id+'">'+
-							  '	<td><input type="checkbox" name="action_to[]" value="'+p.id+'"  /></td>'+
-							  '	<td class="item-id">'+p.code+'</td>'+
-							  ' <td class="item-img"><img src="'+(p.image!=false?'/files/thumb/'+p.image+'/32/32':'')+'" alt="Product Image" /></td>'+
-							  ' <td class="item-title"><a href="'+SITE_URL+'product/'+p.slug+'">'+p.title+'</a></td>'+
-							  ' <td class="item-category">'+
-							  '  '+str+
-							  ' </td>'+
-							  ' <td class="item-stock">'+(p.stock_status.key==6?'Unlimited (&infin;)':p.stock_status.value)+'</td>'+
-							  ' <td><span class="item-price">'+p.price_formatted+'</span></td>'+
-							  ' <td class="actions">'+
-							  '  <ul class="split-button">'+
-							  '   <li><strong>Action</strong></li>'+
-							  '   <li><a href="#" class="quickedit">Quick Edit</a>'+
-							  '   <li><a href="'+SITE_URL+'admin/firesale/products/edit/'+p.id+'" class="edit">Edit</a></li>'+
-							  '   <li><a href="'+SITE_URL+'admin/firesale/products/delete/'+p.id+'" class="confirm">Delete</a></li>'+
-							  '  </ul>'+
-							  ' </td>'+
-							  '</tr>';
-
-				}
-
-				// Remove loading
-				tar.html(row);
-
-				// Rebind values
+		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, global: false, data: $('#filters').serialize(), success: function(data) {
+			$('#product_table').parent().find('.no_data').remove();
+			if( $(data).find('#product_table').size() > 0 ) {
+				$('#product_table tbody').html($(data).find('#product_table tbody').html());
+				$('#product_table tfoot').html($(data).find('#product_table tfoot').html());
+				$('#product_table').show();
 				$('#product_table').trigger("update"); 
 				build_quickedit();
-
+				bind_pagination();
+			} else if( $(data).find('.no_data').size() > 0 ) {
+				$('#product_table').hide();
+				$('<div class="no_data">'+$(data).find('.no_data').html()+'</div>').insertBefore($('#product_table'));
+			} else {
+				alert(data);
 			}
-			else
-			{
-				tar.parent().hide();
-				$('.no_data').remove();
-				$('<div class="no_data">No Products Found</div>').insertAfter(tar.parent());
-			}
-
 		}});
-
 	}

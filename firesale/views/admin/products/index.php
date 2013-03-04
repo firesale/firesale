@@ -44,14 +44,14 @@
             <table id="product_table">
                 <thead>
                     <tr>
-                        <th style="width: 15px"><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
+                        <th data-sorter="false" style="width: 15px"><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
                         <th style="width: 110px"><?php echo lang('firesale:label_id'); ?></th>
-                        <th style="width: 40px"><?php echo lang('firesale:label_image'); ?></th>
+                        <th data-sorter="false" style="width: 40px"><?php echo lang('firesale:label_image'); ?></th>
                         <th style="width: 340px"><?php echo lang('firesale:label_title'); ?></th>
                         <th style="width: 160px"><?php echo lang('firesale:label_parent'); ?></th>
                         <th style="width: 80px"><?php echo lang('firesale:label_stock_short'); ?></th>
                         <th style="width: 90px"><?php echo lang('firesale:label_price'); ?></th>
-                        <th></th>
+                        <th data-sorter="false"></th>
                     </tr>
                 </thead>
 

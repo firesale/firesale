@@ -15,7 +15,6 @@ class Events_Firesale
         Events::register('clear_cache', array($this, 'clear_cache'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_sales'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_stock'));
-
     }
 
     public function public_controller()
