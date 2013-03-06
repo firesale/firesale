@@ -47,7 +47,7 @@ class admin extends Admin_Controller
         foreach ( $items as $key => $item ) {
 
             // Ordering
-            if ( ! empty($order) and ( $nkey = array_search($item['id'], $order) ) >= 0 ) {
+            if ( ! empty($order) and ( $nkey = array_search($item['id'], $order) ) !== false ) {
                 $key = $nkey;
             }
             do { $key++; } while ( isset($display[$key]) );

@@ -1,10 +1,14 @@
+
+$.fn.eqHeights=function(e){var t={child:false};var e=$.extend(t,e);var n=$(this);if(n.length>0&&!n.data("eqHeights")){$(window).bind("resize.eqHeights",function(){n.eqHeights()});n.data("eqHeights",true)}if(e.child&&e.child.length>0){var r=$(e.child,this)}else{var r=$(this).children()}var i=0;var s=0;var o=[];r.height("auto").each(function(){var e=this.offsetTop;if(i>0&&i!=e){$(o).height(s);s=$(this).height();o=[]}s=Math.max(s,$(this).height());i=this.offsetTop;o.push(this)});$(o).height(s)}
+
 $(function(){
 
-	
+	$('#sortable').eqHeights({child:'.item'});
 	$('#sortable').bind('sortstop', function(event, ui) {
 		var o = $('#sortable').sortable('toArray'), s = '';
 		for( var i in o ) { if( o[i].length > 0 ) { s += ( s == '' ? '' : '|' ) + o[i]; } }
 		$.cookie('firesale_dashboard_order', s);
+		$('#sortable').eqHeights({child:'.item'});
 	});
 
 	var _t;

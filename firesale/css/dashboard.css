@@ -4,6 +4,7 @@
 
 #sortable .one_half:nth-child(2n) { margin-right: 0 !important; float: right !important; }
 #sortable .one_half:nth-child(2n+1) { clear: both; }
+#sortable .one_half:nth-child(2n+1):after { content: ' '; display: block; clear: both; height: 40px; }
 
 .legend table { width: auto !important; }
 .legend table tr { border-bottom: none !important; }
