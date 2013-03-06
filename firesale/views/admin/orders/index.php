@@ -41,7 +41,7 @@
             </fieldset>
         <?php echo form_close(); ?>
 
-        <?php echo form_open(site_url('admin/firesale/orders/status'), 'class="crud" id="tabs"'); ?>
+        <?php echo form_open(site_url('admin/firesale/orders/status'), 'class="crud"'); ?>
             <table id="order_table">
                 <thead>
                     <tr>
@@ -59,7 +59,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <td colspan="10" id="pagination"><?php echo $pagination; ?></td>
+                        <td colspan="10"><?php echo $pagination; ?></td>
                     </tr>
                 </tfoot>
                 <tbody>
@@ -67,7 +67,7 @@
                     <tr class="status-<?php echo $order['order_status']['key']; ?>">
                         <td><input type="checkbox" name="action_to[]" value="<?php echo $order['id']; ?>"  /></td>
                         <td><?php echo $order['id']; ?></td>
-                        <td><?php echo date('Y-m-d H:i:s', $order['created']); ?></td>
+                        <td><?php echo date('G:ia D jS M Y', $order['created']); ?></td>
                     <?php if( is_array($order['ship_to']) ): ?>
                         <td><?php echo $order['ship_to']['firstname'] . ' ' . $order['ship_to']['lastname']; ?></td>
                     <?php else: ?>
@@ -80,9 +80,9 @@
                         <td><?php echo $order['price_ship']; ?></td>
                         <td class="actions">
                             <?php if (group_has_role('firesale', 'edit_orders')): ?>
-                                <a class="btn blue" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('buttons.edit'); ?></a>
+                                <a class="btn blue" href="<?php echo site_url('admin/firesale/orders/edit/' . $order['id']); ?>"><?php echo lang('global:edit'); ?></a>
                             <?php endif; ?>
-                            <a class="btn red confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('buttons.delete'); ?></a>
+                            <a class="btn red confirm" href="<?php echo site_url('admin/firesale/orders/delete/' . $order['id']); ?>"><?php echo lang('global:delete'); ?></a>
                         </td>
                     </tr>
 <?php endforeach; ?>

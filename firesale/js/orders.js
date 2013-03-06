@@ -2,23 +2,14 @@ $(function() {
 	
 	// Index
 	$('#filters select, #filters input').change(function() {
-		$.post($('#filters_form').attr('action'), $('#filters_form').serialize(), function(data) {
-			if( $(data).find('#order_table').size() > 0 ) {
-				$('#order_table tbody').html($(data).find('#order_table tbody').html());
-				$('#order_table tfoot').html($(data).find('#order_table tfoot').html());
-			} else if( $(data).find('.no_data').size() > 0 ) {
-				$('#order_table tbody').html('<tr><td colspan="10"><div class="no_data">'+$(data).find('.no_data').html()+'</div></td></tr>');
-				$('#order_table tfoot').html('');
-			} else {
-				alert(data);
-			}
-		});
+		update_orders();
 	});
 
 	$('#price_sub, #price_ship, #price_total').before('<span>' + currency + '&nbsp;</span>');
 	$('#order_table').tablesorter({headers:{0:{sorter:false},8:{sorter:false}}, widgets:["saveSort"]});
 	$('a.show-filter').click(function() { $('#filters').slideToggle(500); });
 	$(".datepicker").datepicker({dateFormat: 'yy-mm-dd'});
+	bind_pagination();
 
 	$('#price-slider').slider({
 		range: true,
@@ -34,6 +25,18 @@ $(function() {
 		stop: function(event, ui) {
 			$('#filters select:first, #filters input:first').change();
 		}
+	});
+
+	if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
+		update_orders(window.location.hash.replace('#', ''));
+	}
+
+	$("body").keydown(function(e){
+	    if ( (e.keyCode || e.which) == 37 ) {   
+	        $('.pagination .prev a').click();
+	    } else if ( (e.keyCode || e.which) == 39 ) {
+	        $('.pagination .next a').click();
+	    }   
 	});
 
 	// Change address
@@ -140,4 +143,42 @@ function calculatePrice()
 	});
 	$('input[name=price_total]').val(( t + parseFloat($('input[name=price_ship]').val()) ).toFixed(2));
 	$('input[name=price_sub]').val((t / ( 1 + ( 1 - (( 100 - tax_rate ) / 100 ).toFixed(2)))).toFixed(2));
+}
+
+var req;
+function update_orders(extra) {
+	if( req != null ) { req.abort(); }
+	create_overlay($('#order_table'));
+	req = $.ajax({type: "POST", url: $('#filters_form').attr('action')+'/'+extra, global: false, data: $('#filters_form').serialize(), success: function(data) {
+		$('.overlay').remove();
+		if( $(data).find('#order_table').size() > 0 ) {
+			$('#order_table tbody').html($(data).find('#order_table tbody').html());
+			$('#order_table tfoot').html($(data).find('#order_table tfoot').html());
+			$('#order_table').show();
+			$('#order_table').trigger("update");
+			bind_pagination();
+		} else if( $(data).find('.no_data').size() > 0 ) {
+			$('#order_table').hide();
+			$('<div class="no_data">'+$(data).find('.no_data').html()+'</div>').insertBefore($('#order_table'));
+		} else {
+			alert(data);
+		}
+	}});
+}
+
+function bind_pagination() {
+	$('#order_table tfoot td div a').click(function(e) {
+		e.preventDefault();
+		var page = $(this).attr('href').split('/');
+			page = page[page.length-1];
+		if( $('#filters_form input[name=start]').size() > 0 ) { $('#filters_form input[name=start]').val(page); }
+		else { $('#filters_form').append('<input type="hidden" name="start" value="'+page+'" />'); }
+		window.location.hash = page;
+		update_orders(page);
+	});
+}
+
+function create_overlay(obj) {
+	var w = obj.outerWidth(), h = obj.outerHeight(), o = obj.position();
+	$('<div class="overlay" style="position: absolute; z-index: 1000; width: '+w+'px; height: '+h+'px; left: '+o.left+'; top: '+o.top+'px"><div>').insertAfter(obj);
 }

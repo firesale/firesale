@@ -7,6 +7,7 @@
     $route['firesale/admin/products(/:any)?']   = 'admin_products$1';
     $route['firesale/admin/currency(/:any)?']   = 'admin_currency$1';
     $route['firesale/admin/routes(/:any)?']     = 'admin_routes$1';
+    $route['firesale/admin/orders(/[0-9]+)?']   = 'admin_orders/index$1';
     $route['firesale/admin/orders(/:any)?']     = 'admin_orders$1';
     $route['firesale/admin/gateways(/:any)?']   = 'admin_gateways$1';
     $route['firesale/admin/liveedit(/:any)']    = 'admin_liveedit$1';

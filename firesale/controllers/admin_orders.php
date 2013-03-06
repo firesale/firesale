@@ -42,23 +42,27 @@ class Admin_orders extends Admin_Controller
                        ->append_metadata('<script type="text/javascript">' .
                                          "\n  var currency = '" . $this->settings->get('currency') . "';" .
                                          "\n</script>");
+
     }
 
     public function index($start = 0)
     {
 
-        // Set query paramaters
-        $params	 = array(
-                    'stream' 	=> 'firesale_orders',
-                    'namespace'	=> 'firesale_orders',
-                    'limit'		=> $this->perpage,
-                    'offset'	=> $start,
-                    'order_by'	=> 'id',
-                    'sort'		=> 'desc'
-                   );
+        // Variables
+        $pagination = array('uri_segment' => 4, 'per_page' => $this->perpage, 'base_url' => 'admin/firesale/orders/');
+        $params	    = array(
+            'stream' 	  => 'firesale_orders',
+            'namespace'	  => 'firesale_orders',
+            'limit'		  => $this->perpage,
+            'offset'	  => $start,
+            'order_by'	  => 'id',
+            'sort'		  => 'desc',
+            'paginate'    => 'yes',
+            'pag_segment' => $pagination['uri_segment']
+        );
 
         // Get entries
-        $orders            = $this->streams->entries->get_entries($params);
+        $orders            = $this->streams->entries->get_entries($params, $pagination);
         $orders['entries'] = $this->orders_m->format_order($orders['entries']);
 
         // Get filter data
@@ -309,14 +313,15 @@ class Admin_orders extends Admin_Controller
 
             unset($_POST['start']);
 
-            // Set query paramaters
-            $params = array('stream' => 'firesale_orders', 'namespace' => 'firesale_orders', 'limit' => $this->perpage, 'offset' => $start, 'order_by' => 'id', 'sort' => 'desc');
+            // Variables
+            $pagination = array('uri_segment' => 5, 'per_page' => $this->perpage, 'base_url' => 'admin/firesale/orders/');
+            $params     = array('stream' => 'firesale_orders', 'namespace' => 'firesale_orders', 'limit' => $this->perpage, 'offset' => $start, 'order_by' => 'id', 'sort' => 'desc', 'paginate' => 'yes', 'pag_segment' => $pagination['uri_segment']);
 
             // Add filter params
             $params['where'] = $this->orders_m->add_filters($_POST);
 
             // Get entries
-            $orders = $this->streams->entries->get_entries($params);
+            $orders = $this->streams->entries->get_entries($params, $pagination);
 
             // Assign variables
             $this->data->orders     = $this->orders_m->format_order($orders['entries']);
