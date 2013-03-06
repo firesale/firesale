@@ -11,9 +11,10 @@ class Module_Firesale_shipping extends Module
 
         // Load in the FireSale library
         $this->load->library('firesale/firesale');
+        $this->lang->load($this->language_file);
     }
 
-    public function information()
+    public function info()
     {
 
         $info = array(
@@ -31,7 +32,6 @@ class Module_Firesale_shipping extends Module
             'backend'		=> FALSE,
             'firesale_core'	=> FALSE,
             'role'			=> 'shipping',
-            'menu'	   		=> 'FireSale',
             'author'   		=> 'Jamie Holdroyd',
             'sections' 		=> array(
                 'shipping' 	=> array(
@@ -187,11 +187,6 @@ class Module_Firesale_shipping extends Module
     public function help()
     {
         return "Some Help Stuff";
-    }
-
-    public function info()
-    {
-        return $this->firesale->info($this->information(), $this->language_file);
     }
 
 }

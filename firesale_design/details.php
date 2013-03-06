@@ -92,7 +92,7 @@ class Module_Firesale_design extends Module
             // Add setting
             $this->db->insert('settings', $setting);
 
-            return TRUE;
+            return true;
         }
 
     }

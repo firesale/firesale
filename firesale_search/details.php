@@ -11,9 +11,10 @@ class Module_Firesale_Search extends Module
 
         // Load in the FireSale library
         $this->load->library('firesale/firesale');
+        $this->lang->load($this->language_file);
     }
 
-    public function information()
+    public function info()
     {
 
         $info = array(
@@ -29,27 +30,7 @@ class Module_Firesale_Search extends Module
             ),
             'frontend' 		=> TRUE,
             'backend' 		=> FALSE,
-            'firesale_core'	=> FALSE,
-            'menu'	   		=> 'FireSale',
-            'author' 		=> 'Jamie Holdroyd',
-            'elements' => array(
-                'dashboard' => array(
-                    array(
-                        'slug'		=> 'search_terms',
-                        'title' 	=> 'firesale:elements:search_terms',
-                        'function' 	=> 'search_terms',
-                        'assets'	=> array(
-                            array('type' => 'css', 'file' => 'dashboard_searchterms.css')
-                        )
-                    )
-                )
-            ),
-            'events'			 => array(
-                'order_complete'     => array(
-                    'model'		 => 'firesale_search/search_m',
-                    'function'	 => 'order_complete'
-                )
-            )
+            'author' 		=> 'Jamie Holdroyd'
         );
 
         return $info;
@@ -66,11 +47,11 @@ class Module_Firesale_Search extends Module
             ##################
 
             $search = array(
-                        'id' 	=> array('type' => 'INT', 'constraint' => '6', 'auto_increment' => TRUE),
-                        'term'	=> array('type' => 'VARCHAR', 'constraint' => '64'),
-                        'count'	=> array('type' => 'INT', 'constraint' => '6'),
-                        'sales'	=> array('type' => 'INT', 'constraint' => '6')
-                    );
+                'id' 	=> array('type' => 'INT', 'constraint' => '6', 'auto_increment' => TRUE),
+                'term'	=> array('type' => 'VARCHAR', 'constraint' => '64'),
+                'count'	=> array('type' => 'INT', 'constraint' => '6'),
+                'sales'	=> array('type' => 'INT', 'constraint' => '6')
+            );
 
             // Insert into the database
             $this->dbforge->add_field($search);
@@ -149,11 +130,6 @@ class Module_Firesale_Search extends Module
         // Return a string containing help info
         // You could include a file and return it here.
         return "Some Help Stuff";
-    }
-
-    public function info()
-    {
-        return $this->firesale->info($this->information(), $this->language_file);
     }
 
 }
