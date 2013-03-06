@@ -45,15 +45,13 @@ class admin extends Admin_Controller
 
         // Check and loop items
         foreach ( $items as $key => $item ) {
-           
+
             // Ordering
             if ( ! empty($order) and ( $nkey = array_search($item['id'], $order) ) >= 0 ) {
-                $key           = $nkey;
-                $display[$key] = $item;
-            } else {
-                $key           = ( 500 + count($display) );
-                $display[$key] = $item;
+                $key = $nkey;
             }
+            do { $key++; } while ( isset($display[$key]) );
+            $display[$key] = $item;
 
             // Hidden
             if ( ! empty($hidden) and in_array($item['id'], $hidden) ) {
