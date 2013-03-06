@@ -37,6 +37,18 @@ $(function() {
 		build_quickedit();
 		bind_pagination();
 
+		if ( parseInt(window.location.hash) > 0 ) {
+			update_products(window.location.hash);
+		}
+
+		$("body").keydown(function(e){
+		    if ( (e.keyCode || e.which) == 37 ) {   
+		        $('.pagination .prev').click();
+		    } else if ( (e.keyCode || e.which) == 39 ) {
+		        $('.pagination .next').click();
+		    }   
+		});
+
 	}
 
 	/*************
@@ -217,14 +229,17 @@ $(function() {
 				page = page[page.length-1];
 			if( $('#filters input[name=start]').size() > 0 ) { $('#filters input[name=start]').val(page); }
 			else { $('#filters').append('<input type="hidden" name="start" value="'+page+'" />'); }
+			window.location.hash = page;
 			update_products(page);
 		});
 	}
 
 	function update_products(extra) {
 		if( req != null ) { req.abort(); }
+		create_overlay($('#product_table'));
 		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, global: false, data: $('#filters').serialize(), success: function(data) {
 			$('#product_table').parent().find('.no_data').remove();
+			$('.overlay').remove();
 			if( $(data).find('#product_table').size() > 0 ) {
 				$('#product_table tbody').html($(data).find('#product_table tbody').html());
 				$('#product_table tfoot').html($(data).find('#product_table tfoot').html());
@@ -239,4 +254,9 @@ $(function() {
 				alert(data);
 			}
 		}});
+	}
+
+	function create_overlay(obj) {
+		var w = obj.outerWidth(), h = obj.outerHeight(), o = obj.position();
+		$('<div class="overlay" style="position: absolute; z-index: 1000; width: '+w+'px; height: '+h+'px; left: '+o.left+'; top: '+o.top+'px"><div>').insertAfter(obj);
 	}

@@ -1,4 +1,7 @@
 
+.sections_bar { display: none; }
+#container section#content { margin-top: 135px !important; }
+
 /* Gneral */
 .chzn-container .chzn-single span,.chzn-container li{color:#666;font-weight:400;}
 .loading{min-height:22px;background:url(img/loading.gif) no-repeat 50% 50%!important;}
