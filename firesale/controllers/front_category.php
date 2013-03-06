@@ -54,20 +54,21 @@ class Front_category extends Public_Controller
     /**
      * Builds the initial Category view for the front-end
      * pages, including the specific category or sub-cats,
-     * pagination and possibly only sale items with the format
-     * of:
+     * pagination.
      *
-     *   category/CATEGORY NAME/sale/[pagination]?
-     *
-     * @param  string  $category Category slug to query
-     * @param  string  $start    (Optional) Either the pagination page or sale
-     * @param  integer $extra    (Optional) When sale is set as the second param, this is the pagination page
+     * @param  string $category Category slug to query
+     * @param  string $start    (Optional) Either the pagination page or sale
      * @return void
      * @access public
      */
-    public function index($category = NULL, $start = 0, $extra = NULL)
+    public function index()
     {
 
+        // Variables
+        $args     = func_get_args();
+        $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
+        $category = implode('/', $args);
+        
         // Check category
         if ( ( is_int($category) OR is_numeric($category) ) AND $start == 0 ) {
             $start    = $category;

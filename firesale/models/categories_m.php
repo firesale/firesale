@@ -83,6 +83,11 @@ class Categories_m extends MY_Model
                     $category = array_merge($category, $result);
                 }
 
+                // Prefix
+                $segments                = explode('/', $category['slug']);
+                $category['slug']        = $category['slug'];
+                $category['slug_prefix'] = implode('/', array_pop($segments));
+
                 // Add to cache
                 $this->cache['id'][$category['id']]     = $category;
                 $this->cache['slug'][$category['slug']] = $category;
@@ -95,6 +100,24 @@ class Categories_m extends MY_Model
 
         // Nothing?
         return FALSE;
+    }
+
+    public function get_complete_slug($parent)
+    {
+
+        // Variables
+        $slug             = '';
+        $parent['parent'] = $parent['id'];
+
+        // Loop until we hit the root
+        do {
+            $query    = $this->db->select('id, parent, slug')->where('id', $parent['parent'])->get('firesale_categories');
+            $parent   = current($query->result_array());
+            $segments = explode('/', $parent['slug']);
+            $slug     = array_pop($segments).'/'.$slug;
+        } while ( $parent['parent'] != 0 and $parent['parent'] != null );
+
+        return $slug;
     }
 
     /**
@@ -135,7 +158,7 @@ class Categories_m extends MY_Model
     public function get_all_children($parent)
     {
 
-        $children = $this->get_children($parent);
+        $children = $this->pyrocache->model('categories_m', 'get_children', array($parent), $this->firesale->cache_time);
 
         foreach ($children as $child) {
             $children = array_unique(array_merge($children, $this->get_all_children($child)));

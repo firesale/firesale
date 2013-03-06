@@ -93,10 +93,10 @@ class Admin_categories extends Admin_Controller
             $id     = ( $input['id'] > 0 ? $input['id'] : $id );
             $skip	= array('btnAction');
             $extra 	= array(
-                        'return' 			=> '/admin/firesale/categories',
-                        'success_message'	=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-                        'error_message'		=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
-                      );
+                'return' 			=> '/admin/firesale/categories',
+                'success_message'	=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
+                'error_message'		=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+            );
 
             // Assign input
             if ($id != null) {
@@ -107,11 +107,17 @@ class Admin_categories extends Admin_Controller
             $input->parent = ( $_POST['parent'] == null ? '0' : $_POST['parent'] );
             $_POST['parent'] = $input->parent;
 
+            $input->slug_prefix   = $this->pyrocache->model('categories_m', 'get_complete_slug', array('id' => $input->parent), $this->firesale->cache_time);
+            $_POST['slug_prefix'] = $input->slug_prefix;
+            $_POST['slug']        = $_POST['slug_prefix'].$_POST['slug'];
+
             Events::trigger('clear_cache');
 
         } elseif ( $this->input->post('btnAction') == 'delete' ) {
+            
             $this->delete($this->input->post('id'));
         } else {
+
             $input = FALSE;
             $skip  = array();
             $extra = array();
@@ -127,18 +133,18 @@ class Admin_categories extends Admin_Controller
 
         // Set query paramaters
         $params	= array(
-                    'stream' 	=> 'firesale_categories',
-                    'namespace'	=> 'firesale_categories',
-                    'order_by'	=> 'ordering_count',
-                    'sort'		=> 'asc'
-                  );
+            'stream'    => 'firesale_categories',
+            'namespace' => 'firesale_categories',
+            'order_by'  => 'ordering_count',
+            'sort'      => 'asc'
+        );
 
         // Fire build event
         Events::trigger('form_build', $this);
 
         // Assign variables
         $this->data->controller = $this;
-        $this->data->cats       = $this->categories_m->generate_streams_tree($params);
+        $this->data->cats       = $this->pyrocache->model('categories_m', 'generate_streams_tree', array($params), $this->firesale->cache_time);
         $this->data->fields     = fields_to_tabs($fields, $this->tabs);
         $this->data->tabs	    = array_keys($this->data->fields);
 
@@ -172,6 +178,7 @@ class Admin_categories extends Admin_Controller
         $root_cats	= isset($data['root_cats']) ? $data['root_cats'] : array();
 
         if ( is_array($order) ) {
+
             // Reset all parent > child relations
             $this->categories_m->update_all(array('parent' => 0));
 
@@ -185,7 +192,6 @@ class Admin_categories extends Admin_Controller
 
             Events::trigger('clear_cache');
         }
-
     }
 
     /**
@@ -216,13 +222,13 @@ class Admin_categories extends Admin_Controller
     {
 
         // Get product
-        $row    = $this->row_m->get_row($id, $this->stream, FALSE);
-        $folder = $this->products_m->get_file_folder_by_slug($row->slug);
+        $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
+        $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
         // Create folder?
-        if (!$folder) {
-            $parent = $this->products_m->get_file_folder_by_slug('category-images');
+        if ( ! $folder ) {
+            $parent = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array('category-images'), $this->firesale->cache_time);
             $folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
             $folder = (object) $folder['data'];
         }
@@ -262,13 +268,11 @@ class Admin_categories extends Admin_Controller
      */
     public function ajax_cat_details($id)
     {
-
         if ( $this->input->is_ajax_request() ) {
-            $cat = $this->categories_m->get_category($id);
+            $cat = $this->pyrocache->model('categories_m', 'get_category', array($id), $this->firesale->cache_time);
             echo json_encode($cat);
             exit();
         }
-
     }
 
     /**
@@ -286,11 +290,11 @@ class Admin_categories extends Admin_Controller
 
             // Variables
             $data = array();
-            $row  = $this->row_m->get_row($id, $this->stream, FALSE);
+            $row  = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, false), $this->firesale->cache_time);
 
             if ($row != FALSE) {
-                $folder = $this->products_m->get_file_folder_by_slug($row->slug);
-                $images = Files::folder_contents($folder->id);
+                $folder         = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
+                $images         = Files::folder_contents($folder->id);
                 $data['images'] = $images['data']['file'];
             }
 
@@ -298,7 +302,6 @@ class Admin_categories extends Admin_Controller
             echo $this->parser->parse('admin/categories/images', $data, true);
             exit();
         }
-
     }
 
 }

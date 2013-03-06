@@ -60,6 +60,7 @@
                     <?php endif; ?>
 
                     <input type="hidden" name="id" id="id" value="<?php echo ( isset($input->id) ? $input->id : '' ); ?>" />
+                    <input type="hidden" name="slug_prefix" id="slug_prefix" value="<?php echo ( isset($input->slug_prefix) ? $input->slug_prefix : '' ); ?>" />
 
                     <?php foreach( $fields AS $slug => $field ): ?>
                     <?php if( ( ! isset($input->id) && substr($slug, 0, 1) != '_' ) || isset($input->id) ): ?>

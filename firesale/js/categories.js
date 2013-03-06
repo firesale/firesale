@@ -5,6 +5,10 @@ $(function(){
 	if( !window.location.hash ) {
 		tabs.tabs("select", '#general');
 	}
+
+	$('input[name=slug]').bind('keyup update change focus blur paste delete', function() {
+		var s = $(this).val().split('/'); $(this).val(s[s.length-1]);
+	}).change();
 	
 	$item_list	= $('ul.sortable');
 	$url		= 'admin/firesale/categories/order';
@@ -18,7 +22,7 @@ $(function(){
 		$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
 			.append(( $('input[name=id]').val() > 2 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 	}
-		
+
 	$item_list.find('li a').live('click', function(e) {
 
 		e.preventDefault();
