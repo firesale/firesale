@@ -47,7 +47,7 @@ class Routes_m extends MY_Model
                 // Basic route formatting
                 $formatted = $route->map;
                 $formatted = html_entity_decode($formatted);
-                $formatted = str_replace('{{ any }}', '', $formatted);
+                $formatted = str_replace(array('{{ any }}', '{{ pagination }}'), '', $formatted);
 
                 // Check table
                 if ( ! empty($route->table) AND $id != NULL ) {
@@ -66,29 +66,6 @@ class Routes_m extends MY_Model
                         $category  = current($this->products_m->get_categories($type->id));
                         $formatted = str_replace('{{ category_slug }}', $category['slug'], $formatted);
                         $formatted = str_replace('{{ category_id }}', $category['id'], $formatted);
-                    }
-
-                    // Check for parent slugs
-                    if ( $route->table == 'firesale_categories' AND strpos($formatted, '{{ parent_slug }}') !== FALSE ) {
-
-                        // Variables
-                        $parents  = '';
-                        $category = $this->categories_m->get_category($type->id);
-
-                        // Loop until root
-                        do {
-
-                            $category = $this->categories_m->get_category($category['parent']['id']);
-
-                            if ( $category && !empty($category) ) {
-                                $parents  = $category['slug'].'/'.$parents;
-                            }
-
-                        } while ( $category && is_array($category['parent']) );
-
-                        // Replace
-                        $formatted = str_replace(array('{{ parent_slug }}', '//'), array($parents, '/'), $formatted);
-
                     }
 
                 }
@@ -225,6 +202,7 @@ class Routes_m extends MY_Model
         $file    = APPPATH.'config/routes.php';
         $content = file_get_contents($file);
         $before  = "\n/* End of file routes.php */";
+        $title   = ( substr($title, 0, 5) == 'lang:' ? lang(substr($title, 5)) : $title );
         $_title  = str_replace(array('(', ')'), array('\(', '\)'), ($old_title?$old_title:$title));
         $regex   = "%(\n/\* FireSale - {$_title} \*/\n.+?\n)%si";
         $map     = preg_replace('/\$([0-9]+)/si', '\$__$1', $map);

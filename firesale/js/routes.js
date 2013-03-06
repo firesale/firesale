@@ -31,11 +31,11 @@ $(function() {
 
 });
 
-function build_buttons()
-{
+function build_buttons() {
 
 	// Variables
-	var html = '<button class="btn blue route-action" data-route="{{ any }}" data-translation="(:any)"><span>Add Any</span></button>';
+	var html = '<button class="btn blue route-action" data-route="{{ any }}" data-translation="(:any)"><span>Add Any</span></button>' +
+			   '<button class="btn blue route-action" data-route="/{{ pagination }}" data-translation="(/[0-9]+)?"><span>Add Pagination</span></button>'
 	var slug = $('#slug').val();
 	var id   = $('form.crud').attr('action').split('/');
 	    id   = id[(id.length-1)];
@@ -46,12 +46,6 @@ function build_buttons()
 		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="([0-9]+)"><span>Add ID</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z0-9-]+)"><span>Add Slug</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ title }}" data-translation=".+?"><span>Add Title</span></button>';
-	}
-
-	// Category specific
-	if( id == '2' || slug == 'category' )
-	{
-		html += '<button class="btn blue route-action" data-route="{{ parent_slug }}" data-translation="[0-9a-z-/]+"><span>Add Parent Slugs</span></button>';
 	}
 
 	// Product specific
