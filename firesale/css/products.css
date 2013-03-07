@@ -29,6 +29,7 @@ a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-re
 #product_table input[type=search] { width: 100% !important; min-width: 100% !important; }
 #product_table tbody tr td { position: relative; }
 #product_table tbody tr.loading td { width: 100%; height: 200px; background:url(img/loading.gif) no-repeat 50% 50%; }
+#product_table tr.selected td { background: #E1EFFB; }
 
 /* Image Dropbox */
 #dropbox{position:relative;min-height:290px;border-radius:15px;padding:4px 4px 44px;}

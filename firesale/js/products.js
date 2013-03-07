@@ -41,13 +41,7 @@ $(function() {
 			update_products(window.location.hash);
 		}
 
-		$("body").keydown(function(e){
-		    if ( (e.keyCode || e.which) == 37 ) {   
-		        $('.pagination .prev').click();
-		    } else if ( (e.keyCode || e.which) == 39 ) {
-		        $('.pagination .next').click();
-		    }   
-		});
+		bind_keys($('#product_table'));
 
 	}
 
@@ -102,8 +96,8 @@ $(function() {
 	$('.modifiers tbody').sortable({
 		handle: 'span.mod-mover',
 		update: function() {
-			$('.modifiers tbody > tr').removeClass('even');
-			$('.modifiers tbody > tr:nth-child(even)').addClass('even');
+			$('.modifiers tbody > tr').removeClass('alt');
+			$('.modifiers tbody > tr:nth-child(even)').addClass('alt');
 			var order = [];
 			$('.modifiers tbody > tr').each(function() { order.push(this.id); });
 			order = order.join(',');
@@ -114,8 +108,8 @@ $(function() {
 	$('.modifiers tbody table tbody').sortable({
 		handle: 'span.var-mover',
 		update: function() {
-			$('.modifiers table tbody > tr').removeClass('even');
-			$('.modifiers table tbody > tr:nth-child(even)').addClass('even');
+			$('.modifiers table tbody > tr').removeClass('alt');
+			$('.modifiers table tbody > tr:nth-child(even)').addClass('alt');
 			var order = [];
 			$('.modifiers table tbody > tr').each(function() { order.push(this.id); });
 			order = order.join(',');
@@ -137,14 +131,10 @@ $(function() {
 	** DYNAMIC TAX LINK **
 	*********************/
 
-	$('#tax_band').change(function()
-	{
+	$('#tax_band').change(function() {
 		var selected_tax = $(this).find('option:selected').val();
-
-		if (taxes[selected_tax] !== undefined)
-		{
+		if (taxes[selected_tax] !== undefined) {
 			tax_rate = taxes[selected_tax];
-
 			$('#rrp, #price').change();
 		}
 	})
@@ -153,8 +143,7 @@ $(function() {
 	
 	var req = null;
 
-	function tax_link(price, before)
-	{
+	function tax_link(price, before) {
 		var tmp = before.clone();before.parent().parent().remove();
 		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="link linked">Link</button>&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
@@ -259,4 +248,41 @@ $(function() {
 	function create_overlay(obj) {
 		var w = obj.outerWidth(), h = obj.outerHeight(), o = obj.position();
 		$('<div class="overlay" style="position: absolute; z-index: 1000; width: '+w+'px; height: '+h+'px; left: '+o.left+'; top: '+o.top+'px"><div>').insertAfter(obj);
+	}
+
+	function bind_keys(o) {
+		$("body").keydown(function(e) {
+		    
+		    var c = 'selected', s = o.find('.selected');
+		    
+		    // Pagination - previous
+		    if ( (e.keyCode || e.which) == 37 ) {   
+		        $('.pagination .prev').click();
+
+		    // Pagination - next
+		    } else if ( (e.keyCode || e.which) == 39 ) {
+		        $('.pagination .next').click();
+		    
+		    // Traverse - up
+		    } else if ( (e.keyCode || e.which) == 40 ) {
+		    	if ( s.next().size() > 0 ) { s.removeClass(c).next().addClass(c); }
+		    	else { s.removeClass(c); o.find('tbody tr:first').addClass(c); }
+		    
+		   	// Traverse - down
+		    } else if ( (e.keyCode || e.which) == 38 ) {
+		    	if ( s.prev().size() > 0 ) { s.removeClass(c).prev().addClass(c); }
+		    	else { s.removeClass(c); o.find('tbody tr:last').addClass(c); }
+
+		    // Edit
+		    } else if ( (e.keyCode || e.which) == 13 ) {		    	
+		    	if ( s.size() > 0 ) {
+		    		if ( e.ctrlKey ) { s.find('.quickedit').click(); } else { window.location = s.find('.edit').attr('href'); }
+		    	}
+
+		    // Mark for delete
+		    } else if ( (e.keyCode || e.which) == 46 ) {
+		    	if ( s.size() > 0 ) { s.find('td:first input').click();
+		    	$(".table_action_buttons .btn").prop('disabled', ( s.find('td:first input').is(':checked') ? false : true )); }
+		    }
+		});
 	}
