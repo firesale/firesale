@@ -521,7 +521,7 @@ class Orders_m extends MY_Model
         $params	 = array(
                     'stream' 	=> 'firesale_orders',
                     'namespace'	=> 'firesale_orders',
-                    'where'		=> "id = '{$order_id}'",
+                    'where'		=> SITE_REF."_firesale_orders.id = '{$order_id}'",
                     'limit'		=> 1
                    );
 

@@ -10,7 +10,7 @@
 .legend table tr { border-bottom: none !important; }
 .legend table td { padding: 3px !important; }
 
-@media only screen and (min-width: 281px) {
+/*@media only screen and (min-width: 281px) {
 	#sales { width: 250px; height: 260px; }
 	.legend { margin-left: 10px; }
 }
@@ -29,4 +29,4 @@
 
 @media only screen and (min-width: 1281px) {
 	#sales { width: 595px; height: 260px; }
-}
+}*/
