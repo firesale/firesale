@@ -79,6 +79,33 @@
         return FALSE;
     }
 
+    function order_table($order, $table, $replace = null)
+    {
+
+        // Get instance
+        $_CI =& get_instance();
+
+        // Check data
+        if ( strlen($order) > 0 ) {
+
+            $order = explode(',', $order);
+
+            // Loop and update rows
+            for ( $i = 0; $i < count($order); $i++ ) {
+                if ( strlen($order[$i]) > 0 ) {
+                    $id = str_replace($replace, '', $order[$i]);
+                    $_CI->db->where('id', $id)->update($table, array('ordering_count' => $i));
+                }
+            }
+
+            // Updated, clear cache!
+            Events::trigger('clear_cache');
+            return 'ok';
+        }
+
+        return 'error';
+    }
+
     /**
      * Truncates a string by a number of characters but ensures to complete the
      * last word, following by "..."

@@ -625,31 +625,12 @@ class Admin_products extends Admin_Controller
         exit();
     }
 
-    public function ajax_order_modifiers($table = 'firesale_product_modifiers', $replace = 'mod_')
+    public function ajax_order_modifiers()
     {
 
         if ( $this->input->is_ajax_request() ) {
-
-            $order = $this->input->post('order');
-
-            if ( strlen($order) > 0 ) {
-
-                $order = explode(',', $order);
-
-                for ( $i = 0; $i < count($order); $i++ ) {
-                    if ( strlen($order[$i]) > 0 ) {
-                        $id = str_replace($replace, '', $order[$i]);
-                        $this->db->where('id', $id)->update($table, array('ordering_count' => $i));
-                    }
-                }
-
-                // Updated, clear cache!
-                Events::trigger('clear_cache');
-
-                echo 'ok';
-                exit();
-            }
-
+            echo order_table($this->input->post('order'), 'firesale_product_modifiers', 'mod_');
+            exit();
         }
 
         echo 'error';
@@ -658,7 +639,14 @@ class Admin_products extends Admin_Controller
 
     public function ajax_order_variations()
     {
-        $this->ajax_order_modifiers('firesale_product_variations', 'var_');
+
+        if ( $this->input->is_ajax_request() ) {
+            echo order_table($this->input->post('order'), 'firesale_product_variations', 'var_');
+            exit();
+        }
+
+        echo 'error';
+        exit();
     }
 
     public function ajax_filter($page)

@@ -1,33 +1,48 @@
 $(function() {
 	
-	// Variables
-	var section = $('input#slug').val();
+	// Index
+	$('#routes tbody').sortable({
+		handle: 'span.mover',
+		update: function() {
+			var order = [];
+			$('#routes tbody > tr').removeClass('alt');
+			$('#routes tbody > tr:nth-child(even)').addClass('alt');
+			$('#routes tbody > tr').each(function() { order.push(this.id); });
+			order = order.join(',');
+			$.post(SITE_URL + 'admin/firesale/routes/ajax_order', { order: order });
+		}
+	});
 
+	// Create/edit
+	if ( $('#map').size() > 0 ) {
 
-	// Add target
-	$('<div class="btntar"></div>').insertAfter($('#map'));
+		// Variables
+		var section = $('input#slug').val();
 
-	// Fix map value
-	$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
+		// Add target
+		$('<div class="btntar"></div>').insertAfter($('#map'));
 
-	// Initial load
-	build_buttons();
+		// Fix map value
+		$('#map').val($('#map').val().replace(/&#123;/g, '{').replace(/&#125;/g, '}'));
 
-	// Bind events
-	$('#slug, #title').bind('keyup keydown change update blur focus', function() {
+		// Initial load
 		build_buttons();
-	});
 
-	$('#map').bind('keyup keydown change delete paste update', function() {
-		var val = $('#map').val();
-		$('.route-action').each(function() {
-			var regex = new RegExp($(this).data('route'),"g");
-			val = val.replace(regex, $(this).data('translation'));
+		// Bind events
+		$('#slug, #title').bind('keyup keydown change update blur focus', function() {
+			build_buttons();
 		});
-		$('#route').val(val);
-	});
 
+		$('#map').bind('keyup keydown change delete paste update', function() {
+			var val = $('#map').val();
+			$('.route-action').each(function() {
+				var regex = new RegExp($(this).data('route'),"g");
+				val = val.replace(regex, $(this).data('translation'));
+			});
+			$('#route').val(val);
+		});
 
+	}
 
 });
 

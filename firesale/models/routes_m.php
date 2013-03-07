@@ -235,6 +235,7 @@ class Routes_m extends MY_Model
         // Variables
         $file    = APPPATH.'config/routes.php';
         $content = file_get_contents($file);
+        $title   = ( substr($title, 0, 5) == 'lang:' ? lang(substr($title, 5)) : $title );
         $regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
 
         if (! is_writeable($file)) {
@@ -247,6 +248,14 @@ class Routes_m extends MY_Model
 
         // Write it
         file_put_contents($file, $content);
+    }
+
+    public function clear()
+    {
+        $routes = $this->db->select('title')->get('firesale_routes')->result_array();
+        foreach ( $routes as $route ) {
+            $this->remove($route['title']);
+        }
     }
 
 }

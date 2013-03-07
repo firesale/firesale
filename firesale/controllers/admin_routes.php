@@ -24,6 +24,7 @@ class Admin_routes extends Admin_Controller
         // Load libraries, drivers & models
         $this->load->driver('Streams');
         $this->load->model('routes_m');
+        $this->load->helper('general');
 
         // Initialise data
         $this->data = new stdClass();
@@ -38,10 +39,12 @@ class Admin_routes extends Admin_Controller
 
         // Variables
         $params = array(
-            'stream'       => 'firesale_routes',
-            'namespace'    => 'firesale_routes',
-            'paginate'     => 'yes',
-            'page_segment' => 4
+            'stream'      => 'firesale_routes',
+            'namespace'   => 'firesale_routes',
+            'order_by'    => 'ordering_count',
+            'sort'        => 'asc',
+            'paginate'    => 'yes',
+            'pag_segment' => 4
         );
 
         // Assign routes
@@ -49,6 +52,7 @@ class Admin_routes extends Admin_Controller
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:routes'))
+                       ->append_js('module::routes.js')
                        ->append_css('module::routes.css')
                        ->set($this->data);
 
@@ -164,16 +168,15 @@ class Admin_routes extends Admin_Controller
 
                 // Update search index
                 $this->routes_m->search_update($this->input->post('slug'));
+
+                // Success, clear cache!
+                Events::trigger('clear_cache');
             }
 
             // Redirect
             if ( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) ) {
                 redirect('admin/firesale/routes');
             } else {
-
-                // Success, clear cache!
-                Events::trigger('clear_cache');
-
                 redirect('admin/firesale/routes/edit/'.$id);
             }
 
@@ -196,13 +199,15 @@ class Admin_routes extends Admin_Controller
 
     }
 
-    public function rebuild()
+    public function rebuild($redirect = false)
     {
 
         // Variables
         $params = array(
             'stream'       => 'firesale_routes',
             'namespace'    => 'firesale_routes',
+            'order_by'     => 'ordering_count',
+            'sort'         => 'asc',
             'paginate'     => 'yes',
             'page_segment' => 4
         );
@@ -222,8 +227,10 @@ class Admin_routes extends Admin_Controller
         }
 
         // Flash and redirect
-        $this->session->set_flashdata('success', lang('firesale:routes:build_success'));
-        redirect('admin/firesale/routes');
+        if ( $redirect ) {
+            $this->session->set_flashdata('success', lang('firesale:routes:build_success'));
+            redirect('admin/firesale/routes');
+        }
     }
 
     public function delete($id)
@@ -258,6 +265,20 @@ class Admin_routes extends Admin_Controller
         // Something went wrong
         $this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
         redirect('admin/firesale/routes');
+    }
+
+    public function ajax_order()
+    {
+
+        if ( $this->input->is_ajax_request() ) {
+            echo order_table($this->input->post('order'), 'firesale_routes', 'route_');
+            $this->routes_m->clear();
+            $this->rebuild(false);
+            exit();
+        }
+
+        echo 'error';
+        exit();
     }
 
 }
