@@ -29,7 +29,7 @@ class Widget_FireSale_Categories extends Widgets
                     'namespace' => 'firesale_categories',
                     'order_by'  => 'ordering_count',
                     'sort'      => 'asc',
-                    'where'     => "status = '1'"
+                    'where'     => SITE_REF."_firesale_categories.status = '1'"
                   );
 
         // Parent set?
