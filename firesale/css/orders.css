@@ -35,6 +35,7 @@ table.tablesorter thead tr .tablesorter-headerSortDown{background-image:url(img/
 table.tablesorter thead tr .tablesorter-headerSortDown, table.tablesorter thead tr .tablesorter-headerSortUp{background-color:#f3f3f3;color:#000;}
 table.tablesorter input[type=search] { width: 100% !important; min-width: 100% !important; }
 table.tablesorter tbody tr.status-2, table.tablesorter tbody tr.status-2 td { background: #F0FBEA; }
+table.tablesorter tr.selected td { background: #E1EFFB !important; }
 
 /* Slider */
 .ui-slider-cont { width: 550px; padding: 20px 0 0 0; }
