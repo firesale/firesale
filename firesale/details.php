@@ -586,7 +586,7 @@ class Module_Firesale extends Module
         $this->streams->utilities->remove_namespace('firesale_orders_items');
 
         // Drop the payment gateway tables
-        $this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it =/
+        $this->dbforge->drop_table('firesale_products_firesale_categories'); // Streams doesn't auto-remove it
         $this->dbforge->drop_table('firesale_product_variations_firesale_products');
         $this->dbforge->drop_table('firesale_gateway_settings');
         $this->dbforge->drop_table('firesale_orders_items');
