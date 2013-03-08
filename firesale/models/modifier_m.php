@@ -112,41 +112,35 @@ class Modifier_m extends MY_Model
         }
 
         // Variables
-        $return   = array();
-        $currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
-        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
-        $params   = array(
-                      'stream'    => 'firesale_product_variations',
-                      'namespace' => 'firesale_product_variations',
-                      'where'     => "parent = '{$parent}'",
-                      'order_by'  => 'ordering_count',
-                      'sort'      => 'asc'
-                    );
+        $return     = array();
+        $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $currency   = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
+        $variations = $this->db->where('parent', $parent)->order_by('ordering_count', 'asc')->get('firesale_product_variations')->result_array();
+        $tmp        = array();
 
-        // Get the variations
-        $variations = $this->streams->entries->get_entries($params);
-        $tmp = array();
+        foreach ($variations as &$variation) {
 
-        foreach ($variations['entries'] as &$variation) {
-
-            // Add and format difference
+            // Format difference
             $before = ( substr($variation['price'], 0, 1) == '-' ? '-' : ( 0 + $variation['price'] > 0 ? '+' : '' ) );
             $price  = str_replace('-', '', $variation['price']);
+            
+            // Assign variables
             $variation['difference'] = $before.$this->currency_m->format_string($price, $currency);
+            $variation['product']    = $this->pyrocache->model('products_m', 'get_product', array($variation['product'], null, true), $this->firesale->cache_time);
 
             // Reassign with id as key
             $tmp[$variation['id']] = $variation;
         }
 
         // Reassign
-        $variations['entries'] = $tmp;
+        $variations = $tmp;
 
         // Check total
-        if ($variations['total'] > 0) {
+        if (count($variations) > 0) {
             // Add into cache
-            $this->cache_vars[$parent] = $variations['entries'];
+            $this->cache_vars[$parent] = $variations;
 
-            return $variations['entries'];
+            return $variations;
         }
 
         // Nothing found
