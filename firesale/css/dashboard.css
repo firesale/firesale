@@ -5,28 +5,3 @@
 #sortable .one_half:nth-child(2n) { margin-right: 0 !important; float: right !important; }
 #sortable .one_half:nth-child(2n+1) { clear: both; }
 #sortable .one_half:nth-child(2n+1):after { content: ' '; display: block; clear: both; height: 40px; }
-
-.legend table { width: auto !important; }
-.legend table tr { border-bottom: none !important; }
-.legend table td { padding: 3px !important; }
-
-/*@media only screen and (min-width: 281px) {
-	#sales { width: 250px; height: 260px; }
-	.legend { margin-left: 10px; }
-}
-
-@media only screen and (min-width: 481px) {
-	#sales { width: 450px; height: 260px; }
-}
-
-@media only screen and (min-width: 768px) {
-	#sales { width: 335px; height: 260px; }
-}
-
-@media only screen and (min-width: 1025px) {
-	#sales { width: 470px; height: 260px; }
-}
-
-@media only screen and (min-width: 1281px) {
-	#sales { width: 595px; height: 260px; }
-}*/

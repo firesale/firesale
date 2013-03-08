@@ -1,0 +1,24 @@
+#sales_graph .legend table { width: auto !important; }
+#sales_graph .legend table tr { border-bottom: none !important; }
+#sales_graph .legend table td { padding: 3px !important; }
+
+@media only screen and (min-width: 281px) {
+	#sales_graph { width: 250px; height: 260px; }
+	#sales_graph .legend { margin-left: 10px; }
+}
+
+@media only screen and (min-width: 481px) {
+	#sales_graph { width: 450px; height: 260px; }
+}
+
+@media only screen and (min-width: 768px) {
+	#sales_graph { width: 335px; height: 260px; }
+}
+
+@media only screen and (min-width: 1025px) {
+	#sales_graph { width: 470px; height: 260px; }
+}
+
+@media only screen and (min-width: 1281px) {
+	#sales_graph { width: 595px; height: 260px; }
+}
