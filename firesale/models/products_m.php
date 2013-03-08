@@ -194,7 +194,7 @@ class Products_m extends MY_Model
 
                 // Get variation and modifer data
                 $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
-                // $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
+                $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
 
                 // Format product pricing
                 $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
