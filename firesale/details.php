@@ -732,7 +732,7 @@ class Module_Firesale extends Module
             $result  = current($this->db->select('id, field_data')->where('field_slug', 'order_status')->where('field_namespace', 'firesale_orders')->get('data_fields')->result_array());
             $options = unserialize($result['field_data']);
             $options['choice_data'] .= "\n10 : lang:firesale:orders:status_prefunded";
-            $this->db->where('id', $result['id'])->update('data_fields', array('choice_data' => serialize($options)));
+            $this->db->where('id', $result['id'])->update('data_fields', array('field_data' => serialize($options)));
 
             #######################
             ## PRODUCT MODIFIERS ##
