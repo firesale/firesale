@@ -79,6 +79,15 @@
         return FALSE;
     }
 
+    /**
+     * Reorders a given steams table by updating the ordering_count field based on
+     * the comma seperated array passed to it.
+     *
+     * @param string $order Comma seperated list of ids to update
+     * @param string $table The tablename you wish you update
+     * @param string $replace (Optional) A string to replace in each of the array items
+     * @return string ok/error on success and failure
+     */
     function order_table($order, $table, $replace = null)
     {
 
@@ -106,6 +115,12 @@
         return 'error';
     }
 
+    /**
+     * Adds the given modules asset namespace to be referenced by other modules
+     *
+     * @param string $module The module name to be added to the namespace
+     * @return void
+     */
     function asset_namespace($module)
     {
         // Variables

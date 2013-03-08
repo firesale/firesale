@@ -61,6 +61,14 @@ class admin extends Admin_Controller
             // Assets
             if ( isset($item['assets']) and ! empty($item['assets']) ) {
                 foreach ( $item['assets'] as $asset ) {
+
+                    // Check and add namespacing
+                    list($namespace, $file) = explode('::', $asset['file']);
+                    if ( $namespace !== 'module' ) {
+                        asset_namespace($namespace);
+                    }
+
+                    // Append assets
                     if ( $asset['type'] == 'js' ) {
                         $this->template->append_js($asset['file']);
                     } else if ( $asset['type'] == 'css' ) {
