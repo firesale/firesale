@@ -137,7 +137,7 @@ class Module_Firesale extends Module
 
         if (group_has_role('firesale', 'access_taxes')) {
             $info['sections']['taxes'] = array(
-                'name' => 'firesale:taxes:access_taxes',
+                'name' => 'firesale:sections:taxes',
                 'uri'  => 'admin/firesale/taxes',
                 'shortcuts' => array()
             );
@@ -146,7 +146,7 @@ class Module_Firesale extends Module
         if (group_has_role('firesale', 'add_edit_taxes')) {
             $info['sections']['taxes']['shortcuts'] = array(
                 array(
-                    'name'  => 'firesale:taxes:add_edit_taxes',
+                    'name'  => 'firesale:taxes:add_tax_band',
                     'uri'   => 'admin/firesale/taxes/create',
                     'class' => 'add'
                 )

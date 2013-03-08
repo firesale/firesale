@@ -41,9 +41,9 @@
     $lang['firesale:shortcuts:cat_create']      = 'Create Category';
     $lang['firesale:shortcuts:install_gateway'] = 'Install Gateway';
     $lang['firesale:shortcuts:create_order']    = 'Create Order';
-    $lang['firesale:shortcuts:create_routes']   = 'Add a New Route';
+    $lang['firesale:shortcuts:create_routes']   = 'Create Route';
     $lang['firesale:shortcuts:build_routes']    = 'Rebuild Routes';
-    $lang['firesale:shortcuts:add_tax_band']    = 'Add Tax Band';
+    $lang['firesale:shortcuts:add_tax_band']    = 'Create Tax Band';
     $lang['firesale:shortcuts:assign_taxes']    = 'Assign Taxes';
 
     // Dashboard
@@ -63,7 +63,7 @@
     // Categories
     $lang['firesale:cats_title']                         = 'Manage Categories';
     $lang['firesale:cats_none']                          = 'No Categories Found';
-    $lang['firesale:cats_new']                           = 'Add new category';
+    $lang['firesale:cats_new']                           = 'Create Category';
     $lang['firesale:cats_order']                         = 'Order categories';
     $lang['firesale:cats_draft_label']                   = 'Draft';
     $lang['firesale:cats_live_label']                    = 'Live';
@@ -387,8 +387,7 @@
     $lang['firesale:taxes:edit_success']        = 'Tax band edited successfully';
     $lang['firesale:taxes:edit_error']          = 'There was an error whilst editing the tax band';
     $lang['firesale:taxes:assignments_updated'] = 'Tax band assignments were updated successfully';
-    $lang['firesale:taxes:access_taxes']        = 'Access Taxes';
-    $lang['firesale:taxes:add_edit_taxes']      = 'Create/Edit Taxes';
+    $lang['firesale:taxes:add_tax_band']        = 'Create Tax Band';
 
     // Addresses
     $lang['firesale:addresses:title']        = 'My Addresses';
