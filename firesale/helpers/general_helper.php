@@ -106,6 +106,20 @@
         return 'error';
     }
 
+    function asset_namespace($module)
+    {
+        // Variables
+        $dir = ADDONPATH.'/modules/';
+        
+        // Check shared addons
+        if( file_exists(SHARED_ADDONPATH.'modules/'.$module.'/details.php') ) {
+            $dir = SHARED_ADDONPATH.'modules/';
+        }
+        
+        // Register namespace
+        Asset::add_path($module, $dir.$module.'/');
+    }
+
     /**
      * Truncates a string by a number of characters but ensures to complete the
      * last word, following by "..."
