@@ -46,7 +46,13 @@ class Module_Firesale extends Module
                 'access_taxes', 'add_edit_taxes'
             ),
             'sections' => array(
+                'dashboard' => array(
+                    'name'  => 'firesale:sections:dashboard',
+                    'uri'   => 'admin/firesale',
+                ),
                 'categories' => array(
+                    'name'   => 'firesale:sections:categories',
+                    'uri'    => 'admin/firesale/categories',
                     'shortcuts' => array(
                         array(
                             'name'  => 'firesale:shortcuts:cat_create',
@@ -56,6 +62,8 @@ class Module_Firesale extends Module
                     )
                 ),
                 'products' => array(
+                    'name' => 'firesale:sections:products',
+                    'uri'  => 'admin/firesale/products',
                     'shortcuts' => array(
                         array(
                             'name'  => 'firesale:shortcuts:prod_create',
@@ -65,6 +73,8 @@ class Module_Firesale extends Module
                     )
                 ),
                 'orders' => array(
+                    'name' => 'firesale:sections:orders',
+                    'uri'  => 'admin/firesale/orders',
                     'shortcuts' => array(
                         array(
                             'name'  => 'firesale:shortcuts:create_order',
@@ -76,46 +86,78 @@ class Module_Firesale extends Module
             )
         );
 
-        if (group_has_role('firesale', 'create_edit_routes')) {
+        if (group_has_role('firesale', 'access_routes')) {
+            $info['sections']['routes'] = array(
+                'name' => 'firesale:sections:routes',
+                'uri'  => 'admin/firesale/routes',
+                'shortcuts' => array()
+            );
+        }
+
+        if (group_has_role('firesale', 'create_edit_routes') AND isset($info['sections']['routes'])) {
             $info['sections']['routes']['shortcuts'] = array(
                 array(
-                    'name' 	=> 'firesale:shortcuts:create_routes',
-                    'uri'	=> 'admin/firesale/routes/create',
+                    'name'  => 'firesale:shortcuts:create_routes',
+                    'uri'   => 'admin/firesale/routes/create',
                     'class' => 'add'
                 ),
                 array(
-                    'name' 	=> 'firesale:shortcuts:build_routes',
-                    'uri'	=> 'admin/firesale/routes/rebuild',
+                    'name'  => 'firesale:shortcuts:build_routes',
+                    'uri'   => 'admin/firesale/routes/rebuild',
                     'class' => ''
                 )
             );
         }
 
-        if (group_has_role('firesale', 'install_uninstall_gateways')) {
+        if (group_has_role('firesale', 'access_gateways')) {
+            $info['sections']['gateways'] = array(
+                'name' => 'firesale:sections:gateways',
+                'uri'  => 'admin/firesale/gateways',
+                'shortcuts' => array()
+            );
+        }
+
+        if (group_has_role('firesale', 'install_uninstall_gateways') AND isset($info['sections']['gateways'])) {
             $info['sections']['gateways']['shortcuts'] = array(
                 array(
-                    'name' 	=> 'firesale:shortcuts:install_gateway',
-                    'uri'	=> 'admin/firesale/gateways/add',
+                    'name'  => 'firesale:shortcuts:install_gateway',
+                    'uri'   => 'admin/firesale/gateways/add',
                     'class' => 'add'
                 )
+            );
+        }
+
+        if (group_has_role('firesale', 'access_currency')) {
+            $info['sections']['currency'] = array(
+                'name' => 'firesale:sections:currency',
+                'uri'  => 'admin/firesale/currency',
+                'shortcuts' => array()
+            );
+        }
+
+        if (group_has_role('firesale', 'access_taxes')) {
+            $info['sections']['taxes'] = array(
+                'name' => 'firesale:taxes:access_taxes',
+                'uri'  => 'admin/firesale/taxes',
+                'shortcuts' => array()
             );
         }
 
         if (group_has_role('firesale', 'add_edit_taxes')) {
             $info['sections']['taxes']['shortcuts'] = array(
                 array(
-                    'name' 	=> 'firesale:shortcuts:add_tax_band',
-                    'uri'	=> 'admin/firesale/taxes/create',
+                    'name'  => 'firesale:taxes:add_edit_taxes',
+                    'uri'   => 'admin/firesale/taxes/create',
                     'class' => 'add'
                 )
             );
         }
 
-        if (group_has_role('firesale', 'install_uninstall_currency')) {
+        if (group_has_role('firesale', 'install_uninstall_currency') AND isset($info['sections']['currency'])) {
             $info['sections']['currency']['shortcuts'] = array(
                 array(
-                    'name' 	=> 'firesale:currency:create',
-                    'uri'	=> 'admin/firesale/currency/create',
+                    'name'  => 'firesale:currency:create',
+                    'uri'   => 'admin/firesale/currency/create',
                     'class' => 'add'
                 )
             );
@@ -685,6 +727,12 @@ class Module_Firesale extends Module
 
             // Finally update the bloody address title bollocks
             $this->db->query("UPDATE `" . SITE_REF . "_data_fields` SET `field_name` = 'lang:firesale:label_address_title' WHERE `field_namespace` = 'firesale_addresses' AND `field_slug` = 'title'");
+
+            // Add a partially refunded option
+            $result  = current($this->db->select('id, field_data')->where('field_slug', 'order_status')->where('field_namespace', 'firesale_orders')->get('data_fields')->result_array());
+            $options = unserialize($result['field_data']);
+            $options['choice_data'] .= "\n10 : lang:firesale:orders:status_prefunded";
+            $this->db->where('id', $result['id'])->update('data_fields', array('choice_data' => serialize($options)));
 
             #######################
             ## PRODUCT MODIFIERS ##

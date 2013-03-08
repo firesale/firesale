@@ -263,6 +263,7 @@
     $lang['firesale:orders:status_failed']         = 'Failed';
     $lang['firesale:orders:status_declined']       = 'Declined';
     $lang['firesale:orders:status_mismatch']       = 'Mismatch';
+    $lang['firesale:orders:status_prefunded']      = 'Partially Refunded';
     $lang['firesale:orders:failed_message']        = 'There was an error processing your payment';
     $lang['firesale:orders:declined_message']      = 'Your payment was declined, please try again.';
     $lang['firesale:orders:mismatch_message']      = 'Your payment did not match the order.';
