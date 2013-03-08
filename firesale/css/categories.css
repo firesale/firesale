@@ -1,7 +1,4 @@
 
-.sections_bar { display: none; }
-#container section#content { margin-top: 135px !important; }
-
 button.delete { margin-left: 6px; }
 #page-details h5 { margin: 0; padding: 0; }
 .clear { line-height: 0; height: 0; clear: both; }
