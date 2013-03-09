@@ -93,7 +93,7 @@ class Admin_categories extends Admin_Controller
             $id     = ( $input['id'] > 0 ? $input['id'] : $id );
             $skip	= array('btnAction');
             $extra 	= array(
-                'return' 			=> '/admin/firesale/categories',
+                'return' 			=> false,
                 'success_message'	=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
                 'error_message'		=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
             );
@@ -127,8 +127,16 @@ class Admin_categories extends Admin_Controller
         $fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), $input, FALSE, FALSE, $skip, $extra);
 
         if ( is_string($fields) OR is_integer($fields) ) {
+            
             // Success, clear cache!
             Events::trigger('clear_cache');
+
+            // Add to search
+            $category = $this->pyrocache->model('categories_m', 'get_category', array($fields), $this->firesale->cache_time);
+            $this->categories_m->search($category, true);
+
+            // Send them back
+            redirect('admin/firesale/categories');
         }
 
         // Set query paramaters
@@ -209,6 +217,9 @@ class Admin_categories extends Admin_Controller
 
             // Success, clear cache!
             Events::trigger('clear_cache');
+
+            // Remove from search
+            $this->categories_m->search(array('id' => $id));
 
             $this->session->set_flashdata('success', lang('firesale:cats_delete_success'));
         } else {

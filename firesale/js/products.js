@@ -37,8 +37,8 @@ $(function() {
 		build_quickedit();
 		bind_pagination();
 
-		if ( parseInt(window.location.hash) > 0 ) {
-			update_products(window.location.hash);
+		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
+			update_products(window.location.hash.replace('#', ''));
 		}
 
 		bind_keys($('#product_table'));

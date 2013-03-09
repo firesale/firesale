@@ -348,7 +348,7 @@ class Categories_m extends MY_Model
                 $url   = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
                 $tree .= '<li id="cat_' . $cat['id'] . '">' . "\n";
                 $tree .= '  <div>' . "\n";
-                $tree .= '    <a href="'.BASE_URL.$url.'" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
+                $tree .= '    <a href="#' . $cat['id'] . '" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
                 $tree .= '  </div>' . "\n";
 
                 if ( isset($cat['children']) ) {
@@ -404,6 +404,47 @@ class Categories_m extends MY_Model
 
             }
         }
+    }
+
+    /**
+     * Removes and creates core search indexing for a category.
+     *
+     * @param array $category Product data array
+     * @param boolean [$add] Should this be added to the index
+     * @access public
+     */
+    public function search($category, $add = false)
+    {
+
+        // Check version
+        if (CMS_VERSION >= '2.2' and $category !== false) {
+
+            // Load required items
+            $this->load->model('search/search_index_m');
+
+            // Try and remove existing item
+            $this->search_index_m->drop_index('firesale', 'firesale:category', $category['id']);
+
+            if ($add) {
+                // Add to search
+                $this->search_index_m->index(
+                    'firesale',
+                    'firesale:category',
+                    'firesale:categories',
+                    $category['id'],
+                    $this->pyrocache->model('routes_m', 'build_url', array('category', $category['id']), $this->firesale->cache_time),
+                    $category['title'],
+                    strip_tags($category['description']),
+                    array(
+                        'cp_edit_uri'   => 'admin/firesale/categories#'.$category['id'],
+                        'cp_delete_uri' => 'admin/firesale/categories/delete/'.$category['id'],
+                        'keywords'      => ( isset($category['meta_keywords']) ? $category['meta_keywords'] : null ),
+                    )
+                );
+            }
+
+        }
+
     }
 
 }

@@ -11,11 +11,11 @@
                     <?php foreach($cats as $cat): ?>
                             <li id="cat_<?php echo $cat['id']; ?>">
                                 <div>
-                                    <a href="#" rel="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
+                                    <a href="#<?php echo $cat['id']; ?>" rel="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
                                 </div>
                             <?php if(isset($cat['children'])): ?>
                                 <ul>
-                                    <?php $controller->categories_m->tree_builder($cat); ?>
+                                    <?php $this->pyrocache->model('categories_m', 'tree_builder', array($cat), $this->firesale->cache_time); ?>
                                 </ul>
                             </li>
                             <?php else: ?>

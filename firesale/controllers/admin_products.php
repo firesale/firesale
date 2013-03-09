@@ -115,10 +115,10 @@ class Admin_products extends Admin_Controller
             $input  = $this->input->post();
             $skip   = array('btnAction');
             $extra  = array(
-                        'return'          => FALSE,
-                        'success_message' => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-                        'error_message'   => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
-                      );
+                'return'          => FALSE,
+                'success_message' => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
+                'error_message'   => lang('firesale:prod_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+            );
 
             // Editing
             if ($id !== NULL) {
@@ -146,6 +146,7 @@ class Admin_products extends Admin_Controller
 
                 // Update image folder?
                 if ( ! empty($row) ) {
+                    
                     // Update Folder Slug
                     if ($row->slug != $input['slug']) {
                         $this->products_m->update_folder_slug($row->slug, $input['slug']);
@@ -166,7 +167,7 @@ class Admin_products extends Admin_Controller
 
                 // Add to search
                 $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
-                $this->pyrocache->model('products_m', 'search', array($product, true), $this->firesale->cache_time);
+                $this->products_m->search($product, true);
 
                 // Redirect
                 redirect('admin/firesale/products'.( $input['btnAction'] != 'save_exit' ? '/edit/'.$id : '' ));
@@ -260,20 +261,20 @@ class Admin_products extends Admin_Controller
 
                 // Remove from search
                 if ($delete === true) {
-                    $this->pyrocache->model('products_m', 'search', array(array('id' => $products[$i]), $this->firesale->cache_time));
+                    $this->products_m->search(array('id' => $products[$i]));
                 }
 
             }
 
         } elseif ($prod_id !== null) {
 
-            if ( !$this->pyrocache->model('products_m', 'delete_product', array($prod_id), $this->firesale->cache_time) ) {
+            if ( !$this->products_m->delete_product($prod_id) ) {
                 $delete = false;
             }
 
             // Remove from search
             if ($delete === true) {
-                $this->pyrocache->model('products_m', 'search', array(array('id' => $prod_id), $this->firesale->cache_time));
+                $this->products_m->search(array('id' => $prod_id));
             }
 
         }
@@ -675,21 +676,6 @@ class Admin_products extends Admin_Controller
             // Build page
             $this->template->set_layout(false)->set($data)->build('admin/products/index');
         }
-    }
-
-    public function _remap($method, $args)
-    {
-
-        // Capture
-        $remap = array('search', 'price');
-
-        // Check for search
-        if ( in_array($method, $remap) ) {
-            call_user_func_array(array($this, 'index'), array_merge(array($method), $args));
-        } else {
-            call_user_func_array(array($this, $method), $args);
-        }
-
     }
 
 }

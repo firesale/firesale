@@ -25,9 +25,7 @@ $(function(){
 
 	$item_list.find('li a').live('click', function(e) {
 
-		e.preventDefault();
-		$a = $(this);
-			
+		$a          = $(this);
 		cat_id		= $a.attr('rel');
 		cat_title 	= $a.text();
 		$('#category-sort a').removeClass('selected');
@@ -82,23 +80,20 @@ $(function(){
 		return false;
 	});
 	
-	data_callback = function(even, ui) {
-
+	pyro.sort_tree($item_list, $url, $cookie, function(even, ui) {
 		root_cats = [];
-	
-		$('ul.sortable').children('li').each(function(){
-			root_cats.push($(this).attr('id').replace('cat_', ''));
-		});
-	
+		$('ul.sortable').children('li').each(function(){root_cats.push($(this).attr('id').replace('cat_', '')); });
 		return { 'root_cats' : root_cats };
-	}
-	
-	post_sort_callback = function() {		
+	}, function() {		
 		$details 	= $('div#category-sort');
 		$details_id	= $('div#category-sort #cat-id');
-	}
+	});
 
-	pyro.sort_tree($item_list, $url, $cookie, data_callback, post_sort_callback);
+	$(window).bind('hashchange', function() {
+		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
+			$item_list.find('li a[href=#'+window.location.hash.replace('#', '')+']').click();
+		}
+	}).trigger('hashchange');
 	
 	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
 	

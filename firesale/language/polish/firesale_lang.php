@@ -22,8 +22,10 @@
     $lang['firesale:sections:taxes']        = 'Podatki';
 
     // Global Search
-    $lang['firesale:product']  = 'Product'; # Translate
-    $lang['firesale:products'] = 'Products'; # Translate
+    $lang['firesale:product']    = 'Product'; # Translate
+    $lang['firesale:products']   = 'Products'; # Translate
+    $lang['firesale:category']   = 'Category'; # Translate
+    $lang['firesale:categories'] = 'Categories'; # Translate
 
     // Tabs
     $lang['firesale:tabs:general']     = 'Opcje ogólne';
