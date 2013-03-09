@@ -1,4 +1,4 @@
-<?php
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
 
     // General Titles
     $lang['firesale:title']         = 'FireSale';
