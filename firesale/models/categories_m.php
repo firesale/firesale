@@ -109,13 +109,19 @@ class Categories_m extends MY_Model
         $slug             = '';
         $parent['parent'] = $parent['id'];
 
-        // Loop until we hit the root
-        do {
-            $query    = $this->db->select('id, parent, slug')->where('id', $parent['parent'])->get('firesale_categories');
-            $parent   = current($query->result_array());
-            $segments = explode('/', $parent['slug']);
-            $slug     = array_pop($segments).'/'.$slug;
-        } while ( $parent['parent'] != 0 and $parent['parent'] != null );
+        // If we have a parent to deal with
+        if ( $parent['parent'] != 0 ) {
+
+            // Loop until we hit the root
+            do {
+                $query    = $this->db->select('id, parent, slug')->where('id', $parent['parent'])->get('firesale_categories');
+                $parent   = current($query->result_array());
+                $segments = explode('/', $parent['slug']);
+                $slug     = array_pop($segments).'/'.$slug;
+                echo $slug.'<br />';
+            } while ( $parent['parent'] != 0 and $parent['parent'] != null );
+
+        }
 
         return $slug;
     }

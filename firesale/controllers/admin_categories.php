@@ -111,8 +111,6 @@ class Admin_categories extends Admin_Controller
             $_POST['slug_prefix'] = $input->slug_prefix;
             $_POST['slug']        = $_POST['slug_prefix'].$_POST['slug'];
 
-            Events::trigger('clear_cache');
-
         } elseif ( $this->input->post('btnAction') == 'delete' ) {
             
             $this->delete($this->input->post('id'));
