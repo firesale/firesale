@@ -38,7 +38,7 @@ Through a slightly modified version of the standard details file found in any Py
 Before attempting installation please ensure you meet the following requirements and you have:
 
 1. PyroCMS Version 2.1.5 or greater
-2. The [Multiple Relationship](https://github.com/firesale/PyroStreams-Multiple-Relationships) field type pre-installed (we'll try and do this for you, but sometimes that's just not possible)
+2. The [Multiple Relationship](https://github.com/adamfairholm/PyroStreams-Multiple-Relationships/archive/2.0/develop.zip) field type pre-installed (we'll try and do this for you, but sometimes that's just not possible)
 
 ## Installation
 
