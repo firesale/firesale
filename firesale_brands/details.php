@@ -28,25 +28,25 @@ class Module_Firesale_brands extends Module
                 'fr' => 'Gestion des marques',
                 'it' => 'Gestione Marche'
             ),
-            'frontend'		=> FALSE,
-            'backend'		=> TRUE,
-            'author'   => 'Jamie Holdroyd',
-            'sections' => array(
-                'brands' => array(
-                    'name'   => 'firesale:sections:brands',
-                    'uri' 	 => 'admin/firesale_brands',
-                    'shortcuts' => array(
-                        array(
-                            'name' 	=> 'firesale:shortcuts:brand_create',
-                            'uri'	=> 'admin/firesale_brands/create',
-                            'class' => 'add'
-                        )
-                    )
+            'frontend'  => FALSE,
+            'backend'   => TRUE,
+            'author'    => 'Jamie Holdroyd',
+            'menu'      => 'FireSale',
+            'shortcuts' => array(
+                array(
+                    'name' 	=> 'firesale:shortcuts:brand_create',
+                    'uri'	=> 'admin/firesale_brands/create',
+                    'class' => 'add'
                 )
             )
         );
 
         return $info;
+    }
+
+    public function admin_menu(&$menu)
+    {
+        $menu['lang:firesale:title']['lang:firesale:sections:brands'] = 'admin/firesale_brands';
     }
 
     public function install()
