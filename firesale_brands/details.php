@@ -11,9 +11,10 @@ class Module_Firesale_brands extends Module
 
         // Load in the FireSale library
         $this->load->library('firesale/firesale');
+        $this->lang->load($this->language_file);
     }
 
-    public function information()
+    public function info()
     {
 
         $info = array(
@@ -28,8 +29,7 @@ class Module_Firesale_brands extends Module
                 'it' => 'Gestione Marche'
             ),
             'frontend'		=> FALSE,
-            'backend'		=> FALSE,
-            'menu'	   => 'FireSale',
+            'backend'		=> TRUE,
             'author'   => 'Jamie Holdroyd',
             'sections' => array(
                 'brands' => array(
@@ -47,11 +47,6 @@ class Module_Firesale_brands extends Module
         );
 
         return $info;
-    }
-
-    public function info()
-    {
-        return $this->firesale->info($this->information(), $this->language_file);
     }
 
     public function install()
