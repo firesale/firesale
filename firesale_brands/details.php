@@ -31,7 +31,6 @@ class Module_Firesale_brands extends Module
             'frontend'  => FALSE,
             'backend'   => TRUE,
             'author'    => 'Jamie Holdroyd',
-            'menu'      => 'FireSale',
             'shortcuts' => array(
                 array(
                     'name' 	=> 'firesale:shortcuts:brand_create',

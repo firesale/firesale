@@ -29,26 +29,24 @@ class Module_Firesale_shipping extends Module
                 'it' => 'Gestione base delle spedizioni'
             ),
             'frontend'		=> FALSE,
-            'backend'		=> FALSE,
-            'firesale_core'	=> FALSE,
+            'backend'		=> TRUE,
             'role'			=> 'shipping',
             'author'   		=> 'Jamie Holdroyd',
-            'sections' 		=> array(
-                'shipping' 	=> array(
-                    'name'		=> 'firesale:sections:shipping',
-                    'uri'		=> 'admin/firesale_shipping',
-                    'shortcuts' => array(
-                        array(
-                            'name' 	=> 'firesale:shortcuts:band_create',
-                            'uri'	=> 'admin/firesale_shipping/create',
-                            'class' => 'add'
-                        )
-                    )
+            'shortcuts' => array(
+                array(
+                    'name' 	=> 'firesale:shortcuts:band_create',
+                    'uri'	=> 'admin/firesale_shipping/create',
+                    'class' => 'add'
                 )
             )
         );
 
         return $info;
+    }
+
+    public function admin_menu(&$menu)
+    {
+        $menu['lang:firesale:title']['lang:firesale:sections:shipping'] = 'admin/firesale_shipping';
     }
 
     public function install()
@@ -107,7 +105,8 @@ class Module_Firesale_shipping extends Module
             $this->dbforge->modify_column('firesale_orders', array('shipping' => array('name' => 'tmp_shipping', 'type' => 'int(11)')));
 
             // Get stream data
-            $shipping = end($this->streams->streams->get_streams('firesale_shipping', TRUE, 'firesale_shipping'));
+            $shipping = $this->streams->streams->get_streams('firesale_shipping', TRUE, 'firesale_shipping');
+            $shipping = end($shipping);
 
             // Build field
             $field = array('namespace' 	  => 'firesale_orders',
