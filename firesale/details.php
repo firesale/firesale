@@ -464,7 +464,8 @@ class Module_Firesale extends Module
                        "6 : lang:firesale:orders:status_cancelled\n" .
                        "7 : lang:firesale:orders:status_failed\n" .
                        "8 : lang:firesale:orders:status_declined\n" .
-                       "9 : lang:firesale:orders:status_mismatch";
+                       "9 : lang:firesale:orders:status_mismatch\n" .
+                       "10 : lang:firesale:orders:status_prefunded";
 
         // Create orders stream
         if( !$this->streams->streams->add_stream(lang('firesale:sections:orders'), 'firesale_orders', 'firesale_orders', NULL, NULL) ) return FALSE;
