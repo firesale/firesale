@@ -172,7 +172,7 @@ class Products_m extends MY_Model
 
             // Add to params if required
             if ( $this->uri->segment('1') != 'admin' ) {
-                $params['where'] .= ' AND status = 1';
+                $params['where'] .= ' AND '.SITE_REF.'_firesale_products.status = 1';
             }
 
             // Display variations?
