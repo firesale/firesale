@@ -309,10 +309,10 @@ class Admin_products extends Admin_Controller
             $input  = $this->input->post();
             $skip   = array('btnAction');
             $extra  = array(
-                        'return'          => FALSE,
-                        'success_message' => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_success'),
-                        'error_message'   => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_error')
-                      );
+                'return'          => FALSE,
+                'success_message' => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_success'),
+                'error_message'   => lang('firesale:mods:'.( $id == null ? 'create' : 'edit' ).'_error')
+            );
 
             // Add parent to post
             $input['parent'] = $_POST['parent'] = $parent;
@@ -325,9 +325,9 @@ class Admin_products extends Admin_Controller
                 // Deleted, clear cache!
                 Events::trigger('clear_cache');
 
-                $this->session->set_flashdata('success', lang('firesale:mods:delete_success'));
+                $this->session->set_userdata('flash:old:success', lang('firesale:mods:delete_success'));
             } else {
-                $this->session->set_flashdata('error', lang('firesale:mods:delete_success'));
+                $this->session->set_userdata('flash:old:error', lang('firesale:mods:delete_success'));
             }
 
             // Send back edit
@@ -354,10 +354,15 @@ class Admin_products extends Admin_Controller
             // Good news everyone, clear cache!
             Events::trigger('clear_cache');
 
+            // Set flashdata
+            $this->session->set_userdata('flash:old:success', $extra['success_message']);
+
             // Send back edit
             unset($_POST);
             $this->edit($parent);
             return;
+        } else {
+            $this->session->set_userdata('flash:old:error', $extra['error_message']); 
         }
 
         // Format streams fields
@@ -392,10 +397,10 @@ class Admin_products extends Admin_Controller
             $input  = $this->input->post();
             $skip   = array('btnAction');
             $extra  = array(
-                        'return'          => FALSE,
-                        'success_message' => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_success'),
-                        'error_message'   => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_error')
-                      );
+                'return'          => FALSE,
+                'success_message' => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_success'),
+                'error_message'   => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_error')
+            );
 
             // Add parent to post
             $input['parent'] = $_POST['parent'] = $parent->id;
@@ -408,9 +413,9 @@ class Admin_products extends Admin_Controller
                 // Deleted, clear cache!
                 Events::trigger('clear_cache');
 
-                $this->session->set_flashdata('success', lang('firesale:vars:delete_success'));
+                $this->session->set_userdata('flash:old:success', lang('firesale:vars:delete_success'));
             } else {
-                $this->session->set_flashdata('error', lang('firesale:vars:delete_success'));
+                $this->session->set_userdata('flash:old:error', lang('firesale:vars:delete_success'));
             }
 
             // Send back edit
@@ -446,10 +451,15 @@ class Admin_products extends Admin_Controller
             // Updated, clear cache!
             Events::trigger('clear_cache');
 
+            // Set flashdata
+            $this->session->set_userdata('flash:old:success', $extra['success_message']);
+
             // Send back edit
             unset($_POST);
             $this->edit($parent->parent);
             return;
+        } else {
+            $this->session->set_userdata('flash:old:error', $extra['error_message']); 
         }
 
         // Format streams fields

@@ -1,6 +1,10 @@
 
     <?php echo form_open_multipart($this->uri->uri_string(), 'class="crud form_inputs" id="mod_form"'); ?>
 
+        <?php if( validation_errors() ): ?>
+            <?php echo '<div class="alert error"><p>'.validation_errors().'</p></div>'; ?>
+        <?php endif; ?>
+
         <fieldset>
             <ul>
             <?php foreach( $fields as $input ): ?>
