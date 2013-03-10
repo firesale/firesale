@@ -432,6 +432,7 @@ class Front_cart extends Public_Controller
             // Get fields
             $data['ship_fields'] = $this->address_m->get_address_form('ship', 'new', ( $input ? $input : null ));
             $data['bill_fields'] = $this->address_m->get_address_form('bill', 'new', ( $input ? $input : null ));
+            $data['shipping']    = array();
 
             // Get available shipping methods
             $results = Events::trigger('shipping_methods', $this->fs_cart->contents(), 'array');

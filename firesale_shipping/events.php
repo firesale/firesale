@@ -39,7 +39,7 @@ class Events_Firesale_shipping
 
     public function shipping_methods($cart)
     {
-        return $this->ci->shipping_m->shipping_methods($cart);
+        return $this->ci->shipping_m->calculate_methods($cart);
     }
 
     public function clear_cache()
