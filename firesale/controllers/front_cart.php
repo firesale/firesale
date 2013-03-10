@@ -434,9 +434,9 @@ class Front_cart extends Public_Controller
             $data['bill_fields'] = $this->address_m->get_address_form('bill', 'new', ( $input ? $input : null ));
 
             // Get available shipping methods
-            if ( isset($this->firesale->roles['shipping']) AND $data['ship_req'] ) {
-                $role = $this->firesale->roles['shipping'];
-                $data['shipping'] = $this->$role['model']->calculate_methods($this->fs_cart->contents());
+            $results = Events::trigger('shipping_methods', $this->fs_cart->contents(), 'array');
+            foreach ($results as $result) {
+                $data['shipping'] = array_merge($data['shipping'], $result);
             }
 
             // Check for shipping option set in cart
@@ -450,7 +450,7 @@ class Front_cart extends Public_Controller
                            ->title(lang('firesale:checkout:title'))
                            ->build('checkout', $data);
 
-       }
+        }
 
     }
 

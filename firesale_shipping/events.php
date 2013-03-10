@@ -9,14 +9,12 @@ class Events_Firesale_shipping
     {
 
         $this->ci =& get_instance();
-
         $this->ci->load->model('firesale_shipping/shipping_m');
         
         // register the events
         Events::register('form_build', array($this, 'form_build'));
-
+        Events::register('shipping_methods', array($this, 'shipping_methods'));
         Events::register('clear_cache', array($this, 'clear_cache'));
-    
     }
 
     public function form_build($controller)
@@ -37,6 +35,11 @@ class Events_Firesale_shipping
 
         }
 
+    }
+
+    public function shipping_methods($cart)
+    {
+        return $this->ci->shipping_m->shipping_methods($cart);
     }
 
     public function clear_cache()
