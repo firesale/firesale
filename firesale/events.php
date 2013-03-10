@@ -35,10 +35,11 @@ class Events_Firesale
         $this->ci->pyrocache->delete_all('currency_m');
         $this->ci->pyrocache->delete_all('modifier_m');
         $this->ci->pyrocache->delete_all('orders_m');
-        $this->ci->pyrocache->delete_all('products_m');
         $this->ci->pyrocache->delete_all('routes_m');
         $this->ci->pyrocache->delete_all('sitemap_m');
         $this->ci->pyrocache->delete_all('taxes_m');
+        $this->ci->pyrocache->delete_all('row_m');
+        $this->ci->pyrocache->delete_all('products_m');
         $this->ci->cache->clean();
     }
 

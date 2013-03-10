@@ -59,7 +59,7 @@
                             <tfoot>
                                 <tr>
                                     <td colspan="6">
-                                        <a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal btn green"><?php echo lang('firesale:mods:create'); ?></a>
+                                        <a href="{{ url:site }}admin/firesale/products/modifier/<?php echo $id; ?>" class="modal modifier btn green"><?php echo lang('firesale:mods:create'); ?></a>
                                     </td>
                                 </tr>
                             </tfoot>
@@ -97,7 +97,7 @@
                                                     <td><span class="var-mover"></span></td>
                                                     <td><?php echo $variation['title']; ?></td>
                                                     <td><?php echo $variation['difference']; ?></td>
-                                                    <td><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $id; ?>/<?php echo $variation['id']; ?>" class="modal btn orange"><?php echo lang('global:edit'); ?></a></td>
+                                                    <td><a href="{{ url:site }}admin/firesale/products/variation/<?php echo $id; ?>/<?php echo $variation['id']; ?>" class="modal variation btn orange"><?php echo lang('global:edit'); ?></a></td>
                                                 </tr>
                                             <?php endforeach; ?>
                                             <?php else: ?>

@@ -58,6 +58,7 @@ button.link.unlinked{background-position:-40px 0;}
 .mult_lists tbody{border:1px solid #eee;}
 .mult_lists td{border-left:none!important;padding:1px 0 0!important;}
 .mult_lists ul.multiple_list{overflow-x:hidden;width:100% !important;padding:5px!important; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+#mod_form textarea, #var_form textarea { width: 98% !important; max-width: 98% !important; }
 
 /* Split Buttons */
 .split-button { width: 80px; margin-top: -13px !important; padding-right: 30px; position: absolute; -webkit-appearance: none; -moz-border-radius: 4px; -webkit-border-radius: 4px; border-radius: 4px; -moz-background-clip: padding; -webkit-background-clip: padding; background-clip: padding-box; background: #dddddd; background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#dddddd)); background-image: -moz-linear-gradient(#ffffff, #dddddd); background-image: -ms-linear-gradient(#ffffff, #dddddd); background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dddddd)); background-image: -webkit-linear-gradient(#ffffff, #dddddd); background-image: -o-linear-gradient(#ffffff, #dddddd); background-image: linear-gradient(#ffffff, #dddddd); border: 1px solid; line-height: 14px; border-color: #dddddd #bbbbbb #999999; cursor: pointer; color: #333333; font-weight: bold; font-size: 13px; outline: 0; overflow: visible; padding: 3px 10px; text-shadow: #ffffff 0 1px 1px; width: auto; }

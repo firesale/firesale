@@ -1,5 +1,5 @@
 
-    <?php echo form_open_multipart($this->uri->uri_string(), 'class="crud form_inputs"'); ?>
+    <?php echo form_open_multipart($this->uri->uri_string(), 'class="crud form_inputs" id="var_form"'); ?>
 
         <fieldset>
             <ul>

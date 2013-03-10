@@ -48,6 +48,7 @@ class Admin_products extends Admin_Controller
                        ->append_js('module::jquery.tablesort.plugins.js')
                        ->append_js('module::upload.js')
                        ->append_js('module::products.js')
+                       ->append_js('module::modifiers.js')
                        ->append_metadata('<script type="text/javascript">' .
                                          "\n  var currency = '" . $this->pyrocache->model('currency_m', 'get_symbol', array(), $this->firesale->cache_time) . "';" .
                                          "\n  var tax_rate = '" . $this->pyrocache->model('taxes_m', 'get_percentage', array(1, 1), $this->firesale->cache_time) . "';" .
@@ -329,8 +330,10 @@ class Admin_products extends Admin_Controller
                 $this->session->set_flashdata('error', lang('firesale:mods:delete_success'));
             }
 
-            // Send back to edit
-            redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
+            // Send back edit
+            unset($_POST);
+            $this->edit($parent);
+            return;
         }
 
         // Check for ID
@@ -351,7 +354,10 @@ class Admin_products extends Admin_Controller
             // Good news everyone, clear cache!
             Events::trigger('clear_cache');
 
-            redirect('admin/firesale/products/edit/'.$parent.'#modifiers');
+            // Send back edit
+            unset($_POST);
+            $this->edit($parent);
+            return;
         }
 
         // Format streams fields
@@ -407,8 +413,10 @@ class Admin_products extends Admin_Controller
                 $this->session->set_flashdata('error', lang('firesale:vars:delete_success'));
             }
 
-            // Send back to edit
-            redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
+            // Send back edit
+            unset($_POST);
+            $this->edit($parent->parent);
+            return;
         }
 
         // Check for ID
@@ -438,8 +446,10 @@ class Admin_products extends Admin_Controller
             // Updated, clear cache!
             Events::trigger('clear_cache');
 
-            // Send back to edit
-            redirect('admin/firesale/products/edit/'.$parent->parent.'#modifiers');
+            // Send back edit
+            unset($_POST);
+            $this->edit($parent->parent);
+            return;
         }
 
         // Format streams fields
