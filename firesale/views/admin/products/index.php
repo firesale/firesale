@@ -66,7 +66,7 @@
                     <tr data-id="<?php echo $product['id']; ?>">
                         <td><input type="checkbox" name="action_to[]" value="<?php echo $product['id']; ?>"  /></td>
                         <td class="item-id"><?php echo $product['code']; ?></td>
-                        <td class="item-img"><img src="<?php echo ( $product['image'] != FALSE ? site_url('files/thumb/' . $product['image'] . '/32/32') : '' ); ?>" alt="Product Image" /></td>
+                        <td class="item-img"><center><img src="<?php echo ( $product['image'] != FALSE ? site_url('files/thumb/' . $product['image'] . '/32/32') : '' ); ?>" alt="Product Image" /></center></td>
                         <td class="item-title"><a href="<?php echo $this->pyrocache->model('routes_m', 'build_url', array('product', $product['id']), $this->firesale->cache_time); ?>" target="_blank"><?php echo $product['title']; ?></a></td>
                         <td class="item-category">
                             <?php $string = ''; foreach ($product['category'] AS $cat) { $string .= ( strlen($string) == 0 ? '' : ', ' ) . '<span data-id="' . $cat['id'] . '">' . $cat['title'] . '</span>'; } echo $string; ?>
@@ -74,12 +74,8 @@
                         <td class="item-stock"><?php echo ( $product['stock_status']['key'] == 6 ? lang('firesale:label_stock_unlimited') . ' (&infin;)' : $product['stock'] ); ?></td>
                         <td class="item-price"><?php echo $product['price_formatted']; ?></td>
                         <td class="actions">
-                            <center><ul class="split-button">
-                                <li><strong>Action</strong></li>
-                                <li><a href="#" class="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></a></li>
-                                <li><a href="<?php echo site_url('admin/firesale/products/edit/'.$product['id']); ?>" class="edit"><?php echo lang('global:edit'); ?></a></li>
-                                <li><a href="<?php echo site_url('admin/firesale/products/delete/'.$product['id']); ?>" class="confirm"><?php echo lang('global:delete'); ?></a></li>
-                            </ul></center>
+                            <a href="<?php echo site_url('admin/firesale/products/edit/'.$product['id']); ?>" class="btn blue edit"><?php echo lang('global:edit'); ?></a>
+                            <a href="<?php echo site_url('admin/firesale/products/delete/'.$product['id']); ?>" class="btn red delete confirm"><?php echo lang('global:delete'); ?></a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -90,6 +86,7 @@
             <div class="table_action_buttons">
                 <?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
                 <button class="btn green" name="btnAction" value="duplicate"><span><?php echo lang('firesale:label_duplicate'); ?></span></button>
+                <button class="btn blue quickedit" name="btnAction" value="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></button>
             </div>
 
             </div>

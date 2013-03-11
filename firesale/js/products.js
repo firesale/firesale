@@ -34,7 +34,7 @@ $(function() {
 
 	    $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
 		$('#product_table').tablesorter({widgets:["saveSort"]});
-		build_quickedit();
+		bind_quickedit();
 		bind_pagination();
 
 		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
@@ -168,41 +168,49 @@ $(function() {
 		}
 	}
 
-	function build_quickedit() {
-		$('.quickedit').live('click', function() {
-
-			var obj = $(this).parents('tr');
-			var _id = obj.data('id'), id = obj.find('.item-id'), title = obj.find('.item-title'), cat = obj.find('.item-category'), stock = obj.find('.item-stock'), price = obj.find('.item-price');
-			
-			id.html('<input type="hidden" name="product['+_id+'][old_id]" value="' + id.text() + '" /><input type="text" id="id" name="product['+_id+'][id]" value="' + id.text() + '" />');
-			title.html('<input type="text" id="title" name="product['+_id+'][title]" value="' + title.text().replace(/"/g, '&quot;') + '" />');
-			stock.html('<input type="text" id="stock" name="product['+_id+'][stock]" value="' + ( stock.text() == 'Unlimited (∞)' ? '0' : stock.text() ) + '" />');
-			price.html('<input type="text" id="price" name="product['+_id+'][price]" value="' + price.text().replace(/[^0-9\.]/g, '') + '" />');
-			
-			var select = $('select[name=category]').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'product['+_id+'][parent][]'});
-			select.find(':selected').removeAttr('selected');
-			var c = [];	cat.find('span').each(function() { c.push($(this).attr('data-id')); });
-			cat.html('');
-			for( var k in c ) {
-				var id = c[k], category = select.clone();
-				category.val(id).find('option[value="' + id + '"]').attr('selected', 'selected');
-				cat.append(category);
-			}
-
-			$('.table_action_buttons').html('<button class="btn save blue" value="save" name="btnAction" type="submit">Edit</button> <button class="btn gray cancel" value="cancel" name="btnAction" type="reset">Cancel</button>');
-
-			$('#products').unbind('submit').submit(function(e) {
-				e.preventDefault();
-				$.post('/admin/firesale/products/ajax_quick_edit', $(this).serialize()+'&btnAction=save', function(response) {
-					build_alert(response);
-					if( $(response).find('#products').size() > 0 ) {
-						$('#products').html($(response).find('#products').html());
-						$('.table_action_buttons').html($(response).find('.table_action_buttons').html());
-						bind_keys($('#product_table'));
-					}
-				});
+	function bind_quickedit() {
+		$('.quickedit').live('click', function(e) {
+			e.preventDefault();
+			$('#product_table tbody input[type=checkbox]:checked').each(function() {
+				build_quickedit($(this));
 			});
+		});
+	}
 
+	function build_quickedit(ele) {
+		
+		var obj = ele.parents('tr');
+		var _id = obj.data('id'), id = obj.find('.item-id'), title = obj.find('.item-title'), cat = obj.find('.item-category'), stock = obj.find('.item-stock'), price = obj.find('.item-price');
+		
+		$('#product_table tbody .actions').attr('style', 'width: 88px !important');
+		
+		id.html('<input type="hidden" name="product['+_id+'][old_id]" value="' + id.text() + '" /><input type="text" id="id" name="product['+_id+'][id]" value="' + id.text() + '" />');
+		title.html('<input type="text" id="title" name="product['+_id+'][title]" value="' + title.text().replace(/"/g, '&quot;') + '" />');
+		stock.html('<input type="text" id="stock" name="product['+_id+'][stock]" value="' + ( stock.text() == 'Unlimited (∞)' ? '0' : stock.text() ) + '" />');
+		price.html('<input type="text" id="price" name="product['+_id+'][price]" value="' + price.text().replace(/[^0-9\.]/g, '') + '" />');
+		
+		var select = $('select[name=category]').clone().removeClass('chzn').removeClass('chzn-done').removeAttr('style').removeAttr('id').attr({name: 'product['+_id+'][parent][]'});
+		select.find(':selected').removeAttr('selected');
+		var c = [];	cat.find('span').each(function() { c.push($(this).attr('data-id')); });
+		cat.html('');
+		for( var k in c ) {
+			var id = c[k], category = select.clone();
+			category.val(id).find('option[value="' + id + '"]').attr('selected', 'selected');
+			cat.append(category);
+		}
+
+		$('.table_action_buttons').html('<button class="btn save blue" value="save" name="btnAction" type="submit">Edit</button> <button class="btn gray cancel" value="cancel" name="btnAction" type="reset">Cancel</button>');
+
+		$('#products').unbind('submit').submit(function(e) {
+			e.preventDefault();
+			$.post('/admin/firesale/products/ajax_quick_edit', $(this).serialize()+'&btnAction=save', function(response) {
+				build_alert(response);
+				if( $(response).find('#products').size() > 0 ) {
+					$('#products').html($(response).find('#products').html());
+					$('.table_action_buttons').html($(response).find('.table_action_buttons').html());
+					bind_keys($('#product_table'));
+				}
+			});
 		});
 	}
 
@@ -272,7 +280,9 @@ $(function() {
 		    // Edit
 		    } else if ( (e.keyCode || e.which) == 13 ) {		    	
 		    	if ( s.size() > 0 ) {
-		    		if ( e.ctrlKey ) { s.find('.quickedit').click(); } else { window.location = s.find('.edit').attr('href'); }
+		    		if ( e.ctrlKey ) { 
+		    			s.find('td:first input').click(); build_quickedit(s.find('td:first input'));
+		    		} else { window.location = s.find('.edit').attr('href'); }
 		    	}
 
 		    // Mark for delete
