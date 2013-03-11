@@ -322,11 +322,10 @@ class Products_m extends MY_Model
      * @return boolean TRUE or FALSE on success of failure
      * @access public
      */
-    public function update_product($input, $stream_id)
+    public function update_product($id, $input, $stream_id)
     {
 
         // Variables
-        $id      = $input['action_to'][0];
         $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
         $tax     = $this->pyrocache->model('taxes_m', 'get_percentage', array($product['tax_band']['id']), $this->firesale->cache_time);
         $tax     = ( 100 + $tax ) / 100;
@@ -338,13 +337,15 @@ class Products_m extends MY_Model
             'price_tax' => round(( $input['price'] / $tax ), 3)
         );
 
+        // Update rrp and rrp_tax
+        $data['rrp']     = $data['price'];
+        $data['rrp_tax'] = $data['price_tax'];
+
         // Update stock status
-        if ($data['stock'] == 0) {
+        if ($data['stock'] == 0 and $product['stock_status']['key'] != 6 ) {
             $data['stock_status'] = 3;
         } elseif ($data['stock'] <= 10) {
             $data['stock_status'] = 2;
-        } else {
-            $data['stock_status'] = 1;
         }
 
         // Update
@@ -355,6 +356,9 @@ class Products_m extends MY_Model
                 $categories = 'category_' . implode(',category_', $input['parent']);
                 $this->update_categories($id, $stream_id, $categories);
             }
+
+            // Clear cache
+            Events::trigger('clear_cache');
 
             return TRUE;
         }

@@ -84,12 +84,6 @@ class Admin_products extends Admin_Controller
         $this->data->stock_status = $this->pyrocache->model('products_m', 'stock_status_dropdown', array(( $type == 'stock_status' ? $value : -1 ), $this->firesale->cache_time));
         $this->data->min_max      = $this->pyrocache->model('products_m', 'price_min_max', array(), $this->firesale->cache_time);
 
-        // Ajax request?
-        if ( $this->input->is_ajax_request() ) {
-            echo json_encode($this->data->products);
-            exit();
-        }
-
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))
                        ->set($this->data);
@@ -590,22 +584,38 @@ class Admin_products extends Admin_Controller
     public function ajax_quick_edit()
     {
 
+        // Ajax only, sorry
         if ( $this->input->is_ajax_request() ) {
 
-            $update = $this->products_m->update_product($this->input->post(), $this->stream->id, true);
+            // Variables
+            $update = true;
+            $start  = $this->input->post('start');
+            $post   = $this->input->post('product');
 
-            if ( isset($update) && $update == TRUE ) {
-
-                Events::trigger('clear_cache');
-
-                $this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
-                echo 'ok';
-                exit();
-            } else {
-                echo lang('firesale:prod_edit_error');
-                exit();
+            // Check products are set
+            if ( $post and ! empty($post) ) {
+                // Loop products
+                foreach ( $this->input->post('product') as $id => $product ) {
+                    // Update products
+                    if ( ! $this->products_m->update_product($id, $product, $this->stream->id, true) ) {
+                        $update = false;
+                    }
+                }
             }
 
+            // Clear post
+            unset($_POST);
+
+            // Set flashdata
+            if ( $update ) {
+                $this->session->set_userdata('flash:old:success', lang('firesale:prod_edit_success'));
+            } else {
+                $this->session->set_userdata('flash:old:error', lang('firesale:prod_edit_error'));
+            }
+
+            // Call index for layout update
+            $this->index(( $start ? $start : 0 ));
+            return;
         }
 
     }

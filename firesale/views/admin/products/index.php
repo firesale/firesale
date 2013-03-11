@@ -3,7 +3,7 @@
         <a class="tooltip-s show-filter" original-title="<?php echo lang('firesale:label_showfilter'); ?>"></a>
     </section>
 
-    <?php echo form_open($this->uri->uri_string(), 'class="crud"'); ?>
+    <?php echo form_open($this->uri->uri_string(), 'class="crud" id="products"'); ?>
 
         <section class="item">
             <div class="content">
@@ -63,7 +63,7 @@
 
                 <tbody>
                 <?php foreach($products as $product): ?>
-                    <tr class="cat_<?php echo $product['category']['id']; ?>">
+                    <tr data-id="<?php echo $product['id']; ?>">
                         <td><input type="checkbox" name="action_to[]" value="<?php echo $product['id']; ?>"  /></td>
                         <td class="item-id"><?php echo $product['code']; ?></td>
                         <td class="item-img"><img src="<?php echo ( $product['image'] != FALSE ? site_url('files/thumb/' . $product['image'] . '/32/32') : '' ); ?>" alt="Product Image" /></td>
