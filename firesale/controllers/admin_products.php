@@ -592,26 +592,31 @@ class Admin_products extends Admin_Controller
             $start  = $this->input->post('start');
             $post   = $this->input->post('product');
 
-            // Check products are set
-            if ( $post and ! empty($post) ) {
-                // Loop products
-                foreach ( $this->input->post('product') as $id => $product ) {
-                    // Update products
-                    if ( ! $this->products_m->update_product($id, $product, $this->stream->id, true) ) {
-                        $update = false;
+            // Check action
+            if ( $post['btnAction'] == 'save' ) {
+
+                // Check products are set
+                if ( $post and ! empty($post) ) {
+                    // Loop products
+                    foreach ( $this->input->post('product') as $id => $product ) {
+                        // Update products
+                        if ( ! $this->products_m->update_product($id, $product, $this->stream->id, true) ) {
+                            $update = false;
+                        }
                     }
                 }
+
+                // Set flashdata
+                if ( $update ) {
+                    $this->session->set_userdata('flash:old:success', lang('firesale:prod_edit_success'));
+                } else {
+                    $this->session->set_userdata('flash:old:error', lang('firesale:prod_edit_error'));
+                }
+
             }
 
             // Clear post
             unset($_POST);
-
-            // Set flashdata
-            if ( $update ) {
-                $this->session->set_userdata('flash:old:success', lang('firesale:prod_edit_success'));
-            } else {
-                $this->session->set_userdata('flash:old:error', lang('firesale:prod_edit_error'));
-            }
 
             // Call index for layout update
             $this->index(( $start ? $start : 0 ));
