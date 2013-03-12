@@ -14,9 +14,11 @@ class Module_Firesale extends Module
         $this->lang->load($this->language_file);
         $this->load->helper('firesale/general');
 
-                                             // CH: Darn PHP 5.2
-        $this->type->add_ft_path('firesale', dirname(__FILE__).'/field_types/');
-        $this->type->update_types();
+        if ( ! array_key_exists('multiple', $this->type->field_types_array())) {
+                                                 // CH: Darn PHP 5.2
+            $this->type->add_ft_path('firesale', dirname(__FILE__).'/field_types/');
+            $this->type->update_types();
+        }
     }
 
     public function info()
