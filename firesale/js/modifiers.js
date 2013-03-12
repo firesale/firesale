@@ -1,8 +1,13 @@
 $(function() {
 
+	$("button[type=submit]").live('click', function() {
+	    $("button", $(this).parents("form")).removeAttr("clicked");
+	    $(this).attr("clicked", "true");
+	});
+
 	$('#mod_form').live('submit', function(e) {
 		e.preventDefault();
-		var action = $(this).find('button:focus').val();
+		var action = $(this).find('button[clicked=true]').val();
 		$.post($(this).attr('action'), $(this).serialize()+'&btnAction='+action, function(response) {
 			build_alert(response);
 			if( $(response).find('#modifiers').size() > 0 ) {
@@ -16,7 +21,7 @@ $(function() {
 
 	$('#var_form').live('submit', function(e) {
 		e.preventDefault();
-		var action = $(this).find('button:focus').val();
+		var action = $(this).find('button[clicked=true]').val();
 		$.post($(this).attr('action'), $(this).serialize()+'&btnAction='+action, function(response) {
 			build_alert(response);
 			if( $(response).find('#modifiers').size() > 0 ) {

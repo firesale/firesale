@@ -6,6 +6,11 @@ $(function() {
 
 	if( $('#product_table').size() > 0 ) {
 
+		$("button[type=submit]").live('click', function() {
+		    $("button", $(this).parents("form")).removeAttr("clicked");
+		    $(this).attr("clicked", "true");
+		});
+
 		$('#price-slider').slider({
 			range: true,
 			min: parseFloat($('.ui-slider-cont .left span').text()),
@@ -169,6 +174,7 @@ $(function() {
 	}
 
 	function bind_quickedit() {
+
 		$('.quickedit').live('click', function(e) {
 			e.preventDefault();
 			$('#product_table tbody input[type=checkbox]:checked').each(function() {
@@ -180,6 +186,7 @@ $(function() {
 				}
 			});
 		});
+
 	}
 
 	function build_quickedit(ele) {
@@ -208,7 +215,7 @@ $(function() {
 
 		$('#products').unbind('submit').submit(function(e) {
 			e.preventDefault();
-			var action = $(this).find('button:focus').val();
+			var action = $(this).find('button[clicked=true]').val();
 			$.post('/admin/firesale/products/ajax_quick_edit', $(this).serialize()+'&btnAction='+action, function(response) {
 				build_alert(response);
 				if( $(response).find('#products').size() > 0 ) {
