@@ -25,61 +25,6 @@
     }
 
     /**
-     * Downloads a Zip from a remote url and installs it into your required path.
-     *
-     * @param string $url The url for the file to download
-     * @param string $path The path which the file should be unzipped to
-     * @param string $name The name the folder should be renamed to
-     * @return boolean Success/Failure
-     */
-    function install_from_remote($url, $path, $name)
-    {
-
-        // Get instance
-        $_CI =& get_instance();
-
-        // Load required items
-        $_CI->load->library('unzip');
-
-        // Variables
-        $before = scandir($path);
-
-        // Perform checks before continuing
-        if( extension_loaded('zlib') AND
-            function_exists('copy') AND
-            function_exists('rename') AND
-            function_exists('unlink') AND
-            is_writable($path) )
-        {
-
-            // Download to temp folder
-            $temp = tempnam(sys_get_temp_dir(), $name);
-            copy($url, $temp);
-
-            // Unzip
-            $_CI->unzip->extract($temp, $path);
-
-            // Rename folder
-            $after  = scandir($path);
-            $new    = array_diff($after, $before);
-            $folder = current($new);
-            rename($path.$folder, $path.$name);
-
-            // Remove temp file
-            @unlink($temp);
-
-            // Check it all went well
-            if ( is_dir($path.$name) ) {
-                return TRUE;
-            }
-
-        }
-
-        // Something went wrong
-        return FALSE;
-    }
-
-    /**
      * Reorders a given steams table by updating the ordering_count field based on
      * the comma seperated array passed to it.
      *
