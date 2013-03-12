@@ -215,21 +215,6 @@ class Module_Firesale extends Module
             redirect('admin/'.$redirect);
 
             return FALSE;
-        } elseif ( ! is_dir(SHARED_ADDONPATH . 'field_types/multiple')
-            AND ! is_dir(ADDONPATH . 'field_types/multiple')
-            AND ! is_dir(APPPATH . 'modules/streams_core/field_types/multiple'))
-        {
-            $url  = 'https://github.com/adamfairholm/PyroStreams-Multiple-Relationships/zipball/2.0/develop';
-            $path = SHARED_ADDONPATH . 'field_types/';
-            if ( ! install_from_remote($url, $path, 'multiple') ) {
-                $this->session->set_flashdata('error', lang('firesale:install:missing_multiple'));
-                redirect('admin/'.$redirect);
-
-                return FALSE;
-            } else {
-                // Redirect so Pyro recognises the field type is installed
-                redirect('admin/'.$redirect.'/install/firesale');
-            }
         } elseif ( ! is_writable(APPPATH . 'config/routes.php') ) {
             $this->session->set_flashdata('error', lang('firesale:install:no_route_access'));
             redirect('admin/'.$redirect);
