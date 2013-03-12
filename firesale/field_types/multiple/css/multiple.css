@@ -1,0 +1,80 @@
+table.mult_lists {width: 100%; height: 200px;}
+.multiple_list {
+	float: left;
+	padding: 0;
+	margin-left: -5px;
+	list-style-type: none!important;
+	width: 95%;
+	height: 220px;
+	margin-top: 0;
+	margin-bottom: 0;
+	overflow: scroll;
+}
+.multiple_list li {
+	width: 186px;
+	height: 17px;
+	margin-left: 0;
+	margin-bottom: 10px;
+}
+.multiple_list li span {
+	float: left;
+	padding: 3px 10px;
+	border: 1px solid #eee;
+	border-radius: 10px;
+	cursor: move;
+	color: #fff;
+	background-color: #AAAAAA;
+	background-repeat: repeat-x;
+	background-image: -khtml-gradient(linear, left top, left bottom, from(#CCCCCC), to(#AAAAAA));
+	background-image: -moz-linear-gradient(#CCCCCC, #AAAAAA);
+	background-image: -ms-linear-gradient(#CCCCCC, #AAAAAA);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #CCCCCC), color-stop(100%, #AAAAAA));
+	background-image: -webkit-linear-gradient(#CCCCCC, #AAAAAA);
+	background-image: -o-linear-gradient(#CCCCCC, #AAAAAA);
+	background-image: linear-gradient(#CCCCCC, #AAAAAA);
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+	border: 1px solid #aaaaaa;
+}
+.multiple_list li.dds_selected span {
+  background-color: #0064cd!important;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#049cdb), to(#0064cd));
+  background-image: -moz-linear-gradient(#049cdb, #0064cd);
+  background-image: -ms-linear-gradient(#049cdb, #0064cd);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #049cdb), color-stop(100%, #0064cd));
+  background-image: -webkit-linear-gradient(#049cdb, #0064cd);
+  background-image: -o-linear-gradient(#049cdb, #0064cd);
+  background-image: linear-gradient(#049cdb, #0064cd);
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+  border: 1px solid #003f81;
+}
+
+table.mult_lists td.drag_to_area {background: #fdfdfd; border-left: 1px dotted #AAAAAA;}
+
+#multi_choices {border-right: 10px solid #fff;}
+
+table.mult_lists th {
+  	background: #f7f7f7;
+  	background-repeat: repeat-x;
+  	background-image: -khtml-gradient(linear, left top, left bottom, from(#f7f7f7), to(#f3f3f3));
+  	background-image: -moz-linear-gradient(#f7f7f7, #f3f3f3);
+  	background-image: -ms-linear-gradient(#f7f7f7, #f3f3f3);
+  	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #f3f3f3));
+  	background-image: -webkit-linear-gradient(#f7f7f7, #f3f3f3);
+  	background-image: -o-linear-gradient(#f7f7f7, #f3f3f3);
+  	background-image: linear-gradient(#f7f7f7, #f3f3f3);
+  	border: 1px solid #ffffff;
+  	border-bottom: 1px solid #eeeeee;
+  	padding: 5px 15px;
+  	margin-top: 15px;
+  	box-shadow: 0px 0px 1px #aaaaaa;
+  	-moz-box-shadow: 0px 0px 1px #aaaaaa;
+  	-webkit-box-shadow: 0px 0px 1px #aaaaaa;
+}
+
+table.mult_lists td {
+    padding: 0!important;
+}
+table.mult_lists td ul {
+    padding: 10px 0 10px 10px!important;
+}
