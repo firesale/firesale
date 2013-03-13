@@ -38,6 +38,8 @@ Through a slightly modified version of the standard details file found in any Py
 Before attempting installation please ensure you meet the following requirements and you have:
 
 1. PyroCMS Version 2.1.5 or greater
+2. PHP 5.2 or above
+3. MySQL 5.x
 
 ## Installation
 
