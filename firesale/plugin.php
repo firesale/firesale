@@ -3,6 +3,16 @@
 class Plugin_Firesale extends Plugin
 {
 
+    public $version = '1.2.0';
+    
+    public $name = array(
+        'en'    => 'FireSale'
+    );
+
+    public $description = array(
+        'en'    => 'Core FireSale plugin methods'
+    );
+
     public function __construct()
     {
         $this->load->library('files/files');
@@ -305,6 +315,145 @@ class Plugin_Firesale extends Plugin
         }
 
         return $results;
+    }
+
+    /**
+     * Returns a PluginDoc array that PyroCMS uses 
+     * to build the reference in the admin panel
+     *
+     * All options are listed here but refer 
+     * to the Blog plugin for a larger example
+     *
+     * @return array
+     */
+    public function _self_doc()
+    {
+        $info = array(
+            'url' => array(
+                'description' => array(
+                    'en' => 'Returns a formatted dynamic URL for a given route'
+                ),
+                'single'           => true,
+                'double'           => false,
+                'variables'        => '',
+                'attributes'       => array(
+                    'route'        => array(
+                        'type'     => 'slug',
+                        'flags'    => '',
+                        'default'  => null,
+                        'required' => true,
+                    ),
+                    'id'           => array(
+                        'type'     => 'number',
+                        'flags'    => '',
+                        'default'  => null,
+                        'required' => false,
+                    ),
+                    'after'        => array(
+                        'type'     => 'text',
+                        'flags'    => '',
+                        'default'  => null,
+                        'required' => false
+                    )
+                ),
+            ),
+            'module_installed' => array(
+                'description' => array(
+                    'en' => 'Returns true/false if a module is currently installed or not'
+                ),
+                'single'           => true,
+                'double'           => false,
+                'variables'        => '',
+                'attributes'       => array(
+                    'module'       => array(
+                        'type'     => 'slug',
+                        'flags'    => '',
+                        'default'  => 'firesale',
+                        'required' => false,
+                    )
+                ),
+            ),
+            'categories' => array(
+                'description' => array(
+                    'en' => 'The categories plugin is a great way to get a list of your categories for navigation, sidebars, or anywhere else you\'d like them. It has a number of options to get exactly what you want to display and provides a complete category object for you to display.'
+                ),
+                'single'           => false,
+                'double'           => true,
+                'variables'        => 'id|title|slug|description|images|links',
+                'attributes'       => array(
+                    'limit'        => array(
+                        'type'     => 'number',
+                        'flags'    => '',
+                        'default'  => null,
+                        'required' => false
+                    ),
+                    'order'        => array(
+                        'type'     => 'text',
+                        'flags'    => 'column asc|desc',
+                        'default'  => 'id asc',
+                        'required' => false
+                    ),
+                    'empty'        => array(
+                        'type'     => 'text',
+                        'flags'    => 'true|false',
+                        'default'  => 'false',
+                        'required' => false
+                    ),
+                    'column'       => array(
+                        'type'     => 'text',
+                        'flags'    => 'column="value"|column=">value"|column="<value"|etc.',
+                        'default'  => null,
+                        'required' => false
+                    )
+                )
+            ),
+            'sub_categories'  => array(
+                'description'      => array(
+                    'en'           => 'The same as categories, accepting the same attributes but usable within the categories plugin (overcomes a lex bug)'
+                ),
+                'single'           => false,
+                'double'           => true,
+                'variables'        => 'id|title|slug|description|images|links',
+                'attributes'       => array(
+                    'parent'       => array(
+                        'type'     => 'number',
+                        'flags'    => '',
+                        'default'  => null,
+                        'required' => false
+                    )
+                )
+            ),
+            'products'  => array(
+                'description'      => array(
+                    'en'           => 'Returns an array of products based on your dynamic attributes (much like categories)'
+                ),
+                'single'           => false,
+                'double'           => true,
+                'variables'        => 'id|code|title|slug|rrp|rrp_tax|price|price_tax|description|snippet|images|status|stock|stock_status|price_formatted|price_tax_formatted|rrp_formatted|rrp_tax_formatted',
+                'attributes'       => array(
+                    'limit'        => array(
+                        'type'     => 'number',
+                        'flags'    => '',
+                        'default'  => null,
+                        'required' => false
+                    ),
+                    'order'        => array(
+                        'type'     => 'text',
+                        'flags'    => 'column asc|desc',
+                        'default'  => 'id asc',
+                        'required' => false
+                    ),
+                    'column'       => array(
+                        'type'     => 'text',
+                        'flags'    => 'column="value"|column=">value"|column="<value"|etc.',
+                        'default'  => null,
+                        'required' => false
+                    )
+                )
+            )
+        );
+    
+        return $info;
     }
 
 }
