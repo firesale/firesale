@@ -153,13 +153,15 @@ $(function() {
 		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="link linked">Link</button>&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
 		price.change(function() {
-			if( $(this).val() > 0 ) { var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false ); if( linked ) { $(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3 )); } }
-			else { $(this).val('0.00'); }
-		}).blur(function() { $(this).val(decimal($(this).val(), 2)); }).change().blur();
+			if( $(this).parent().find('button').is('.linked') ) {
+				$(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3));
+			}
+		}).change();
 		$('#' + tmp.attr('id')).change(function() {
-			if( $(this).val() > 0 ) { var linked = ( $(this).parent().find('button').hasClass('linked') ? true : false ); if( linked ) { $(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2 )); } }
-			else { $(this).val('0.00'); }
-		}).blur(function() { $(this).val(decimal($(this).val(), 3)); });
+			if( $(this).parent().find('button').is('.linked') ) {
+				$(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2));
+			}
+		}).change();
 	}
 
 	function decimal(no, places) { return new Number(parseFloat(no)).toFixed(places); }
