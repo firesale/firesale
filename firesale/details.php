@@ -14,11 +14,14 @@ class Module_Firesale extends Module
         $this->lang->load($this->language_file);
         $this->load->helper('firesale/general');
 
-        if ( ! array_key_exists('multiple', $this->type->field_types_array())) {
-                                                 // CH: Darn PHP 5.2
-            $this->type->add_ft_path('firesale', dirname(__FILE__).'/field_types/');
-            $this->type->update_types();
+        // Add our field type path
+        if (is_dir(SHARED_ADDONPATH.'modules/firesale/field_types')) {
+            $this->type->add_ft_path('firesale', SHARED_ADDONPATH.'modules/firesale/field_types/');
+        } else {
+            $this->type->add_ft_path('firesale', ADDONPATH.'modules/firesale/field_types/');
         }
+        
+        $this->type->update_types();
     }
 
     public function info()
