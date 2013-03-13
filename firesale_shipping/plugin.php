@@ -4,7 +4,7 @@ class Plugin_Firesale_Shipping extends Plugin
 {
     public function __construct()
     {
-        $this->load->library('fs_cart');
+        $this->load->library('firesale/fs_cart');
         $this->load->model('shipping_m');
         $this->load->model('categories_m');
         $this->load->model('products_m');
