@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module
 {
-    public $version = '1.2.0-dev';
+    public $version       = '1.2.0-dev';
     public $language_file = 'firesale/firesale';
 
     public function __construct()
@@ -287,10 +287,10 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
         $fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
         $fields[] = array('name' => 'lang:firesale:label_category', 'slug' => 'category', 'type' => 'multiple', 'extra' => array('choose_stream' => $categories->id));
-        $fields[] = array('name' => 'lang:firesale:label_rrp', 'slug' => 'rrp', 'type' => 'text', 'instructions' => 'lang:firesale:inst_rrp', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
-        $fields[] = array('name' => 'lang:firesale:label_rrp_tax', 'slug' => 'rrp_tax', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
-        $fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'instructions' => 'lang:firesale:inst_price', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
-        $fields[] = array('name' => 'lang:firesale:label_price_tax', 'slug' => 'price_tax', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
+        $fields[] = array('name' => 'lang:firesale:label_rrp', 'slug' => 'rrp', 'type' => 'decimal', 'instructions' => 'lang:firesale:inst_rrp', 'extra' => array('decimal_places' => '2', 'min_value' => '0.00'));
+        $fields[] = array('name' => 'lang:firesale:label_rrp_tax', 'slug' => 'rrp_tax', 'type' => 'decimal', 'extra' => array('decimal_places' => '3', 'min_value' => '0.00'));
+        $fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'decimal', 'instructions' => 'lang:firesale:inst_price', 'extra' => array('decimal_places' => '2', 'min_value' => '0.00'));
+        $fields[] = array('name' => 'lang:firesale:label_price_tax', 'slug' => 'price_tax', 'type' => 'decimal', 'extra' => array('decimal_places' => '3', 'min_value' => '0.00'));
         $fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 1));
         $fields[] = array('name' => 'lang:firesale:label_stock', 'slug' => 'stock', 'type' => 'integer');
         $fields[] = array('name' => 'lang:firesale:label_stock_status', 'slug' => 'stock_status', 'type' => 'choice', 'extra' => array('choice_data' => $stockstatus, 'choice_type' => 'dropdown', 'default_value' => 1));
@@ -306,11 +306,7 @@ class Module_Firesale extends Module
         // Change engine and add fulltext
         $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_products` ENGINE = MyISAM,
                           ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0',
-                          ADD FULLTEXT (`title`, `description`),
-                          CHANGE `rrp` `rrp` DECIMAL( 10, 2 ) DEFAULT '0.00',
-                          CHANGE `rrp_tax` `rrp_tax` DECIMAL( 10, 3 ) DEFAULT '0.00',
-                          CHANGE `price` `price` DECIMAL( 10, 2 ) DEFAULT '0.00',
-                          CHANGE `price_tax` `price_tax` DECIMAL( 10, 3 ) DEFAULT '0.00';");
+                          ADD FULLTEXT (`title`, `description`)");
 
         #######################
         ## PRODUCT MODIFIERS ##
@@ -344,9 +340,8 @@ class Module_Firesale extends Module
         $fields   = array();
         $template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-        $fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32, 'default' => '0.00'));
+        $fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'type' => 'decimal', 'instructions' => 'lang:firesale:label_mod_price_inst', 'extra' => array('decimal_places' => '2'));
         $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
-        $fields[] = array('name' => 'lang:firesale:label_prod_link', 'slug' => 'product', 'type' => 'relationship', 'extra' => array('choose_stream' => $products->id), 'required' => FALSE);
 
         // Combine
         foreach ($fields AS &$field) { $field = array_merge($template, $field); }
@@ -356,11 +351,11 @@ class Module_Firesale extends Module
 
         // Create lookup table
         $this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
-                          `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-                          `row_id` int(11) NOT NULL,
-                          `firesale_product_variations_id` int(11) NOT NULL,
-                          `firesale_products_id` int(11) NOT NULL,
-                          PRIMARY KEY (`id`)
+                            `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+                            `row_id` int(11) NOT NULL,
+                            `firesale_product_variations_id` int(11) NOT NULL,
+                            `firesale_products_id` int(11) NOT NULL,
+                            PRIMARY KEY (`id`)
                           ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;");
 
         ###########
@@ -474,11 +469,11 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_ip', 'slug' => 'ip', 'type' => 'text', 'extra' => array('max_length' => 32), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_gateway', 'slug' => 'gateway', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $gateways->id), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'order_status', 'type' => 'choice', 'extra' => array('choice_data' => $orderstatus, 'choice_type' => 'dropdown', 'default_value' => '1'));
-        $fields[] = array('name' => 'lang:firesale:label_price_sub', 'slug' => 'price_sub', 'extra' => array('max_length' => 10), 'required' => FALSE);
-        $fields[] = array('name' => 'lang:firesale:label_price_ship', 'slug' => 'price_ship', 'extra' => array('max_length' => 10), 'required' => FALSE);
-        $fields[] = array('name' => 'lang:firesale:label_price_total', 'slug' => 'price_total', 'extra' => array('max_length' => 10), 'required' => FALSE);
+        $fields[] = array('name' => 'lang:firesale:label_price_sub', 'slug' => 'price_sub', 'type' => 'decimal', 'extra' => array('decimal_places' => '2', 'min_value' => '0.00'), 'required' => FALSE);
+        $fields[] = array('name' => 'lang:firesale:label_price_ship', 'slug' => 'price_ship', 'type' => 'decimal', 'extra' => array('decimal_places' => '2', 'min_value' => '0.00'), 'required' => FALSE);
+        $fields[] = array('name' => 'lang:firesale:label_price_total', 'slug' => 'price_total', 'type' => 'decimal', 'extra' => array('decimal_places' => '2', 'min_value' => '0.00'), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:sections:currency', 'slug' => 'currency', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $currency->id));
-        $fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exchange_rate', 'extra' => array('default' => 1, 'max_length' => 10));
+        $fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exchange_rate', 'type' => 'decimal', 'extra' => array('decimal_places' => '2', 'min_value' => '0.00'));
         $fields[] = array('name' => 'lang:firesale:label_ship_to', 'slug' => 'ship_to', 'type' => 'relationship', 'extra' => array('choose_stream' => $addresses->id), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_bill_to', 'slug' => 'bill_to', 'type' => 'relationship', 'extra' => array('choose_stream' => $addresses->id), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_shipping', 'slug' => 'shipping', 'type' => 'integer', 'required' => FALSE);
@@ -488,12 +483,6 @@ class Module_Firesale extends Module
 
         // Add fields to stream
         $this->streams->fields->add_fields($fields);
-
-        // Modify table
-        $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders`
-                          CHANGE `price_sub` `price_sub` DECIMAL( 10, 2 ) DEFAULT '0.00',
-                          CHANGE `price_ship` `price_ship` DECIMAL( 10, 2 ) DEFAULT '0.00',
-                          CHANGE `price_total` `price_total` DECIMAL( 10, 2 ) DEFAULT '0.00';");
 
         // Create orders items stream
         if( !$this->streams->streams->add_stream(lang('firesale:sections:orders_items'), 'firesale_orders_items', 'firesale_orders_items', NULL, NULL) ) return FALSE;
@@ -507,7 +496,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_product', 'slug' => 'product_id', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $products->id));
         $fields[] = array('name' => 'lang:firesale:label_id', 'slug' => 'code', 'extra' => array('max_length' => 64), 'unique' => TRUE);
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'name', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
-        $fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10, 'pattern' => '^\d+(?:,\d{3})*\.\d{2}$'));
+        $fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'decimal', 'extra' => array('decimal_places' => '2', 'min_price' => '0.00'));
         $fields[] = array('name' => 'lang:firesale:label_quantity', 'slug' => 'qty', 'type' => 'integer', 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
 
@@ -764,7 +753,7 @@ class Module_Firesale extends Module
             $fields   = array();
             $template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-            $fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'instructions' => 'lang:firesale:label_mod_price_inst', 'type' => 'text', 'extra' => array('max_length' => 32, 'default' => '0.00'));
+            $fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'type' => 'decimal', 'instructions' => 'lang:firesale:label_mod_price_inst', 'extra' => array('decimal_places' => '2'));
             $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
             $fields[] = array('name' => 'lang:firesale:label_prod_link', 'slug' => 'product', 'type' => 'relationship', 'extra' => array('choose_stream' => $products->id), 'required' => FALSE);
 
@@ -782,6 +771,36 @@ class Module_Firesale extends Module
                               `firesale_products_id` int(11) NOT NULL,
                               PRIMARY KEY (`id`)
                               ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;");
+
+            ##############################
+            ## CHANGE FIELDS TO DECIMAL ##
+            ##############################
+
+            $fields = array(
+                'firesale_products'           => array('price' => array('decimal_places' => '2', 'min_value' => '0.00'), 'price_tax' => array('decimal_places' => '3', 'min_value' => '0.00'), 'rrp' => array('decimal_places' => '2', 'min_value' => '0.00'), 'rrp_tax' => array('decimal_places' => '3', 'min_value' => '0.00')),
+                'firesale_product_variations' => array('price' => array('decimal_places' => '2')),
+                'firesale_orders'             => array('price_sub' => array('decimal_places' => '2', 'min_value' => '0.00'), 'price_ship' => array('decimal_places' => '2', 'min_value' => '0.00'), 'price_total' => array('decimal_places' => '2', 'min_value' => '0.00'), 'exchange_rate' => array('decimal_places' => '8', 'min_value' => '0.00')),
+                'firesale_orders_items'       => array('price' => array('decimal_places' => '2', 'min_value' => '0.00'))
+            );
+
+            // Loop namespaces and then columns
+            foreach ( $fields as $namespace => $columns ) {
+                foreach ( $columns as $column => $extra ) {
+                    
+                    // Append defaults
+                    $extra['decimal_places'] = ( isset($extra['decimal_places']) ? $extra['decimal_places'] : 2    );
+                    $extra['default_value']  = ( isset($extra['default_value'])  ? $extra['default_value']  : null );
+                    $extra['max_value']      = ( isset($extra['max_value'])      ? $extra['max_value']      : null );
+                    $extra['min_value']      = ( isset($extra['min_value'])      ? $extra['min_value']      : null );
+                    
+                    // Update field_data
+                    $update = array('field_type' => 'decimal', 'field_data' => serialize($extra));
+                    $this->db->where('field_slug', $column)->where('field_namespace', $namespace)->update('data_fields', $update);
+
+                    // Update column
+                    $this->db->query("ALTER TABLE `default_{$namespace}` CHANGE `{$column}` `{$column}` FLOAT NULL DEFAULT NULL");
+                }
+            }
 
         }
 
