@@ -2,7 +2,9 @@
 <?php if( isset($year['total_count']) && $year['total_count'] > 0 ): ?>
 
     <div id="sales_graph"></div>
-
+    <br />
+    <br />
+    
     <script type="text/javascript">
         var currency = '<?php echo $year['currency']; ?>';
         var sales    = <?php echo $year['sales']; ?>;

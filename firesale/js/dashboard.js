@@ -3,12 +3,12 @@ $.fn.eqHeights=function(e){var t={child:false};var e=$.extend(t,e);var n=$(this)
 
 $(function(){
 
-	$('#sortable').eqHeights({child:'.item'});
+	$('#sortable > div').eqHeights({child:'.content'});
 	$('#sortable').bind('sortstop', function(event, ui) {
 		var o = $('#sortable').sortable('toArray'), s = '';
 		for( var i in o ) { if( o[i].length > 0 ) { s += ( s == '' ? '' : '|' ) + o[i]; } }
 		$.cookie('firesale_dashboard_order', s);
-		$('#sortable').eqHeights({child:'.item'});
+		$('#sortable > div').eqHeights({child:'.content'});
 	});
 
 	var _t;
@@ -22,5 +22,7 @@ $(function(){
 			$.cookie('firesale_dashboard_hidden', h);
 		}, 1000);
 	});
+
+	setTimeout(function() { $('#sortable').trigger('sortstop'); }, 150);
 
 });
