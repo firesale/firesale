@@ -51,11 +51,12 @@ class Events_Firesale
         $sales    = array();
         $count    = array();
         $currency = $this->ci->settings->get('currency');
-        $products = $this->ci->db->query('SELECT SUM(`qty`) AS `count`, SUM(`qty` * `price`) AS `sales`, date_format(`created`, "%Y-%m") AS `month`
-                                          FROM `' . SITE_REF . '_firesale_orders_items`
-                                          GROUP BY `month`
-                                          ORDER BY `month` ASC
-                                          LIMIT 12')->result_array();
+        $products = $this->ci->db->select('SUM(`qty`) AS `count`, SUM(`qty` * `price`) AS `sales`, date_format(`created`, "%Y-%m") AS `month`')
+                                 ->group_by('month')
+                                 ->order_by('month', 'asc')
+                                 ->limit(12)
+                                 ->get('firesale_orders_items')
+                                 ->result_array();
 
         // Build JSON
         foreach ($products AS $product) {
