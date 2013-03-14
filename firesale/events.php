@@ -46,31 +46,24 @@ class Events_Firesale
     public function firesale_dashboard_sales()
     {
 
-        // Variables
-        $data     = array('total_sales' => 0, 'total_count' => 0);
-        $sales    = array();
-        $count    = array();
-        $currency = $this->ci->settings->get('currency');
-        $products = $this->ci->db->select('SUM(`qty`) AS `count`, SUM(`qty` * `price`) AS `sales`, date_format(`created`, "%Y-%m") AS `month`')
-                                 ->group_by('month')
-                                 ->order_by('month', 'asc')
-                                 ->limit(12)
-                                 ->get('firesale_orders_items')
-                                 ->result_array();
+        // Load required items
+        $this->ci->load->model('firesale/dashboard_m');
 
-        // Build JSON
-        foreach ($products AS $product) {
-            $sales[] = array(strtotime($product['month']) . '000', round($product['sales'], 2));
-            $count[] = array(strtotime($product['month']) . '000', (int) $product['count']);
-            $data['total_sales'] += $product['sales'];
-            $data['total_count'] += $product['count'];
-        }
+        // Variables
+        $data          = array();
+        $currency      = $this->ci->settings->get('currency');
+        $data['year']  = $this->ci->dashboard_m->sales_duration('month', 12);
+        $data['month'] = $this->ci->dashboard_m->sales_duration('month', 1);
+        $data['week']  = $this->ci->dashboard_m->sales_duration('day', 7);
+        $data['day']   = $this->ci->dashboard_m->sales_duration('day', 1);
 
         // Assign data
-        $data['sales']       = json_encode($sales);
-        $data['count']       = json_encode($count);
-        $data['currency']    = $currency;
-        $data['total_sales'] = $currency . number_format($data['total_sales'], 2);
+        if ( $data['year'] !== false ) {
+            $data['year']['sales']       = json_encode($data['year']['sales']);
+            $data['year']['count']       = json_encode($data['year']['count']);
+            $data['year']['currency']    = $currency;
+            $data['year']['total_sales'] = $currency . number_format($data['year']['total_sales'], 2);
+        }
 
         // Build and return data
         return array(
