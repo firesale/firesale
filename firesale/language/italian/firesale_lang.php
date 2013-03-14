@@ -61,6 +61,11 @@
     $lang['firesale:dashboard:view_more']    = 'Vedi altro…';
     $lang['firesale:dashbord:low_stock']     = 'Poche scorte';
     $lang['firesale:dashbord:out_of_stock']  = 'Senza scorte';
+    $lang['firesale:dashboard:year']         = 'Year'; # Translate
+    $lang['firesale:dashboard:month']        = 'Month'; # Translate
+    $lang['firesale:dashboard:week']         = 'Week'; # Translate
+    $lang['firesale:dashboard:today']        = 'Today'; # Translate
+    $lang['firesale:dashboard:sales_in']     = 'in %s sales'; # Translate
 
     // Categories
     $lang['firesale:cats_title']                         = 'Gestisci categorie';

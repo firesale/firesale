@@ -61,7 +61,12 @@
     $lang['firesale:dashboard:view_more']    = 'Ver mais...';
     $lang['firesale:dashbord:low_stock']     = 'Baixo estoque';
     $lang['firesale:dashbord:out_of_stock']  = 'Sem estoque';
-    
+    $lang['firesale:dashboard:year']         = 'Year'; # Translate
+    $lang['firesale:dashboard:month']        = 'Month'; # Translate
+    $lang['firesale:dashboard:week']         = 'Week'; # Translate
+    $lang['firesale:dashboard:today']        = 'Today'; # Translate
+    $lang['firesale:dashboard:sales_in']     = 'in %s sales'; # Translate
+
     // Categories
     $lang['firesale:cats_title']                         = 'Gerenciar Categorias';
     $lang['firesale:cats_none']                          = 'Categorias não encontradas';

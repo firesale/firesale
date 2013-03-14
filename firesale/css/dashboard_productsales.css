@@ -2,6 +2,13 @@
 #sales_graph .legend table tr { border-bottom: none !important; }
 #sales_graph .legend table td { padding: 3px !important; }
 
+ul.sales { display: block;}
+ul.sales li { display: block; float: left; padding: 0 0 20px 0; width: 33.33333333%; }
+ul.sales li span, ul.sales li em { font-size: 12px; line-height: 14px; display: block; width: 100%; text-align: center; text-transform: uppercase; color: #666; }
+ul.sales li em { font-size: 32px; line-height: 36px; font-style: normal; }
+
+.clear { height: 0; line-height: 0; clear: both; }
+
 @media only screen and (min-width: 281px) {
 	#sales_graph { width: 250px; height: 260px; }
 	#sales_graph .legend { margin-left: 10px; }

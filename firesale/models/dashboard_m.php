@@ -11,7 +11,7 @@
 class Dashboard_m extends MY_Model
 {
 
-	public function sales_duration($type = 'month', $duration = 12)
+	public function sales_duration($type = 'month', $duration = 12, $currency)
 	{
 
         // Variables
@@ -63,12 +63,12 @@ class Dashboard_m extends MY_Model
                 $data['total_sales'] += $product['sales'];
                 $data['total_count'] += $product['count'];
             }
-
-            return $data;
         }
 
-        // No sales
-        return false;
+        // Format pricing
+        $data['total_sales'] = $this->currency_m->format_string($data['total_sales'], $currency, false);
+
+        return $data;
 	}
 
 }

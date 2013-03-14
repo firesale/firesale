@@ -61,6 +61,11 @@
     $lang['firesale:dashboard:view_more']    = 'Peržiūrėti daugiau...';
     $lang['firesale:dashbord:low_stock']     = 'Sandėlyje mažas kiekis';
     $lang['firesale:dashbord:out_of_stock']  = 'Išparduota';
+    $lang['firesale:dashboard:year']         = 'Year'; # Translate
+    $lang['firesale:dashboard:month']        = 'Month'; # Translate
+    $lang['firesale:dashboard:week']         = 'Week'; # Translate
+    $lang['firesale:dashboard:today']        = 'Today'; # Translate
+    $lang['firesale:dashboard:sales_in']     = 'in %s sales'; # Translate
 
     // Categories
     $lang['firesale:cats_title']                         = 'Tvarkyti kategorijas';

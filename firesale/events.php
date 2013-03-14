@@ -48,21 +48,21 @@ class Events_Firesale
 
         // Load required items
         $this->ci->load->model('firesale/dashboard_m');
+        $this->ci->load->model('firesale/currency_m');
 
         // Variables
         $data          = array();
-        $currency      = $this->ci->settings->get('currency');
-        $data['year']  = $this->ci->dashboard_m->sales_duration('month', 12);
-        $data['month'] = $this->ci->dashboard_m->sales_duration('month', 1);
-        $data['week']  = $this->ci->dashboard_m->sales_duration('day', 7);
-        $data['day']   = $this->ci->dashboard_m->sales_duration('day', 1);
+        $currency      = $this->ci->currency_m->get();
+        $data['year']  = $this->ci->dashboard_m->sales_duration('month', 12, $currency);
+        $data['month'] = $this->ci->dashboard_m->sales_duration('month', 1, $currency);
+        $data['week']  = $this->ci->dashboard_m->sales_duration('day', 7, $currency);
+        $data['day']   = $this->ci->dashboard_m->sales_duration('day', 1, $currency);
 
         // Assign data
         if ( $data['year'] !== false ) {
             $data['year']['sales']       = json_encode($data['year']['sales']);
             $data['year']['count']       = json_encode($data['year']['count']);
-            $data['year']['currency']    = $currency;
-            $data['year']['total_sales'] = $currency . number_format($data['year']['total_sales'], 2);
+            $data['year']['currency']    = $currency->symbol;
         }
 
         // Build and return data

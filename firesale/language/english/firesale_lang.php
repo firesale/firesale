@@ -61,6 +61,11 @@
     $lang['firesale:dashboard:view_more']    = 'View more...';
     $lang['firesale:dashbord:low_stock']     = 'Low Stock';
     $lang['firesale:dashbord:out_of_stock']  = 'Out of Stock';
+    $lang['firesale:dashboard:year']         = 'Year';
+    $lang['firesale:dashboard:month']        = 'Month';
+    $lang['firesale:dashboard:week']         = 'Week';
+    $lang['firesale:dashboard:today']        = 'Today';
+    $lang['firesale:dashboard:sales_in']     = 'in %s sales';
 
     // Categories
     $lang['firesale:cats_title']                         = 'Manage Categories';
