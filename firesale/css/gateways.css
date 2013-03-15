@@ -1,2 +1,4 @@
 
 td.actions, th.actions { width: 212px; }
+#content-body ul > li > label { width: 20% !important; float: left !important; display: inline-block !important; }
+#content-body ul > li > .input { width: 70% !important; display: inline-block !important; }

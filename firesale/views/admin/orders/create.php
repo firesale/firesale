@@ -28,8 +28,11 @@
                         <ul<?php echo ( $title != 'general' ? ' class="width-half"' : '' ); ?>>
                         <?php foreach( $section AS $field ): ?>
                             <li>
-                                <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)) ? lang(substr($field['input_title'], 5)) : $field['input_title']; ?> <?php echo $field['required']; ?>:</label>
-                                <?php echo $field['input']; ?>
+                                <label for="<?php echo $field['input_slug']; ?>">
+                                    <?php echo lang(substr($field['input_title'], 5)) ? lang(substr($field['input_title'], 5)) : $field['input_title']; ?> <?php echo $field['required']; ?>:
+                                    <small><?php echo lang(substr($input['instructions'], 5)) ? lang(substr($input['instructions'], 5)) : $input['instructions']; ?></small>
+                                </label>
+                                <div class="input"><?php echo $field['input']; ?></div>
                             </li>
                         <?php endforeach; ?>
                         </ul>

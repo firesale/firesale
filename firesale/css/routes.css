@@ -1,3 +1,5 @@
 
 .route-action { margin-right: 5px; }
 .mover { width: 24px; height: 16px; display: block; cursor: move; background: url('img/drag_handle_dark.gif') no-repeat 0 0; }
+#content-body ul > li > label { width: 20% !important; float: left !important; display: inline-block !important; }
+#content-body ul > li > .input { width: 70% !important; display: inline-block !important; }

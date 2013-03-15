@@ -16,6 +16,8 @@ ul.width-half > li { min-height: 44px; }
 #price_sub, #price_ship, #price_total { min-width: 70px !important; width: 70px !important; }
 #products input { width: 60px; min-width: 60px; }
 #filters .datepicker { width: 100px !important; min-width: 100px !important; }
+#tabs ul > li > label { width: 20% !important; float: left !important; display: inline-block !important; }
+#tabs ul > li > .input { width: 70% !important; display: inline-block !important; }
 
 /* Create */
 .items { line-height: 32px; margin: 0 0 -10px 0; height: 32px; padding: 20px 0 0 0; }
