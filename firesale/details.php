@@ -14,14 +14,16 @@ class Module_Firesale extends Module
         $this->lang->load($this->language_file);
         $this->load->helper('firesale/general');
 
+        $this->load->library('streams_core/type');
+
         // Add our field type path
         if (is_dir(SHARED_ADDONPATH.'modules/firesale/field_types')) {
-            $this->type->add_ft_path('firesale', SHARED_ADDONPATH.'modules/firesale/field_types/');
+            $this->type->addon_paths['firesale'] = SHARED_ADDONPATH.'modules/firesale/field_types/';
         } else {
-            $this->type->add_ft_path('firesale', ADDONPATH.'modules/firesale/field_types/');
+            $this->type->addon_paths['firesale'] = ADDONPATH.'modules/firesale/field_types/';
         }
         
-        $this->type->update_types();
+        $this->type->gather_types();
     }
 
     public function info()
