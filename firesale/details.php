@@ -522,7 +522,7 @@ class Module_Firesale extends Module
         ##################
 
         $this->db->query("
-            CREATE TABLE IF NOT EXISTS `default_firesale_transactions` (
+            CREATE TABLE IF NOT EXISTS `" . SITE_REF . "_firesale_transactions` (
               `reference` longtext,
               `order_id` int(11) DEFAULT NULL,
               `gateway` varchar(100) DEFAULT NULL,
@@ -685,7 +685,7 @@ class Module_Firesale extends Module
             $this->dbforge->drop_table('firesale_transactions');
 
             $this->db->query("
-                CREATE TABLE IF NOT EXISTS `default_firesale_transactions` (
+                CREATE TABLE IF NOT EXISTS `" . SITE_REF . "_firesale_transactions` (
                   `reference` longtext,
                   `order_id` int(11) DEFAULT NULL,
                   `gateway` varchar(100) DEFAULT NULL,
@@ -800,7 +800,7 @@ class Module_Firesale extends Module
                     $this->db->where('field_slug', $column)->where('field_namespace', $namespace)->update('data_fields', $update);
 
                     // Update column
-                    $this->db->query("ALTER TABLE `default_{$namespace}` CHANGE `{$column}` `{$column}` FLOAT NULL DEFAULT NULL");
+                    $this->db->query("ALTER TABLE `" . SITE_REF . "_{$namespace}` CHANGE `{$column}` `{$column}` FLOAT NULL DEFAULT NULL");
                 }
             }
 
