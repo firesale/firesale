@@ -436,7 +436,7 @@ class Modifier_m extends MY_Model
             // Loop variations
             foreach ($variations as $key => $variation) {
                 $key += 1;
-                $sql .= "\nINNER JOIN `default_firesale_product_variations_firesale_products` AS `fp_{$key}` ON ( `fp_{$key}`.`row_id` = {$variation} AND `fp_{$key}`.`firesale_products_id` = fp_0.`firesale_products_id` )";
+                $sql .= "\nINNER JOIN `" . SITE_REF . "_firesale_product_variations_firesale_products` AS `fp_{$key}` ON ( `fp_{$key}`.`row_id` = {$variation} AND `fp_{$key}`.`firesale_products_id` = fp_0.`firesale_products_id` )";
             }
         }
 
