@@ -118,7 +118,6 @@ class Categories_m extends MY_Model
                 $parent   = current($query->result_array());
                 $segments = explode('/', $parent['slug']);
                 $slug     = array_pop($segments).'/'.$slug;
-                echo $slug.'<br />';
             } while ( $parent['parent'] != 0 and $parent['parent'] != null );
 
         }

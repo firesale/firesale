@@ -85,30 +85,26 @@ class Admin_categories extends Admin_Controller
     public function index($id = 0)
     {
 
+        // Variables
+        $row    = null;
+        $skip   = array('btnAction');
+        $extra  = array(
+            'return'            => false,
+            'success_message'   => lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
+            'error_message'     => lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+        );
+
         // Check for post data
         if ( $this->input->post('btnAction') == 'save' ) {
 
             // Variables
             $input 	= $this->input->post();
             $id     = ( $input['id'] > 0 ? $input['id'] : $id );
-            $skip	= array('btnAction');
-            $extra 	= array(
-                'return' 			=> false,
-                'success_message'	=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-                'error_message'		=> lang('firesale:cats_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
-            );
 
-            // Assign input
-            if ($id != null) {
-                $input             = (object) $input;
-                $this->data->input = $input;
-            }
-
-            $input->parent = ( $_POST['parent'] == null ? '0' : $_POST['parent'] );
-            $_POST['parent'] = $input->parent;
-
-            $input->slug_prefix   = $this->pyrocache->model('categories_m', 'get_complete_slug', array('id' => $input->parent), $this->firesale->cache_time);
-            $_POST['slug_prefix'] = $input->slug_prefix;
+            // Format post data
+            $_POST['parent']      = ( $_POST['parent'] == null ? '0' : $_POST['parent'] );
+            $input['slug_prefix'] = $this->pyrocache->model('categories_m', 'get_complete_slug', array('id' => $input['parent']), $this->firesale->cache_time);
+            $_POST['slug_prefix'] = $input['slug_prefix'];
             $_POST['slug']        = $_POST['slug_prefix'].$_POST['slug'];
 
         } elseif ( $this->input->post('btnAction') == 'delete' ) {
@@ -121,8 +117,13 @@ class Admin_categories extends Admin_Controller
             $extra = array();
         }
 
+        // Get row for edit
+        if ( $id > 0 ) {
+            $row = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
+        }
+
         // Get the stream fields
-        $fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), $input, FALSE, FALSE, $skip, $extra);
+        $fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), $row, FALSE, FALSE, $skip, $extra);
 
         if ( is_string($fields) OR is_integer($fields) ) {
             
@@ -189,6 +190,7 @@ class Admin_categories extends Admin_Controller
             $this->categories_m->update_all(array('parent' => 0));
 
             foreach ($order as $i => $cat) {
+
                 // Set the order of the root cats
                 $this->categories_m->update_by('id', str_replace('cat_', '', $cat['id']), array('ordering_count' => $i));
 
@@ -196,6 +198,14 @@ class Admin_categories extends Admin_Controller
                 $this->categories_m->set_children($cat);
             }
 
+            // Rebuild slugs
+            $results = $this->db->select('id, parent, slug')->get('firesale_categories')->result_array();
+            foreach ( $results as $result ) {
+                $slug = $this->pyrocache->model('categories_m', 'get_complete_slug', array(array('id' => $result['id'])), $this->firesale->cache_time);
+                $this->db->where('id', $result['id'])->update('firesale_categories', array('slug' => substr($slug, 0, -1)));
+            }
+
+            // Clear out the cache
             Events::trigger('clear_cache');
         }
     }

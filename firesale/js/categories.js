@@ -48,7 +48,7 @@ $(function(){
 					var obj = $('#tabs input[name='+k+']');
 					if( obj.attr('type') == 'checkbox' ) {
 						if( data[k] ) { obj.attr('checked', 'checked'); } else { obj.removeAttr('checked'); }
-					} else { obj.val(data[k]); }
+					} else { obj.val(data[k]).change(); }
 				} else if( $('#tabs textarea[name='+k+']').length > 0 ) {
 					$('#tabs textarea[name='+k+']').val(data[k]);
 				}
