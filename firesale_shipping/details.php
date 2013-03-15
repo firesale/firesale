@@ -2,7 +2,7 @@
 
 class Module_Firesale_shipping extends Module
 {
-    public $version = '1.1.0';
+    public $version = '1.2.0';
     public $language_file = 'firesale_shipping/firesale';
 
     public function __construct()
