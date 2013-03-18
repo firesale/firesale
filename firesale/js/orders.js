@@ -41,7 +41,7 @@ $(function() {
 				for( var k in data ) { $('#' + pre + '_' + k).val(data[k]); }
 			} else { notif('error', 'Error retrieving address'); }
 		});
-	}).change();
+	});
 
 	// Link addresses
 	var linked = false;

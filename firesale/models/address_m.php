@@ -230,6 +230,8 @@ class Address_m extends MY_Model
             foreach( $input as $key => $val ) {
                 if( substr($key, 0, 5) == $type.'_' ) {
                     $data[substr($key, 5)] = $val;
+                } else {
+                    $data[$key] = $val;
                 }
             }
 

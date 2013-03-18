@@ -157,8 +157,8 @@ class Admin_orders extends Admin_Controller
         $this->data->id		= $id;
         $this->data->fields = array(
                                 'general' => array('details' => $fields),
-                                'ship'	  => $this->pyrocache->model('address_m', 'get_address_form', array('ship', ( $row != NULL && $row->ship_to > 0 ? 'edit' : 'new' ), $this->firesale->cache_time), ( $row != NULL ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : NULL )),
-                                'bill'	  => $this->pyrocache->model('address_m', 'get_address_form', array('bill', ( $row != NULL && $row->bill_to > 0 ? 'edit' : 'new' ), $this->firesale->cache_time), ( $row != NULL ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : NULL ))
+                                'ship'	  => $this->address_m->get_address_form('ship', ( isset($row->ship_to) ? 'edit' : 'new' ), ( isset($row->ship_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : NULL )),
+                                'bill'	  => $this->address_m->get_address_form('bill', ( isset($row->bill_to) ? 'edit' : 'new' ), ( isset($row->bill_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : NULL ))
                               );
 
         // Add users as first general field
