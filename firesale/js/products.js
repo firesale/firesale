@@ -53,96 +53,103 @@ $(function() {
 	/*************
 	** CREATION **
 	*************/
-	$('#tabs').tabs();
-	if( !window.location.hash ) {
-		$('#tabs').tabs("select", '#generaloptions');
+	if ( $('#tabs').size() > 0 ) {
+
+		$('#tabs').tabs();
+		if( !window.location.hash ) {
+			$('#tabs').tabs("select", '#generaloptions');
+		}
+		
+		$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
+
+		// Tax link
+		tax_link($('#rrp'), $('#rrp_tax'));
+		tax_link($('#price'), $('#price_tax'));
+
+		// Add upload
+		if( $('#dropbox').length > 0 ) { bind_upload('admin/firesale/products/upload/'+$('#id').val()); }
+
+		// Image reordering
+		$('#dropbox').sortable({
+			cursor: 'move',
+			cancel: 'span.message',
+			stop: function(event, ui) {
+				var o = '';
+				$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });
+				$.post(SITE_URL+'admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
+					if( data != 'ok' ) { alert(data); }
+				});
+			}
+		});
+
+		// Stock status switch
+		$('#stock').bind('keyup update blur paste delete', function() {
+			var val = $(this).val();
+			if( parseInt(val) == 0 && $('#stock_status').val() != '6' ) { $('#stock_status').val('3').trigger('liszt:updated'); }
+		});
+		$('#stock_status').change(function() {
+			if( $(this).val() == '6' ) { $('#stock').val('0'); }
+		});
+
+		// Categories "fix"
+		$('#category_list_2 li').each(function() { if( $('#category').val().indexOf($(this).attr('id')) == -1 ) { $(this).remove(); }});
+
+		// Disable slug on edit
+		if ( parseInt($('input[name=id]').val()) > 0 ) {
+			$('input[name=slug]').attr('id', 'slug_old').addClass('disabled');
+		}
+
+		/**************
+		** MODIFIERS **
+		**************/
+
+		$('.modifiers tbody').sortable({
+			handle: 'span.mod-mover',
+			update: function() {
+				$('.modifiers tbody > tr').removeClass('alt');
+				$('.modifiers tbody > tr:nth-child(even)').addClass('alt');
+				var order = [];
+				$('.modifiers tbody > tr').each(function() { order.push(this.id); });
+				order = order.join(',');
+				$.post(SITE_URL + 'admin/firesale/products/ajax_order_modifiers', { order: order });
+			}
+		});
+
+		$('.modifiers tbody table tbody').sortable({
+			handle: 'span.var-mover',
+			update: function() {
+				$('.modifiers table tbody > tr').removeClass('alt');
+				$('.modifiers table tbody > tr:nth-child(even)').addClass('alt');
+				var order = [];
+				$('.modifiers table tbody > tr').each(function() { order.push(this.id); });
+				order = order.join(',');
+				$.post(SITE_URL + 'admin/firesale/products/ajax_order_variations', { order: order });
+			}
+		});
+
+		$('.modifiers th .mod-min').click(function(e) {
+			e.preventDefault();
+			$('.modifiers td .mod-min').click();
+		});
+		$('.modifiers td .mod-min').click(function(e) {
+			e.preventDefault();
+			$(this).parents('tr').find('table').slideToggle(250);
+			$(this).toggleClass('show');
+		});
+
+		/*********************
+		** DYNAMIC TAX LINK **
+		*********************/
+
+		$('#tax_band').change(function() {
+			var selected_tax = $(this).find('option:selected').val();
+			if (taxes[selected_tax] !== undefined) {
+				tax_rate = taxes[selected_tax];
+				$('#rrp, #price').change();
+			}
+		});
+
 	}
-
-	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
-	
-	$('section #description').find('.input').removeClass('input').parent().find('label[for=description]').remove();
-
-	// Tax link
-	tax_link($('#rrp'), $('#rrp_tax'));
-	tax_link($('#price'), $('#price_tax'));
-
-	// Add upload
-	if( $('#dropbox').length > 0 ) { bind_upload('admin/firesale/products/upload/'+$('#id').val()); }
-
-	// Image reordering
-	$('#dropbox').sortable({
-		cursor: 'move',
-		cancel: 'span.message',
-		stop: function(event, ui) {
-			var o = '';
-			$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });
-			$.post(SITE_URL+'admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
-				if( data != 'ok' ) { alert(data); }
-			});
-		}
-	});
-
-	// Stock status switch
-	$('#stock').bind('keyup update blur paste delete', function() {
-		var val = $(this).val();
-		if( parseInt(val) == 0 && $('#stock_status').val() != '6' ) { $('#stock_status').val('3').trigger('liszt:updated'); }
-	});
-	$('#stock_status').change(function() {
-		if( $(this).val() == '6' ) { $('#stock').val('0'); }
-	});
-
-	// Categories "fix"
-	$('#category_list_2 li').each(function() { if( $('#category').val().indexOf($(this).attr('id')) == -1 ) { $(this).remove(); }});
-
-	/**************
-	** MODIFIERS **
-	**************/
-
-	$('.modifiers tbody').sortable({
-		handle: 'span.mod-mover',
-		update: function() {
-			$('.modifiers tbody > tr').removeClass('alt');
-			$('.modifiers tbody > tr:nth-child(even)').addClass('alt');
-			var order = [];
-			$('.modifiers tbody > tr').each(function() { order.push(this.id); });
-			order = order.join(',');
-			$.post(SITE_URL + 'admin/firesale/products/ajax_order_modifiers', { order: order });
-		}
-	});
-
-	$('.modifiers tbody table tbody').sortable({
-		handle: 'span.var-mover',
-		update: function() {
-			$('.modifiers table tbody > tr').removeClass('alt');
-			$('.modifiers table tbody > tr:nth-child(even)').addClass('alt');
-			var order = [];
-			$('.modifiers table tbody > tr').each(function() { order.push(this.id); });
-			order = order.join(',');
-			$.post(SITE_URL + 'admin/firesale/products/ajax_order_variations', { order: order });
-		}
-	});
-
-	$('.modifiers th .mod-min').click(function(e) {
-		e.preventDefault();
-		$('.modifiers td .mod-min').click();
-	});
-	$('.modifiers td .mod-min').click(function(e) {
-		e.preventDefault();
-		$(this).parents('tr').find('table').slideToggle(250);
-		$(this).toggleClass('show');
-	});
-
-	/*********************
-	** DYNAMIC TAX LINK **
-	*********************/
-
-	$('#tax_band').change(function() {
-		var selected_tax = $(this).find('option:selected').val();
-		if (taxes[selected_tax] !== undefined) {
-			tax_rate = taxes[selected_tax];
-			$('#rrp, #price').change();
-		}
-	})
 	
 });
 	
