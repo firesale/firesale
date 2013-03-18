@@ -55,6 +55,8 @@ class front extends Public_Controller
             $this->data->products   = $products;
             $this->data->pagination = $pagination;
 
+            asset_namespace('firesale');
+
             // Add page content
             $this->template->title($brand['title'])
                            ->set_breadcrumb($brand['title'], $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time))
