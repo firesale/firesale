@@ -36,6 +36,8 @@ $(function(){
 		
 		$.getJSON(SITE_URL+'admin/firesale/categories/ajax_cat_details/' + $details_id.val(), function(data) {
 
+			$('input[name=slug]').attr('id', 'slug').removeClass('disabled');
+
 			for( var k in data ) {
 				if( k == 'meta_keywords' && $('#tabs input[name='+k+']').length > 0 && data[k] != null ) {
 					$('#tabs input[name='+k+']').importTags(data[k]);
@@ -52,6 +54,11 @@ $(function(){
 				} else if( $('#tabs textarea[name='+k+']').length > 0 ) {
 					$('#tabs textarea[name='+k+']').val(data[k]);
 				}
+			}
+
+			// Disable slug on edit
+			if ( parseInt($('input[name=id]').val()) > 0 ) {
+				$('input[name=slug]').attr('id', 'slug_old').addClass('disabled');
 			}
 
 			$('button.delete').remove();

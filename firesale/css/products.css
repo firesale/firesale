@@ -64,6 +64,7 @@ button.link.unlinked{background-position:-40px 0;}
 #mod_form textarea, #var_form textarea { width: 98% !important; max-width: 98% !important; }
 #tabs ul > li > label { width: 20% !important; float: left !important; display: inline-block !important; }
 #tabs ul > li > .input { width: 70% !important; display: inline-block !important; }
+#tabs ul > li > .input > .disabled { opacity: 0.5 !important; }
 
 /* Slider */
 .ui-slider-cont { width: 550px; padding: 20px 0 0 0; }
