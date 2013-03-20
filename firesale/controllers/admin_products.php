@@ -118,11 +118,12 @@ class Admin_products extends Admin_Controller
             // Editing
             if ($id !== NULL) {
 
-                // Clear out current categories to prevent duplicate db entries
-                $input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
-
                 // Just incase
                 Events::trigger('pre_product_updated', $id);
+                $input = $this->input->post();
+
+                // Clear out current categories to prevent duplicate db entries
+                $input['category'] = $_POST['category'] = $this->products_m->category_fix($id, $input['category']);
             }
 
         }
