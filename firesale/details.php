@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module
 {
-    public $version       = '1.2.0-dev';
+    public $version       = '1.2.1-dev';
     public $language_file = 'firesale/firesale';
 
     public function __construct()

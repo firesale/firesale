@@ -3,13 +3,13 @@
 * Website: http://www.getfiresale.org
 * Documentation: http://www.getfiresale.org/documentation
 * License: MIT License, a copy of which is included with this package
-* Version: 1.2.0-dev
+* Version: 1.2.1-dev
 
 ## Team
 
 * [Jamie Holdroyd](http://www.jholdroyd.com)
 * [Chris Harvey](http://www.chrisnharvey.com)
-* [Adam Sturrock] (http://www.adamsturrock.co.uk)
+* [Adam Sturrock](http://www.adamsturrock.co.uk)
 
 ## Description
 
