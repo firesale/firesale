@@ -1,0 +1,9 @@
+
+/* Form */
+textarea.attribute { width: 99% !important; min-height: 16px !important; resize: none; overflow: hidden; }
+input.option, input.remove { margin: 0 auto; }
+span.mover { width: 18px; height: 18px; display: block; cursor: move; background: url("img/drag_handle.gif") no-repeat; }
+#attr_form .add.no-results { cursor: pointer; }
+#attr_form .center { text-align: center; padding: 0 15px; }
+#attr_form .option { width: 220px; }
+#attr_form .value { width: 100%; }
