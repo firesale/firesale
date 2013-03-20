@@ -316,12 +316,21 @@ class Front_cart extends Public_Controller
             $this->load->helper('form');
 
             // Variables
-            $data = array('ship_req' => FALSE);
+            $data = array('ship_req' => false, 'shipping' => array());
 
             // Check for shipping requirements
             foreach ($this->fs_cart->contents() as $item) {
                 if ( ! isset($item['ship']) OR $item['ship'] == 1 ) {
-                    $data['ship_req'] = TRUE;
+                    $data['ship_req'] = true;
+                    break;
+                }
+            }
+
+            // Get available shipping methods
+            if ( $data['ship_req'] === true ) {
+                $results = Events::trigger('shipping_methods', $this->fs_cart->contents(), 'array');
+                foreach ($results as $result) {
+                    $data['shipping'] = array_merge($data['shipping'], $result);
                 }
             }
 
@@ -329,15 +338,19 @@ class Front_cart extends Public_Controller
             if ($this->input->post('btnAction') == 'pay') {
 
                 // Variables
-                $posted = TRUE;
+                $posted = true;
                 $input 	= $this->input->post();
                 $skip	= array('btnAction', 'bill_details_same');
-                $extra 	= array('return' => 'cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => FALSE, 'error_message' => FALSE);
+                $extra 	= array('return' => 'cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => false, 'error_message' => false);
 
                 // Shipping option
-                if ( $data['ship_req'] AND isset($this->firesale->roles['shipping']) AND isset($input['shipping'])) {
-                    $role = $this->firesale->roles['shipping'];
-                    $shipping = $this->$role['model']->get_option_by_id($input['shipping']);
+                if ( $data['ship_req'] AND ! empty($data['shipping']) AND isset($input['shipping'])) {
+                    foreach ( $data['shipping'] as $ship ) {
+                        if ( $ship['id'] == $input['shipping'] ) {
+                            $shipping = $ship;
+                            break;
+                        }
+                    }
                 } else {
                     $shipping['price'] = '0.00';
                 }
@@ -432,13 +445,6 @@ class Front_cart extends Public_Controller
             // Get fields
             $data['ship_fields'] = $this->address_m->get_address_form('ship', 'new', ( $input ? $input : null ));
             $data['bill_fields'] = $this->address_m->get_address_form('bill', 'new', ( $input ? $input : null ));
-            $data['shipping']    = array();
-
-            // Get available shipping methods
-            $results = Events::trigger('shipping_methods', $this->fs_cart->contents(), 'array');
-            foreach ($results as $result) {
-                $data['shipping'] = array_merge($data['shipping'], $result);
-            }
 
             // Check for shipping option set in cart
             if ( $this->session->userdata('shipping') ) {
