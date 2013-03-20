@@ -36,18 +36,19 @@ class Shipping_m extends MY_Model
 
         // Select shipping options
         $params	 = array(
-                    'stream' 	=> 'firesale_shipping',
-                    'namespace'	=> 'firesale_shipping',
-                    'order_by'	=> 'price',
-                    'sort'		=> 'asc'
-                   );
+            'stream'    => 'firesale_shipping',
+            'namespace' => 'firesale_shipping',
+            'order_by'  => 'price',
+            'sort'      => 'asc'
+        );
 
+        // Get options
         $options = $this->streams->entries->get_entries($params);
 
         // Loop options and perform checks
         foreach ($options['entries'] AS $option) {
             $viable = $this->check_methods($option, $total_weight, $total_value);
-            if ($viable) {
+            if ( $viable ) {
                 $total_options[] = $option;
             }
         }
