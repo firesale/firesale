@@ -81,6 +81,25 @@
     }
 
     /**
+     * Gets the version for the currently installed field type
+     * @param string $type field type name
+     * @return string The field type version
+     */
+    function field_type_version($type)
+    {
+        // Get instance
+        $_CI =& get_instance();
+        $_CI->load->library('streams_core/type');
+
+        // Get and return information
+        $type = $_CI->type->load_single_type($type);
+        if ( $type !== null ) { return $type->version; }
+        
+        // Not installed
+        return false;
+    }
+
+    /**
      * Truncates a string by a number of characters but ensures to complete the
      * last word, following by "..."
      *

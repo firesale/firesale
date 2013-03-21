@@ -233,6 +233,8 @@ class Module_Firesale extends Module
             redirect('admin/'.$redirect);
 
             return FALSE;
+        } elseif ( field_type_version('multiple') < '2.0.0' ) {
+            $this->session->set_flashdata('notice', lang('firesale:install:old_multiple'));
         }
 
         // Load required items
