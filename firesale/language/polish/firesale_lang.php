@@ -465,3 +465,5 @@
     $lang['firesale:install:missing_multiple'] = 'FireSale wymaga the Multiple Relationships field type do działania. Możesz to pobrać <a href="https://github.com/adamfairholm/PyroStreams-Multiple-Relationships/zipball/2.0/develop">stąd</a>';
     $lang['firesale:install:not_installed']    = 'Proszę zainstalować moduł FireSale przed instalacją dodatków FireSale';
     $lang['firesale:install:no_route_access']  = 'FireSale wymaga dostępu do  system/cms/config/routes.php file. Ustaw prawa dostępu i spróbuj ponownie';
+    $lang['firesale:install:old_multiple']     = 'Your currently installed version of the Multiple field type is out of date, please delete or upgrade it before attempting to use FireSale'; # Translate
+    
