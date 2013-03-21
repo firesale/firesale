@@ -2,16 +2,18 @@
 
 class Module_Firesale extends Module
 {
-<<<<<<< HEAD
-    public $version       = '1.2.0';
-=======
-    public $version       = '1.2.1-dev';
->>>>>>> origin/1.2/develop
+    public $version       = '1.3.0-dev';
     public $language_file = 'firesale/firesale';
 
     public function __construct()
     {
         parent::__construct();
+
+        // Increase time limit for those of us that have slow machines 
+        // and spend an hour backtracing to determine the code is fine
+        // If your machine happens to be slower than mine, 
+        // and you recieve a whitescreen upon install increase this variable
+        @set_time_limit(60);
 
         // Load in the FireSale library
         $this->load->library('firesale/firesale');
@@ -26,7 +28,7 @@ class Module_Firesale extends Module
         } else {
             $this->type->addon_paths['firesale'] = ADDONPATH.'modules/firesale/field_types/';
         }
-        
+
         $this->type->gather_types();
     }
 
@@ -52,7 +54,7 @@ class Module_Firesale extends Module
                 'lt' => 'The lightweight & extensible eCommerce platform for PyroCMS', # translate
                 'pl' => 'Lekka i elastyczna platforma eCommerce dla PyroCMS'
             ),
-            'frontend'		=> TRUE,
+            'frontend'    	=> TRUE,
             'backend'		=> TRUE,
             'author'   => 'Jamie Holdroyd & Chris Harvey',
             'roles' => array(
@@ -231,6 +233,8 @@ class Module_Firesale extends Module
             redirect('admin/'.$redirect);
 
             return FALSE;
+        } elseif ( field_type_version('multiple') < '2.0.0' ) {
+            $this->session->set_flashdata('notice', lang('firesale:install:old_multiple'));
         }
 
         // Load required items
@@ -259,11 +263,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'), 'unique' => TRUE);
         $fields[] = array('name' => 'lang:firesale:label_description', 'slug' => 'description', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'));
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         // Change default parent value
         $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_categories` CHANGE `parent` `parent` INT( 11 ) NULL DEFAULT '0';");
@@ -303,11 +303,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_ship_req', 'slug' => 'ship_req', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 1));
         $fields[] = array('name' => 'lang:firesale:label_description', 'slug' => 'description', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'advanced'));
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         // Change engine and add fulltext
         $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_products` ENGINE = MyISAM,
@@ -329,11 +325,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         ########################
         ## PRODUCT VARIATIONS ##
@@ -349,11 +341,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'type' => 'decimal', 'instructions' => 'lang:firesale:label_mod_price_inst', 'extra' => array('decimal_places' => '2'));
         $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         // Create lookup table
         $this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
@@ -387,11 +375,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_description', 'slug' => 'desc', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'advanced'));
         $fields[] = array('name' => 'lang:firesale:label_status', 'slug' => 'enabled', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0));
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         // Add the gateway settings table
         $this->db->query("
@@ -434,11 +418,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_postcode', 'slug' => 'postcode', 'extra' => array('max_length' => 40));
         $fields[] = array('name' => 'lang:firesale:label_country', 'slug' => 'country', 'type' => 'country');
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         ##############
         ## CURRENCY ##
@@ -484,11 +464,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_bill_to', 'slug' => 'bill_to', 'type' => 'relationship', 'extra' => array('choose_stream' => $addresses->id), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_shipping', 'slug' => 'shipping', 'type' => 'integer', 'required' => FALSE);
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         // Create orders items stream
         if( !$this->streams->streams->add_stream(lang('firesale:sections:orders_items'), 'firesale_orders_items', 'firesale_orders_items', NULL, NULL) ) return FALSE;
@@ -506,11 +482,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_quantity', 'slug' => 'qty', 'type' => 'integer', 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
 
-        // Combine
-        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-        // Add fields to stream
-        $this->streams->fields->add_fields($fields);
+        $this->add_stream_fields($fields, $template);
 
         // Update Orders Items
         $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` LONGTEXT NULL");
@@ -558,7 +530,7 @@ class Module_Firesale extends Module
 
     public function uninstall()
     {
-        
+
         // Load required items
         $this->load->driver('Streams');
         $this->load->model('firesale/categories_m');
@@ -792,13 +764,13 @@ class Module_Firesale extends Module
             // Loop namespaces and then columns
             foreach ( $fields as $namespace => $columns ) {
                 foreach ( $columns as $column => $extra ) {
-                    
+
                     // Append defaults
                     $extra['decimal_places'] = ( isset($extra['decimal_places']) ? $extra['decimal_places'] : 2    );
                     $extra['default_value']  = ( isset($extra['default_value'])  ? $extra['default_value']  : null );
                     $extra['max_value']      = ( isset($extra['max_value'])      ? $extra['max_value']      : null );
                     $extra['min_value']      = ( isset($extra['min_value'])      ? $extra['min_value']      : null );
-                    
+
                     // Update field_data
                     $update = array('field_type' => 'decimal', 'field_data' => serialize($extra));
                     $this->db->where('field_slug', $column)->where('field_namespace', $namespace)->update('data_fields', $update);
@@ -1107,6 +1079,16 @@ class Module_Firesale extends Module
         } else {
             $this->db->where_in('slug', $templates)->delete('email_templates');
         }
+
+    }
+
+    public function add_stream_fields($fields, $template)
+    {
+      // Combine
+      foreach ($fields AS &$field) { $field = array_merge($template, $field); }
+
+      // Add fields to stream
+      $this->streams->fields->add_fields($fields);
 
     }
 
