@@ -34,7 +34,7 @@ class Widget_FireSale_Categories extends Widgets
 
         // Parent set?
         if ($options['parent'] != 0) {
-            $params['where'] .= " AND parent = '{$options['parent']}'";
+            $params['where'] .= " AND ".SITE_REF."_firesale_categories.parent = '{$options['parent']}'";
         }
 
         // Get all categories
