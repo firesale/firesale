@@ -221,7 +221,9 @@ class Module_Firesale extends Module
 
     public function install()
     {
-
+        // Is this the PyroCMS installer?
+        $path = defined('PYROPATH') ? PYROPATH : APPPATH;
+        
         // For 2.2 compatibility
         $redirect = (CMS_VERSION >= '2.2' ? 'addons/' : '') . 'modules';
 
@@ -230,7 +232,7 @@ class Module_Firesale extends Module
             redirect('admin/'.$redirect);
 
             return FALSE;
-        } elseif ( ! is_writable(APPPATH . 'config/routes.php') ) {
+        } elseif ( ! is_writable($path . 'config/routes.php') ) {
             $this->session->set_flashdata('error', lang('firesale:install:no_route_access'));
             redirect('admin/'.$redirect);
 
