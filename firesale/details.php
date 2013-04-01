@@ -103,6 +103,8 @@ class Module_Firesale extends Module
             )
         );
 
+        if ( ! function_exists('group_has_role')) return $info;
+
         if (group_has_role('firesale', 'access_routes')) {
             $info['sections']['routes'] = array(
                 'name' => 'firesale:sections:routes',
