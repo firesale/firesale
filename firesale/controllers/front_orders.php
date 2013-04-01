@@ -44,7 +44,7 @@ class Front_orders extends Public_Controller
             $params	 = array(
                 'stream' 	=> 'firesale_orders',
                 'namespace'	=> 'firesale_orders',
-                'where'		=> "created_by = '{$user}'",
+                'where'		=> SITE_REF."_firesale_orders.created_by = '{$user}'",
                 'order_by'  => 'id',
                 'sort'      => 'desc'
             );
