@@ -21,7 +21,7 @@ class Firesale
     public function is_installed()
     {
 
-        if ( module_exists('firesale') ) {
+        if ( ! function_exists('module_exists') or module_exists('firesale')) {
             
             $installed = $this->_CI->db->where('installed', 1)
                                        ->where('slug', 'firesale')
