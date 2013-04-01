@@ -20,11 +20,18 @@ class Module_Firesale extends Module
         $this->lang->load($this->language_file);
         $this->load->helper('firesale/general');
 
+        // Load these helpers if we are in the PyroCMS installer, files needs them!
+        defined('PYROPATH') and $this->load->helper(array('text', 'date'));       
+
         $this->load->library('streams_core/type');
 
         // Add our field type path
+        $core_path = defined('PYROPATH') ? PYROPATH : APPPATH;
+        
         if (is_dir(SHARED_ADDONPATH.'modules/firesale/field_types')) {
             $this->type->addon_paths['firesale'] = SHARED_ADDONPATH.'modules/firesale/field_types/';
+        } elseif (is_dir($core_path.'modules/firesale/field_types')) {
+            $this->type->addon_paths['firesale'] = $core_path.'modules/firesale/field_types/';
         } else {
             $this->type->addon_paths['firesale'] = ADDONPATH.'modules/firesale/field_types/';
         }
