@@ -225,14 +225,17 @@ $(function() {
 		$('#products').unbind('submit').submit(function(e) {
 			e.preventDefault();
 			var action = $(this).find('button[clicked=true]').val();
-			$.post('/admin/firesale/products/ajax_quick_edit', $(this).serialize()+'&btnAction='+action, function(response) {
-				build_alert(response);
-				if( $(response).find('#products').size() > 0 ) {
-					$('#products').html($(response).find('#products').html());
-					$('.table_action_buttons').html($(response).find('.table_action_buttons').html());
-					bind_keys($('#product_table'));
-				}
-			});
+			var url = SITE_URL+'firesale/admin_products/ajax_quick_edit?r='+Math.floor(Math.random()*99999), data = $(this).serialize()+'&btnAction='+action;
+			$.ajax({type: "POST", url: url, global: false, dataType: 'html', data: data, success: function(response) {
+				$.get(SITE_URL+'firesale/admin_products/index', function(response) {
+					build_alert(response);
+					if( $(response).find('#products').size() > 0 ) {
+						$('#products').html($(response).find('#products').html());
+						$('.table_action_buttons').html($(response).find('.table_action_buttons').html());
+						bind_keys($('#product_table'));
+					}
+				});
+			}});
 		});
 	}
 
@@ -251,7 +254,7 @@ $(function() {
 	function update_products(extra) {
 		if( req != null ) { req.abort(); }
 		create_overlay($('#product_table'));
-		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, global: false, data: $('#filters').serialize(), success: function(data) {
+		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, dataType: 'html', global: false, data: $('#filters').serialize(), success: function(data) {
 			$('#product_table').parent().find('.no_data').remove();
 			$('.overlay').remove();
 			if( $(data).find('#product_table').size() > 0 ) {

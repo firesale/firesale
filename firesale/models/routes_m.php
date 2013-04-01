@@ -197,9 +197,11 @@ class Routes_m extends MY_Model
 
     public function write($title, $route, $map, $old_title = false)
     {
+        // CH: Are we in the PyroCMS installer?
+        $path = defined('PYROPATH') ? PYROPATH : APPPATH;
 
         // Variables
-        $file    = APPPATH.'config/routes.php';
+        $file    = $path.'config/routes.php';
         $content = file_get_contents($file);
         $before  = "\n/* End of file routes.php */";
         $title   = ( substr($title, 0, 5) == 'lang:' ? lang(substr($title, 5)) : $title );

@@ -594,7 +594,7 @@ class Admin_products extends Admin_Controller
             $post   = $this->input->post('product');
 
             // Check action
-            if ( $post['btnAction'] == 'save' ) {
+            if ( $this->input->post('btnAction') == 'save' ) {
 
                 // Check products are set
                 if ( $post and ! empty($post) ) {
@@ -609,19 +609,20 @@ class Admin_products extends Admin_Controller
 
                 // Set flashdata
                 if ( $update ) {
-                    $this->session->set_userdata('flash:old:success', lang('firesale:prod_edit_success'));
+                    $this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
                 } else {
-                    $this->session->set_userdata('flash:old:error', lang('firesale:prod_edit_error'));
+                    $this->session->set_flashdata('error', lang('firesale:prod_edit_error'));
                 }
-
             }
+
+            // Clear cache
+            Events::trigger('clear_cache');
 
             // Clear post
             unset($_POST);
 
             // Call index for layout update
-            $this->index(( $start ? $start : 0 ));
-            return;
+            echo ( $update ? 'ok' : 'error' );
         }
 
     }

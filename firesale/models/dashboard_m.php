@@ -32,7 +32,7 @@ class Dashboard_m extends MY_Model
 		}
 		
 		// Build initial query
-		$query = $this->db->select("SUM(i.`qty`) AS `count`, SUM(i.`qty` * i.`price`) AS `sales`, date_format(i.`created`, \"$format\") AS `{$type}`")
+		$query = $this->db->select("SUM(i.`qty`) AS `count`, SUM(i.`qty` * i.`price`) AS `sales`, date_format(i.`created`, \"$format\") AS `{$type}`", false)
                           ->from('firesale_orders_items AS i')
                           ->join('firesale_orders AS o', 'o.id = i.order_id', 'inner')
                           ->where_in('o.order_status', array(2, 3, 4))
