@@ -2,6 +2,7 @@
 
     // General Titles
     $lang['firesale:title']         = 'FireSale';
+    $lang['firesale:store']         = 'Store'; # Translate
     $lang['firesale:title:general'] = 'Generale';
     $lang['firesale:title:details'] = 'Tuoi dettagli';
     $lang['firesale:title:address'] = 'Tuoi indirizzi';
