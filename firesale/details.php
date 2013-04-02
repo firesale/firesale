@@ -20,11 +20,18 @@ class Module_Firesale extends Module
         $this->lang->load($this->language_file);
         $this->load->helper('firesale/general');
 
+        // Load these helpers if we are in the PyroCMS installer, files needs them!
+        defined('PYROPATH') and $this->load->helper(array('text', 'date'));       
+
         $this->load->library('streams_core/type');
 
         // Add our field type path
+        $core_path = defined('PYROPATH') ? PYROPATH : APPPATH;
+        
         if (is_dir(SHARED_ADDONPATH.'modules/firesale/field_types')) {
             $this->type->addon_paths['firesale'] = SHARED_ADDONPATH.'modules/firesale/field_types/';
+        } elseif (is_dir($core_path.'modules/firesale/field_types')) {
+            $this->type->addon_paths['firesale'] = $core_path.'modules/firesale/field_types/';
         } else {
             $this->type->addon_paths['firesale'] = ADDONPATH.'modules/firesale/field_types/';
         }
@@ -102,6 +109,8 @@ class Module_Firesale extends Module
                 )
             )
         );
+
+        if ( ! function_exists('group_has_role')) return $info;
 
         if (group_has_role('firesale', 'access_routes')) {
             $info['sections']['routes'] = array(
@@ -219,7 +228,9 @@ class Module_Firesale extends Module
 
     public function install()
     {
-
+        // Is this the PyroCMS installer?
+        $path = defined('PYROPATH') ? PYROPATH : APPPATH;
+        
         // For 2.2 compatibility
         $redirect = (CMS_VERSION >= '2.2' ? 'addons/' : '') . 'modules';
 
@@ -228,7 +239,7 @@ class Module_Firesale extends Module
             redirect('admin/'.$redirect);
 
             return FALSE;
-        } elseif ( ! is_writable(APPPATH . 'config/routes.php') ) {
+        } elseif ( ! is_writable($path . 'config/routes.php') ) {
             $this->session->set_flashdata('error', lang('firesale:install:no_route_access'));
             redirect('admin/'.$redirect);
 

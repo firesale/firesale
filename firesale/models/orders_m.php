@@ -623,6 +623,8 @@ class Orders_m extends MY_Model
                 // Email the user
                 Events::trigger('email', array_merge($order, array('slug' => 'order-dispatched', 'to' => $order['bill_to']['email'])), 'array');
 
+                // Order dispatched event
+                Events::trigger('order_dispatched', $order);
             }
 
             return TRUE;
