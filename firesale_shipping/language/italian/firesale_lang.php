@@ -1,7 +1,6 @@
 <?php
 
     // General
-    $lang['firesale:title']					= 'FireSale';
     $lang['firesale:shortcuts:band_create'] = 'Crea un nuovo corriere';
 
     // Sections
