@@ -72,8 +72,11 @@
         $dir = ADDONPATH.'/modules/';
         
         // Check shared addons
-        if( file_exists(SHARED_ADDONPATH.'modules/'.$module.'/details.php') ) {
+        if (is_dir(SHARED_ADDONPATH.'modules/'.$module)) {
             $dir = SHARED_ADDONPATH.'modules/';
+        } elseif ( ! is_dir($dir.$module)) {
+            $core_path = defined('PYROPATH') ? PYROPATH : APPPATH;
+            $dir = $core_path.'modules/';
         }
         
         // Register namespace
