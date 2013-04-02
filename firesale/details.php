@@ -2,7 +2,7 @@
 
 class Module_Firesale extends Module
 {
-    public $version       = '1.2.1-dev';
+    public $version       = '1.2.2-dev';
     public $language_file = 'firesale/firesale';
 
     public function __construct()
@@ -793,6 +793,13 @@ class Module_Firesale extends Module
 
         }
 
+        // Pre 1.2.2
+        if ($old_version < '1.2.2') {
+
+            // Add settings
+            $this->settings('add', array('firesale_dashboard'));
+        }
+
         return TRUE;
     }
 
@@ -818,6 +825,7 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'image_square', 'title' => lang('firesale:settings_image_square'), 'description' => lang('firesale:settings_image_square_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'image_background', 'title' => lang('firesale:settings_image_background'), 'description' => lang('firesale:settings_image_background_inst'), 'default' => 'ffffff', 'value' => 'ffffff', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
         // Perform
         foreach ($settings as $setting) {
@@ -958,22 +966,23 @@ class Module_Firesale extends Module
 
             // Add an initial currency
             $this->db->insert('firesale_currency', array(
-                                  'id' => 1,
-                                  'created' => date("Y-m-d H:i:s"),
-                                  'created_by' => $this->current_user->id,
-                                  'ordering_count' => 0,
-                                  'cur_code' => 'GBP',
-                                  'title' => 'Default',
-                                  'slug' => 'default',
-                                  'enabled' => 1,
-                                  'cur_tax' => '20',
-                                  'cur_format' => '£{{ price }}',
-                                  'cur_format_num' => '0',
-                                  'cur_format_dec' => '.',
-                                  'cur_format_sep' => ',',
-                                  'cur_mod' => '+|0',
-                                  'exch_rate' => '1'
-                            ));
+                'id' => 1,
+                'created' => date("Y-m-d H:i:s"),
+                'created_by' => $this->current_user->id,
+                'ordering_count' => 0,
+                'cur_code' => 'GBP',
+                'title' => 'Default',
+                'slug' => 'default',
+                'enabled' => 1,
+                'cur_tax' => '20',
+                'cur_format' => '£{{ price }}',
+                'cur_format_num' => '0',
+                'cur_format_dec' => '.',
+                'cur_format_sep' => ',',
+                'cur_mod' => '+|0',
+                'exch_rate' => '1'
+            ));
+
         } else {
             // Remove currency folder
             $currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');

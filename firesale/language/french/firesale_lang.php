@@ -460,6 +460,8 @@
     $lang['firesale:settings_image_background_inst'] = 'Code héxadécimal de la couleur (sans le #) à appliquer en fond des images lors d\'un redimmensionnement';
     $lang['firesale:settings_login']                 = 'Connexion obligatoire';
     $lang['firesale:settings_login_inst']            = 'Permet de s\'assurer qu\'un utilisateur est connecté pour pouvoir commander';
+    $lang['firesale:settings_dashboard']             = 'Override Default Dashboard'; # translate
+    $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Impossible d\'installer le module, FireSale requiert la version 2.1.4 (ou supérieur) du CMS';

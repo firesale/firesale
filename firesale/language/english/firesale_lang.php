@@ -460,6 +460,8 @@
     $lang['firesale:settings_image_background_inst'] = 'Hexcode (without #) colour you wish resized image backgrounds to be';
     $lang['firesale:settings_login']                 = 'Require login to purchase';
     $lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products';
+    $lang['firesale:settings_dashboard']             = 'Override Default Dashboard';
+    $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default';
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';

@@ -460,6 +460,8 @@
     $lang['firesale:settings_image_background_inst'] = 'Colore esadecimale (senza #) per il background delle immagini ridimensionate';
     $lang['firesale:settings_login']                 = 'Per l\'acquisto è richiesto il login';
     $lang['firesale:settings_login_inst']            = 'Assicurarsi che l\'utente sia loggato prima di permettere l\'acquisto dei prodotti';
+    $lang['firesale:settings_dashboard']             = 'Override Default Dashboard'; # translate
+    $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Non è possibile installare il modulo FireSale, FireSale richiede PyroCMS v2.1.4 o superiore';
