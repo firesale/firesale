@@ -50,7 +50,8 @@ class Module_Firesale extends Module
                 'id' => 'FireSale',
                 'it' => 'FireSale',
                 'lt' => 'FireSale',
-                'pl' => 'FireSale'
+                'pl' => 'FireSale',
+                'es' => 'FireSale'
             ),
             'description' => array(
                 'en' => 'The lightweight & extensible eCommerce platform for PyroCMS',
@@ -59,7 +60,8 @@ class Module_Firesale extends Module
                 'id' => 'The lightweight & extensible eCommerce platform for PyroCMS', # translate
                 'it' => 'Una leggera piattaforma eCommerce per PyroCMS',
                 'lt' => 'The lightweight & extensible eCommerce platform for PyroCMS', # translate
-                'pl' => 'Lekka i elastyczna platforma eCommerce dla PyroCMS'
+                'pl' => 'Lekka i elastyczna platforma eCommerce dla PyroCMS',
+                'es' => 'The lightweight & extensible eCommerce platform for PyroCMS'  # translate
             ),
             'frontend'    	=> TRUE,
             'backend'		=> TRUE,
