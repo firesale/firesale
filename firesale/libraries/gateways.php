@@ -210,7 +210,7 @@ class gateways
                 $uninstalled[$key]['ordering_count'] = 0;
                 $uninstalled[$key]['name'] = lang('firesale:gateways:'.$gateway['slug'].':name');
                 $uninstalled[$key]['desc'] = lang('firesale:gateways:'.$gateway['slug'].':desc');
-                $uninstalled[$key]['enabled'] = $gateway['slug'] == 'dummy' ? 1 : 0;
+                $uninstalled[$key]['enabled'] = $gateway['slug'] == 'dummy';
             } else {
                 unset($uninstalled[$key]);
             }
