@@ -87,9 +87,10 @@ $(function() {
              						'<td class="image"><img src="/files/thumb/' + d.image + '/64/64" alt="Product Image" class="image" /></td>' +
               						'<td class="name"><a href="/product/' + d.slug + '">' + d.title + '</a></td>' +
               						'<td class="model">' + d.code + '</td>' +
+              						'<td class="options"></td>' +
               						'<td><input type="text" name="item[' + d.id + '][qty]" value="' + r.qty + '" /></td>' + 
-             						'<td class="price">' + currency + '<span>' + r.price + '</span></td>' +
-              						'<td class="total">' + currency + '<span>' + r.total + '</td>' +
+             						'<td class="price">' + currency + '<span>' + parseFloat(r.price).toFixed(2) + '</span></td>' +
+              						'<td class="total">' + currency + '<span>' + parseFloat(r.total).toFixed(2) + '</span></td>' +
 								'</tr>'
 							);
 						}
