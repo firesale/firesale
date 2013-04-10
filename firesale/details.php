@@ -114,6 +114,7 @@ class Module_Firesale extends Module
 
         if ( ! function_exists('group_has_role')) return $info;
 
+        // Access Routes
         if (group_has_role('firesale', 'access_routes')) {
             $info['sections']['routes'] = array(
                 'name' => 'firesale:sections:routes',
@@ -122,6 +123,7 @@ class Module_Firesale extends Module
             );
         }
 
+        // Modify Routes
         if (group_has_role('firesale', 'create_edit_routes') AND isset($info['sections']['routes'])) {
             $info['sections']['routes']['shortcuts'] = array(
                 array(
@@ -137,6 +139,7 @@ class Module_Firesale extends Module
             );
         }
 
+        // Access Gateways
         if (group_has_role('firesale', 'access_gateways')) {
             $info['sections']['gateways'] = array(
                 'name' => 'firesale:sections:gateways',
@@ -145,6 +148,7 @@ class Module_Firesale extends Module
             );
         }
 
+        // Modify Gateways
         if (group_has_role('firesale', 'install_uninstall_gateways') AND isset($info['sections']['gateways'])) {
             $info['sections']['gateways']['shortcuts'] = array(
                 array(
@@ -155,6 +159,7 @@ class Module_Firesale extends Module
             );
         }
 
+        // Access Currency
         if (group_has_role('firesale', 'access_currency')) {
             $info['sections']['currency'] = array(
                 'name' => 'firesale:sections:currency',
@@ -163,6 +168,7 @@ class Module_Firesale extends Module
             );
         }
 
+        // Access Taxes
         if (group_has_role('firesale', 'access_taxes')) {
             $info['sections']['taxes'] = array(
                 'name' => 'firesale:sections:taxes',
@@ -171,6 +177,7 @@ class Module_Firesale extends Module
             );
         }
 
+        // Modify Taxes
         if (group_has_role('firesale', 'add_edit_taxes')) {
             $info['sections']['taxes']['shortcuts'] = array(
                 array(
@@ -181,6 +188,7 @@ class Module_Firesale extends Module
             );
         }
 
+        // Modify Currency
         if (group_has_role('firesale', 'install_uninstall_currency') AND isset($info['sections']['currency'])) {
             $info['sections']['currency']['shortcuts'] = array(
                 array(
@@ -189,6 +197,12 @@ class Module_Firesale extends Module
                     'class' => 'add'
                 )
             );
+        }
+        
+        // Support for sub 2.2.0 menus
+        if ( CMS_VERSION < '2.2.0' ) {
+            $info['is_backend'] = true;
+            $info['menu']       = 'FireSale';
         }
 
         return $info;
