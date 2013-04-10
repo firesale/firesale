@@ -52,9 +52,15 @@ class admin extends Admin_Controller
 
         // Add images
         foreach( $this->data->brands['entries'] AS &$brand ) {
+            
+            // Assign images
             $folder = $this->products_m->get_file_folder_by_slug($brand['slug']);
             $images = Files::folder_contents($folder->id);
             $brand['image'] = $images['data']['file'][0];
+
+            // Assign categories
+            // $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
+            $brand['categories'] = $this->brands_m->get_categories($brand['id']);
         }
 
         // Add page data
