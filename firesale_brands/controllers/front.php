@@ -28,11 +28,18 @@ class front extends Public_Controller
 
     }
 
-    public function index($id_slug, $page = 0)
+    public function index()
     {
 
+        // Format args
+        $args     = func_get_args();
+        $args     = array_filter($args);
+        $brand    = array_shift($args);
+        $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
+        $category = ( count($args) > 0 ? implode('/', $args) : null );
+
         // Variables
-        $brand = $this->pyrocache->model('brands_m', 'get', array($id_slug), $this->firesale->cache_time);
+        $brand = $this->pyrocache->model('brands_m', 'get', array($brand), $this->firesale->cache_time);
 
         // Check it was found
         if( $brand ) {
@@ -41,10 +48,10 @@ class front extends Public_Controller
             $route = $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time);
 
             // Get products
-            $products = $this->pyrocache->model('brands_m', 'get_products', array($brand['id'], $this->perpage, $page), $this->firesale->cache_time);
+            $products = $this->pyrocache->model('brands_m', 'get_products', array($brand['id'], $this->perpage, $page, $category), $this->firesale->cache_time);
 
             // Build pagination
-            $count      = $this->pyrocache->model('brands_m', 'get_count', array($brand['id']), $this->firesale->cache_time);
+            $count      = $this->pyrocache->model('brands_m', 'get_count', array($brand['id'], $category), $this->firesale->cache_time);
             $pagination = create_pagination($route.'/',  $count, $this->perpage, 3);
 
             // Assign data

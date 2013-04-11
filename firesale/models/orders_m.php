@@ -388,7 +388,7 @@ class Orders_m extends MY_Model
                 'price'			 => $product['price'],
                 'qty'			 => $qty,
                 'tax_band'       => $product['tax_band']['id'],
-                'options'        => isset($product['options']) ? serialize($product['options']) : null
+                'options'        => isset($product['options']) ? serialize($product['options']) : ''
              );
 
              if ( $this->db->insert('firesale_orders_items', $data) ) {

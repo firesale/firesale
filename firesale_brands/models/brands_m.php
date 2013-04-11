@@ -42,6 +42,10 @@ class Brands_m extends MY_Model
                 $brand['images'] = $query->result_array();
             }
 
+            // Get categories
+            // $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
+            $brand['categories'] = $this->brands_m->get_categories($brand['id']);
+
             // Return it
             return $brand;
         }
@@ -50,22 +54,53 @@ class Brands_m extends MY_Model
         return FALSE;
     }
 
-    public function get_products($brand, $perpage, $start)
+    public function get_categories($brand)
+    {
+
+        $query = $this->db->select('c.id, c.title, c.slug, b.id as brand_id')
+                          ->from('firesale_brands AS b')
+                          ->join('firesale_products AS p', 'p.brand = b.id', 'inner')
+                          ->join('firesale_products_firesale_categories AS pc', 'pc.row_id = p.id')
+                          ->join('firesale_categories AS c', 'c.id = pc.firesale_categories_id')
+                          ->where('b.id', $brand)
+                          ->where('p.status', '1')
+                          ->where('c.status', '1')
+                          ->group_by('c.id')
+                          ->order_by('c.title', 'asc')
+                          ->get();
+
+        if ( $query->num_rows() ) {
+            $results = $query->result_array();
+            return $results;
+        }
+
+        return false;
+    }
+
+    public function get_products($brand, $perpage, $start, $category = null)
     {
         // Variations
         $show_variations = (bool) $this->settings->get('firesale_show_variations');
 
         // Build query
-        $query = $this->db->select('id')
-                          ->from('firesale_products')
-                          ->where('brand', $brand)
-                          ->where('status', '1')
-                          ->order_by('title', 'asc')
+        $query = $this->db->select('p.id')
+                          ->from('firesale_products AS p')
+                          ->where('p.brand', $brand)
+                          ->where('p.status', '1')
+                          ->order_by('p.title', 'asc')
                           ->limit($perpage, $start);
 
         // Hide variations
         if ( ! $show_variations ) {
             $query->where('is_variation', '0');
+        }
+
+        // Add category
+        if ( $category !== null ) {
+            $query->join('firesale_products_firesale_categories AS fc', 'fc.row_id = p.id', 'inner')
+                  ->join('firesale_categories AS c', 'c.id = fc.firesale_categories_id', 'inner')
+                  ->where('c.slug', $category)
+                  ->group_by('p.id');
         }
 
         // Run the query
@@ -91,14 +126,25 @@ class Brands_m extends MY_Model
         return FALSE;
     }
 
-    public function get_count($brand)
+    public function get_count($brand, $category = null)
     {
 
         // Build query
-        $query = $this->db->select('id')
-                          ->from('firesale_products')
-                          ->where('brand', $brand)
-                          ->get();
+        $query = $this->db->select('p.id')
+                          ->from('firesale_products AS p')
+                          ->where('p.brand', $brand)
+                          ->where('p.status', '1');
+
+        // Add category
+        if ( $category !== null ) {
+            $query->join('firesale_products_firesale_categories AS fc', 'p.id = fc.row_id', 'inner')
+                  ->join('firesale_categories AS c', 'c.id = fc.firesale_categories_id', 'inner')
+                  ->where('c.slug', $category)
+                  ->group_by('p.id');
+        }
+        
+        // Run query
+        $query = $query->get();
 
         return $query->num_rows();
     }

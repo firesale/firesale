@@ -12,6 +12,7 @@ class Events_Firesale
 
         // register the events
         Events::register('public_controller', array($this, 'public_controller'));
+        Events::register('settings_updated', array($this, 'settings_updated'));
         Events::register('clear_cache', array($this, 'clear_cache'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_sales'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_stock'));
@@ -24,7 +25,26 @@ class Events_Firesale
             // Load required items
             $this->ci->load->library('firesale/exchange');
         }
+    }
 
+    public function settings_updated($settings)
+    {
+
+        // Add/remove override routes
+        if ( isset($settings['firesale_dashboard']) ) {
+
+            // Load required items
+            $this->ci->lang->load('firesale/firesale');
+            $this->ci->load->model('firesale/routes_m');
+
+            // Add
+            if ( $settings['firesale_dashboard'] == '1' ) {
+                $this->ci->routes_m->write(lang('firesale:sections:dashboard'), 'admin', 'firesale/admin/index');
+            // Remove
+            } else {
+                $this->ci->routes_m->remove(lang('firesale:sections:dashboard'));
+            }
+        }
     }
 
     public function clear_cache()

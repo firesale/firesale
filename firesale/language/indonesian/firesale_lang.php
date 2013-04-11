@@ -2,6 +2,7 @@
 
     // General Titles
     $lang['firesale:title']         = 'FireSale';
+    $lang['firesale:store']         = 'Store'; # Translate
     $lang['firesale:title:general'] = 'Umum';
     $lang['firesale:title:details'] = 'Detail Anda';
     $lang['firesale:title:address'] = 'Alamat Anda';
@@ -460,6 +461,8 @@
     $lang['firesale:settings_image_background_inst'] = 'Kode Warna Hexa (tanpa #) untuk gambar yang diubah ukurannya';
     $lang['firesale:settings_login']                 = 'Anda harus login untuk membeli';
     $lang['firesale:settings_login_inst']            = 'Pastikan pengguna untuk login sebelum membolehkan mereka membeli produk';
+    $lang['firesale:settings_dashboard']             = 'Override Default Dashboard'; # translate
+    $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Tidak dapat memasang modul FireSale, FireSale harus menggunakan PyroCMS versi 2.1.4 ke atas';
