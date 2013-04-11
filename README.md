@@ -1,9 +1,9 @@
 # FireSale
 
-* Website: http://www.getfiresale.org
-* Documentation: http://www.getfiresale.org/documentation
-* License: MIT License, a copy of which is included with this package
-* Version: 1.2.1-dev
+* [Website](http://www.getfiresale.org)
+* [Documentation](http://www.getfiresale.org/documentation)
+* [License](https://github.com/firesale/firesale/blob/1.2/develop/LICENSE)
+* Version: 1.2.2-dev
 
 ## Team
 
