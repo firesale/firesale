@@ -568,7 +568,7 @@ class Module_Firesale extends Module
         $this->load->library('files/files');
 
         // Remove category images
-        $category_folder = $this->products_m->get_file_folder_by_slug('category-images');
+        $category_folder = get_file_folder_by_slug('category-images');
         if ($category_folder != FALSE) {
 
             // Get files in folder
@@ -587,7 +587,7 @@ class Module_Firesale extends Module
         }
 
         // Remove products folder
-        $product_folder = $this->products_m->get_file_folder_by_slug('product-images');
+        $product_folder = get_file_folder_by_slug('product-images');
         if ($product_folder != FALSE) {
             Files::delete_folder($product_folder->id);
         }
@@ -1010,7 +1010,7 @@ class Module_Firesale extends Module
 
         } else {
             // Remove currency folder
-            $currency_folder = $this->products_m->get_file_folder_by_slug('currency-images');
+            $currency_folder = get_file_folder_by_slug('currency-images');
             if ($currency_folder != FALSE) {
 
                 // Get files in folder

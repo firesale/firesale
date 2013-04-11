@@ -393,7 +393,7 @@ class Products_m extends MY_Model
 
             // Remove files folder
             if ( ! $siblings->num_rows() AND $product !== FALSE AND $images == TRUE ) {
-                $folder = $this->get_file_folder_by_slug($product->slug);
+                $folder = get_file_folder_by_slug($product->slug, 'product-images');
                 if ($folder != FALSE) {
                     $images = Files::folder_contents($folder->id);
                     $images = $images['data']['file'];
@@ -709,27 +709,6 @@ class Products_m extends MY_Model
     }
 
     /**
-     * Gets a Files folder object based on the Product/Name slug.
-     *
-     * @param  string $slug The Slug to query
-     * @return object or boolean FALSE on failure
-     * @access public
-     */
-    public function get_file_folder_by_slug($slug)
-    {
-
-        $result = $this->db->where('slug', $slug)->get('file_folders');
-
-        if ( $result->num_rows() ) {
-            $parent = $result->row();
-
-            return $parent;
-        }
-
-        return FALSE;
-    }
-
-    /**
      * Creates a new file folder within a given parent ID, Title and Slug.
      *
      * @param  integer $parent The parent folder ID
@@ -790,7 +769,7 @@ class Products_m extends MY_Model
     public function get_images($slug)
     {
 
-        $folder = $this->get_file_folder_by_slug($slug);
+        $folder = get_file_folder_by_slug($slug, 'product-images');
         $images = Files::folder_contents($folder->id);
 
         if (!empty($images['data']['file'])) {
@@ -815,7 +794,7 @@ class Products_m extends MY_Model
     {
 
         // Variables
-        $folder = $this->get_file_folder_by_slug($old);
+        $folder = get_file_folder_by_slug($old, 'product-images');
 
         // Found?
         if ($file !== FALSE AND $folder->id > 0) {

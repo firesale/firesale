@@ -54,13 +54,12 @@ class admin extends Admin_Controller
         foreach( $this->data->brands['entries'] AS &$brand ) {
             
             // Assign images
-            $folder = $this->products_m->get_file_folder_by_slug($brand['slug']);
+            $folder = get_file_folder_by_slug($brand['slug'], 'brand-images');
             $images = Files::folder_contents($folder->id);
             $brand['image'] = $images['data']['file'][0];
 
             // Assign categories
-            // $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
-            $brand['categories'] = $this->brands_m->get_categories($brand['id']);
+            $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
         }
 
         // Add page data
@@ -144,7 +143,7 @@ class admin extends Admin_Controller
         $this->data->tabs	= array_keys($this->data->fields);
 
         // Assign images
-        $folder = $this->products_m->get_file_folder_by_slug($row->slug);
+        $folder = get_file_folder_by_slug($row->slug, 'brand-images');
         $images = Files::folder_contents($folder->id);
         $this->data->images = $images['data']['file'];
 
@@ -165,12 +164,12 @@ class admin extends Admin_Controller
 
         // Get product
         $row    = $this->row_m->get_row($id, $this->stream, FALSE);
-        $folder = $this->products_m->get_file_folder_by_slug($row->slug);
+        $folder = get_file_folder_by_slug($row->slug, 'brand-images');
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
         // Create folder?
         if( !$folder ) {
-            $parent = $this->products_m->get_file_folder_by_slug('brand-images');
+            $parent = get_file_folder_by_slug('brand-images');
             $folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
             $folder = (object)$folder['data'];
         }
@@ -225,7 +224,7 @@ class admin extends Admin_Controller
                 $this->db->where('brand', $id)->update('firesale_products', array('brand' => NULL));
 
                 // Remove images
-                $folder = $this->products_m->get_file_folder_by_slug($brand['slug']);
+                $folder = get_file_folder_by_slug($brand['slug'], 'brand-images');
                 if( $folder != FALSE ) {
 
                     // Get files in folder

@@ -119,7 +119,7 @@ class Module_Firesale_brands extends Module
         $this->load->library('files/files');
 
         // Remove brand images
-        $brand_folder = $this->products_m->get_file_folder_by_slug('brand-images');
+        $brand_folder = get_file_folder_by_slug('brand-images');
         if( $brand_folder != FALSE ) {
 
             // Get files in folder

@@ -34,7 +34,7 @@ class Brands_m extends MY_Model
             $brand = current($brands['entries']);
 
             // Get images
-            if ( $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($brand['slug']), $this->firesale->cache_time) ) {
+            if ( $folder = get_file_folder_by_slug($brand['slug'], 'brand-images') ) {
                 $query = $this->db->select('id, path')
                                   ->from('files')
                                   ->where('folder_id', $folder->id)
@@ -43,8 +43,7 @@ class Brands_m extends MY_Model
             }
 
             // Get categories
-            // $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
-            $brand['categories'] = $this->brands_m->get_categories($brand['id']);
+            $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
 
             // Return it
             return $brand;
