@@ -551,6 +551,9 @@ class Module_Firesale extends Module
         Files::create_folder(0, 'Brand Images');
         Files::create_folder(0, 'Product Images');
 
+        // Tracking
+        $this->statistics('install');
+
         // Return
         return TRUE;
     }
@@ -623,8 +626,11 @@ class Module_Firesale extends Module
         $this->dbforge->drop_table('firesale_orders_items');
         $this->dbforge->drop_table('firesale_transactions');
 
-        //clear the firesale cache
+        // Clear the firesale cache
         Events::trigger('clear_cache');
+
+        // Tracking
+        $this->statistics('uninstall');
 
         // Return
         return TRUE;
@@ -815,6 +821,9 @@ class Module_Firesale extends Module
             // Add settings
             $this->settings('add', array('firesale_dashboard'));
         }
+
+        // Tracking
+        $this->statistics('upgrade', $old_version);
 
         return TRUE;
     }
@@ -1126,6 +1135,32 @@ class Module_Firesale extends Module
       // Add fields to stream
       $this->streams->fields->add_fields($fields);
 
+    }
+
+    public function statistics($action, $old_version = null)
+    {
+
+        // Build initial data
+        $data = array(
+            'version'            => $this->version,
+            'pyro_version'       => CMS_VERSION,
+            'php_version'        => phpversion(),
+            'webserver_hash'     => md5($this->input->server('SERVER_NAME').$this->input->server('SERVER_ADDR').$this->input->server('SERVER_SIGNATURE')),
+            'webserver_software' => $this->input->server('SERVER_SOFTWARE'),
+            'zlib_version'       => extension_loaded('zlib'),
+            'action'             => $action
+        );
+
+        // Upgrade
+        if ( $action == 'upgrade' and $old_version !== null ) {
+            $data['old_version'] = $old_version;
+        }
+
+        // Perform request
+        include $_SERVER['DOCUMENT_ROOT'].'/system/sparks/curl/1.2.1/libraries/Curl.php';
+        $url = 'https://www.getfiresale.org/stats/add';
+        $curl = new Curl;
+        $curl->simple_post($url, $data);
     }
 
 }
