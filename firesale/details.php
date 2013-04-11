@@ -1142,13 +1142,13 @@ class Module_Firesale extends Module
 
         // Build initial data
         $data = array(
-            'version'            => $this->version,
-            'pyro_version'       => CMS_VERSION,
-            'php_version'        => phpversion(),
-            'webserver_hash'     => md5($this->input->server('SERVER_NAME').$this->input->server('SERVER_ADDR').$this->input->server('SERVER_SIGNATURE')),
-            'webserver_software' => $this->input->server('SERVER_SOFTWARE'),
-            'zlib_version'       => extension_loaded('zlib'),
-            'action'             => $action
+            'module'          => 'firesale',
+            'action'          => $action,
+            'version'         => $this->version,
+            'pyro_version'    => CMS_VERSION,
+            'php_version'     => phpversion(),
+            'server_hash'     => md5($this->input->server('SERVER_NAME').$this->input->server('SERVER_ADDR').$this->input->server('SERVER_SIGNATURE')),
+            'server_software' => $this->input->server('SERVER_SOFTWARE')
         );
 
         // Upgrade
