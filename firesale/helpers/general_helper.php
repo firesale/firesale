@@ -4,7 +4,7 @@
      * Detects if a given module is currently installed
      *
      * @param  string  $module A module slug to query
-     * @return boolean TRUE or FALSE on installed or not
+     * @return boolean true or false on installed or not
      * @access public
      */
     function is_module_installed($module)
@@ -18,10 +18,44 @@
 
         // Check query
         if ( $query->num_rows() ) {
-            return TRUE;
+            return true;
         }
 
-        return FALSE;
+        return false;
+    }
+
+    /**
+     * Gets a Files folder object based on the Product/Name slug.
+     *
+     * @param  string $slug The slug to query
+     * @param  string [$parent] The parent slug to query
+     * @return object or boolean false on failure
+     * @access public
+     */
+    function get_file_folder_by_slug($slug, $parent = null)
+    {
+
+        // Get instance
+        $_CI =& get_instance();
+
+        // Get parent and child
+        if ( $parent !== null ) {
+            $parent = get_file_folder_by_slug($parent);
+            $result = $_CI->db->where('slug', $slug)->where('parent_id', $parent->id)->get('file_folders');
+
+        // Just child
+        } else {
+            $result = $_CI->db->where('slug', $slug)->get('file_folders');
+        }
+       
+        // Check results
+        if ( $result->num_rows() ) {
+            $parent = $result->row();
+
+            return $parent;
+        }
+
+        return false;
     }
 
     /**
@@ -72,8 +106,11 @@
         $dir = ADDONPATH.'/modules/';
         
         // Check shared addons
-        if( file_exists(SHARED_ADDONPATH.'modules/'.$module.'/details.php') ) {
+        if (is_dir(SHARED_ADDONPATH.'modules/'.$module)) {
             $dir = SHARED_ADDONPATH.'modules/';
+        } elseif ( ! is_dir($dir.$module)) {
+            $core_path = defined('PYROPATH') ? PYROPATH : APPPATH;
+            $dir = $core_path.'modules/';
         }
         
         // Register namespace
@@ -138,7 +175,7 @@
         foreach ($fields AS $key => $field) {
 
             // Reset found
-            $found = FALSE;
+            $found = false;
 
             // Loop each of the tab options
             foreach ($tabs AS $tab => $slugs) {
@@ -153,13 +190,13 @@
                     if ($tab != '!hidden')
                         $data[$tab][] = $field;
 
-                    $found = TRUE;
+                    $found = true;
                 }
 
             }
 
             // Default to general
-            if ($found == FALSE) {
+            if ($found == false) {
                 $data[$default][] = $field;
             }
 
@@ -179,7 +216,7 @@
      * @return array   Either one or all of the ordering options
      * @access public
      */
-    function get_order($id = NULL)
+    function get_order($id = null)
     {
 
         // Define order
@@ -192,7 +229,7 @@
         $_ORDER[6] = array('title' => lang('firesale:label_modelza'), 'by' => 'code', 'dir' => 'desc');
 
         // Return
-        if ($id != NULL) {
+        if ($id != null) {
             return $_ORDER[$id];
         }
 

@@ -185,7 +185,7 @@ class Admin_products extends Admin_Controller
             $this->data->variations = $this->pyrocache->model('modifier_m', 'get_products', array($row->id), $this->firesale->cache_time);
 
             // Get images
-            $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
+            $folder = get_file_folder_by_slug($row->slug, 'product-images');
             $images = Files::folder_contents($folder->id);
             $this->data->images = $images['data']['file'];
         }
@@ -528,12 +528,12 @@ class Admin_products extends Admin_Controller
 
         // Get product
         $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
-        $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
+        $folder = get_file_folder_by_slug($row->slug, 'product-images');
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
         // Create folder?
         if (!$folder) {
-            $parent = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array('product-images'), $this->firesale->cache_time);
+            $parent = get_file_folder_by_slug('product-images');
             $folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
             $folder = (object)$folder['data'];
         }

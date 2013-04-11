@@ -2,6 +2,7 @@
 
     // General Titles
     $lang['firesale:title']         = 'FireSale';
+    $lang['firesale:store']         = 'Store'; # Translate
     $lang['firesale:title:general'] = 'Bendrai';
     $lang['firesale:title:details'] = 'Jūsų duomenys';
     $lang['firesale:title:address'] = 'Jūsų adresas';
@@ -460,6 +461,8 @@
     $lang['firesale:settings_image_background_inst'] = 'Hexcode (without #) colour you wish resized image backgrounds to be'; # translate
     $lang['firesale:settings_login']                 = 'Require login to purchase'; # translate
     $lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products'; # translate
+    $lang['firesale:settings_dashboard']             = 'Override Default Dashboard'; # translate
+    $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above'; #Translate

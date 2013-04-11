@@ -49,7 +49,7 @@ class Front_address extends Public_Controller
         $params	 = array(
                     'stream' 	=> 'firesale_addresses',
                     'namespace'	=> 'firesale_addresses',
-                    'where'		=> "created_by = '{$this->user}' AND title != ''"
+                    'where'     => SITE_REF."_firesale_addresses.created_by = '{$this->user}' AND ".SITE_REF."_firesale_addresses.title != ''"
                    );
 
         // Get entries

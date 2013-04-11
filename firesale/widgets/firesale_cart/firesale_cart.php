@@ -21,7 +21,7 @@ class Widget_FireSale_Cart extends Widgets
     {
 
         // Load required items
-        $this->load->library('fs_cart');
+        $this->load->library('firesale/fs_cart');
         $this->load->model('firesale/cart_m');
         $this->load->model('firesale/taxes_m');
         $this->load->model('firesale/currency_m');
@@ -49,7 +49,7 @@ class Widget_FireSale_Cart extends Widgets
             if( $product !== FALSE ) {
 
                 $data->products[] = array(
-                    'id'        => $id,
+                    'id'        => $item['id'],
                     'code'      => $product->code,
                     'slug'      => $product->slug,
                     'quantity'  => $item['qty'],

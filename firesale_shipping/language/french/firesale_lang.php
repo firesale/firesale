@@ -3,7 +3,6 @@
     // FireSale Shipping 0.7.1
 
     // General
-    $lang['firesale:title']					= 'FireSale';
     $lang['firesale:shortcuts:band_create'] = 'Ajouter un mode d\'expédition';
 
     // Sections

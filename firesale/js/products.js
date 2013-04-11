@@ -33,14 +33,17 @@ $(function() {
 			$('.ui-slider-cont .right span').html(prices[1].toFixed(2));
 		}
 
-		$('#filters select, #filters input').change(function() {
-			update_products();
+	    $('a.show-filter').click(function() {
+	    	$('#filters').slideToggle(500, function() { var s = '0'; if ( $(this).is(':visible') ) { s = '1'; } $.cookie('fspf_show', s); });
 		});
 
-	    $('a.show-filter').click(function() { $('#filters').slideToggle(500); });
+	    if ( $.cookie('fspf_show') == '1' ) { $('a.show-filter').click(); }
+
+	    $('#filters select, #filters input').change(function() { update_products(); });
 		$('#product_table').tablesorter({widgets:["saveSort"]});
 		bind_quickedit();
 		bind_pagination();
+		populate_filters(unserialize($.cookie('fspf_values')));
 
 		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
 			update_products(window.location.hash.replace('#', ''));
@@ -254,6 +257,7 @@ $(function() {
 	function update_products(extra) {
 		if( req != null ) { req.abort(); }
 		create_overlay($('#product_table'));
+		$.cookie('fspf_values', $('#filters').serialize());
 		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, dataType: 'html', global: false, data: $('#filters').serialize(), success: function(data) {
 			$('#product_table').parent().find('.no_data').remove();
 			$('.overlay').remove();
@@ -262,7 +266,7 @@ $(function() {
 				$('#product_table tfoot').html($(data).find('#product_table tfoot').html());
 				$('#product_table').show();
 				$('#product_table').trigger("update"); 
-				build_quickedit();
+				bind_quickedit();
 				bind_pagination();
 			} else if( $(data).find('.no_data').size() > 0 ) {
 				$('#product_table').hide();
@@ -316,4 +320,21 @@ $(function() {
 		    	$(".table_action_buttons .btn").prop('disabled', ( s.find('td:first input').is(':checked') ? false : true )); }
 		    }
 		});
+	}
+
+	function populate_filters(values)
+	{
+		for ( var k in values ) {
+			if ( k == 'price' ) { var s = values[k].split('-'); setTimeout(function() { $('#price-slider').slider("values", [s[0], s[1]]).trigger('slide'); }, 250); $('.ui-slider-cont .left span').html(parseFloat(s[0]).toFixed(2)); $('.ui-slider-cont .right span').html(parseFloat(s[1]).toFixed(2));}
+			else if ( $('#filters select[name='+k+']').size() > 0 ) { $('select[name='+k+']').val(values[k]).trigger('liszt:updated'); }
+			else if ( $('#filters input[name='+k+']').size() > 0 ) { $('#filters input[name='+k+']').val(values[k]); }
+		}
+		$('#filters input:first').change();
+	}
+
+	function unserialize(str)
+	{
+		var match, urlParams = {}, pl = /\+/g, search = /([^&=]+)=?([^&]*)/g, decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
+		if ( str != null ) { while ( match = search.exec(str)) { urlParams[decode(match[1])] = decode(match[2]); } }
+		return urlParams;
 	}

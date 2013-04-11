@@ -100,7 +100,7 @@ class Module_Firesale_brands extends Module
             ## ADD ROUTES ##
             ################
 
-            $route = array('title' => 'Brand', 'slug' => 'brand', 'table' => 'firesale_brands', 'map' => 'brand/{{ slug }}', 'route' => 'brand/([a-z0-9-]+)?', 'translation' => 'firesale_brands/front/index/$1');
+            $route = array('title' => 'Brand', 'slug' => 'brand', 'table' => 'firesale_brands', 'map' => 'brand/{{ slug }}/{{ any }}', 'route' => 'brand/([a-z0-9-]+)?(/:any)?', 'translation' => 'firesale_brands/front/index/$1$2');
             $this->routes_m->create($route);
 
             return TRUE;
@@ -119,7 +119,7 @@ class Module_Firesale_brands extends Module
         $this->load->library('files/files');
 
         // Remove brand images
-        $brand_folder = $this->products_m->get_file_folder_by_slug('brand-images');
+        $brand_folder = get_file_folder_by_slug('brand-images');
         if( $brand_folder != FALSE ) {
 
             // Get files in folder

@@ -73,7 +73,7 @@ class Categories_m extends MY_Model
                 $category = current($category['entries']);
 
                 // Get images
-                $folder = $this->products_m->get_file_folder_by_slug($category['slug']);
+                $folder = get_file_folder_by_slug($category['slug'], 'category-images');
                 $images = Files::folder_contents($folder->id);
                 $category['images'] = $images['data']['file'];
 
