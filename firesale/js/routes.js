@@ -56,7 +56,7 @@ function build_buttons() {
 	    id   = id[(id.length-1)];
 
 	// Category and product
-	if( id == '2' || slug == 'category' || id == '3' || slug == 'product' || id == '8' || slug == 'currency' || id == '9' || slug == 'brands' )
+	if( id == '2' || slug == 'category' || id == '3' || slug == 'product' || id == '8' || slug == 'currency' || id == '12' || slug == 'brands' )
 	{
 		html += '<button class="btn blue route-action" data-route="{{ id }}" data-translation="([0-9]+)"><span>Add ID</span></button>';
 		html += '<button class="btn blue route-action" data-route="{{ slug }}" data-translation="([a-z0-9-]+)"><span>Add Slug</span></button>';
