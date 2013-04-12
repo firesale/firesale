@@ -148,4 +148,24 @@ class Brands_m extends MY_Model
         return $query->num_rows();
     }
 
+    public function build_breadcrumbs($brand, $category = null)
+    {
+
+        // Variables
+        $url    = $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time);
+        $crumbs = array();
+
+        // Set default breadcrumbs
+        $crumbs[lang('firesale:sections:brands')] = 'brands';
+        $crumbs[$brand['title']]  = $url;
+
+        // Set category breadcrumbs
+        if ( $category !== null ) {
+            $result = $this->db->select('title, id')->where('slug', $category)->get('firesale_categories')->row();
+            $crumbs[$result->title] = $url.$category;
+        }
+
+        return $crumbs;
+    }
+
 }

@@ -85,8 +85,12 @@ class Cart_m extends MY_Model
             // Get product
             $product = $this->pyrocache->model('products_m', 'get_product', array($item['id'], NULL, 1), $this->firesale->cache_time);
 
+            // Format prices
+            $prod_price = round(preg_replace('/[^0-9\.]+/', '', $product['price']), 1);
+            $item_price = round(preg_replace('/[^0-9\.]+/', '', $item['price']), 1);
+
             // if cart has not been modified (e.g. discount codes) and price has changed
-            if ( ( ! isset($item['modified']) or ! $item['modified']) and round($item['price'], 1) != round($product['price'], 1)) {
+            if ( ( ! isset($item['modified']) or ! $item['modified']) and $item_price != $prod_price ) {
 
                 $changed           = true;
                 $data              = array();
@@ -220,7 +224,7 @@ class Cart_m extends MY_Model
             'id'	   => $product['id'],
             'code'	   => $product['code'],
             'qty'	   => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
-            'price'	   => $product['price_rounded'],
+            'price'	   => preg_replace('/[^0-9\.]+/', '', $product['price_rounded']),
             'tax_band' => $product['tax_band']['id'],
             'name'	   => $product['title'],
             'slug'	   => $product['slug'],

@@ -125,12 +125,15 @@ class Front_category extends Public_Controller
             }
 
             // Breadcrumbs
-            $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
-            $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
-            $this->template->set_breadcrumb(lang('firesale:cats_all_products'), $url);
-            foreach ($cats as $key => $cat) {
-                $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
-                $this->template->set_breadcrumb($cat['title'], $url);
+            if ( $category == null ) {
+                $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
+                $this->template->set_breadcrumb(lang('firesale:cats_all_products'), $url);
+            } else {
+                $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
+                foreach ($cats as $key => $cat) {
+                    $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
+                    $this->template->set_breadcrumb($cat['title'], $url);
+                }
             }
 
             // Assign parent data
