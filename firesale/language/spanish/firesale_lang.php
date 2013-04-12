@@ -462,6 +462,8 @@
     $lang['firesale:settings_login_inst']            = 'Asegura que un usuario inicie sesión para comprar productos';
     $lang['firesale:settings_dashboard']             = 'Reemplazar panel predeterminado';
     $lang['firesale:settings_dashboard_inst']        = 'Muestra el Panel de FireSale en vez del predeterminado';
+    $lang['firesale:settings_https']                 = 'Enable HTTPS for Cart'; # translate
+    $lang['firesale:settings_https_inst']            = 'All cart pages will be forced to use a secure connection'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'No se puede instalar el módulo firesale, FireSale requiere PyroCMS v2.1.5 or superior';
