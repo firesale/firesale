@@ -55,6 +55,11 @@ class front extends Public_Controller
             $count      = $this->pyrocache->model('brands_m', 'get_count', array($brand['id'], $category), $this->firesale->cache_time);
             $pagination = create_pagination($route.'/'.( $category ? $category.'/' : null ),  $count, $this->perpage, ( $segments + 2));
 
+            // Build breadcrumbs
+            foreach ( $this->brands_m->build_breadcrumbs($brand, $category) as $title => $url ) {
+                $this->template->set_breadcrumb($title, $url);
+            }
+
             // Assign data
             $this->data->layout     = $this->input->cookie('firesale_listing_style') ? $this->input->cookie('firesale_listing_style') : 'grid';
             $this->data->order      = get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1);
@@ -67,7 +72,6 @@ class front extends Public_Controller
 
             // Add page content
             $this->template->title($brand['title'])
-                           ->set_breadcrumb($brand['title'], $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time))
                            ->append_css('firesale::firesale.css')
                            ->append_js('firesale::firesale.js')
                            ->set($this->data);
