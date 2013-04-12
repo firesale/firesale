@@ -84,6 +84,7 @@ class front extends Public_Controller
                 $this->data->from	 = $start;
                 $this->data->to		 = $start + $this->perpage;
                 $this->data->total	 = $total_rows;
+                $this->data->term    = urldecode($term);
 
             } elseif ( $total_rows == 1 AND !$this->input->is_ajax_request() ) {
                 // Redirect to page with one result
@@ -105,7 +106,7 @@ class front extends Public_Controller
             $this->template->set_breadcrumb('Home', '/')
                            ->set_breadcrumb(lang('firesale:sections:search'), $this->routes_m->build_url('search'))
                            ->append_css('module::search.css')
-                           ->title(sprintf(lang('firesale:sections:search' . ( $term != NUll ? '_results' : '' )), $term))
+                           ->title(sprintf(lang('firesale:sections:search' . ( $this->data->term != NUll ? '_results' : '' )), $this->data->term))
                            ->build('search', $this->data);
         }
 
