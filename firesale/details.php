@@ -820,7 +820,7 @@ class Module_Firesale extends Module
         if ($old_version < '1.2.2') {
 
             // Add settings
-            $this->settings('add', array('firesale_dashboard'));
+            $this->settings('add', array('firesale_dashboard', 'firesale_https'));
         }
 
         // Tracking
@@ -852,6 +852,7 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'image_background', 'title' => lang('firesale:settings_image_background'), 'description' => lang('firesale:settings_image_background_inst'), 'default' => 'ffffff', 'value' => 'ffffff', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_https', 'title' => lang('firesale:settings_https'), 'description' => lang('firesale:settings_https_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
         // Perform
         foreach ($settings as $setting) {

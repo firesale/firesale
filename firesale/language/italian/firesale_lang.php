@@ -462,6 +462,8 @@
     $lang['firesale:settings_login_inst']            = 'Assicurarsi che l\'utente sia loggato prima di permettere l\'acquisto dei prodotti';
     $lang['firesale:settings_dashboard']             = 'Override Default Dashboard'; # translate
     $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default'; # translate
+    $lang['firesale:settings_https']                 = 'Enable HTTPS for Cart'; # translate
+    $lang['firesale:settings_https_inst']            = 'All cart pages will be forced to use a secure connection'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Non è possibile installare il modulo FireSale, FireSale richiede PyroCMS v2.1.4 o superiore';
