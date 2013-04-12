@@ -61,7 +61,7 @@ class Front_cart extends Public_Controller
         }
 
         // Force https?
-        if ( ( ! isset($_SERVER['HTTPS']) or ! $_SERVER['HTTPS'] == '1' ) and $this->settings->get('firesale_https') ) {
+        if ( ( ! isset($_SERVER['HTTPS']) or $_SERVER['HTTPS'] == 'off' ) and $this->settings->get('firesale_https') ) {
             $redirect = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
             header("Location: $redirect");
         }
