@@ -51,6 +51,8 @@ class Products_m extends MY_Model
     public function __construct()
     {
         parent::__construct();
+
+        // Load required items
         $this->load->model('firesale/categories_m');
         $this->load->helper('firesale/general');
         $this->load->model('firesale/currency_m');
@@ -170,11 +172,6 @@ class Products_m extends MY_Model
                 'sort'      => 'desc'
             );
 
-            // Add to params if required
-            if ( $this->uri->segment('1') != 'admin' ) {
-                $params['where'] .= ' AND '.SITE_REF.'_firesale_products.status = 1';
-            }
-
             // Display variations?
             if (! $show_variations) {
                 $params['where'] .= ' AND is_variation = 0';
@@ -266,7 +263,12 @@ class Products_m extends MY_Model
 
         // Display variations?
         if (! $show_variations) {
-            $query->where('is_variation', '0');
+            $query->where('p.is_variation', '0');
+        }
+
+        // Add to params if required
+        if ( $this->uri->segment('1') != 'admin' ) {
+            $query->where('p.status', '1');
         }
 
         // Run query
