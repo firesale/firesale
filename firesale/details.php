@@ -350,7 +350,7 @@ class Module_Firesale extends Module
         $template = array('namespace' => 'firesale_product_modifiers', 'assign' => 'firesale_product_modifiers', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_type', 'slug' => 'type', 'type' => 'choice', 'extra' => array('choice_data' => "1 : lang:firesale:label_mod_variant\n2 : lang:firesale:label_mod_input\n3 : lang:firesale:label_mod_single", 'choice_type' => 'dropdown', 'default_value' => 1));
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-        $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
+        $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'required' => false, 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
         $this->add_stream_fields($fields, $template);
@@ -739,7 +739,7 @@ class Module_Firesale extends Module
             $template = array('namespace' => 'firesale_product_modifiers', 'assign' => 'firesale_product_modifiers', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_type', 'slug' => 'type', 'type' => 'choice', 'extra' => array('choice_data' => "1 : lang:firesale:label_mod_variant\n2 : lang:firesale:label_mod_input\n3 : lang:firesale:label_mod_single", 'choice_type' => 'dropdown', 'default_value' => 1));
             $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-            $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
+            $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'required' => false, 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
             $this->add_stream_fields($fields, $template);
