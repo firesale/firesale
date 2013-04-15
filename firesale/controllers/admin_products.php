@@ -361,7 +361,12 @@ class Admin_products extends Admin_Controller
         }
 
         // Format streams fields
-        unset($fields[3]);
+        foreach ( $fields as $key => $value ) {
+            if ( $value['input_slug'] == 'parent' ) {
+                unset($fields[$key]);
+                break;
+            }
+        }
 
         // Assign variables
         $this->data->id     = $id;
@@ -539,7 +544,7 @@ class Admin_products extends Admin_Controller
         }
 
         // Check for folder
-        if ( is_object($folder) AND ! empty($folder) ) {
+        if ( is_object($folder) and ! empty($folder) ) {
 
             // Upload it
             $status = Files::upload($folder->id);
