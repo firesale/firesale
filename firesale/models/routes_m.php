@@ -37,6 +37,7 @@ class Routes_m extends MY_Model
             // return cache
             return $this->cache[$cache_key];
         } else {
+            
             // Get route info
             $query = $this->db->where('slug', $slug)->get('firesale_routes');
             $route = $query->row();

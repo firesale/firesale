@@ -12,6 +12,7 @@
                     <tr>
                         <th style="width: 26px"></th>
                         <th><?php echo lang('firesale:label_title'); ?></th>
+                        <th><?php echo lang('firesale:label_https'); ?></th>
                         <th><?php echo lang('firesale:label_slug'); ?></th>
                         <th><?php echo lang('firesale:label_route'); ?></th>
                         <th><?php echo lang('firesale:label_translation'); ?></th>
@@ -20,7 +21,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="inner"><?php $this->load->view('admin/partials/pagination'); ?></div>
                         </td>
                     </tr>
@@ -30,6 +31,7 @@
                     <tr id="route_<?php echo $route['id']; ?>">
                         <td><span class="mover"></span></td>
                         <td><?php echo ( substr($route['title'], 0, 5) == 'lang:' ? lang(substr($route['title'], 5)) : $route['title'] ); ?></td>
+                        <td><?php echo $route['https']['value']; ?></td>
                         <td><?php echo $route['slug']; ?></td>
                         <td><?php echo $route['route']; ?></td>
                         <td><?php echo $route['translation']; ?></td>
