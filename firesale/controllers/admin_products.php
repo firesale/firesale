@@ -544,9 +544,17 @@ class Admin_products extends Admin_Controller
             // Upload it
             $status = Files::upload($folder->id);
 
-            // Make square?
-            if ( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 ) {
-                $this->products_m->make_square($status, $allow);
+            // Success
+            if ( $status['status'] == true ) {
+
+                // Order images
+                $count = $this->db->where('folder_id', $folder->id)->get('files')->num_rows();
+                $this->db->where('id', $status['data']['id'])->update('files', array('sort' => ( $count - 1 )));
+
+                // Make image square
+                if ( $this->settings->get('image_square') == 1 ) {
+                    $this->products_m->make_square($status, $allow);
+                }
             }
 
             // Updated, clear cache!
