@@ -248,8 +248,7 @@ class Products_m extends MY_Model
                 $query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
                       ->where('pc.firesale_categories_id', $value);
             } elseif ($key == 'search' AND strlen($value) > 0 ) {
-                $query->like('title', $value)
-                      ->or_like('code', $value);
+                $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
                 $query->where('p.price <', 'p.rrp');
             } elseif ($key == 'price') {
