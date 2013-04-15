@@ -301,6 +301,9 @@ class Front_cart extends Public_Controller
         // Update the cart
         $this->fs_cart->remove($row_id);
 
+        // Fire events
+        Events::trigger('cart_item_removed');
+
         if ($this->input->is_ajax_request()) {
             exit('success');
         } else {
