@@ -546,7 +546,7 @@ class Admin_products extends Admin_Controller
 
             // Make square?
             if ( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 ) {
-                $this->pyrocache->model('products_m', 'make_square', array($status, $allow), $this->firesale->cache_time);
+                $this->products_m->make_square($status, $allow);
             }
 
             // Updated, clear cache!
