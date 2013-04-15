@@ -361,7 +361,12 @@ class Admin_products extends Admin_Controller
         }
 
         // Format streams fields
-        unset($fields[3]);
+        foreach ( $fields as $key => $value ) {
+            if ( $value['input_slug'] == 'parent' ) {
+                unset($fields[$key]);
+                break;
+            }
+        }
 
         // Assign variables
         $this->data->id     = $id;
@@ -539,14 +544,22 @@ class Admin_products extends Admin_Controller
         }
 
         // Check for folder
-        if ( is_object($folder) AND ! empty($folder) ) {
+        if ( is_object($folder) and ! empty($folder) ) {
 
             // Upload it
             $status = Files::upload($folder->id);
 
-            // Make square?
-            if ( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 ) {
-                $this->pyrocache->model('products_m', 'make_square', array($status, $allow), $this->firesale->cache_time);
+            // Success
+            if ( $status['status'] == true ) {
+
+                // Order images
+                $count = $this->db->where('folder_id', $folder->id)->get('files')->num_rows();
+                $this->db->where('id', $status['data']['id'])->update('files', array('sort' => ( $count - 1 )));
+
+                // Make image square
+                if ( $this->settings->get('image_square') == 1 ) {
+                    $this->products_m->make_square($status, $allow);
+                }
             }
 
             // Updated, clear cache!

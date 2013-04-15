@@ -51,6 +51,8 @@ class Products_m extends MY_Model
     public function __construct()
     {
         parent::__construct();
+
+        // Load required items
         $this->load->model('firesale/categories_m');
         $this->load->helper('firesale/general');
         $this->load->model('firesale/currency_m');
@@ -170,11 +172,6 @@ class Products_m extends MY_Model
                 'sort'      => 'desc'
             );
 
-            // Add to params if required
-            if ( $this->uri->segment('1') != 'admin' ) {
-                $params['where'] .= ' AND '.SITE_REF.'_firesale_products.status = 1';
-            }
-
             // Display variations?
             if (! $show_variations) {
                 $params['where'] .= ' AND is_variation = 0';
@@ -251,8 +248,7 @@ class Products_m extends MY_Model
                 $query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
                       ->where('pc.firesale_categories_id', $value);
             } elseif ($key == 'search' AND strlen($value) > 0 ) {
-                $query->like('title', $value)
-                      ->or_like('code', $value);
+                $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
                 $query->where('p.price <', 'p.rrp');
             } elseif ($key == 'price') {
@@ -266,7 +262,12 @@ class Products_m extends MY_Model
 
         // Display variations?
         if (! $show_variations) {
-            $query->where('is_variation', '0');
+            $query->where('p.is_variation', '0');
+        }
+
+        // Add to params if required
+        if ( $this->uri->segment('1') != 'admin' ) {
+            $query->where('p.status', '1');
         }
 
         // Run query
@@ -446,11 +447,18 @@ class Products_m extends MY_Model
     {
 
         // Get original details
-        $product = current($this->db->where('id', $id)->get('firesale_products')->result_array());
-        $cats    = $this->db->where('row_id', $id)->get('firesale_products_firesale_categories')->result_array();
+        $original = current($this->db->where('id', $id)->get('firesale_products')->result_array());
+        $cats     = $this->db->where('row_id', $id)->get('firesale_products_firesale_categories')->result_array();
 
         // Remove original id
-        unset($product['id']);
+        unset($original['id']);
+
+        // Update fields
+        $product           = $original;
+        $count             = $this->db->like('title', $product['title'])->get('firesale_products')->num_rows();
+        $product['title'] .= ' ('.( $count + 1 ).')';
+        $product['slug']  .= '-'.( $count + 1 );
+        $product['code']  .= '-'.( $count + 1 );
 
         // Insert it
         $this->db->insert('firesale_products', $product);
@@ -463,7 +471,27 @@ class Products_m extends MY_Model
             $this->db->insert('firesale_products_firesale_categories', $cat);
         }
 
+        // Get parent images
+        $parent = get_file_folder_by_slug($original['slug'], 'product-images');
+        $images = $this->db->where('folder_id', $parent->id)->get('files');
+
+        // Clone them
+        if ( $images->num_rows() ) {
+            
+            // Create folder
+            $folder = $this->create_file_folder($parent->id, $product['title'], $product['slug']);
+            $folder = (object)$folder['data'];
+
+            // Loop and add images
+            foreach ( $images->result_array() as $image ) {
+                unset($image['id']);
+                $image['folder_id'] = $folder->id;
+                $this->db->insert('files', $image);
+            }
+        }
+
         // Fire events
+        Events::trigger('clear_cache');
         Events::trigger('product_duplicated', array('original' => $product['id'], 'new' => $id));
 
         // Return ID

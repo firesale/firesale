@@ -350,7 +350,7 @@ class Module_Firesale extends Module
         $template = array('namespace' => 'firesale_product_modifiers', 'assign' => 'firesale_product_modifiers', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_type', 'slug' => 'type', 'type' => 'choice', 'extra' => array('choice_data' => "1 : lang:firesale:label_mod_variant\n2 : lang:firesale:label_mod_input\n3 : lang:firesale:label_mod_single", 'choice_type' => 'dropdown', 'default_value' => 1));
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-        $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
+        $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'required' => false, 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
         $this->add_stream_fields($fields, $template);
@@ -739,7 +739,7 @@ class Module_Firesale extends Module
             $template = array('namespace' => 'firesale_product_modifiers', 'assign' => 'firesale_product_modifiers', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_type', 'slug' => 'type', 'type' => 'choice', 'extra' => array('choice_data' => "1 : lang:firesale:label_mod_variant\n2 : lang:firesale:label_mod_input\n3 : lang:firesale:label_mod_single", 'choice_type' => 'dropdown', 'default_value' => 1));
             $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
-            $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
+            $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'required' => false, 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
             $this->add_stream_fields($fields, $template);
@@ -835,6 +835,7 @@ class Module_Firesale extends Module
         // Variables
         $return     = TRUE;
         $settings   = array();
+        $current    = array();
 
         // Settings
         $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
@@ -849,15 +850,23 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_https', 'title' => lang('firesale:settings_https'), 'description' => lang('firesale:settings_https_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
+        // Get existing settings
+        foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }
+
         // Perform
         foreach ($settings as $setting) {
 
+            // Check it's not in already
+            if ( in_array($setting['slug'], $current) ) { continue; }
+
+            // Add it
             if ($action == 'add') {
-                if ( ( !empty($add) AND in_array($setting['slug'], $add) ) OR empty($add) ) {
-                    if ( !$this->db->insert('settings', $setting) ) {
+                if ( ( ! empty($add) and in_array($setting['slug'], $add) ) or empty($add) ) {
+                    if ( ! $this->db->insert('settings', $setting) ) {
                         $return = FALSE;
                     }
                 }
+            // Remove it
             } else {
                 if ( !$this->db->delete('settings', array('slug' => $setting['slug'])) ) {
                     $return = FALSE;

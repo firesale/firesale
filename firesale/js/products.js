@@ -39,7 +39,7 @@ $(function() {
 
 	    if ( $.cookie('fspf_show') == '1' ) { $('a.show-filter').click(); }
 
-	    $('#filters select, #filters input').change(function() { update_products(); });
+	    $('#filters select, #filters input').change(function() { $('#filters input[name=start]').val(0); update_products(); });
 		$('#product_table').tablesorter({widgets:["saveSort"]});
 		bind_quickedit();
 		bind_pagination();
