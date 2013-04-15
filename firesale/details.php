@@ -835,6 +835,7 @@ class Module_Firesale extends Module
         // Variables
         $return     = TRUE;
         $settings   = array();
+        $current    = array();
 
         // Settings
         $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
@@ -849,15 +850,23 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_https', 'title' => lang('firesale:settings_https'), 'description' => lang('firesale:settings_https_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
+        // Get existing settings
+        foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }
+
         // Perform
         foreach ($settings as $setting) {
 
+            // Check it's not in already
+            if ( in_array($setting['slug'], $current) ) { continue; }
+
+            // Add it
             if ($action == 'add') {
-                if ( ( !empty($add) AND in_array($setting['slug'], $add) ) OR empty($add) ) {
-                    if ( !$this->db->insert('settings', $setting) ) {
+                if ( ( ! empty($add) and in_array($setting['slug'], $add) ) or empty($add) ) {
+                    if ( ! $this->db->insert('settings', $setting) ) {
                         $return = FALSE;
                     }
                 }
+            // Remove it
             } else {
                 if ( !$this->db->delete('settings', array('slug' => $setting['slug'])) ) {
                     $return = FALSE;
