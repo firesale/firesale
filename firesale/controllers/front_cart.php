@@ -47,17 +47,19 @@ class Front_cart extends Public_Controller
                 $url = current_url();
             }
 
+            // Set data and redirect
+            $this->session->set_flashdata('error', lang('firesale:cart:login_required'));
+            $this->session->set_userdata('redirect_to', $url);
+
+            // Ajax response
             if ( $this->input->is_ajax_request() ) {
                 // If ajax send back error reponse
                 echo $this->cart_m->ajax_response(lang('firesale:cart:login_required'));
                 exit();
             }
 
-            // Set data and redirect
-            $this->session->set_flashdata('error', lang('firesale:cart:login_required'));
-            $this->session->set_userdata('redirect_to', $url);
+            // Redirect
             redirect('users/login');
-
         }
 
         // Force https?
@@ -298,6 +300,9 @@ class Front_cart extends Public_Controller
 
         // Update the cart
         $this->fs_cart->remove($row_id);
+
+        // Fire events
+        Events::trigger('cart_item_removed');
 
         if ($this->input->is_ajax_request()) {
             exit('success');

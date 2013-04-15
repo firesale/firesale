@@ -671,8 +671,7 @@ class Module_Firesale extends Module
             $fields   = array();
             $template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_ship_req', 'slug' => 'ship_req', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 1));
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-            $this->streams->fields->add_fields($fields);
+            $this->add_stream_fields($fields, $template);
 
             // Orders
             $currency = $this->streams->streams->get_stream('firesale_currency', 'firesale_currency');
@@ -680,16 +679,14 @@ class Module_Firesale extends Module
             $template = array('namespace' => 'firesale_orders', 'assign' => 'firesale_orders', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:sections:currency', 'slug' => 'currency', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $currency->id));
             $fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exchange_rate', 'extra' => array('default' => 1, 'max_length' => 10));
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-            $this->streams->fields->add_fields($fields);
+            $this->add_stream_fields($fields, $template);
 
             // Orders Items
             $taxes    = $this->streams->streams->get_stream('firesale_orders_items', 'firesale_orders_items');
             $fields   = array();
             $template = array('namespace' => 'firesale_orders_items', 'assign' => 'firesale_orders_items', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-            $this->streams->fields->add_fields($fields);
+            $this->add_stream_fields($fields, $template);
 
             // Up-to-date transactions table
             $this->dbforge->drop_table('firesale_transactions');
@@ -745,11 +742,7 @@ class Module_Firesale extends Module
             $fields[] = array('name' => 'lang:firesale:label_inst', 'slug' => 'instructions', 'type' => 'wysiwyg', 'extra' => array('editor_type' => 'simple'), 'required' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
 
-            // Combine
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-            // Add fields to stream
-            $this->streams->fields->add_fields($fields);
+            $this->add_stream_fields($fields, $template);
 
             ########################
             ## PRODUCT VARIATIONS ##
@@ -769,11 +762,7 @@ class Module_Firesale extends Module
             $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
             $fields[] = array('name' => 'lang:firesale:label_prod_link', 'slug' => 'product', 'type' => 'relationship', 'extra' => array('choose_stream' => $products->id), 'required' => FALSE);
 
-            // Combine
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-            // Add fields to stream
-            $this->streams->fields->add_fields($fields);
+            $this->add_stream_fields($fields, $template);
 
             // Create lookup table
             $this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
@@ -821,6 +810,12 @@ class Module_Firesale extends Module
 
             // Add settings
             $this->settings('add', array('firesale_dashboard', 'firesale_https'));
+
+            // Add https option
+            $fields   = array();
+            $template = array('namespace' => 'firesale_routes', 'assign' => 'firesale_routes', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+            $fields[] = array('name' => 'lang:firesale:label_use_https', 'slug' => 'https', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 0));
+            $this->add_stream_fields($fields, $template);
         }
 
         // Tracking
@@ -899,12 +894,9 @@ class Module_Firesale extends Module
             $fields[] = array('name' => 'lang:firesale:label_map', 'slug' => 'map', 'extra' => array('max_length' => 255), 'unique' => TRUE);
             $fields[] = array('name' => 'lang:firesale:label_route', 'slug' => 'route', 'extra' => array('max_length' => 255), 'unique' => TRUE);
             $fields[] = array('name' => 'lang:firesale:label_translation', 'slug' => 'translation', 'extra' => array('max_length' => 128), 'unique' => TRUE);
+            $fields[] = array('name' => 'lang:firesale:label_use_https', 'slug' => 'https', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 0));
 
-            // Combine
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-            // Add fields to stream
-            $this->streams->fields->add_fields($fields);
+            $this->add_stream_fields($fields, $template);
 
             // Add is_core
             $this->db->query("ALTER TABLE `".SITE_REF."_firesale_routes` ADD `is_core` BOOLEAN NOT NULL DEFAULT '0'");
@@ -985,11 +977,7 @@ class Module_Firesale extends Module
             $fields[] = array('name' => 'lang:firesale:label_cur_flag', 'slug' => 'image', 'type' => 'image', 'extra' => array('folder' => $currency['data']['id']), 'required' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_exch_rate', 'slug' => 'exch_rate', 'type' => 'text', 'instructions' => 'lang:firesale:label_exch_rate_inst', 'extra' => array('max_length' => 10), 'required' => FALSE);
 
-            // Combine
-            foreach ($fields AS &$field) { $field = array_merge($template, $field); }
-
-            // Add fields to stream
-            $this->streams->fields->add_fields($fields);
+            $this->add_stream_fields($fields, $template);
 
             // Add an initial currency
             $this->db->insert('firesale_currency', array(

@@ -231,6 +231,8 @@
     $lang['firesale:label_route']       = 'Route';
     $lang['firesale:label_translation'] = 'Translation';
     $lang['firesale:label_table']       = 'Table';
+    $lang['firesale:label_https']       = 'HTTPS';
+    $lang['firesale:label_use_https']   = 'Enable HTTPS';
 
     $lang['firesale:label_cur_code']        = 'Currency Code';
     $lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format';
