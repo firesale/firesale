@@ -180,6 +180,7 @@ $(function() {
 		if( $(response).find('.alert').size() > 0 ) {
 			$(response).find('.alert').each(function() {
 				var c = $(this).attr('class');
+				$('#content-body > .alert').remove();
 				$('#content-body').prepend('<div class="'+c+'">'+$(this).html()+'</div>');
 			});
 		}
