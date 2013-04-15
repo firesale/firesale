@@ -130,11 +130,11 @@ $(function() {
 			}
 		});
 
-		$('.modifiers th .mod-min').click(function(e) {
+		$('.modifiers th .mod-min').live('click', function(e) {
 			e.preventDefault();
 			$('.modifiers td .mod-min').click();
 		});
-		$('.modifiers td .mod-min').click(function(e) {
+		$('.modifiers td .mod-min').live('click', function(e) {
 			e.preventDefault();
 			$(this).parents('tr').find('table').slideToggle(250);
 			$(this).toggleClass('show');
