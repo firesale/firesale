@@ -113,10 +113,16 @@ class Modifier_m extends MY_Model
 
         // Variables
         $return     = array();
+        $tmp        = array();
         $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
         $currency   = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
-        $variations = $this->db->where('parent', $parent)->order_by('ordering_count', 'asc')->get('firesale_product_variations')->result_array();
-        $tmp        = array();
+        $variations = $this->db->select('v.*, vp.firesale_products_id AS product')
+                               ->from('firesale_product_variations AS v')
+                               ->join('firesale_product_variations_firesale_products AS vp', 'vp.row_id = v.id')
+                               ->where('v.parent', $parent)
+                               ->order_by('v.ordering_count', 'asc')
+                               ->get()
+                               ->result_array();
 
         foreach ($variations as &$variation) {
 
