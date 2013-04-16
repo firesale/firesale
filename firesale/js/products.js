@@ -130,11 +130,11 @@ $(function() {
 			}
 		});
 
-		$('.modifiers th .mod-min').click(function(e) {
+		$('.modifiers th .mod-min').live('click', function(e) {
 			e.preventDefault();
 			$('.modifiers td .mod-min').click();
 		});
-		$('.modifiers td .mod-min').click(function(e) {
+		$('.modifiers td .mod-min').live('click', function(e) {
 			e.preventDefault();
 			$(this).parents('tr').find('table').slideToggle(250);
 			$(this).toggleClass('show');
@@ -180,6 +180,7 @@ $(function() {
 		if( $(response).find('.alert').size() > 0 ) {
 			$(response).find('.alert').each(function() {
 				var c = $(this).attr('class');
+				$('#content-body > .alert').remove();
 				$('#content-body').prepend('<div class="'+c+'">'+$(this).html()+'</div>');
 			});
 		}
