@@ -413,8 +413,8 @@ class Modifier_m extends MY_Model
         // Add to update
         $update['title']        = $product['title'];
         $update['code']         = $product['code'];
-        $update['price']        = number_format($product['price'], 2);
-        $update['price_tax']    = number_format(( $product['price'] / $tax ), 2);
+        $update['price']        = round($product['price'], 2);
+        $update['price_tax']    = round(( $product['price'] / $tax ), 2);
         $update['is_variation'] = '1';
 
         // Perform update
