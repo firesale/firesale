@@ -163,17 +163,12 @@ $(function() {
 
 	function tax_link(price, before) {
 		var tmp = before.clone();before.parent().parent().remove();
-		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="link linked">Link</button>&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
-		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
+		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.change(function() {
-			if( $(this).parent().find('button').is('.linked') ) {
-				$(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3));
-			}
+			$(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3));
 		}).change();
 		$('#' + tmp.attr('id')).change(function() {
-			if( $(this).parent().find('button').is('.linked') ) {
-				$(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2));
-			}
+			$(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2));
 		}).change();
 	}
 
