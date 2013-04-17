@@ -44,7 +44,7 @@ $(function() {
 		bind_quickedit();
 		bind_pagination();
 		
-		if ( $.cookie('fspf_values') && $.cookie('fspf_values') != $('#filters').serialize()) ) {
+		if ( $.cookie('fspf_values') && $.cookie('fspf_values') != $('#filters').serialize() ) {
 			populate_filters(unserialize($.cookie('fspf_values')));
 		}
 
