@@ -14,7 +14,7 @@
           </ul>
         </div>
 
-        <div class="width-hal">
+        <div class="width-half">
           <h2><?php echo lang('firesale:orders:labe_payment_address'); ?></h2>
           <ul>
             {{ if bill_to.firstname }}<li>{{ bill_to.firstname }} {{ bill_to.lasstname }}</li> {{ endif }}
