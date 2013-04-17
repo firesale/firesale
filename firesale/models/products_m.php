@@ -154,67 +154,64 @@ class Products_m extends MY_Model
         // Variables
         $user_currency = $this->session->userdata('currency');
         $currency      = $currency ? $currency : ($user_currency ? $user_currency : 1);        
-        $type          = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
 
-        // Check cache
-        if ( array_key_exists($id_slug, $this->cache[$type]) ) {
-            // Return cached version
-            return $this->cache[$type][$id_slug];
-        } else {
+        // Set params
+        $params = array(
+            'stream'    => 'firesale_products',
+            'namespace' => 'firesale_products',
+            'where'     => SITE_REF."_firesale_products.slug = '{$id_slug}'",
+            'limit'     => '1',
+            'order_by'  => 'id',
+            'sort'      => 'desc'
+        );
 
-            // Set params
-            $params = array(
-                'stream'    => 'firesale_products',
-                'namespace' => 'firesale_products',
-                'where'     => SITE_REF."_firesale_products.{$type} = '{$id_slug}'",
-                'limit'     => '1',
-                'order_by'  => 'id',
-                'sort'      => 'desc'
-            );
+        // Display variations?
+        if (! $show_variations) {
+            $params['where'] .= ' AND is_variation = 0';
+        }
 
-            // Display variations?
-            if (! $show_variations) {
-                $params['where'] .= ' AND is_variation = 0';
+        // Get entries
+        $product = $this->streams->entries->get_entries($params);
+
+        // Try ID instead
+        if ($product['total'] <= 0) {
+            $params['where'] = SITE_REF."_firesale_products.id = '{$id_slug}'";
+            $product         = $this->streams->entries->get_entries($params);
+        }
+
+        // Check exists
+        if ($product['total'] > 0) {
+
+            // Get and format product data
+            $product                 = current($product['entries']);
+            $product['snippet']      = truncate_words($product['description']);
+            $product['category']     = $this->get_categories($product['id']);
+            $product['image']        = $this->get_single_image($product['id']);
+
+            // Get variation and modifer data
+            $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
+            $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
+
+            // Format product pricing
+            $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
+            $product = array_merge($product, $pricing);
+
+            // Append data from other modules
+            $results = Events::trigger('product_get', $product, 'array');
+            foreach ($results as $result) {
+                $product = array_merge($product, $result);
             }
 
-            // Get entries
-            $product = $this->streams->entries->get_entries($params);
+            // Add to cache
+            $this->cache['id'][$product['id']]     = $product;
+            $this->cache['slug'][$product['slug']] = $product;
 
-            // Check exists
-            if ($product['total'] > 0) {
-
-                // Get and format product data
-                $product                 = current($product['entries']);
-                $product['snippet']      = truncate_words($product['description']);
-                $product['category']     = $this->get_categories($product['id']);
-                $product['image']        = $this->get_single_image($product['id']);
-
-                // Get variation and modifer data
-                $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
-                $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
-
-                // Format product pricing
-                $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
-                $product = array_merge($product, $pricing);
-
-                // Append data from other modules
-                $results = Events::trigger('product_get', $product, 'array');
-                foreach ($results as $result) {
-                    $product = array_merge($product, $result);
-                }
-
-                // Add to cache
-                $this->cache['id'][$product['id']]     = $product;
-                $this->cache['slug'][$product['slug']] = $product;
-
-                // Return
-                return $product;
-            }
-
+            // Return
+            return $product;
         }
 
         // Nothing?
-        return FALSE;
+        return false;
     }
 
     /**
