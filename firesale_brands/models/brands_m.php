@@ -76,7 +76,7 @@ class Brands_m extends MY_Model
         return false;
     }
 
-    public function get_products($brand, $perpage, $start, $category = null)
+    public function get_products($brand, $perpage, $start, $by, $dir, $category = null)
     {
         // Variations
         $show_variations = (bool) $this->settings->get('firesale_show_variations');
@@ -86,7 +86,7 @@ class Brands_m extends MY_Model
                           ->from('firesale_products AS p')
                           ->where('p.brand', $brand)
                           ->where('p.status', '1')
-                          ->order_by('p.title', 'asc')
+                          ->order_by('p.' . $by, $dir)
                           ->limit($perpage, $start);
 
         // Hide variations
