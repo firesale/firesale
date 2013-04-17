@@ -77,6 +77,9 @@ class Categories_m extends MY_Model
                 $images = Files::folder_contents($folder->id);
                 $category['images'] = $images['data']['file'];
 
+                // Get a child count
+                $category['children'] = $this->db->where('parent', $category['id'])->get('firesale_categories')->num_rows();
+
                 // Append data from other modules
                 $results = Events::trigger('category_get', $category, 'array');
                 foreach ($results as $result) {
