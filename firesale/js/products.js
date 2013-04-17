@@ -43,7 +43,10 @@ $(function() {
 		$('#product_table').tablesorter({widgets:["saveSort"]});
 		bind_quickedit();
 		bind_pagination();
-		populate_filters(unserialize($.cookie('fspf_values')));
+		
+		if ( $.cookie('fspf_values') && $.cookie('fspf_values') != $('#filters').serialize()) ) {
+			populate_filters(unserialize($.cookie('fspf_values')));
+		}
 
 		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
 			update_products(window.location.hash.replace('#', ''));
