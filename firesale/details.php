@@ -319,7 +319,7 @@ class Module_Firesale extends Module
         $template = array('namespace' => 'firesale_products', 'assign' => 'firesale_products', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_id', 'slug' => 'code', 'extra' => array('max_length' => 64), 'unique' => TRUE);
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
-        $fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
+        $fields[] = array('name' => 'lang:firesale:label_slug', 'slug' => 'slug', 'type' => 'slug', 'unique' => true, 'extra' => array('max_length' => 255, 'slug_field' => 'title', 'space_type' => '-'));
         $fields[] = array('name' => 'lang:firesale:label_category', 'slug' => 'category', 'type' => 'multiple', 'extra' => array('choose_stream' => $categories->id));
         $fields[] = array('name' => 'lang:firesale:label_rrp', 'slug' => 'rrp', 'type' => 'decimal', 'instructions' => 'lang:firesale:inst_rrp', 'extra' => array('decimal_places' => '2', 'min_value' => '0.00'));
         $fields[] = array('name' => 'lang:firesale:label_rrp_tax', 'slug' => 'rrp_tax', 'type' => 'decimal', 'extra' => array('decimal_places' => '3', 'min_value' => '0.00'));
@@ -809,13 +809,13 @@ class Module_Firesale extends Module
         if ($old_version < '1.2.2') {
 
             // Add settings
-            /*$this->settings('add', array('firesale_dashboard', 'firesale_https'));
+            $this->settings('add', array('firesale_dashboard', 'firesale_https'));
 
             // Add https option
             $fields   = array();
             $template = array('namespace' => 'firesale_routes', 'assign' => 'firesale_routes', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_use_https', 'slug' => 'https', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 0));
-            $this->add_stream_fields($fields, $template);*/
+            $this->add_stream_fields($fields, $template);
 
             // Update routes
             $this->load->model('firesale/routes_m');
@@ -826,6 +826,10 @@ class Module_Firesale extends Module
                     $this->routes_m->write($result['title'], html_entity_decode($result['route']), html_entity_decode($result['translation']));
                 }
             }
+
+            // Force product slug to be unique
+            $id = $this->db->select('id')->where('field_slug', 'slug')->where('field_namespace', 'firesale_products')->get('data_fields')->row()->id;
+            $this->db->where('field_id', $id)->update('data_field_assignments', array('is_unique' => 'yes'));
         }
 
         // Tracking
