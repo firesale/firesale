@@ -9,6 +9,7 @@ a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-re
 #filters > ul > li > center .chzn-single li span { text-align: left !important; }
 .chzn-container .chzn-single span, .chzn-container li { text-align: left !important; }
 .overlay { background: rgba(255,255,255,.6) url('img/loading.gif') no-repeat 50% 50%; }
+.clear { clear: both; height: 0; line-height: 0; }
 
 /* Product Table */
 #product_table #id{width:100px!important;margin:0;}

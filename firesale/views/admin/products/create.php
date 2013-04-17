@@ -177,6 +177,7 @@
                                         <small><?php echo lang(substr($input['instructions'], 5)) ? lang(substr($input['instructions'], 5)) : $input['instructions']; ?></small>
                                     </label>
                                     <div class="input"><?php echo $input['input']; ?></div>
+                                    <br class="clear" />
                                 </li>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -198,6 +199,7 @@
                                         <small><?php echo lang(substr($input['instructions'], 5)) ? lang(substr($input['instructions'], 5)) : $input['instructions']; ?></small>
                                     </label>
                                     <div class="input"><?php echo $input['input']; ?></div>
+                                    <br class="clear" />
                                 </li>
                             <?php endforeach; ?>
                         <?php else: ?>

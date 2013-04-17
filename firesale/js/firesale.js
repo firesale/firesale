@@ -40,9 +40,8 @@ $(function() {
 	$("#checkout").accordion({autoHeight: false});
 	
 	// Navigation
-	$('a.prev, a.next').click(function(e) {
-		e.preventDefault();
-		$($(this).attr('href')).click(); });
+	$('a.prev').click(function(e) { e.preventDefault(); $(this).parents('fieldset').prevAll('h3').click(); });
+	$('a.next').click(function(e) { e.preventDefault(); $(this).parents('fieldset').nextAll('h3').click(); });
 	
 	// Addresses
 	$('input[name=ship_to], input[name=bill_to]').change(function() { var p = $(this).parents('fieldset').find('ul.width-half'); p.hide(); if( $('input[name='+$(this).attr('name')+']:checked').val() == 'new' ) { p.show(); } }).change();

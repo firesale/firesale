@@ -50,7 +50,7 @@
                 </div>
 
                 <br class="clear" />
-                <a href="#billing_details" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
+                <a href="#" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
                 <br class="clear" />
 
             </fieldset>
@@ -102,8 +102,8 @@
                 </div>
 
                 <br class="clear" />
-                <a href="#shipping_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
-                <a href="#shipping" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
+                <a href="#" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+                <a href="#" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
                 <br class="clear" />
 
             </fieldset>
@@ -126,8 +126,8 @@
                 </ul>
 
                 <br class="clear" />
-                <a href="#billing_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
-                <a href="#payment" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
+                <a href="#" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+                <a href="#" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
                 <br class="clear" />
 
             </fieldset>
@@ -153,7 +153,7 @@
                 </ul>
 
                 <br class="clear" />
-                <a href="#shipping" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+                <a href="#" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
                 <button type="submit" name="btnAction" value="pay" class="next btn"><span><?php echo lang('firesale:checkout:submit_and_pay'); ?></span></button>
                 <br class="clear" />
 
