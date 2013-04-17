@@ -54,9 +54,8 @@ class Front_orders extends Public_Controller
 
             // Add items to order
             if ($orders['total'] > 0) {
-                foreach ($orders['entries'] AS $key => $order) {
-                    $products = $this->orders_m->order_products($order['id']);
-                    $orders['entries'][$key] = array_merge($orders['entries'][$key], $products);
+                foreach ($orders['entries'] AS &$order) {
+                    $order['count'] = $this->pyrocache->model('orders_m', 'product_count', array($order['id']), $this->firesale->cache_time);
                 }
             }
 
