@@ -17,7 +17,7 @@
         <div class="width-half">
           <h2><?php echo lang('firesale:orders:labe_payment_address'); ?></h2>
           <ul>
-            {{ if bill_to.firstname }}<li>{{ bill_to.firstname }} {{ bill_to.lasstname }}</li> {{ endif }}
+            {{ if bill_to.firstname }}<li>{{ bill_to.firstname }} {{ bill_to.lastname }}</li> {{ endif }}
             {{ if bill_to.address1 }}<li>{{ bill_to.address1 }}</li> {{ endif }}
             {{ if bill_to.address2 }}<li>{{ bill_to.address2 }}</li> {{ endif }}
             {{ if bill_to.city }}<li>{{ bill_to.city }}</li> {{ endif }}
