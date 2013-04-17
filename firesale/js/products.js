@@ -53,7 +53,6 @@ $(function() {
 		}
 
 		bind_keys($('#product_table'));
-
 	}
 
 	/*************
