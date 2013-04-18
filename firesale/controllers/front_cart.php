@@ -298,11 +298,14 @@ class Front_cart extends Public_Controller
             $this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
         }
 
+        // Get product details
+        $product = $this->pyrocache->model('products_m', 'get_product', array($cart[$row_id]['id'], null, true), $this->firesale->cache_time);
+
         // Update the cart
         $this->fs_cart->remove($row_id);
 
         // Fire events
-        Events::trigger('cart_item_removed');
+        Events::trigger('cart_item_removed', $product);
 
         if ($this->input->is_ajax_request()) {
             exit('success');
