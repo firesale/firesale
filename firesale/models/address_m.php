@@ -25,7 +25,7 @@ class Address_m extends MY_Model
         $params	 = array(
                     'stream' 	=> 'firesale_addresses',
                     'namespace'	=> 'firesale_addresses',
-                    'where'		=> "created_by = '{$user}' AND title != ''",
+                    'where'		=> SITE_REF."_firesale_addresses.created_by = '{$user}' AND ".SITE_REF."_firesale_addresses.title != ''",
                     'order_by'	=> 'id',
                     'sort'		=> 'desc'
                    );

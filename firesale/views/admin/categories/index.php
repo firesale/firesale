@@ -10,7 +10,7 @@
                 <ul class="sortable">
                     <?php foreach($cats as $cat): ?>
                             <li id="cat_<?php echo $cat['id']; ?>">
-                                <div>
+                                <div<?php echo ( $cat['status']['key'] == '0' ? ' class="draft"' : '' ); ?>>
                                     <a href="#<?php echo $cat['id']; ?>" rel="<?php echo $cat['id']; ?>"><?php echo $cat['title']; ?></a>
                                 </div>
                             <?php if(isset($cat['children'])): ?>

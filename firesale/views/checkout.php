@@ -29,27 +29,28 @@
                 <?php endforeach; ?>
 
                 <br class="clear" />
-                  <input name="ship_to" id="ship_to_new" type="radio" value="new"<?php echo ( isset($_POST['ship_to']) && $_POST['ship_to'] == 'new' ? ' checked="checked"' : '' ); ?> />
-                  <label for="ship_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
-                  <br class="clear" />
+                <input name="ship_to" id="ship_to_new" type="radio" value="new"<?php echo ( isset($_POST['ship_to']) && $_POST['ship_to'] == 'new' ? ' checked="checked"' : '' ); ?> />
+                <label for="ship_to_new"><?php echo lang('firesale:addresses:new_address'); ?></label>
+                <br class="clear" />
 
             <?php endif; ?>
 
-            <?php foreach( $ship_fields AS $subtitle => $section ): ?>
-
-                <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
-                    <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
-                <?php foreach( $section AS $field ): ?>
-                    <li>
-                        <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
-                        <?php echo $field['input']; ?>
-                    </li>
+                <div>
+                <?php foreach( $ship_fields AS $subtitle => $section ): ?>
+                    <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
+                        <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
+                    <?php foreach( $section AS $field ): ?>
+                        <li>
+                            <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
+                            <?php echo $field['input']; ?>
+                        </li>
+                    <?php endforeach; ?>
+                    </ul>
                 <?php endforeach; ?>
-                </ul>
-            <?php endforeach; ?>
+                </div>
 
                 <br class="clear" />
-                <a href="#billing_details" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
+                <a href="#" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
                 <br class="clear" />
 
             </fieldset>
@@ -86,22 +87,23 @@
 
             <?php endif; ?>
 
-            <?php foreach( $bill_fields AS $subtitle => $section ): ?>
-
-                <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
-                    <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
-                <?php foreach( $section AS $field ): ?>
-                    <li>
-                        <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
-                        <?php echo $field['input']; ?>
-                    </li>
+                <div>
+                <?php foreach( $bill_fields AS $subtitle => $section ): ?>
+                    <ul class="width-half"<?php echo ( isset($addresses) && !empty($addresses) ? ' style="display: none"' : '' ); ?>>
+                        <li><h2><?php echo lang('firesale:title:' . $subtitle); ?></h2></li>
+                    <?php foreach( $section AS $field ): ?>
+                        <li>
+                            <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
+                            <?php echo $field['input']; ?>
+                        </li>
+                    <?php endforeach; ?>
+                    </ul>
                 <?php endforeach; ?>
-                </ul>
-                <?php endforeach; ?>
+                </div>
 
                 <br class="clear" />
-                <a href="#shipping_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
-                <a href="#shipping" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
+                <a href="#" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+                <a href="#" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
                 <br class="clear" />
 
             </fieldset>
@@ -124,8 +126,8 @@
                 </ul>
 
                 <br class="clear" />
-                <a href="#billing_details" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
-                <a href="#payment" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
+                <a href="#" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+                <a href="#" class="next btn"><span><?php echo lang('firesale:checkout:next'); ?></span></a>
                 <br class="clear" />
 
             </fieldset>
@@ -151,7 +153,7 @@
                 </ul>
 
                 <br class="clear" />
-                <a href="#shipping" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
+                <a href="#" class="prev btn"><span><?php echo lang('firesale:checkout:previous'); ?></span></a>
                 <button type="submit" name="btnAction" value="pay" class="next btn"><span><?php echo lang('firesale:checkout:submit_and_pay'); ?></span></button>
                 <br class="clear" />
 

@@ -231,6 +231,8 @@
     $lang['firesale:label_route']       = 'Route';
     $lang['firesale:label_translation'] = 'Translation';
     $lang['firesale:label_table']       = 'Table';
+    $lang['firesale:label_https']       = 'HTTPS';
+    $lang['firesale:label_use_https']   = 'Enable HTTPS';
 
     $lang['firesale:label_cur_code']        = 'Currency Code';
     $lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format';
@@ -462,6 +464,8 @@
     $lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products';
     $lang['firesale:settings_dashboard']             = 'Override Default Dashboard';
     $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default';
+    $lang['firesale:settings_https']                 = 'Enable HTTPS for Cart';
+    $lang['firesale:settings_https_inst']            = 'All cart pages will be forced to use a secure connection';
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';

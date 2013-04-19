@@ -242,12 +242,12 @@ class Admin_categories extends Admin_Controller
 
         // Get product
         $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
-        $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
+        $folder = get_file_folder_by_slug($row->slug, 'category-images');
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
         // Create folder?
         if ( ! $folder ) {
-            $parent = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array('category-images'), $this->firesale->cache_time);
+            $parent = get_file_folder_by_slug('category-images');
             $folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
             $folder = (object) $folder['data'];
         }
@@ -258,9 +258,17 @@ class Admin_categories extends Admin_Controller
             // Upload it
             $status = Files::upload($folder->id);
 
-            // Make square?
-            if ( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 ) {
-                $this->products_m->make_square($status, $allow);
+            // Success
+            if ( $status['status'] == true ) {
+
+                // Order images
+                $count = $this->db->where('folder_id', $folder->id)->get('files')->num_rows();
+                $this->db->where('id', $status['data']['id'])->update('files', array('sort' => ( $count - 1 )));
+
+                // Make image square
+                if ( $this->settings->get('image_square') == 1 ) {
+                    $this->products_m->make_square($status, $allow);
+                }
             }
 
             // Success, clear cache!
@@ -312,7 +320,7 @@ class Admin_categories extends Admin_Controller
             $row  = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, false), $this->firesale->cache_time);
 
             if ($row != FALSE) {
-                $folder         = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
+                $folder         = get_file_folder_by_slug($row->slug, 'category-images');
                 $images         = Files::folder_contents($folder->id);
                 $data['images'] = $images['data']['file'];
             }

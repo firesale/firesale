@@ -73,9 +73,12 @@ class Categories_m extends MY_Model
                 $category = current($category['entries']);
 
                 // Get images
-                $folder = $this->products_m->get_file_folder_by_slug($category['slug']);
+                $folder = get_file_folder_by_slug($category['slug'], 'category-images');
                 $images = Files::folder_contents($folder->id);
                 $category['images'] = $images['data']['file'];
+
+                // Get a child count
+                $category['children'] = $this->db->where('parent', $category['id'])->get('firesale_categories')->num_rows();
 
                 // Append data from other modules
                 $results = Events::trigger('category_get', $category, 'array');
@@ -352,7 +355,7 @@ class Categories_m extends MY_Model
 
                 $url   = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
                 $tree .= '<li id="cat_' . $cat['id'] . '">' . "\n";
-                $tree .= '  <div>' . "\n";
+                $tree .= '  <div'.( $cat['status']['key'] == '0' ? ' class="draft"' : '' ).'>' . "\n";
                 $tree .= '    <a href="#' . $cat['id'] . '" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
                 $tree .= '  </div>' . "\n";
 

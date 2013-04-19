@@ -185,7 +185,7 @@ class Admin_products extends Admin_Controller
             $this->data->variations = $this->pyrocache->model('modifier_m', 'get_products', array($row->id), $this->firesale->cache_time);
 
             // Get images
-            $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
+            $folder = get_file_folder_by_slug($row->slug, 'product-images');
             $images = Files::folder_contents($folder->id);
             $this->data->images = $images['data']['file'];
         }
@@ -361,7 +361,12 @@ class Admin_products extends Admin_Controller
         }
 
         // Format streams fields
-        unset($fields[3]);
+        foreach ( $fields as $key => $value ) {
+            if ( $value['input_slug'] == 'parent' ) {
+                unset($fields[$key]);
+                break;
+            }
+        }
 
         // Assign variables
         $this->data->id     = $id;
@@ -528,25 +533,33 @@ class Admin_products extends Admin_Controller
 
         // Get product
         $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
-        $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($row->slug), $this->firesale->cache_time);
+        $folder = get_file_folder_by_slug($row->slug, 'product-images');
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
         // Create folder?
         if (!$folder) {
-            $parent = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array('product-images'), $this->firesale->cache_time);
+            $parent = get_file_folder_by_slug('product-images');
             $folder = $this->products_m->create_file_folder($parent->id, $row->title, $row->slug);
             $folder = (object)$folder['data'];
         }
 
         // Check for folder
-        if ( is_object($folder) AND ! empty($folder) ) {
+        if ( is_object($folder) and ! empty($folder) ) {
 
             // Upload it
             $status = Files::upload($folder->id);
 
-            // Make square?
-            if ( $status['status'] == TRUE AND $this->settings->get('image_square') == 1 ) {
-                $this->pyrocache->model('products_m', 'make_square', array($status, $allow), $this->firesale->cache_time);
+            // Success
+            if ( $status['status'] == true ) {
+
+                // Order images
+                $count = $this->db->where('folder_id', $folder->id)->get('files')->num_rows();
+                $this->db->where('id', $status['data']['id'])->update('files', array('sort' => ( $count - 1 )));
+
+                // Make image square
+                if ( $this->settings->get('image_square') == 1 ) {
+                    $this->products_m->make_square($status, $allow);
+                }
             }
 
             // Updated, clear cache!

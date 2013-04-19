@@ -51,6 +51,8 @@ class Products_m extends MY_Model
     public function __construct()
     {
         parent::__construct();
+
+        // Load required items
         $this->load->model('firesale/categories_m');
         $this->load->helper('firesale/general');
         $this->load->model('firesale/currency_m');
@@ -152,72 +154,64 @@ class Products_m extends MY_Model
         // Variables
         $user_currency = $this->session->userdata('currency');
         $currency      = $currency ? $currency : ($user_currency ? $user_currency : 1);        
-        $type          = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
 
-        // Check cache
-        if ( array_key_exists($id_slug, $this->cache[$type]) ) {
-            // Return cached version
-            return $this->cache[$type][$id_slug];
-        } else {
+        // Set params
+        $params = array(
+            'stream'    => 'firesale_products',
+            'namespace' => 'firesale_products',
+            'where'     => SITE_REF."_firesale_products.slug = '{$id_slug}'",
+            'limit'     => '1',
+            'order_by'  => 'id',
+            'sort'      => 'desc'
+        );
 
-            // Set params
-            $params = array(
-                'stream'    => 'firesale_products',
-                'namespace' => 'firesale_products',
-                'where'     => SITE_REF."_firesale_products.{$type} = '{$id_slug}'",
-                'limit'     => '1',
-                'order_by'  => 'id',
-                'sort'      => 'desc'
-            );
+        // Display variations?
+        if (! $show_variations) {
+            $params['where'] .= ' AND is_variation = 0';
+        }
 
-            // Add to params if required
-            if ( $this->uri->segment('1') != 'admin' ) {
-                $params['where'] .= ' AND '.SITE_REF.'_firesale_products.status = 1';
+        // Get entries
+        $product = $this->streams->entries->get_entries($params);
+
+        // Try ID instead
+        if ($product['total'] <= 0) {
+            $params['where'] = SITE_REF."_firesale_products.id = '{$id_slug}'";
+            $product         = $this->streams->entries->get_entries($params);
+        }
+
+        // Check exists
+        if ($product['total'] > 0) {
+
+            // Get and format product data
+            $product                 = current($product['entries']);
+            $product['snippet']      = truncate_words($product['description']);
+            $product['category']     = $this->get_categories($product['id']);
+            $product['image']        = $this->get_single_image($product['id']);
+
+            // Get variation and modifer data
+            $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
+            $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
+
+            // Format product pricing
+            $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
+            $product = array_merge($product, $pricing);
+
+            // Append data from other modules
+            $results = Events::trigger('product_get', $product, 'array');
+            foreach ($results as $result) {
+                $product = array_merge($product, $result);
             }
 
-            // Display variations?
-            if (! $show_variations) {
-                $params['where'] .= ' AND is_variation = 0';
-            }
+            // Add to cache
+            $this->cache['id'][$product['id']]     = $product;
+            $this->cache['slug'][$product['slug']] = $product;
 
-            // Get entries
-            $product = $this->streams->entries->get_entries($params);
-
-            // Check exists
-            if ($product['total'] > 0) {
-
-                // Get and format product data
-                $product                 = current($product['entries']);
-                $product['snippet']      = truncate_words($product['description']);
-                $product['category']     = $this->get_categories($product['id']);
-                $product['image']        = $this->get_single_image($product['id']);
-
-                // Get variation and modifer data
-                $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
-                $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
-
-                // Format product pricing
-                $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
-                $product = array_merge($product, $pricing);
-
-                // Append data from other modules
-                $results = Events::trigger('product_get', $product, 'array');
-                foreach ($results as $result) {
-                    $product = array_merge($product, $result);
-                }
-
-                // Add to cache
-                $this->cache['id'][$product['id']]     = $product;
-                $this->cache['slug'][$product['slug']] = $product;
-
-                // Return
-                return $product;
-            }
-
+            // Return
+            return $product;
         }
 
         // Nothing?
-        return FALSE;
+        return false;
     }
 
     /**
@@ -251,8 +245,7 @@ class Products_m extends MY_Model
                 $query->join('firesale_products_firesale_categories AS pc', 'p.id = pc.row_id', 'inner')
                       ->where('pc.firesale_categories_id', $value);
             } elseif ($key == 'search' AND strlen($value) > 0 ) {
-                $query->like('title', $value)
-                      ->or_like('code', $value);
+                $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
                 $query->where('p.price <', 'p.rrp');
             } elseif ($key == 'price') {
@@ -266,7 +259,12 @@ class Products_m extends MY_Model
 
         // Display variations?
         if (! $show_variations) {
-            $query->where('is_variation', '0');
+            $query->where('p.is_variation', '0');
+        }
+
+        // Add to params if required
+        if ( $this->uri->segment('1') != 'admin' ) {
+            $query->where('p.status', '1');
         }
 
         // Run query
@@ -393,7 +391,7 @@ class Products_m extends MY_Model
 
             // Remove files folder
             if ( ! $siblings->num_rows() AND $product !== FALSE AND $images == TRUE ) {
-                $folder = $this->get_file_folder_by_slug($product->slug);
+                $folder = get_file_folder_by_slug($product->slug, 'product-images');
                 if ($folder != FALSE) {
                     $images = Files::folder_contents($folder->id);
                     $images = $images['data']['file'];
@@ -446,11 +444,18 @@ class Products_m extends MY_Model
     {
 
         // Get original details
-        $product = current($this->db->where('id', $id)->get('firesale_products')->result_array());
-        $cats    = $this->db->where('row_id', $id)->get('firesale_products_firesale_categories')->result_array();
+        $original = current($this->db->where('id', $id)->get('firesale_products')->result_array());
+        $cats     = $this->db->where('row_id', $id)->get('firesale_products_firesale_categories')->result_array();
 
         // Remove original id
-        unset($product['id']);
+        unset($original['id']);
+
+        // Update fields
+        $product           = $original;
+        $count             = $this->db->like('title', $product['title'])->get('firesale_products')->num_rows();
+        $product['title'] .= ' ('.( $count + 1 ).')';
+        $product['slug']  .= '-'.( $count + 1 );
+        $product['code']  .= '-'.( $count + 1 );
 
         // Insert it
         $this->db->insert('firesale_products', $product);
@@ -463,7 +468,27 @@ class Products_m extends MY_Model
             $this->db->insert('firesale_products_firesale_categories', $cat);
         }
 
+        // Get parent images
+        $parent = get_file_folder_by_slug($original['slug'], 'product-images');
+        $images = $this->db->where('folder_id', $parent->id)->get('files');
+
+        // Clone them
+        if ( $images->num_rows() ) {
+            
+            // Create folder
+            $folder = $this->create_file_folder($parent->id, $product['title'], $product['slug']);
+            $folder = (object)$folder['data'];
+
+            // Loop and add images
+            foreach ( $images->result_array() as $image ) {
+                unset($image['id']);
+                $image['folder_id'] = $folder->id;
+                $this->db->insert('files', $image);
+            }
+        }
+
         // Fire events
+        Events::trigger('clear_cache');
         Events::trigger('product_duplicated', array('original' => $product['id'], 'new' => $id));
 
         // Return ID
@@ -709,27 +734,6 @@ class Products_m extends MY_Model
     }
 
     /**
-     * Gets a Files folder object based on the Product/Name slug.
-     *
-     * @param  string $slug The Slug to query
-     * @return object or boolean FALSE on failure
-     * @access public
-     */
-    public function get_file_folder_by_slug($slug)
-    {
-
-        $result = $this->db->where('slug', $slug)->get('file_folders');
-
-        if ( $result->num_rows() ) {
-            $parent = $result->row();
-
-            return $parent;
-        }
-
-        return FALSE;
-    }
-
-    /**
      * Creates a new file folder within a given parent ID, Title and Slug.
      *
      * @param  integer $parent The parent folder ID
@@ -790,7 +794,7 @@ class Products_m extends MY_Model
     public function get_images($slug)
     {
 
-        $folder = $this->get_file_folder_by_slug($slug);
+        $folder = get_file_folder_by_slug($slug, 'product-images');
         $images = Files::folder_contents($folder->id);
 
         if (!empty($images['data']['file'])) {
@@ -815,7 +819,7 @@ class Products_m extends MY_Model
     {
 
         // Variables
-        $folder = $this->get_file_folder_by_slug($old);
+        $folder = get_file_folder_by_slug($old, 'product-images');
 
         // Found?
         if ($file !== FALSE AND $folder->id > 0) {

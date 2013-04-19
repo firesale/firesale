@@ -34,7 +34,7 @@ class Brands_m extends MY_Model
             $brand = current($brands['entries']);
 
             // Get images
-            if ( $folder = $this->pyrocache->model('products_m', 'get_file_folder_by_slug', array($brand['slug']), $this->firesale->cache_time) ) {
+            if ( $folder = get_file_folder_by_slug($brand['slug'], 'brand-images') ) {
                 $query = $this->db->select('id, path')
                                   ->from('files')
                                   ->where('folder_id', $folder->id)
@@ -43,8 +43,7 @@ class Brands_m extends MY_Model
             }
 
             // Get categories
-            // $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
-            $brand['categories'] = $this->brands_m->get_categories($brand['id']);
+            $brand['categories'] = $this->pyrocache->model('brands_m', 'get_categories', array($brand['id']), $this->firesale->cache_time);
 
             // Return it
             return $brand;
@@ -77,7 +76,7 @@ class Brands_m extends MY_Model
         return false;
     }
 
-    public function get_products($brand, $perpage, $start, $category = null)
+    public function get_products($brand, $perpage, $start, $by, $dir, $category = null)
     {
         // Variations
         $show_variations = (bool) $this->settings->get('firesale_show_variations');
@@ -87,7 +86,7 @@ class Brands_m extends MY_Model
                           ->from('firesale_products AS p')
                           ->where('p.brand', $brand)
                           ->where('p.status', '1')
-                          ->order_by('p.title', 'asc')
+                          ->order_by('p.' . $by, $dir)
                           ->limit($perpage, $start);
 
         // Hide variations
@@ -147,6 +146,26 @@ class Brands_m extends MY_Model
         $query = $query->get();
 
         return $query->num_rows();
+    }
+
+    public function build_breadcrumbs($brand, $category = null)
+    {
+
+        // Variables
+        $url    = $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time);
+        $crumbs = array();
+
+        // Set default breadcrumbs
+        $crumbs[lang('firesale:sections:brands')] = 'brands';
+        $crumbs[$brand['title']]  = $url;
+
+        // Set category breadcrumbs
+        if ( $category !== null ) {
+            $result = $this->db->select('title, id')->where('slug', $category)->get('firesale_categories')->row();
+            $crumbs[$result->title] = $url.$category;
+        }
+
+        return $crumbs;
     }
 
 }

@@ -39,18 +39,20 @@ $(function() {
 
 	    if ( $.cookie('fspf_show') == '1' ) { $('a.show-filter').click(); }
 
-	    $('#filters select, #filters input').change(function() { update_products(); });
+	    $('#filters select, #filters input').change(function() { $('#filters input[name=start]').val(0); update_products(); });
 		$('#product_table').tablesorter({widgets:["saveSort"]});
 		bind_quickedit();
 		bind_pagination();
-		populate_filters(unserialize($.cookie('fspf_values')));
+		
+		if ( $.cookie('fspf_values') && $.cookie('fspf_values') != $('#filters').serialize() ) {
+			populate_filters(unserialize($.cookie('fspf_values')));
+		}
 
 		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
 			update_products(window.location.hash.replace('#', ''));
 		}
 
 		bind_keys($('#product_table'));
-
 	}
 
 	/*************
@@ -130,11 +132,11 @@ $(function() {
 			}
 		});
 
-		$('.modifiers th .mod-min').click(function(e) {
+		$('.modifiers th .mod-min').live('click', function(e) {
 			e.preventDefault();
 			$('.modifiers td .mod-min').click();
 		});
-		$('.modifiers td .mod-min').click(function(e) {
+		$('.modifiers td .mod-min').live('click', function(e) {
 			e.preventDefault();
 			$(this).parents('tr').find('table').slideToggle(250);
 			$(this).toggleClass('show');
@@ -160,17 +162,12 @@ $(function() {
 
 	function tax_link(price, before) {
 		var tmp = before.clone();before.parent().parent().remove();
-		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" class="link linked">Link</button>&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
-		price.parent().find('button').click(function() { if( $(this).hasClass('linked') ) { $(this).removeClass('linked').addClass('unlinked'); } else { $(this).removeClass('unlinked').addClass('linked'); } });
+		tmp.prependTo(price.parent()).after('&nbsp;&nbsp;&nbsp;&nbsp;<span>' + currency + '&nbsp;</span>').before('<span>' + currency + '&nbsp;</span>');
 		price.change(function() {
-			if( $(this).parent().find('button').is('.linked') ) {
-				$(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3));
-			}
+			$(this).parent().find('input:first').val(decimal( $(this).val() / ( 1 + ( tax_rate / 100 ) ), 3));
 		}).change();
 		$('#' + tmp.attr('id')).change(function() {
-			if( $(this).parent().find('button').is('.linked') ) {
-				$(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2));
-			}
+			$(this).parent().find('input:last').val(decimal( $(this).val() * ( 1 + ( tax_rate / 100 ) ), 2));
 		}).change();
 	}
 
@@ -180,6 +177,7 @@ $(function() {
 		if( $(response).find('.alert').size() > 0 ) {
 			$(response).find('.alert').each(function() {
 				var c = $(this).attr('class');
+				$('#content-body > .alert').remove();
 				$('#content-body').prepend('<div class="'+c+'">'+$(this).html()+'</div>');
 			});
 		}

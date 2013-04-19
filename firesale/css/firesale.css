@@ -161,14 +161,14 @@
 .firesale#checkout > h3 { padding: 10px; margin: 0; cursor: pointer; line-height: 18px; color: rgb(51, 51, 51); border-top: 1px solid #fff; border-bottom: 1px solid rgb(221, 221, 221); background: rgb(238, 238, 238); }
 .firesale#checkout > h3 a { font-size: 15px; line-height: 18px; }
 .firesale#checkout fieldset { padding: 18px 10px 10px 10px; }
-.firesale#checkout fieldset > ul { width: 300px; display: block; }
-.firesale#checkout fieldset > ul:nth-child(odd) { float: left; }
-.firesale#checkout fieldset > ul:nth-child(even) { float: right; }
-.firesale#checkout fieldset > ul li { display: block; width: 100%; margin: 0 0 8px 0; }
-.firesale#checkout fieldset > ul li label { display: inline-block; width: 140px; line-height: 30px; }
-.firesale#checkout fieldset > ul li input[type=text] { width: 245px; }
+.firesale#checkout fieldset > div > ul { width: 300px; display: block; }
+.firesale#checkout fieldset > div > ul:nth-child(odd) { float: left; }
+.firesale#checkout fieldset > div > ul:nth-child(even) { float: right; }
+.firesale#checkout fieldset > div > ul li { display: block; width: 100%; margin: 0 0 8px 0; }
+.firesale#checkout fieldset > div > ul li label { display: inline-block; width: 140px; line-height: 30px; }
+.firesale#checkout fieldset > div > ul li input[type=text] { width: 245px; }
 .firesale#checkout input[type=checkbox], .firesale#checkout input[type=radio] { width: auto; float: left; margin: 7px 10px 0 0; }
-.firesale#checkout fieldset > ul li.wide label { width: 360px; }
+.firesale#checkout fieldset > div > ul li.wide label { width: 360px; }
 .firesale#checkout .prev { display: inline-block; margin: 20px 0 0 0; float: left; }
 .firesale#checkout .next { display: inline-block; margin: 20px 0 0 0; float: right; }
 .firesale#checkout fieldset p { font-size: 13px; line-height: 18px; }

@@ -67,7 +67,7 @@
               <td class="align-left"><strong>{{ name }}</strong></td>
               <td>{{ code }}</td>
               <td>{{ qty }}</td>
-              <td>{{ price }}</td>
+              <td>{{ price_formatted }}</td>
               <td>{{ total }}</td>
             </tr>
 {{ /items }}

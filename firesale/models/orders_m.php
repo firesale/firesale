@@ -47,6 +47,13 @@ class Orders_m extends MY_Model
         return array('count' => $total, 'products' => $items);
     }
 
+    public function product_count($order_id)
+    {
+        return $this->db->query("SELECT SUM( `qty` ) AS `count`
+                                 FROM `".SITE_REF."_firesale_orders_items`
+                                 WHERE `order_id` = '{$order_id}'")->row()->count;
+    }
+
     /**
      * Deletes a given order and the products contained in it
      *
