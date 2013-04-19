@@ -26,7 +26,7 @@ $(function() {
 			obj.find('.add center').click(function(e) {
 				var val = $(this).parents('td.option').find('.chzn-search input').val(), sel = $(this).parents('td.option').find('select'), t = $(this);
 				var d = '.'; var timer = setInterval(function() { t.text('Adding' + d); if( d.length >= 3 ) { d = '.'; } else { d += '.'; } }, 250);
-				$.get('/admin/firesale_attributes/ajax_create/' + val, function(data) {
+				$.get(SITE_URL + 'admin/firesale_attributes/ajax_create/' + val, function(data) {
 					if( data.substr(0, 2) == 'ok' ) {
 						clearInterval(timer);
 						t.parent().remove();
