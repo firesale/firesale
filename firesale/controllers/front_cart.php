@@ -241,7 +241,7 @@ class Front_cart extends Public_Controller
                                 $this->session->set_flashdata('message', lang('firesale:cart:qty_too_low'));
                             }
 
-                        } else {
+                        } elseif ( ! array_key_exists('custom', $cart[$row_id])) {
 
                             // Looks like this product no longer exists, remove it!
                             $data['qty'] = 0;
