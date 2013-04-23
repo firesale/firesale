@@ -383,17 +383,18 @@ class Modifier_m extends MY_Model
 
     public function variation_create($product, $variations, $stream_id)
     {
-
         // Duplicate parent product
         $id = $this->products_m->duplicate_product($product);
 
         // Variables
-        $update  = array();
-        $product = $this->products_m->get_product($id);
-        $tax     = ( 100 + $this->taxes_m->get_percentage() ) / 100;
+        $update   = array();
+        $original = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
+        $product  = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
+        $tax      = ( 100 + $this->taxes_m->get_percentage() ) / 100;
 
         // Update title
-        $product['title'] .= ' -';
+        $product['title'] = $original['title'].' -';
+        $product['slug']  = $original['slug'];
 
         // Loop the variations
         foreach ($variations as $variation) {
@@ -404,6 +405,7 @@ class Modifier_m extends MY_Model
             // Append the title and code
             $product['title'] .= ' '.$row->title;
             $product['code']  .= strtoupper(substr($row->title, 0, 2));
+            $product['slug']  .= '-'.strtolower(url_title($row->title));
 
             // Rebuild the prices
             $product['price'] += $row->price;
@@ -415,6 +417,7 @@ class Modifier_m extends MY_Model
 
         // Add to update
         $update['title']        = $product['title'];
+        $update['slug']         = $product['slug'];
         $update['code']         = $product['code'];
         $update['price']        = round($product['price'], 2);
         $update['price_tax']    = round(( $product['price'] / $tax ), 2);
