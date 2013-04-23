@@ -640,4 +640,18 @@ class Orders_m extends MY_Model
         return FALSE;
     }
 
+    /**
+     * Gets a complete count of the number of orders in a given filter
+     * 
+     * @param  string [$where] The where clause of the filter option
+     * @return int    The count of the total result set
+     * @access public
+     */
+    public function order_count($where = null)
+    {
+        $query = $this->db->select('id')->from('firesale_orders');
+        if ( $where != null ) { $query->where($where, null, false); }
+        return $query->get()->num_rows();
+    }
+
 }
