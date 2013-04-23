@@ -71,12 +71,12 @@ class Modifier_m extends MY_Model
 
         // Variables
         $params = array(
-                    'stream'    => 'firesale_product_modifiers',
-                    'namespace' => 'firesale_product_modifiers',
-                    'where'     => "parent = '{$product}'",
-                    'order_by'  => 'ordering_count',
-                    'sort'      => 'asc'
-                  );
+            'stream'    => 'firesale_product_modifiers',
+            'namespace' => 'firesale_product_modifiers',
+            'where'     => "parent = '{$product}'",
+            'order_by'  => 'ordering_count',
+            'sort'      => 'asc'
+        );
 
         // Get the modifiers
         $modifiers = $this->streams->entries->get_entries($params);
@@ -118,7 +118,7 @@ class Modifier_m extends MY_Model
         $currency   = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
         $variations = $this->db->select('v.*, vp.firesale_products_id AS product')
                                ->from('firesale_product_variations AS v')
-                               ->join('firesale_product_variations_firesale_products AS vp', 'vp.row_id = v.id')
+                               ->join('firesale_product_variations_firesale_products AS vp', 'vp.row_id = v.id', 'left')
                                ->where('v.parent', $parent)
                                ->order_by('v.ordering_count', 'asc')
                                ->get()
@@ -373,12 +373,10 @@ class Modifier_m extends MY_Model
 
         // Loop through possible and determine what does and doesn't exist
         foreach ($variations AS $variation) {
-
             if ( ! $this->variation_exists($variation, $stream->id) ) {
                 // Doesn't exist, create it
                 $this->variation_create($product, $variation, $stream->id);
             }
-
         }
 
     }
@@ -413,7 +411,6 @@ class Modifier_m extends MY_Model
             // Add to lookup table
             $lookup = array('row_id' => $variation, 'firesale_product_variations_id' => $stream_id, 'firesale_products_id' => $id);
             $this->db->insert('firesale_product_variations_firesale_products', $lookup);
-
         }
 
         // Add to update
@@ -491,19 +488,28 @@ class Modifier_m extends MY_Model
         $result = array();
         $arrays = array_values($arrays);
         $sizeIn = sizeof($arrays);
-        $size = $sizeIn > 0 ? 1 : 0;
-        foreach ($arrays as $array)
+        $size   = $sizeIn > 0 ? 1 : 0;
+
+        foreach ($arrays as $array) {
             $size = $size * sizeof($array);
+        }
+
         for ($i = 0; $i < $size; $i ++) {
+            
             $result[$i] = array();
-            for ($j = 0; $j < $sizeIn; $j ++)
+
+            for ($j = 0; $j < $sizeIn; $j ++) {
                 array_push($result[$i], current($arrays[$j]));
-            for ($j = ($sizeIn -1); $j >= 0; $j --) {
-                if (next($arrays[$j]))
-                    break;
-                elseif (isset ($arrays[$j]))
-                    reset($arrays[$j]);
             }
+
+            for ($j = ($sizeIn -1); $j >= 0; $j --) {
+                if (next($arrays[$j])) {
+                    break;
+                } else if (isset ($arrays[$j])) {
+                    reset($arrays[$j]);
+                }
+            }
+
         }
 
         return $result;
