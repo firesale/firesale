@@ -81,6 +81,9 @@ class front extends Public_Controller
                     $this->data->products[$key] = $product;
                 }
 
+                // Fix helper variables
+                $this->data->products = reassign_helper_vars($this->data->products);
+
                 // Assign current search
                 $this->data->from  = $start;
                 $this->data->to	   = $start + $this->perpage;

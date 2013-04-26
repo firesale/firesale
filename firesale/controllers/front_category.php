@@ -113,7 +113,7 @@ class Front_category extends Public_Controller
 
             // Assign data
             $this->data->category = $category;
-            $this->data->products = $products;
+            $this->data->products = reassign_helper_vars($products);
             $this->data->ordering = get_order();
 
             // Assign pagination

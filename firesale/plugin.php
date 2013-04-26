@@ -21,6 +21,7 @@ class Plugin_Firesale extends Plugin
         $this->load->model('routes_m');
         $this->load->model('taxes_m');
         $this->load->model('currency_m');
+        $this->load->helper('general');
     }
 
     public function url()
@@ -109,6 +110,9 @@ class Plugin_Firesale extends Plugin
             foreach ($categories AS &$category) {
                 $category = $this->pyrocache->model('categories_m', 'get_category', array($category['id']), $this->firesale->cache_time);
             }
+
+            // Fix helper variables
+            $categories = reassign_helper_vars($categories);
 
             // Add to cache
             $this->cache->save($cache_key, $categories, $this->firesale->cache_time);
@@ -199,6 +203,9 @@ class Plugin_Firesale extends Plugin
             foreach ($results AS &$result) {
                 $result = $this->products_m->get_product($result['id']);
             }
+
+            // Fix helper variables
+            $products = reassign_helper_vars($products);
 
             // Add to cache
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
@@ -298,6 +305,9 @@ class Plugin_Firesale extends Plugin
         $data->total = $this->currency_m->format_string($this->fs_cart->total(), $currency, false);
         $data->count = $this->fs_cart->total_items();
 
+        // Fix helper variables
+        $data->products = reassign_helper_vars($data->products);
+
         // Retrun data
         return array($data);
     }
@@ -313,6 +323,9 @@ class Plugin_Firesale extends Plugin
             // Retrieve data
             $currency = $this->currency_m->get($currency['id']);
         }
+
+        // Fix helper variables
+        $results = reassign_helper_vars($results);
 
         return $results;
     }
