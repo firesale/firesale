@@ -393,6 +393,7 @@ class Modifier_m extends MY_Model
         $tax      = ( 100 + $this->taxes_m->get_percentage() ) / 100;
 
         // Update title
+        $product['code']  = $original['code'].'-';
         $product['title'] = $original['title'].' -';
         $product['slug']  = $original['slug'];
 
