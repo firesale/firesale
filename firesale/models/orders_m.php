@@ -374,6 +374,14 @@ class Orders_m extends MY_Model
      */
     public function insert_update_order_item($order_id, $product, $qty)
     {
+        // Get user ID
+        $user_id = $this->db->select('created_by')
+                            ->where('id', $order_id)
+                            ->get('firesale_orders')
+                            ->row()
+                            ->created_by;
+
+        // Setup query
         $this->db->from('firesale_orders_items')
                  ->where("order_id", $order_id)
                  ->where("product_id", $product['id']);
@@ -385,33 +393,34 @@ class Orders_m extends MY_Model
 
         if ( $this->db->count_all_results() == 0 ) {
             $data = array(
-                'created'		 => date("Y-m-d H:i:s"),
-                'created_by'     => ( isset($this->current_user->id) ? $this->current_user->id : null ),
+                'created'        => date("Y-m-d H:i:s"),
+                'created_by'     => $user_id,
                 'ordering_count' => 0,
-                'order_id'		 => $order_id,
-                'product_id'	 => $product['id'],
-                'code'			 => $product['code'],
-                'name'			 => ( isset($product['title']) ? $product['title'] : $product['name'] ),
-                'price'			 => $product['price'],
-                'qty'			 => $qty,
+                'order_id'       => $order_id,
+                'product_id'     => $product['id'],
+                'code'           => $product['code'],
+                'name'           => ( isset($product['title']) ? $product['title'] : $product['name'] ),
+                'price'          => $product['price'],
+                'qty'            => $qty,
                 'tax_band'       => $product['tax_band']['id'],
                 'options'        => isset($product['options']) ? serialize($product['options']) : ''
              );
 
              if ( $this->db->insert('firesale_orders_items', $data) ) {
+                Events::trigger('clear_cache');
                 return TRUE;
             }
 
         } else {
-
             if ( $this->db->where('order_id', $order_id)->where('product_id', $product['id'])->update('firesale_orders_items', array('qty' => $qty)) ) {
+                Events::trigger('clear_cache');
                 return TRUE;
             }
-
         }
 
         return FALSE;
     }
+
 
     /**
      * Updates the cost of the order based on the current cart contents.
