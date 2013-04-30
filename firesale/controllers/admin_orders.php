@@ -29,6 +29,7 @@ class Admin_orders extends Admin_Controller
         $this->load->model('categories_m');
         $this->load->model('products_m');
         $this->load->model('address_m');
+        $this->load->model('routes_m');
 
         // Get the stream
         $this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
@@ -56,13 +57,11 @@ class Admin_orders extends Admin_Controller
             'limit'		  => $this->perpage,
             'offset'	  => $start,
             'order_by'	  => 'id',
-            'sort'		  => 'desc',
-            'paginate'    => 'yes',
-            'pag_segment' => $pagination['uri_segment']
+            'sort'		  => 'desc'
         );
 
         // Get entries
-        $orders            = $this->streams->entries->get_entries($params, $pagination);
+        $orders            = $this->streams->entries->get_entries($params);
         $orders['entries'] = $this->orders_m->format_order($orders['entries']);
 
         // Get filter data
@@ -72,7 +71,8 @@ class Admin_orders extends Admin_Controller
 
         // Assign variables
         $this->data->orders        = $orders['entries'];
-        $this->data->pagination    = $orders['pagination'];
+        $this->data->total         = $this->pyrocache->model('orders_m', 'order_count', array(), $this->firesale->cache_time);
+        $this->data->pagination    = create_pagination('/admin/firesale/orders/', $this->data->total, $this->perpage, 4);
         $this->data->filter_users  = $users['input'];
         $this->data->filter_status = form_dropdown('order_status', $status, null);
         $this->data->filter_prods  = form_dropdown('product', $products, null);
@@ -93,10 +93,10 @@ class Admin_orders extends Admin_Controller
             $input 	= $this->input->post();
             $skip	= array('btnAction');
             $extra 	= array(
-                        'return'          => 'admin/firesale/orders/edit/-id-',
-                        'success_message' => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
-                        'error_message'   => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
-                      );
+                'return'          => 'admin/firesale/orders/edit/-id-',
+                'success_message' => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
+                'error_message'   => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
+            );
 
             // Check for products
             if ( isset($input['item']) AND !empty($input['item']) ) {
@@ -315,17 +315,18 @@ class Admin_orders extends Admin_Controller
 
             // Variables
             $pagination = array('uri_segment' => 5, 'per_page' => $this->perpage, 'base_url' => 'admin/firesale/orders/');
-            $params     = array('stream' => 'firesale_orders', 'namespace' => 'firesale_orders', 'limit' => $this->perpage, 'offset' => $start, 'order_by' => 'id', 'sort' => 'desc', 'paginate' => 'yes', 'pag_segment' => $pagination['uri_segment']);
+            $params     = array('stream' => 'firesale_orders', 'namespace' => 'firesale_orders', 'limit' => $this->perpage, 'offset' => $start, 'order_by' => 'id', 'sort' => 'desc');
 
             // Add filter params
             $params['where'] = $this->orders_m->add_filters($_POST);
 
             // Get entries
-            $orders = $this->streams->entries->get_entries($params, $pagination);
+            $orders = $this->streams->entries->get_entries($params);
 
             // Assign variables
             $this->data->orders     = $this->orders_m->format_order($orders['entries']);
-            $this->data->pagination = $orders['pagination'];
+            $this->data->total      = $this->pyrocache->model('orders_m', 'order_count', array($params['where']), $this->firesale->cache_time);
+            $this->data->pagination = create_pagination('/admin/firesale/orders/', $this->data->total, $this->perpage, 5);
 
             // Build page
             $this->template->set_layout(false)->build('admin/orders/index', $this->data);

@@ -70,7 +70,7 @@ class front extends Public_Controller
             $this->data->order      = get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1);
             $this->data->ordering   = get_order();
             $this->data->brand      = $brand;
-            $this->data->products   = $products;
+            $this->data->products   = reassign_helper_vars($products);
             $this->data->pagination = $pagination;
 
             asset_namespace('firesale');

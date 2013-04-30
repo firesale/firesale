@@ -54,6 +54,9 @@ class Plugin_Firesale_brands extends Plugin
                 $result = $this->pyrocache->model('brands_m', 'get', ($result['id']), $this->firesale->cache_time);
             }
 
+            // Fix helper variables
+            $brands = reassign_helper_vars($brands);
+
             // Add to cache
             $this->cache->save($cache_key, $brands, $this->firesale->cache_time);
 

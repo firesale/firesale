@@ -394,9 +394,9 @@ class Admin_products extends Admin_Controller
         if ( $this->input->post('btnAction') == 'save' ) {
 
             // Update variables
-            $input  = $this->input->post();
-            $skip   = array('btnAction');
-            $extra  = array(
+            $input = $this->input->post();
+            $skip  = array('btnAction');
+            $extra = array(
                 'return'          => FALSE,
                 'success_message' => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_success'),
                 'error_message'   => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_error')

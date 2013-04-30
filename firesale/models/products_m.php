@@ -481,7 +481,7 @@ class Products_m extends MY_Model
 
             // Loop and add images
             foreach ( $images->result_array() as $image ) {
-                unset($image['id']);
+                $image['id']        = substr(md5(microtime().rand(0,100000)), 0, 15);
                 $image['folder_id'] = $folder->id;
                 $this->db->insert('files', $image);
             }
