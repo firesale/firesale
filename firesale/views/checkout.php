@@ -43,6 +43,7 @@
                         <li>
                             <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
                             <?php echo $field['input']; ?>
+                            <?php echo ( form_error($field['input_slug']) ? '<div class="error">'.form_error($field['input_slug']).'</div>' : '' ); ?>
                         </li>
                     <?php endforeach; ?>
                     </ul>
@@ -95,6 +96,7 @@
                         <li>
                             <label for="<?php echo $field['input_slug']; ?>"><?php echo lang(substr($field['input_title'], 5)); ?> <?php echo $field['required']; ?>:</label>
                             <?php echo $field['input']; ?>
+                            <?php echo ( form_error($field['input_slug']) ? '<div class="error">'.form_error($field['input_slug']).'</div>' : '' ); ?>
                         </li>
                     <?php endforeach; ?>
                     </ul>

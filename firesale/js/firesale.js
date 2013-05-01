@@ -38,6 +38,9 @@ $(function() {
 	
 	// Checkout accordion
 	$("#checkout").accordion({autoHeight: false});
+	$('#checkout .error').each(function() { 
+		$(this).parent().find('input, select, textarea').addClass('error');
+	});
 	
 	// Navigation
 	$('a.prev').click(function(e) { e.preventDefault(); $(this).parents('fieldset').prevAll('h3').click(); });
