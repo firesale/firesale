@@ -706,7 +706,8 @@ class Admin_products extends Admin_Controller
 
             // Variables
             $data  = array('products' => array(), 'pagination' => '');
-            $start = ( isset($_POST['start']) ? $_POST['start'] : 0 );
+            $start = ( isset($_POST['start']) ? $_POST['start'] : $page );
+            $start = ( $start > 0 ? ( $start - 1 ) * $this->perpage : 0 );
 
             unset($_POST['start']);
 
