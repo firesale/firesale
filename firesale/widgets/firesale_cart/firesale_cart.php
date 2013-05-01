@@ -28,7 +28,7 @@ class Widget_FireSale_Cart extends Widgets
         $this->load->model('firesale/products_m');
 
         // Variables
-        $currency       = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $currency       = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
         $contents       = $this->fs_cart->contents();
         $data           = new stdClass;
         $data->products = array();

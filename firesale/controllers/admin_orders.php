@@ -172,7 +172,7 @@ class Admin_orders extends Admin_Controller
         array_unshift($this->data->fields['bill']['details'], $bill);
 
         // Get currency
-        $this->data->currency = $this->pyrocache->model('currency_m', 'get', array(( $id != NULL && $row->currency != NULL ? $row->currency : 1 ), $this->firesale->cache_time));
+        $this->data->currency = $this->pyrocache->model('currency_m', 'get', array(( $id != NULL && $row->currency != NULL ? $row->currency : NULL ), $this->firesale->cache_time));
 
         // Get products
         if ($id != NULL) {
