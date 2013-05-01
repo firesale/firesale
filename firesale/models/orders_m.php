@@ -303,7 +303,7 @@ class Orders_m extends MY_Model
 
             // No currency set?
             if ($order['currency'] == NULL) {
-                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(1), $this->firesale->cache_time);
+                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(), $this->firesale->cache_time);
             }
 
             // Format prices
@@ -340,7 +340,7 @@ class Orders_m extends MY_Model
         }
 
         // Get currency
-        $user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
         $currency      = $this->currency_m->get($user_currency);
 
         // Append input
@@ -435,7 +435,7 @@ class Orders_m extends MY_Model
     {
 
         // Get tax rate
-        $user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+        $user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL;
         $currency      = $this->currency_m->get($user_currency);
 
         // Variables
