@@ -1061,7 +1061,7 @@ class Module_Firesale extends Module
     public function taxes($method = 'add')
     {
         if ($method == 'add') {
-            $this->streams->streams->add_stream('lang:firesale:sections:taxes', 'firesale_taxes', 'firesale_taxes', NULL, NULL);
+            $this->streams->streams->add_stream(lang('firesale:sections:taxes'), 'firesale_taxes', 'firesale_taxes', NULL, NULL);
 
             // Default settings for the fields
             $default = array(
