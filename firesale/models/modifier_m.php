@@ -40,12 +40,12 @@ class Modifier_m extends MY_Model
 
             // Change options
             $post['options'][$mod] = array(
-                                        'mod_id' => $modifier['id'],
-                                        'var_id' => ( isset($variation) ? $variation['id'] : '' ),
-                                        'type'   => $modifier['type']['key'],
-                                        'title'  => $modifier['title'],
-                                        'value'  => ( isset($variation) ? $variation['title'] : $var )
-                                     );
+                'mod_id' => $modifier['id'],
+                'var_id' => ( isset($variation) ? $variation['id'] : '' ),
+                'type'   => $modifier['type']['key'],
+                'title'  => $modifier['title'],
+                'value'  => ( isset($variation) ? $variation['title'] : $var )
+            );
 
             // Unset before next loop
             unset($modifier);
