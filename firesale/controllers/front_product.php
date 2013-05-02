@@ -46,9 +46,14 @@ class Front_product extends Public_Controller
         $this->data->url      = $this->pyrocache->model('routes_m', 'build_url', array('product', $this->data->product['id']), $this->firesale->cache_time);
         $this->data->parent   = $this->products_m->build_breadcrumbs($this->data->category, $this->template);
 
+        if ($this->data->url == uri_string()) {
+            $this->template->set_breadcrumb($this->data->product['title']);
+        } else {
+            $this->template->set_breadcrumb($this->data->product['title'], $this->data->url);
+        }
+
         // Add page data
-        $this->template->set_breadcrumb($this->data->product['title'], $this->data->url)
-                       ->append_css('module::firesale.css')
+        $this->template->append_css('module::firesale.css')
                        ->append_js('module::firesale.js')
                        ->title($this->data->product['title'])
                        ->set($this->data);
