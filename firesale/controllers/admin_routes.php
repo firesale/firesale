@@ -199,7 +199,7 @@ class Admin_routes extends Admin_Controller
 
     }
 
-    public function rebuild($redirect = false)
+    public function rebuild($redirect = true)
     {
 
         // Variables
