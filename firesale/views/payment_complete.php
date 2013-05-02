@@ -42,11 +42,11 @@
           </tr>
 {{ items }}
           <tr>
-            <td class="align-left"><strong>{{ name }}</strong></td>
-            <td>{{ code }}</td>
-            <td>{{ qty }}</td>
-            <td>{{ price }}</td>
-            <td>{{ subtotal }}</td>
+              <td class="align-left"><strong>{{ name }}</strong></td>
+              <td>{{ code }}</td>
+              <td>{{ qty }}</td>
+              <td>{{ price }}</td>
+              <td>{{ total }}</td>
           </tr>
 {{ /items }}
           <tr>
