@@ -146,6 +146,7 @@ function update_orders(extra) {
 	create_overlay($('#order_table'));
 	req = $.ajax({type: "POST", url: $('#filters_form').attr('action')+'/'+extra, global: false, data: $('#filters_form').serialize(), success: function(data) {
 		$('.overlay').remove();
+		$('.no_data').remove();
 		if( $(data).find('#order_table').size() > 0 ) {
 			$('#order_table tbody').html($(data).find('#order_table tbody').html());
 			$('#order_table tfoot').html($(data).find('#order_table tfoot').html());

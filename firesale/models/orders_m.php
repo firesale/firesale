@@ -115,7 +115,7 @@ class Orders_m extends MY_Model
                     case 'product':
 
                         // Get possible IDs
-                        $query = $this->db->select('order_id')->where('product_id', $query)->group_by('order_id')->get('firesale_orders_items')->result_array();
+                        $query = $this->db->select('order_id')->where('product_id', $value)->group_by('order_id')->get('firesale_orders_items')->result_array();
                         $ids   = array();
 
                         // Loop IDs
