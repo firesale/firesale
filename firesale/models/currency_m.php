@@ -194,8 +194,8 @@ class Currency_m extends MY_Model
         // Return
         return $formatted;
     }
-    
-    
+
+
     /**
      * Updates the options for the select/dropdown "Default Currency Code" in settings
      */
@@ -203,7 +203,7 @@ class Currency_m extends MY_Model
     {
         // Get current settings
         $setting = $this->db->get_where('settings', array('slug' => 'firesale_currency'))->row_array();
-        
+
         // Variables
         $options = array();
         $codes   = array();
@@ -215,13 +215,13 @@ class Currency_m extends MY_Model
             }
         }
         $setting['options'] = implode('|', $options);
-        
+
         // Make sure saved currency is still in the list (it might have been deleted)
         if(!isset($codes[$setting['value']])) {
             // It's not, so try the default
             if(isset($codes[$setting['default']]))
                 $setting['value'] = $setting['default'];
-            
+
             // Default gone too, so use the first enabled currency
             else {
                 foreach($currencies as $currency) {
@@ -232,7 +232,7 @@ class Currency_m extends MY_Model
                 }
             }
         }
-        
+
         $this->db->where('slug', 'firesale_currency')->update('settings', $setting);
     }
 

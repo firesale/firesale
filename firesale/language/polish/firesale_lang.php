@@ -170,7 +170,7 @@
     $lang['firesale:label_mod_single']     = 'Single Product'; # translate
     $lang['firesale:label_mod_price']      = 'Price Modifier'; # translate
     $lang['firesale:label_mod_price_inst'] = 'Some instructions'; # translate
-    
+
     $lang['firesale:label_stock_short']     = 'Stan magazynowy';
     $lang['firesale:label_stock_status']    = 'Status stanu magazynowego';
     $lang['firesale:label_stock_in']        = 'Na stanie';
@@ -310,7 +310,7 @@
     $lang['firesale:gateways:multiple_enabled_fail']    = 'Wybrane bramki nie mogły zostać aktywowane';
     $lang['firesale:gateways:enabled_success']          = 'Bramka aktywowana';
     $lang['firesale:gateways:enabled_fail']             = 'Bramka nie mogła zostać aktywowana';
-    
+
     $lang['firesale:gateways:disabled_success']          = 'Bramka wyłączona';
     $lang['firesale:gateways:disabled_fail']             = 'Bramka nie mogła zostać wyłączona';
     $lang['firesale:gateways:multiple_disabled_success'] = 'Wybrane bramki zostały wyłączone';
@@ -471,4 +471,3 @@
     $lang['firesale:install:not_installed']    = 'Proszę zainstalować moduł FireSale przed instalacją dodatków FireSale';
     $lang['firesale:install:no_route_access']  = 'FireSale wymaga dostępu do  system/cms/config/routes.php file. Ustaw prawa dostępu i spróbuj ponownie';
     $lang['firesale:install:old_multiple']     = 'Your currently installed version of the Multiple field type is out of date, please delete or upgrade it before attempting to use FireSale'; # Translate
-    

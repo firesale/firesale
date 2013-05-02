@@ -818,7 +818,7 @@ class Front_cart extends Public_Controller
 
                 $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
                 $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
-                
+
                 if ( ! $processed) {
                     // Check status
                     if ($response->status() == 'authorized' or $response->status() == 'complete') {

@@ -68,7 +68,7 @@ class Front_category extends Public_Controller
         $args     = func_get_args();
         $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
         $category = implode('/', $args);
-        
+
         // Check category
         if ( ( is_int($category) OR is_numeric($category) ) AND $start == 0 ) {
             $start    = $category;

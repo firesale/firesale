@@ -10,9 +10,9 @@ class Module_Firesale extends Module
     {
         parent::__construct();
 
-        // Increase time limit for those of us that have slow machines 
+        // Increase time limit for those of us that have slow machines
         // and spend an hour backtracing to determine the code is fine
-        // If your machine happens to be slower than mine, 
+        // If your machine happens to be slower than mine,
         // and you recieve a whitescreen upon install increase this variable
         @set_time_limit(60);
 
@@ -22,13 +22,13 @@ class Module_Firesale extends Module
         $this->load->helper('firesale/general');
 
         // Load these helpers if we are in the PyroCMS installer, files needs them!
-        defined('PYROPATH') and $this->load->helper(array('text', 'date'));       
+        defined('PYROPATH') and $this->load->helper(array('text', 'date'));
 
         $this->load->library('streams_core/type');
 
         // Add our field type path
         $core_path = defined('PYROPATH') ? PYROPATH : APPPATH;
-        
+
         if (is_dir(SHARED_ADDONPATH.'modules/firesale/field_types')) {
             $this->type->addon_paths['firesale'] = SHARED_ADDONPATH.'modules/firesale/field_types/';
         } elseif (is_dir($core_path.'modules/firesale/field_types')) {
@@ -199,7 +199,7 @@ class Module_Firesale extends Module
                 )
             );
         }
-        
+
         // Support for sub 2.2.0 menus
         if ( CMS_VERSION < '2.2.0' ) {
             $info['is_backend'] = true;
@@ -247,7 +247,7 @@ class Module_Firesale extends Module
     {
         // Is this the PyroCMS installer?
         $path = defined('PYROPATH') ? PYROPATH : APPPATH;
-        
+
         // For 2.2 compatibility
         $redirect = (CMS_VERSION >= '2.2' ? 'addons/' : '') . 'modules';
 
@@ -854,7 +854,7 @@ class Module_Firesale extends Module
         $return     = TRUE;
         $settings   = array();
         $current    = array();
-        
+
         // Make list of currencies (if any) for default currency setting
         $default_currency_options = array();
         if($currencies = $this->db->get('firesale_currency')->result_array()) {
@@ -887,14 +887,14 @@ class Module_Firesale extends Module
 
                 // Add it
                 if ( $action == 'add' and ! in_array($setting['slug'], $current) ) {
-                    
+
                     if ( ! $this->db->insert('settings', $setting) ) {
                         $return = FALSE;
                     }
 
                 // Remove it
-                } else if ( $action == 'remove' and in_array($setting['slug'], $current) ) {
-                    
+                } elseif ( $action == 'remove' and in_array($setting['slug'], $current) ) {
+
                     if ( ! $this->db->delete('settings', array('slug' => $setting['slug'])) ) {
                         $return = FALSE;
                     }

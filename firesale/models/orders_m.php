@@ -651,7 +651,7 @@ class Orders_m extends MY_Model
 
     /**
      * Gets a complete count of the number of orders in a given filter
-     * 
+     *
      * @param  string [$where] The where clause of the filter option
      * @return int    The count of the total result set
      * @access public
