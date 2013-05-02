@@ -151,7 +151,7 @@ class Currency_m extends MY_Model
     public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
     {
         // Format initial value
-        if ($fix) {
+        if ($fix and $price > 0) {
             switch ($currency->cur_format_num) {
                 case '1':
                     $price = ceil($price).'.00';

@@ -12,7 +12,7 @@
           <li><strong><?php echo lang('firesale:orders:label_products'); ?>:</strong> {{ count }}</li>
         </ul>
         <footer>
-          <span>{{ settings:currency }}{{ price_total }}</span>
+          <span>{{ price_total_formatted }}</span>
           <a href="{{ firesale:url route="orders-single" id=id }}"><?php echo lang('firesale:orders:label_view_order'); ?></a>
         </footer>
       </section>

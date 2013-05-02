@@ -40,12 +40,12 @@ class Modifier_m extends MY_Model
 
             // Change options
             $post['options'][$mod] = array(
-                                        'mod_id' => $modifier['id'],
-                                        'var_id' => ( isset($variation) ? $variation['id'] : '' ),
-                                        'type'   => $modifier['type']['key'],
-                                        'title'  => $modifier['title'],
-                                        'value'  => ( isset($variation) ? $variation['title'] : $var )
-                                     );
+                'mod_id' => $modifier['id'],
+                'var_id' => ( isset($variation) ? $variation['id'] : '' ),
+                'type'   => $modifier['type']['key'],
+                'title'  => $modifier['title'],
+                'value'  => ( isset($variation) ? $variation['title'] : $var )
+            );
 
             // Unset before next loop
             unset($modifier);
@@ -114,7 +114,7 @@ class Modifier_m extends MY_Model
         // Variables
         $return     = array();
         $tmp        = array();
-        $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : $this->settings->get('firesale_currency') );
         $currency   = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
         $variations = $this->db->select('v.*, vp.firesale_products_id AS product')
                                ->from('firesale_product_variations AS v')
