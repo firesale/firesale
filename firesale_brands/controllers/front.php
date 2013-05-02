@@ -62,7 +62,11 @@ class front extends Public_Controller
 
             // Build breadcrumbs
             foreach ( $this->brands_m->build_breadcrumbs($brand, $category) as $title => $url ) {
-                $this->template->set_breadcrumb($title, $url);
+                if (rtrim($url,"/") == uri_string()) {
+                    $this->template->set_breadcrumb($title);
+                } else {
+                    $this->template->set_breadcrumb($title, $url);
+                }
             }
 
             // Assign data
