@@ -1,4 +1,5 @@
 
-button.mod { width: 26px; display: inline-block; margin-right: 3px; }
+button.mod { width: 26px; display: inline-block; margin: -5px 3px 0 0; }
 #content-body ul > li > label { width: 25% !important; float: left !important; display: inline-block !important; }
 #content-body ul > li > .input { width: 70% !important; display: inline-block !important; }
+.clear { height: 0; line-height: 0; clear: both; }
