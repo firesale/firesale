@@ -4,7 +4,7 @@ class Plugin_Firesale extends Plugin
 {
 
     public $version = '1.2.0';
-    
+
     public $name = array(
         'en'    => 'FireSale'
     );
@@ -232,8 +232,7 @@ class Plugin_Firesale extends Plugin
             ->get()
             ->result();
 
-        foreach ($result as &$product)
-        {
+        foreach ($result as &$product) {
             $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
         }
 
@@ -331,10 +330,10 @@ class Plugin_Firesale extends Plugin
     }
 
     /**
-     * Returns a PluginDoc array that PyroCMS uses 
+     * Returns a PluginDoc array that PyroCMS uses
      * to build the reference in the admin panel
      *
-     * All options are listed here but refer 
+     * All options are listed here but refer
      * to the Blog plugin for a larger example
      *
      * @return array
@@ -465,7 +464,7 @@ class Plugin_Firesale extends Plugin
                 )
             )
         );
-    
+
         return $info;
     }
 

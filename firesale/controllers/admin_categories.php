@@ -108,7 +108,7 @@ class Admin_categories extends Admin_Controller
             $_POST['slug']        = $_POST['slug_prefix'].$_POST['slug'];
 
         } elseif ( $this->input->post('btnAction') == 'delete' ) {
-            
+
             $this->delete($this->input->post('id'));
         } else {
 
@@ -126,7 +126,7 @@ class Admin_categories extends Admin_Controller
         $fields = $this->fields->build_form($this->stream, ( $id == NULL ? 'new' : 'edit' ), $row, FALSE, FALSE, $skip, $extra);
 
         if ( is_string($fields) OR is_integer($fields) ) {
-            
+
             // Success, clear cache!
             Events::trigger('clear_cache');
 

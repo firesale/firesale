@@ -142,7 +142,7 @@ class Admin_products extends Admin_Controller
 
                 // Update image folder?
                 if ( ! empty($row) ) {
-                    
+
                     // Update Folder Slug
                     if ($row->slug != $input['slug']) {
                         $this->products_m->update_folder_slug($row->slug, $input['slug']);
@@ -357,7 +357,7 @@ class Admin_products extends Admin_Controller
             $this->edit($parent);
             return;
         } else {
-            $this->session->set_userdata('flash:old:error', $extra['error_message']); 
+            $this->session->set_userdata('flash:old:error', $extra['error_message']);
         }
 
         // Format streams fields
@@ -459,7 +459,7 @@ class Admin_products extends Admin_Controller
             $this->edit($parent->parent);
             return;
         } else {
-            $this->session->set_userdata('flash:old:error', $extra['error_message']); 
+            $this->session->set_userdata('flash:old:error', $extra['error_message']);
         }
 
         // Format streams fields
@@ -511,7 +511,7 @@ class Admin_products extends Admin_Controller
         }
 
         if ($duplicate) {
-           
+
             // Updated, clear cache!
             Events::trigger('clear_cache');
 

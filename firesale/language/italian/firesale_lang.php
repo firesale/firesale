@@ -231,7 +231,7 @@
     $lang['firesale:label_route']       = 'Reindirizzamento';
     $lang['firesale:label_translation'] = 'Traduzione';
     $lang['firesale:label_table']       = 'Tabella';
-    
+
     $lang['firesale:label_cur_code']        = 'Codice Valuta';
     $lang['firesale:label_cur_code_inst']   = 'Formato ISO-4217';
     $lang['firesale:label_cur_tax']         = 'Tax Rate'; # translate
@@ -300,22 +300,22 @@
 
     $lang['firesale:gateways:installed_success'] = 'Metodo di Pagamento installato con successo';
     $lang['firesale:gateways:installed_fail']    = 'Il Metodo di Pagamento non può essere installato';
-    
+
     $lang['firesale:gateways:uninstalled_success']          = 'Metodo di Pagamento disinstallato con successo';
     $lang['firesale:gateways:uninstalled_fail']             = 'Il Metodo di Pagamento non può essere disinstallato';
     $lang['firesale:gateways:multiple_uninstalled_success'] = 'Il Metodo di Pagamento selezionato è stato disinstallato con successo';
     $lang['firesale:gateways:multiple_uninstalled_fail']    = 'Il Metodo di Pagamento selezionato non è stato disinstallato';
-    
+
     $lang['firesale:gateways:multiple_enabled_success'] = 'Il Metodo di Pagamento selezionato è stato abilitato';
     $lang['firesale:gateways:multiple_enabled_fail']    = 'Il Metodo di Pagamento selezionato non può essere abilitato';
     $lang['firesale:gateways:enabled_success']          = 'Il Metodo di Pagamento è stato abilitato';
     $lang['firesale:gateways:enabled_fail']             = 'Il Metodo di Pagamento non è stato abilitato';
-    
+
     $lang['firesale:gateways:disabled_success']          = 'Il Metodo di Pagamento è stato disabilitato';
     $lang['firesale:gateways:disabled_fail']             = 'Il Metodo di Pagamento non può essere disabilitato';
     $lang['firesale:gateways:multiple_disabled_success'] = 'Il Metodo di Pagamento selezionato è stato disabilitato con successo';
     $lang['firesale:gateways:multiple_disabled_fail']    = 'Il Metodo di Pagamento selezionato non può essere disabilitato';
-    
+
     $lang['firesale:gateways:updated_success'] = 'Metodo di Pagamento aggiornato con successo';
     $lang['firesale:gateways:updated_fail']    = 'Il Metodo di Pagamento non può essere aggiornato';
 
@@ -471,4 +471,3 @@
     $lang['firesale:install:not_installed']    = 'Per favore installa prima il modulo FireSale e poi i suoi addons';
     $lang['firesale:install:no_route_access']  = 'FireSale richiede l\'accesso al file system/cms/config/routes.php. Per favore imposta i permessi appropriati e riprova';
     $lang['firesale:install:old_multiple']     = 'Your currently installed version of the Multiple field type is out of date, please delete or upgrade it before attempting to use FireSale'; # Translate
-    

@@ -474,7 +474,7 @@ class Products_m extends MY_Model
 
         // Clone them
         if ( $images->num_rows() ) {
-            
+
             // Create folder
             $folder = $this->create_file_folder($parent->id, $product['title'], $product['slug']);
             $folder = (object)$folder['data'];

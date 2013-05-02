@@ -273,7 +273,7 @@ class Admin_orders extends Admin_Controller
 
             // Insert/Update item
             if ( $this->orders_m->insert_update_order_item($order, $product, $qty) ) {
-                
+
                 // Update price
                 $this->orders_m->update_order_cost($order, true, false);
 

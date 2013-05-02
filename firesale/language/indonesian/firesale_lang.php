@@ -211,7 +211,7 @@
     $lang['firesale:label_ip']            = 'Alamat IP';
     $lang['firesale:label_ship_req']      = 'Requires Shipping'; # Translate
     $lang['firesale:label_address_title'] = 'Save Address as'; # Translate
-    
+
     $lang['firesale:label_nameaz']    = 'Nama A - Z';
     $lang['firesale:label_nameza']    = 'Nama Z - A';
     $lang['firesale:label_pricelow']  = 'Harga Rendah &gt; Tinggi';
@@ -297,25 +297,25 @@
     $lang['firesale:gateways:errors:invalid_bool']     = 'Kolom %s harus bernilai boolean.';
     $lang['firesale:gateways:warning']                 = 'Semua pengaturan gateway akan hilang dan toko Anda tidak akan dapat memproses pembayaran! Apakah Anda yakin akan mencopot gateway ini?';
     $lang['firesale:gateways:multiple_warning']        = 'All gateway settings will be lost and your store may be unable to take payments! Are you sure you want to uninstall the selected gateways?'; # Translate
-    
+
     $lang['firesale:gateways:installed_success']            = 'Gateway berhasil dipasang';
     $lang['firesale:gateways:installed_fail']               = 'Gateway tidak dapat dipasang';
-    
+
     $lang['firesale:gateways:uninstalled_success']          = 'Gateway berhasil dicopot';
     $lang['firesale:gateways:uninstalled_fail']             = 'Gateway tidak dapat dicopot';
     $lang['firesale:gateways:multiple_uninstalled_success'] = 'Gateway yang dipilih berhasil dicopot';
     $lang['firesale:gateways:multiple_uninstalled_fail']    = 'Gateway yang dipilih tidak dapat dicopot';
-    
+
     $lang['firesale:gateways:multiple_enabled_success']     = 'Gateway yang dipilih sudah diaktifkan';
     $lang['firesale:gateways:multiple_enabled_fail']        = 'Gateway yang dipilih tidak dapat diaktifkan';
     $lang['firesale:gateways:enabled_success']              = 'Gateway berhasil diaktifkan';
     $lang['firesale:gateways:enabled_fail']                 = 'Gateway tidak dapat diaktifkan';
-    
+
     $lang['firesale:gateways:disabled_success']             = 'Gateway berhasil dinonaktifkan';
     $lang['firesale:gateways:disabled_fail']                = 'Gateway tidak dapat dinonaktifkan';
     $lang['firesale:gateways:multiple_disabled_success']    = 'Gateway yang dipilih berhasil dinonaktifkan';
     $lang['firesale:gateways:multiple_disabled_fail']       = 'Gateway yang dipilih tidak dapat dinonaktifkan';
-    
+
     $lang['firesale:gateways:updated_success']              = 'Gateway berhasil diperbaharui';
     $lang['firesale:gateways:updated_fail']                 = 'Gateway tidak dapat diperbaharui';
 
@@ -472,4 +472,3 @@
     $lang['firesale:install:not_installed']    = 'Silakan pasang modul FireSale sebelum memasang modul tambahan untuk FireSale';
     $lang['firesale:install:no_route_access']  = 'FireSale memerlukan akses ke file system/cms/config/routes.php. Silakan set permission yang dibutuhkan kemudian coba lagi';
     $lang['firesale:install:old_multiple']     = 'Your currently installed version of the Multiple field type is out of date, please delete or upgrade it before attempting to use FireSale'; # Translate
-    

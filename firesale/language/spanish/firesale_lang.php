@@ -471,4 +471,3 @@
     $lang['firesale:install:not_installed']    = 'Installe primero el Modulo de Firesale antes que los plugins.';
     $lang['firesale:install:no_route_access']  = 'FireSale requiere acceso al archivo: system/cms/config/routes.php. Asegurese de tener permisos de escritura y trate de nuevo.';
     $lang['firesale:install:old_multiple']     = 'La versión de Multiple field type esta desactualizada, actualicela o borrela antes de continuar con firesale.';
-    

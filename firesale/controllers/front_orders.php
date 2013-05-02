@@ -37,7 +37,7 @@ class Front_orders extends Public_Controller
 
         // Variables
         $user = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
-        
+
         // Check user
         if ($user != NULL) {
 
