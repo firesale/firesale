@@ -26,15 +26,20 @@ class Currency_m extends MY_Model
         $this->load->driver('Streams');
     }
 
-    public function get($id = 1)
+    public function get($id = NULL)
     {
 
         // Check cache
-        if ( array_key_exists($id, $this->cache) ) {
+        if ( $id !== NULL && array_key_exists($id, $this->cache) ) {
             return $this->cache[$id];
         }
 
-        // Variables
+        // If no id given, get the default currency
+        if($id === NULL) {
+            $id = $this->db->select('value')->get_where('settings', array('slug' => 'firesale_currency'))->row()->value;
+        }
+
+        // Get the currency
         $stream = $this->streams->streams->get_stream('firesale_currency', 'firesale_currency');
         $row    = $this->row_m->get_row($id, $stream, false);
 
@@ -56,7 +61,7 @@ class Currency_m extends MY_Model
         return FALSE;
     }
 
-    public function get_symbol($id = 1)
+    public function get_symbol($id = NULL)
     {
 
         // Variables
@@ -84,7 +89,7 @@ class Currency_m extends MY_Model
         }
 
         // Get currency data
-        $currency = $this->get(( $currency != NULL ? $currency : 1 ));
+        $currency = $this->get($currency);
 
         // Check valid option
         if ( ! is_object($currency) ) {
@@ -146,7 +151,7 @@ class Currency_m extends MY_Model
     public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
     {
         // Format initial value
-        if ($fix) {
+        if ($fix and $price > 0) {
             switch ($currency->cur_format_num) {
                 case '1':
                     $price = ceil($price).'.00';
@@ -188,6 +193,48 @@ class Currency_m extends MY_Model
 
         // Return
         return $formatted;
+    }
+
+
+    /**
+     * Updates the options for the select/dropdown "Default Currency Code" in settings
+     */
+    public function update_default_currency_options()
+    {
+        // Get current settings
+        $setting = $this->db->get_where('settings', array('slug' => 'firesale_currency'))->row_array();
+
+        // Variables
+        $options = array();
+        $codes   = array();
+
+        if($currencies = $this->db->get('firesale_currency')->result_array()) {
+            foreach($currencies as $k => $currency) {
+                $codes[$currency['id']] = $currency['cur_code'];
+                $options[] = $currency['id'].'='.$currency['cur_code'];
+            }
+        }
+        $setting['options'] = implode('|', $options);
+
+        // Make sure saved currency is still in the list (it might have been deleted)
+        if(!isset($codes[$setting['value']])) {
+            // It's not, so try the default
+            if(isset($codes[$setting['default']]))
+                $setting['value'] = $setting['default'];
+
+            // Default gone too, so use the first enabled currency
+            else {
+                foreach($currencies as $currency) {
+                    if(!$currency['enabled'])
+                        continue;
+                    $setting['value'] = $setting['default'] = $currency['id'];
+                    break;
+                }
+            }
+        }
+
+        // Update the setting
+        $this->db->where('slug', 'firesale_currency')->update('settings', $setting);
     }
 
 }

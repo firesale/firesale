@@ -68,7 +68,7 @@ class Front_category extends Public_Controller
         $args     = func_get_args();
         $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
         $category = implode('/', $args);
-        
+
         // Check category
         if ( ( is_int($category) OR is_numeric($category) ) AND $start == 0 ) {
             $start    = $category;
@@ -113,7 +113,7 @@ class Front_category extends Public_Controller
 
             // Assign data
             $this->data->category = $category;
-            $this->data->products = $products;
+            $this->data->products = reassign_helper_vars($products);
             $this->data->ordering = get_order();
 
             // Assign pagination
@@ -127,12 +127,19 @@ class Front_category extends Public_Controller
             // Breadcrumbs
             if ( $category == null ) {
                 $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
-                $this->template->set_breadcrumb(lang('firesale:cats_all_products'), $url);
+                $this->template->set_breadcrumb(lang('firesale:cats_all_products'));
             } else {
                 $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
                 foreach ($cats as $key => $cat) {
                     $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
-                    $this->template->set_breadcrumb($cat['title'], $url);
+                    if ($url == uri_string())
+                    {
+                        $this->template->set_breadcrumb($cat['title']);
+                    }
+                    else
+                    {
+                        $this->template->set_breadcrumb($cat['title'], $url);
+                    }
                 }
             }
 

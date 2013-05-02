@@ -153,7 +153,7 @@ class Products_m extends MY_Model
 
         // Variables
         $user_currency = $this->session->userdata('currency');
-        $currency      = $currency ? $currency : ($user_currency ? $user_currency : 1);        
+        $currency      = $currency ? $currency : ($user_currency ? $user_currency : NULL);
 
         // Set params
         $params = array(
@@ -474,14 +474,14 @@ class Products_m extends MY_Model
 
         // Clone them
         if ( $images->num_rows() ) {
-            
+
             // Create folder
             $folder = $this->create_file_folder($parent->id, $product['title'], $product['slug']);
             $folder = (object)$folder['data'];
 
             // Loop and add images
             foreach ( $images->result_array() as $image ) {
-                unset($image['id']);
+                $image['id']        = substr(md5(microtime().rand(0,100000)), 0, 15);
                 $image['folder_id'] = $folder->id;
                 $this->db->insert('files', $image);
             }

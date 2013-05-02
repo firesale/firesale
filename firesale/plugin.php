@@ -4,7 +4,7 @@ class Plugin_Firesale extends Plugin
 {
 
     public $version = '1.2.0';
-    
+
     public $name = array(
         'en'    => 'FireSale'
     );
@@ -21,6 +21,7 @@ class Plugin_Firesale extends Plugin
         $this->load->model('routes_m');
         $this->load->model('taxes_m');
         $this->load->model('currency_m');
+        $this->load->helper('general');
     }
 
     public function url()
@@ -109,6 +110,9 @@ class Plugin_Firesale extends Plugin
             foreach ($categories AS &$category) {
                 $category = $this->pyrocache->model('categories_m', 'get_category', array($category['id']), $this->firesale->cache_time);
             }
+
+            // Fix helper variables
+            $categories = reassign_helper_vars($categories);
 
             // Add to cache
             $this->cache->save($cache_key, $categories, $this->firesale->cache_time);
@@ -200,6 +204,9 @@ class Plugin_Firesale extends Plugin
                 $result = $this->products_m->get_product($result['id']);
             }
 
+            // Fix helper variables
+            $products = reassign_helper_vars($products);
+
             // Add to cache
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
         }
@@ -225,8 +232,7 @@ class Plugin_Firesale extends Plugin
             ->get()
             ->result();
 
-        foreach ($result as &$product)
-        {
+        foreach ($result as &$product) {
             $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
         }
 
@@ -268,7 +274,7 @@ class Plugin_Firesale extends Plugin
         $this->load->library('fs_cart');
 
         // Get currency
-        $currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
+        $currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL ));
 
         // Variables
         $data 		 	= new stdClass;
@@ -277,17 +283,17 @@ class Plugin_Firesale extends Plugin
         // Loop products in cart
         foreach ( $this->fs_cart->contents() as $id => $item ) {
 
-            $product = $this->products_m->get($item['id']);
+            $product = $this->products_m->get_product($item['id']);
 
             if ($product !== FALSE) {
 
-                $data->products[] = array(
-                    'id'		=> $id,
-                    'code' 		=> $product->code,
-                    'slug'		=> $product->slug,
-                    'quantity'	=> $item['qty'],
-                    'name'		=> $item['name']
-                );
+                $product['quantity'] = $item['qty'],
+                $product['name']     = $item['name'],
+                $product['price']    = $item['price'],
+                $product['ship']     = $item['ship']
+
+                $data->products[] = $product;
+
             }
 
         }
@@ -297,6 +303,9 @@ class Plugin_Firesale extends Plugin
         $data->sub   = $this->currency_m->format_string($this->fs_cart->subtotal(), $currency, false);
         $data->total = $this->currency_m->format_string($this->fs_cart->total(), $currency, false);
         $data->count = $this->fs_cart->total_items();
+
+        // Fix helper variables
+        $data->products = reassign_helper_vars($data->products);
 
         // Retrun data
         return array($data);
@@ -314,14 +323,17 @@ class Plugin_Firesale extends Plugin
             $currency = $this->currency_m->get($currency['id']);
         }
 
+        // Fix helper variables
+        $results = reassign_helper_vars($results);
+
         return $results;
     }
 
     /**
-     * Returns a PluginDoc array that PyroCMS uses 
+     * Returns a PluginDoc array that PyroCMS uses
      * to build the reference in the admin panel
      *
-     * All options are listed here but refer 
+     * All options are listed here but refer
      * to the Blog plugin for a larger example
      *
      * @return array
@@ -452,7 +464,7 @@ class Plugin_Firesale extends Plugin
                 )
             )
         );
-    
+
         return $info;
     }
 

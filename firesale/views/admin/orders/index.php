@@ -59,7 +59,7 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <td colspan="10"><?php echo $pagination; ?></td>
+                        <td colspan="10"><?php echo $pagination['links']; ?></td>
                     </tr>
                 </tfoot>
                 <tbody>

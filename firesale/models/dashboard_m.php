@@ -11,8 +11,8 @@
 class Dashboard_m extends MY_Model
 {
 
-	public function sales_duration($type = 'month', $duration = 12, $currency)
-	{
+    public function sales_duration($type = 'month', $duration = 12, $currency)
+    {
 
         // Variables
         $data = array(
@@ -23,23 +23,23 @@ class Dashboard_m extends MY_Model
             'total_count' => 0
         );
 
-		// Get format
-		switch($type) {
-			case 'year':  $format = '%Y';       $order = 'asc';  $mod = 365; break;
-			case 'month': $format = '%Y-%m';    $order = 'asc';  $mod = 30;  break;
-			case 'day':   $format = '%Y-%m-%d'; $order = 'desc'; $mod = 1;   break;
-			default:      $format = '%Y-%m';    $order = 'asc';  $mod = 30;  break;
-		}
-		
-		// Build initial query
-		$query = $this->db->select("SUM(i.`qty`) AS `count`, SUM(i.`qty` * i.`price`) AS `sales`, date_format(i.`created`, \"$format\") AS `{$type}`", false)
+        // Get format
+        switch($type) {
+            case 'year':  $format = '%Y';       $order = 'asc';  $mod = 365; break;
+            case 'month': $format = '%Y-%m';    $order = 'asc';  $mod = 30;  break;
+            case 'day':   $format = '%Y-%m-%d'; $order = 'desc'; $mod = 1;   break;
+            default:      $format = '%Y-%m';    $order = 'asc';  $mod = 30;  break;
+        }
+
+        // Build initial query
+        $query = $this->db->select("SUM(i.`qty`) AS `count`, SUM(i.`qty` * i.`price`) AS `sales`, date_format(i.`created`, \"$format\") AS `{$type}`", false)
                           ->from('firesale_orders_items AS i')
                           ->join('firesale_orders AS o', 'o.id = i.order_id', 'inner')
                           ->where_in('o.order_status', array(2, 3, 4))
                           ->group_by($type)
                           ->order_by($type, $order)
                           ->limit($duration);
-        
+
         // Add to query
         if ( $type == 'day' and $duration == 1 ) {
             $query->where("date_format(i.`created`, \"$format\") = ", "'".date('Y-m-d')."'", false);
@@ -69,6 +69,6 @@ class Dashboard_m extends MY_Model
         $data['total_sales'] = $this->currency_m->format_string($data['total_sales'], $currency, false);
 
         return $data;
-	}
+    }
 
 }

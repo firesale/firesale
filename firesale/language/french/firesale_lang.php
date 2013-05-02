@@ -297,28 +297,28 @@
     $lang['firesale:gateways:errors:invalid_bool']     = 'Le champs %s doit contenir une valeur booléenne.';
     $lang['firesale:gateways:warning']                 = 'Tous les paramètres de la plateforme seront perdus et votre système ne pourra plus recevoir de paiement ! Etes vous sûr de vouloir supprimer cette plateforme ?';
     $lang['firesale:gateways:multiple_warning']        = 'Tous les paramètres de la plateforme seront perdus et votre système ne pourra plus recevoir de paiement ! Etes vous sûr de vouloir supprimer les plateformes sélectionnées ?';
-    
+
     $lang['firesale:gateways:installed_success']            = 'Plateforme installée';
     $lang['firesale:gateways:installed_fail']               = 'Impossible d\'installer la plateforme';
-    
+
     $lang['firesale:gateways:uninstalled_success']          = 'Plateforme désinstallée';
     $lang['firesale:gateways:uninstalled_fail']             = 'Impossible de désinstaller la plateforme';
     $lang['firesale:gateways:multiple_uninstalled_success'] = 'Les plateformes sélectionnées ont été désinstallées';
     $lang['firesale:gateways:multiple_uninstalled_fail']    = 'Impossible de désinstaller les plateformes sélectionnées';
-    
+
     $lang['firesale:gateways:multiple_enabled_success']     = 'Les plateformes sélectionnées ont été activées';
     $lang['firesale:gateways:multiple_enabled_fail']        = 'Impossible d\'activer les plateformes sélectionnées';
     $lang['firesale:gateways:enabled_success']              = 'La plateforme a été activée';
     $lang['firesale:gateways:enabled_fail']                 = 'Impossible d\'activer la plateforme';
-    
+
     $lang['firesale:gateways:disabled_success']             = 'La plateforme a été désactivée';
     $lang['firesale:gateways:disabled_fail']                = 'Impossible de désactiver la plateforme';
     $lang['firesale:gateways:multiple_disabled_success']    = 'Les plateformes sélectionnées ont été désactivées';
     $lang['firesale:gateways:multiple_disabled_fail']       = 'Impossible de désactiver les plateformes sélectionnées';
-    
+
     $lang['firesale:gateways:updated_success']              = 'Plateforme mise à jour';
     $lang['firesale:gateways:updated_fail']                 = 'Impossible de mettre à jour la plateforme';
-    
+
     // Checkout
     $lang['firesale:gateways:labels:name']            = 'Nom';
     $lang['firesale:gateways:labels:desc']            = 'Description';
@@ -471,4 +471,3 @@
     $lang['firesale:install:not_installed']    = 'Merci d\'installer le module FireSale avant d\'installer ses modules additionnels';
     $lang['firesale:install:no_route_access']  = 'Le module n\'a pas accès au fichier de routes (application/config/routes.php), merci d\'autoriser l\'écriture de ce fichier';
     $lang['firesale:install:old_multiple']     = 'Your currently installed version of the Multiple field type is out of date, please delete or upgrade it before attempting to use FireSale'; # Translate
-    

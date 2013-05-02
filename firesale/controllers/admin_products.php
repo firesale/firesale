@@ -71,7 +71,7 @@ class Admin_products extends Admin_Controller
 
         // Build product data
         foreach ($products AS &$product) {
-            $product = $this->pyrocache->model('products_m', 'get_product', array($product['id'], 1), $this->firesale->cache_time);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
         }
 
         // Assign variables
@@ -142,7 +142,7 @@ class Admin_products extends Admin_Controller
 
                 // Update image folder?
                 if ( ! empty($row) ) {
-                    
+
                     // Update Folder Slug
                     if ($row->slug != $input['slug']) {
                         $this->products_m->update_folder_slug($row->slug, $input['slug']);
@@ -357,7 +357,7 @@ class Admin_products extends Admin_Controller
             $this->edit($parent);
             return;
         } else {
-            $this->session->set_userdata('flash:old:error', $extra['error_message']); 
+            $this->session->set_userdata('flash:old:error', $extra['error_message']);
         }
 
         // Format streams fields
@@ -394,9 +394,9 @@ class Admin_products extends Admin_Controller
         if ( $this->input->post('btnAction') == 'save' ) {
 
             // Update variables
-            $input  = $this->input->post();
-            $skip   = array('btnAction');
-            $extra  = array(
+            $input = $this->input->post();
+            $skip  = array('btnAction');
+            $extra = array(
                 'return'          => FALSE,
                 'success_message' => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_success'),
                 'error_message'   => lang('firesale:vars:'.( $id == null ? 'create' : 'edit' ).'_error')
@@ -459,7 +459,7 @@ class Admin_products extends Admin_Controller
             $this->edit($parent->parent);
             return;
         } else {
-            $this->session->set_userdata('flash:old:error', $extra['error_message']); 
+            $this->session->set_userdata('flash:old:error', $extra['error_message']);
         }
 
         // Format streams fields
@@ -511,7 +511,7 @@ class Admin_products extends Admin_Controller
         }
 
         if ($duplicate) {
-           
+
             // Updated, clear cache!
             Events::trigger('clear_cache');
 
@@ -706,7 +706,8 @@ class Admin_products extends Admin_Controller
 
             // Variables
             $data  = array('products' => array(), 'pagination' => '');
-            $start = ( isset($_POST['start']) ? $_POST['start'] : 0 );
+            $start = ( isset($_POST['start']) ? $_POST['start'] : $page );
+            $start = ( $start > 0 ? ( $start - 1 ) * $this->perpage : 0 );
 
             unset($_POST['start']);
 

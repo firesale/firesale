@@ -241,7 +241,7 @@ class Front_cart extends Public_Controller
                                 $this->session->set_flashdata('message', lang('firesale:cart:qty_too_low'));
                             }
 
-                        } else {
+                        } elseif ( ! array_key_exists('custom', $cart[$row_id])) {
 
                             // Looks like this product no longer exists, remove it!
                             $data['qty'] = 0;
@@ -298,11 +298,14 @@ class Front_cart extends Public_Controller
             $this->orders_m->remove_order_item($this->session->userdata('order_id'), $cart[$row_id]['id']);
         }
 
+        // Get product details
+        $product = $this->pyrocache->model('products_m', 'get_product', array($cart[$row_id]['id'], null, true), $this->firesale->cache_time);
+
         // Update the cart
         $this->fs_cart->remove($row_id);
 
         // Fire events
-        Events::trigger('cart_item_removed');
+        Events::trigger('cart_item_removed', $product);
 
         if ($this->input->is_ajax_request()) {
             exit('success');
@@ -815,7 +818,7 @@ class Front_cart extends Public_Controller
 
                 $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
                 $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
-                
+
                 if ( ! $processed) {
                     // Check status
                     if ($response->status() == 'authorized' or $response->status() == 'complete') {

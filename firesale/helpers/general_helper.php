@@ -47,7 +47,7 @@
         } else {
             $result = $_CI->db->where('slug', $slug)->get('file_folders');
         }
-       
+
         // Check results
         if ( $result->num_rows() ) {
             $parent = $result->row();
@@ -95,6 +95,30 @@
     }
 
     /**
+     * Reassigns the streams helper variables to fix the first, last and odd_even
+     * items, ensuring they are correct after being pulled out singally.
+     *
+     * @param  array $array The array to fix
+     * @return array        The fixed array
+     */
+    function reassign_helper_vars($array)
+    {
+        // Variables
+        $count    = 0;
+        $odd_even = 'even';
+
+        // Loop array
+        foreach ( $array as &$item ) {
+            $count           += 1;
+            $item['first']    = ( $count == 1 ? '1' : '0' );
+            $item['last']     = ( count($array) == $count ? '1' : '0' );
+            $item['odd_even'] = $odd_even = ( $odd_even == 'even' ? 'odd' : 'even' );
+        }
+
+        return $array;
+    }
+
+    /**
      * Adds the given modules asset namespace to be referenced by other modules
      *
      * @param string $module The module name to be added to the namespace
@@ -104,7 +128,7 @@
     {
         // Variables
         $dir = ADDONPATH.'/modules/';
-        
+
         // Check shared addons
         if (is_dir(SHARED_ADDONPATH.'modules/'.$module)) {
             $dir = SHARED_ADDONPATH.'modules/';
@@ -112,7 +136,7 @@
             $core_path = defined('PYROPATH') ? PYROPATH : APPPATH;
             $dir = $core_path.'modules/';
         }
-        
+
         // Register namespace
         Asset::add_path($module, $dir.$module.'/');
     }
@@ -131,7 +155,7 @@
         // Get and return information
         $type = $_CI->type->load_single_type($type);
         if ( $type !== null ) { return $type->version; }
-        
+
         // Not installed
         return false;
     }

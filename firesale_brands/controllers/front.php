@@ -45,11 +45,16 @@ class front extends Public_Controller
         // Check it was found
         if( $brand ) {
 
+            // Get cookie data
+            $order              = $this->input->cookie('firesale_listing_order');
+            $this->data->layout = $this->input->cookie('firesale_listing_style') or 'grid';
+            $this->data->order  = get_order(( $order != null ? $order : '1' ));
+
             // Build route
             $route = $this->pyrocache->model('routes_m', 'build_url', array('brand', $brand['id']), $this->firesale->cache_time);
 
             // Get products
-            $products = $this->pyrocache->model('brands_m', 'get_products', array($brand['id'], $this->perpage, $start, $category), $this->firesale->cache_time);
+            $products = $this->pyrocache->model('brands_m', 'get_products', array($brand['id'], $this->perpage, $start, $this->data->order['by'], $this->data->order['dir'], $category), $this->firesale->cache_time);
 
             // Build pagination
             $count      = $this->pyrocache->model('brands_m', 'get_count', array($brand['id'], $category), $this->firesale->cache_time);
@@ -65,7 +70,7 @@ class front extends Public_Controller
             $this->data->order      = get_order($this->input->cookie('firesale_listing_order') ? $this->input->cookie('firesale_listing_order') : 1);
             $this->data->ordering   = get_order();
             $this->data->brand      = $brand;
-            $this->data->products   = $products;
+            $this->data->products   = reassign_helper_vars($products);
             $this->data->pagination = $pagination;
 
             asset_namespace('firesale');

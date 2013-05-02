@@ -355,7 +355,7 @@ class Categories_m extends MY_Model
 
                 $url   = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
                 $tree .= '<li id="cat_' . $cat['id'] . '">' . "\n";
-                $tree .= '  <div>' . "\n";
+                $tree .= '  <div'.( $cat['status']['key'] == '0' ? ' class="draft"' : '' ).'>' . "\n";
                 $tree .= '    <a href="#' . $cat['id'] . '" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
                 $tree .= '  </div>' . "\n";
 

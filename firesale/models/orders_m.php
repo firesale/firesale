@@ -115,7 +115,7 @@ class Orders_m extends MY_Model
                     case 'product':
 
                         // Get possible IDs
-                        $query = $this->db->select('order_id')->where('product_id', $query)->group_by('order_id')->get('firesale_orders_items')->result_array();
+                        $query = $this->db->select('order_id')->where('product_id', $value)->group_by('order_id')->get('firesale_orders_items')->result_array();
                         $ids   = array();
 
                         // Loop IDs
@@ -303,7 +303,7 @@ class Orders_m extends MY_Model
 
             // No currency set?
             if ($order['currency'] == NULL) {
-                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(1), $this->firesale->cache_time);
+                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(), $this->firesale->cache_time);
             }
 
             // Format prices
@@ -340,7 +340,7 @@ class Orders_m extends MY_Model
         }
 
         // Get currency
-        $user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
         $currency      = $this->currency_m->get($user_currency);
 
         // Append input
@@ -374,6 +374,14 @@ class Orders_m extends MY_Model
      */
     public function insert_update_order_item($order_id, $product, $qty)
     {
+        // Get user ID
+        $user_id = $this->db->select('created_by')
+                            ->where('id', $order_id)
+                            ->get('firesale_orders')
+                            ->row()
+                            ->created_by;
+
+        // Setup query
         $this->db->from('firesale_orders_items')
                  ->where("order_id", $order_id)
                  ->where("product_id", $product['id']);
@@ -385,33 +393,34 @@ class Orders_m extends MY_Model
 
         if ( $this->db->count_all_results() == 0 ) {
             $data = array(
-                'created'		 => date("Y-m-d H:i:s"),
-                'created_by'     => ( isset($this->current_user->id) ? $this->current_user->id : null ),
+                'created'        => date("Y-m-d H:i:s"),
+                'created_by'     => $user_id,
                 'ordering_count' => 0,
-                'order_id'		 => $order_id,
-                'product_id'	 => $product['id'],
-                'code'			 => $product['code'],
-                'name'			 => ( isset($product['title']) ? $product['title'] : $product['name'] ),
-                'price'			 => $product['price'],
-                'qty'			 => $qty,
+                'order_id'       => $order_id,
+                'product_id'     => $product['id'],
+                'code'           => $product['code'],
+                'name'           => ( isset($product['title']) ? $product['title'] : $product['name'] ),
+                'price'          => $product['price'],
+                'qty'            => $qty,
                 'tax_band'       => $product['tax_band']['id'],
                 'options'        => isset($product['options']) ? serialize($product['options']) : ''
              );
 
              if ( $this->db->insert('firesale_orders_items', $data) ) {
+                Events::trigger('clear_cache');
                 return TRUE;
             }
 
         } else {
-
             if ( $this->db->where('order_id', $order_id)->where('product_id', $product['id'])->update('firesale_orders_items', array('qty' => $qty)) ) {
+                Events::trigger('clear_cache');
                 return TRUE;
             }
-
         }
 
         return FALSE;
     }
+
 
     /**
      * Updates the cost of the order based on the current cart contents.
@@ -426,7 +435,7 @@ class Orders_m extends MY_Model
     {
 
         // Get tax rate
-        $user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+        $user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL;
         $currency      = $this->currency_m->get($user_currency);
 
         // Variables
@@ -638,6 +647,20 @@ class Orders_m extends MY_Model
         }
 
         return FALSE;
+    }
+
+    /**
+     * Gets a complete count of the number of orders in a given filter
+     *
+     * @param  string [$where] The where clause of the filter option
+     * @return int    The count of the total result set
+     * @access public
+     */
+    public function order_count($where = null)
+    {
+        $query = $this->db->select('id')->from('firesale_orders');
+        if ( $where != null ) { $query->where($where, null, false); }
+        return $query->get()->num_rows();
     }
 
 }

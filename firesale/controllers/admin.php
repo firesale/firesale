@@ -71,7 +71,7 @@ class admin extends Admin_Controller
                     // Append assets
                     if ( $asset['type'] == 'js' ) {
                         $this->template->append_js($asset['file']);
-                    } else if ( $asset['type'] == 'css' ) {
+                    } elseif ( $asset['type'] == 'css' ) {
                         $this->template->append_css($asset['file']);
                     }
                 }

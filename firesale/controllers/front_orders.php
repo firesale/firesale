@@ -24,6 +24,7 @@ class Front_orders extends Public_Controller
         $this->load->model('orders_m');
         $this->load->model('categories_m');
         $this->load->model('products_m');
+        $this->load->model('currency_m');
 
         // Load css/js
         $this->template->append_css('module::firesale.css')
@@ -56,6 +57,10 @@ class Front_orders extends Public_Controller
             if ($orders['total'] > 0) {
                 foreach ($orders['entries'] AS &$order) {
                     $order['count'] = $this->pyrocache->model('orders_m', 'product_count', array($order['id']), $this->firesale->cache_time);
+                    $currency       = $this->pyrocache->model('currency_m', 'get', array($order['currency']['id']), $this->firesale->cache_time);
+                    $order['price_sub_formatted']   = $this->currency_m->format_string($order['price_sub'], $currency, false);
+                    $order['price_ship_formatted']  = $this->currency_m->format_string($order['price_ship'], $currency, false);
+                    $order['price_total_formatted'] = $this->currency_m->format_string($order['price_total'], $currency, false);
                 }
             }
 

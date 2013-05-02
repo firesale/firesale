@@ -10,9 +10,9 @@ class Module_Firesale extends Module
     {
         parent::__construct();
 
-        // Increase time limit for those of us that have slow machines 
+        // Increase time limit for those of us that have slow machines
         // and spend an hour backtracing to determine the code is fine
-        // If your machine happens to be slower than mine, 
+        // If your machine happens to be slower than mine,
         // and you recieve a whitescreen upon install increase this variable
         @set_time_limit(60);
 
@@ -22,13 +22,13 @@ class Module_Firesale extends Module
         $this->load->helper('firesale/general');
 
         // Load these helpers if we are in the PyroCMS installer, files needs them!
-        defined('PYROPATH') and $this->load->helper(array('text', 'date'));       
+        defined('PYROPATH') and $this->load->helper(array('text', 'date'));
 
         $this->load->library('streams_core/type');
 
         // Add our field type path
         $core_path = defined('PYROPATH') ? PYROPATH : APPPATH;
-        
+
         if (is_dir(SHARED_ADDONPATH.'modules/firesale/field_types')) {
             $this->type->addon_paths['firesale'] = SHARED_ADDONPATH.'modules/firesale/field_types/';
         } elseif (is_dir($core_path.'modules/firesale/field_types')) {
@@ -199,7 +199,7 @@ class Module_Firesale extends Module
                 )
             );
         }
-        
+
         // Support for sub 2.2.0 menus
         if ( CMS_VERSION < '2.2.0' ) {
             $info['is_backend'] = true;
@@ -247,7 +247,7 @@ class Module_Firesale extends Module
     {
         // Is this the PyroCMS installer?
         $path = defined('PYROPATH') ? PYROPATH : APPPATH;
-        
+
         // For 2.2 compatibility
         $redirect = (CMS_VERSION >= '2.2' ? 'addons/' : '') . 'modules';
 
@@ -830,6 +830,10 @@ class Module_Firesale extends Module
             // Force product slug to be unique
             $id = $this->db->select('id')->where('field_slug', 'slug')->where('field_namespace', 'firesale_products')->get('data_fields')->row()->id;
             $this->db->where('field_id', $id)->update('data_field_assignments', array('is_unique' => 'yes'));
+
+            // Change settings for currency
+            $this->settings('remove', array('firesale_currency'));
+            $this->settings('add', array('firesale_currency'));
         }
 
         // Tracking
@@ -843,7 +847,7 @@ class Module_Firesale extends Module
         return '<iframe src="https://www.getfiresale.org/documentation" style="width: 1100px; height: 650px; border-radius: 4px 4px 0 0"></iframe>';
     }
 
-    public function settings($action, $add = array())
+    public function settings($action, $items = array())
     {
 
         // Variables
@@ -851,8 +855,17 @@ class Module_Firesale extends Module
         $settings   = array();
         $current    = array();
 
+        // Make list of currencies (if any) for default currency setting
+        $default_currency_options = array();
+        if($currencies = $this->db->get('firesale_currency')->result_array()) {
+            foreach($currencies as $k => $currency) {
+                $default_currency_options[] = $currency['id'].'='.$currency['cur_code'];
+            }
+        }
+        $default_currency_options = implode('|', $default_currency_options);
+
         // Settings
-        $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'select', 'options' => $default_currency_options, 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_currency_key', 'title' => lang('firesale:settings_currency_key'), 'description' => lang('firesale:settings_currency_key_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 1, 'module' => 'firesale' );
         $settings[] = array('slug' => 'firesale_current_currency', 'title' => lang('firesale:settings_current_currency'), 'description' => lang('firesale:settings_current_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale' );
         $settings[] = array('slug' => 'firesale_currency_updated', 'title' => lang('firesale:settings_currency_updated'), 'description' => lang('firesale:settings_currency_updated_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale');
@@ -870,21 +883,24 @@ class Module_Firesale extends Module
         // Perform
         foreach ($settings as $setting) {
 
-            // Check it's not in already
-            if ( in_array($setting['slug'], $current) ) { continue; }
+            if ( ( ! empty($items) and in_array($setting['slug'], $items) ) or empty($items) ) {
 
-            // Add it
-            if ($action == 'add') {
-                if ( ( ! empty($add) and in_array($setting['slug'], $add) ) or empty($add) ) {
+                // Add it
+                if ( $action == 'add' and ! in_array($setting['slug'], $current) ) {
+
                     if ( ! $this->db->insert('settings', $setting) ) {
                         $return = FALSE;
                     }
+
+                // Remove it
+                } elseif ( $action == 'remove' and in_array($setting['slug'], $current) ) {
+
+                    if ( ! $this->db->delete('settings', array('slug' => $setting['slug'])) ) {
+                        $return = FALSE;
+                    }
+
                 }
-            // Remove it
-            } else {
-                if ( !$this->db->delete('settings', array('slug' => $setting['slug'])) ) {
-                    $return = FALSE;
-                }
+
             }
 
         }
@@ -929,7 +945,7 @@ class Module_Firesale extends Module
         // Routes
         $routes   = array();
         $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category_custom', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-_]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-_/]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2');
         $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-_]+)', 'translation' => 'firesale/front_product/index/$1');
         $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
         $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:order_single', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
@@ -1045,7 +1061,7 @@ class Module_Firesale extends Module
     public function taxes($method = 'add')
     {
         if ($method == 'add') {
-            $this->streams->streams->add_stream('lang:firesale:sections:taxes', 'firesale_taxes', 'firesale_taxes', NULL, NULL);
+            $this->streams->streams->add_stream(lang('firesale:sections:taxes'), 'firesale_taxes', 'firesale_taxes', NULL, NULL);
 
             // Default settings for the fields
             $default = array(
