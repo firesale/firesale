@@ -46,7 +46,7 @@ class Front_product extends Public_Controller
         $this->data->url      = $this->pyrocache->model('routes_m', 'build_url', array('product', $this->data->product['id']), $this->firesale->cache_time);
         $this->data->parent   = $this->products_m->build_breadcrumbs($this->data->category, $this->template);
 
-        if ($this->data->url == uri_string()) {
+        if (rtrim($this->data->url,"/") == uri_string()) {
             $this->template->set_breadcrumb($this->data->product['title']);
         } else {
             $this->template->set_breadcrumb($this->data->product['title'], $this->data->url);

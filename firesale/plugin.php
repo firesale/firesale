@@ -283,7 +283,7 @@ class Plugin_Firesale extends Plugin
         // Loop products in cart
         foreach ( $this->fs_cart->contents() as $id => $item ) {
 
-            $product = $this->products_m->get_product($item['id']);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($item['id']), $this->firesale->cache_time);
 
             if ($product !== FALSE) {
 

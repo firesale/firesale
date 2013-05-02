@@ -132,7 +132,7 @@ class Front_category extends Public_Controller
                 $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
                 foreach ($cats as $key => $cat) {
                     $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
-                    if ($url == uri_string())
+                    if (rtrim($url,"/") == uri_string())
                     {
                         $this->template->set_breadcrumb($cat['title']);
                     }
