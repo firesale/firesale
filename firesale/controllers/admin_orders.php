@@ -3,9 +3,9 @@
 /**
  * Orders admin controller
  *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Controllers
+ * @author      Jamie Holdroyd
+ * @author      Chris Harvey
+ * @package     FireSale\Core\Controllers
  *
  */
 class Admin_orders extends Admin_Controller
@@ -51,13 +51,13 @@ class Admin_orders extends Admin_Controller
 
         // Variables
         $pagination = array('uri_segment' => 4, 'per_page' => $this->perpage, 'base_url' => 'admin/firesale/orders/');
-        $params	    = array(
-            'stream' 	  => 'firesale_orders',
-            'namespace'	  => 'firesale_orders',
-            'limit'		  => $this->perpage,
-            'offset'	  => $start,
-            'order_by'	  => 'id',
-            'sort'		  => 'desc'
+        $params     = array(
+            'stream'      => 'firesale_orders',
+            'namespace'   => 'firesale_orders',
+            'limit'       => $this->perpage,
+            'offset'      => $start,
+            'order_by'    => 'id',
+            'sort'        => 'desc'
         );
 
         // Get entries
@@ -90,9 +90,9 @@ class Admin_orders extends Admin_Controller
         if ( $this->input->post('btnAction') == 'save' ) {
 
             // Variables
-            $input 	= $this->input->post();
-            $skip	= array('btnAction');
-            $extra 	= array(
+            $input  = $this->input->post();
+            $skip   = array('btnAction');
+            $extra  = array(
                 'return'          => 'admin/firesale/orders/edit/-id-',
                 'success_message' => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_success'),
                 'error_message'   => lang('firesale:order_' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
@@ -154,11 +154,11 @@ class Admin_orders extends Admin_Controller
 
         // Assign variables
         if ($row !== NULL) { $this->data = $row; }
-        $this->data->id		= $id;
+        $this->data->id     = $id;
         $this->data->fields = array(
                                 'general' => array('details' => $fields),
-                                'ship'	  => $this->address_m->get_address_form('ship', ( isset($row->ship_to) ? 'edit' : 'new' ), ( isset($row->ship_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : NULL )),
-                                'bill'	  => $this->address_m->get_address_form('bill', ( isset($row->bill_to) ? 'edit' : 'new' ), ( isset($row->bill_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : NULL ))
+                                'ship'    => $this->address_m->get_address_form('ship', ( isset($row->ship_to) ? 'edit' : 'new' ), ( isset($row->ship_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : NULL )),
+                                'bill'    => $this->address_m->get_address_form('bill', ( isset($row->bill_to) ? 'edit' : 'new' ), ( isset($row->bill_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : NULL ))
                               );
 
         // Add users as first general field
@@ -239,12 +239,12 @@ class Admin_orders extends Admin_Controller
         if ( isset($input['btnAction']) AND count($input['action_to']) > 0 ) {
 
             switch ($input['btnAction']) {
-                case 'paid':	   $status = '2'; break;
+                case 'paid':       $status = '2'; break;
                 case 'dispatched': $status = '3'; break;
                 case 'processing': $status = '4'; break;
                 case 'refunded':   $status = '5'; break;
                 case 'cancelled':  $status = '6'; break;
-                default:		   $status = '1'; break;
+                default:           $status = '1'; break;
             }
 
             foreach ($input['action_to'] AS $order) {
@@ -309,6 +309,7 @@ class Admin_orders extends Admin_Controller
 
             // Variables
             $start = ( isset($_POST['start']) ? $_POST['start'] : 0 );
+            $start = ( $start > 0 ? ( $start - 1 ) * $this->perpage : 0 );
             $where = array();
 
             unset($_POST['start']);
