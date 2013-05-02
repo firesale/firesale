@@ -284,17 +284,17 @@ class Plugin_Firesale extends Plugin
         // Loop products in cart
         foreach ( $this->fs_cart->contents() as $id => $item ) {
 
-            $product = $this->products_m->get($item['id']);
+            $product = $this->products_m->get_product($item['id']);
 
             if ($product !== FALSE) {
 
-                $data->products[] = array(
-                    'id'		=> $id,
-                    'code' 		=> $product->code,
-                    'slug'		=> $product->slug,
-                    'quantity'	=> $item['qty'],
-                    'name'		=> $item['name']
-                );
+                $product['quantity'] = $item['qty'],
+                $product['name']     = $item['name'],
+                $product['price']    = $item['price'],
+                $product['ship']     = $item['ship']
+
+                $data->products[] = $product;
+
             }
 
         }
