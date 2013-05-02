@@ -34,14 +34,14 @@ class Currency_m extends MY_Model
             return $this->cache[$id];
         }
 
-        // if no id given, get the default currency
+        // If no id given, get the default currency
         if($id === NULL) {
-            $default_currency = $this->db->select('value')->get_where('settings', array('slug' => 'firesale_currency'))->row();
-            $row = $this->db->get_where('firesale_currency', array('cur_code' => $default_currency->value))->row();
-        } else {
-            $stream = $this->streams->streams->get_stream('firesale_currency', 'firesale_currency');
-            $row    = $this->row_m->get_row($id, $stream, false);
+            $id = $this->db->select('value')->get_where('settings', array('slug' => 'firesale_currency'))->row()->value;
         }
+
+        // Get the currency
+        $stream = $this->streams->streams->get_stream('firesale_currency', 'firesale_currency');
+        $row    = $this->row_m->get_row($id, $stream, false);
 
         // Check it's valid
         if ($row) {
@@ -201,32 +201,33 @@ class Currency_m extends MY_Model
      */
     public function update_default_currency_options()
     {
-        // get current setting
+        // Get current settings
         $setting = $this->db->get_where('settings', array('slug' => 'firesale_currency'))->row_array();
-/*         var_dump($setting); */
         
+        // Variables
         $options = array();
-        $codes = array();
+        $codes   = array();
+
         if($currencies = $this->db->get('firesale_currency')->result_array()) {
             foreach($currencies as $k => $currency) {
-                $codes[$currency['cur_code']] = $currency['cur_code'];
-                $options[] = $currency['cur_code'].'='.$currency['cur_code'];
+                $codes[$currency['id']] = $currency['cur_code'];
+                $options[] = $currency['id'].'='.$currency['cur_code'];
             }
         }
         $setting['options'] = implode('|', $options);
         
-        // make sure saved currency is still in the list (it might have been deleted)
+        // Make sure saved currency is still in the list (it might have been deleted)
         if(!isset($codes[$setting['value']])) {
-            // it's not, so try the default
+            // It's not, so try the default
             if(isset($codes[$setting['default']]))
                 $setting['value'] = $setting['default'];
             
-            // default gone too, so use the first enabled currency
+            // Default gone too, so use the first enabled currency
             else {
                 foreach($currencies as $currency) {
                     if(!$currency['enabled'])
                         continue;
-                    $setting['value'] = $setting['default'] = $currency['cur_code'];
+                    $setting['value'] = $setting['default'] = $currency['id'];
                     break;
                 }
             }
