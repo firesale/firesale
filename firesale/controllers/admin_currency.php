@@ -13,6 +13,7 @@ class Admin_currency extends Admin_Controller
 
     public $section = 'currency';
     public $tabs    = array('formatting' => array('cur_format', 'cur_format_num', 'cur_format_dec', 'cur_format_sep'));
+    public $default = 1;
 
     public function __construct()
     {
@@ -33,6 +34,8 @@ class Admin_currency extends Admin_Controller
         // Get the stream
         $this->stream = $this->streams->streams->get_stream('firesale_currency', 'firesale_currency');
 
+        // Get the default
+        $this->default = $this->settings->get('firesale_currency');
     }
 
     public function index()
@@ -61,6 +64,7 @@ class Admin_currency extends Admin_Controller
         );
 
         // Assign routes
+        $this->data->default    = $this->default;
         $this->data->currencies = $this->streams->entries->get_entries($params);
 
         // Check for usage
@@ -197,8 +201,8 @@ class Admin_currency extends Admin_Controller
         // Variables
         $status = TRUE;
 
-        // Check for ID 1, cannot disable this
-        if ($id != 1) {
+        // Check for default, cannot disable this
+        if ($id != $this->default) {
             // Update it
             if ( ! $this->db->where('id', $id)->update('firesale_currency', array('enabled' => 0)) ) {
                 $status = FALSE;
