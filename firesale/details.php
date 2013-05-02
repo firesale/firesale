@@ -830,6 +830,10 @@ class Module_Firesale extends Module
             // Force product slug to be unique
             $id = $this->db->select('id')->where('field_slug', 'slug')->where('field_namespace', 'firesale_products')->get('data_fields')->row()->id;
             $this->db->where('field_id', $id)->update('data_field_assignments', array('is_unique' => 'yes'));
+
+            // Change settings for currency
+            $this->settings('remove', array('firesale_currency'));
+            $this->settings('add', array('firesale_currency'));
         }
 
         // Tracking
@@ -843,7 +847,7 @@ class Module_Firesale extends Module
         return '<iframe src="https://www.getfiresale.org/documentation" style="width: 1100px; height: 650px; border-radius: 4px 4px 0 0"></iframe>';
     }
 
-    public function settings($action, $add = array())
+    public function settings($action, $items = array())
     {
 
         // Variables
@@ -851,11 +855,11 @@ class Module_Firesale extends Module
         $settings   = array();
         $current    = array();
         
-        // make list of currencies (if any) for default currency setting
+        // Make list of currencies (if any) for default currency setting
         $default_currency_options = array();
         if($currencies = $this->db->get('firesale_currency')->result_array()) {
             foreach($currencies as $k => $currency) {
-                $default_currency_options[] = $currency['cur_code'].'='.$currency['cur_code'];
+                $default_currency_options[] = $currency['id'].'='.$currency['cur_code'];
             }
         }
         $default_currency_options = implode('|', $default_currency_options);
@@ -879,21 +883,24 @@ class Module_Firesale extends Module
         // Perform
         foreach ($settings as $setting) {
 
-            // Check it's not in already
-            if ( in_array($setting['slug'], $current) ) { continue; }
+            if ( ( ! empty($items) and in_array($setting['slug'], $items) ) or empty($items) ) {
 
-            // Add it
-            if ($action == 'add') {
-                if ( ( ! empty($add) and in_array($setting['slug'], $add) ) or empty($add) ) {
+                // Add it
+                if ( $action == 'add' and ! in_array($setting['slug'], $current) ) {
+                    
                     if ( ! $this->db->insert('settings', $setting) ) {
                         $return = FALSE;
                     }
+
+                // Remove it
+                } else if ( $action == 'remove' and in_array($setting['slug'], $current) ) {
+                    
+                    if ( ! $this->db->delete('settings', array('slug' => $setting['slug'])) ) {
+                        $return = FALSE;
+                    }
+
                 }
-            // Remove it
-            } else {
-                if ( !$this->db->delete('settings', array('slug' => $setting['slug'])) ) {
-                    $return = FALSE;
-                }
+
             }
 
         }
