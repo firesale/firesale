@@ -3,7 +3,7 @@
 * [Website](http://www.getfiresale.org)
 * [Documentation](http://www.getfiresale.org/documentation)
 * [License](https://github.com/firesale/firesale/blob/1.2/master/LICENSE)
-* Version: 1.2.2-dev
+* Version: 1.2.2
 
 ## Team
 
