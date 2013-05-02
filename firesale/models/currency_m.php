@@ -233,6 +233,7 @@ class Currency_m extends MY_Model
             }
         }
 
+        // Update the setting
         $this->db->where('slug', 'firesale_currency')->update('settings', $setting);
     }
 

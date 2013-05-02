@@ -45,6 +45,11 @@ class Events_Firesale
                 $this->ci->routes_m->remove(lang('firesale:sections:dashboard'));
             }
         }
+
+        // Clear cache on currency change
+        if ( isset($settings['firesale_currency'])) {
+            Events::trigger('clear_cache');
+        }
     }
 
     public function clear_cache()
