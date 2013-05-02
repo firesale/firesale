@@ -121,6 +121,9 @@ class Admin_currency extends Admin_Controller
 
             // Run currency update function
             $this->load->library('firesale/exchange');
+            
+            // Update list of currencies in settings
+            $this->currency_m->update_default_currency_options();
 
             // Success, clear cache!
             Events::trigger('clear_cache');
@@ -224,6 +227,9 @@ class Admin_currency extends Admin_Controller
 
             // Delete entry
             $this->streams->entries->delete_entry($id, 'firesale_currency', 'firesale_currency');
+            
+            // Update list of currencies in settings
+            $this->currency_m->update_default_currency_options();
 
             // Success, clear cache!
             Events::trigger('clear_cache');

@@ -153,7 +153,7 @@ class Products_m extends MY_Model
 
         // Variables
         $user_currency = $this->session->userdata('currency');
-        $currency      = $currency ? $currency : ($user_currency ? $user_currency : 1);        
+        $currency      = $currency ? $currency : ($user_currency ? $user_currency : NULL);
 
         // Set params
         $params = array(

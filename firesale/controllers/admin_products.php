@@ -71,7 +71,7 @@ class Admin_products extends Admin_Controller
 
         // Build product data
         foreach ($products AS &$product) {
-            $product = $this->pyrocache->model('products_m', 'get_product', array($product['id'], 1), $this->firesale->cache_time);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
         }
 
         // Assign variables

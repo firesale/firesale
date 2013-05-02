@@ -43,7 +43,7 @@ class Fs_cart extends CI_Cart
     {
         if ( ! isset($this->currency)) {
             $currency = $this->ci->session->userdata('currency');
-            $this->currency = $this->ci->currency_m->get($currency ? $currency : 1);
+            $this->currency = $this->ci->currency_m->get($currency ? $currency : NULL);
         }
 
         return $this->currency;
