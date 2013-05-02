@@ -38,6 +38,9 @@ class Plugin_Firesale_brands extends Plugin
                         $query->order_by($by, $dir);
                     break;
 
+                    case 'parse_params':
+                    break;
+
                     default:
                         $query->where($key, $val);
                     break;
