@@ -287,10 +287,10 @@ class Plugin_Firesale extends Plugin
 
             if ($product !== FALSE) {
 
-                $product['quantity'] = $item['qty'],
-                $product['name']     = $item['name'],
-                $product['price']    = $item['price'],
-                $product['ship']     = $item['ship']
+                $product['quantity'] = $item['qty'];
+                $product['name']     = $item['name'];
+                $product['price']    = $item['price'];
+                $product['ship']     = $item['ship'];
 
                 $data->products[] = $product;
 
