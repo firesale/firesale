@@ -47,7 +47,7 @@ class Events_Firesale
         }
 
         // Clear cache on currency change
-        if ( isset($settings['firesale_currency'])) {
+        if ( isset($settings['firesale_currency']) or isset($settings['firesale_show_variations'])) {
             Events::trigger('clear_cache');
         }
     }
