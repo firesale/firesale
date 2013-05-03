@@ -13,7 +13,6 @@ class Front_orders extends Public_Controller
 
     public function __construct()
     {
-
         parent::__construct();
 
         // Add data array
@@ -29,12 +28,10 @@ class Front_orders extends Public_Controller
         // Load css/js
         $this->template->append_css('module::firesale.css')
                        ->append_js('module::firesale.js');
-
     }
 
     public function index()
     {
-
         // Variables
         $user = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
 
@@ -85,7 +82,6 @@ class Front_orders extends Public_Controller
             $this->session->set_flashdata('error', lang('firesale:orders:logged_in'));
             redirect('users/login');
         }
-
     }
 
     public function view_order($id)
@@ -93,7 +89,7 @@ class Front_orders extends Public_Controller
 
         // Variables
         $user  = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
-        $order = $this->orders_m->get_order_by_id($id);
+        $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($id), $this->firesale->cache_time);
 
         // Check user can view
         if ($user != NULL AND $order != FALSE AND $user == $order['created_by']['user_id']) {
@@ -103,19 +99,11 @@ class Front_orders extends Public_Controller
             $order['price_ship']  = $this->currency_m->format_string($order['price_ship'], (object) $order['currency'], FALSE, FALSE);
             $order['price_total'] = $this->currency_m->format_string($order['price_total'], (object) $order['currency'], FALSE, FALSE);
 
-            // Format products
-            foreach ($order['items'] AS &$item) {
-                $item['total']    = $this->currency_m->format_string(($item['price']*$item['qty']), (object) $order['currency'], FALSE, FALSE);
-                $item['price']    = $this->currency_m->format_string($item['price'], (object) $order['currency'], FALSE, FALSE);
-                $item['options']  = unserialize($item['options']);
-                $item['image']    = $this->products_m->get_single_image($item['product_id']);
-            }
-
             // Build page
             $this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
                            ->set_breadcrumb('Home', '/')
-                           ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->routes_m->build_url('orders'))
-                           ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), $this->routes_m->build_url('orders-single', $id))
+                           ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->pyrocache->model('routes_m', 'build_url', array('orders'), $this->firesale->cache_time))
+                           ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), $this->pyrocache->model('routes_m', 'build_url', array('orders-single', $id), $this->firesale->cache_time))
                            ->set($order);
 
             // Fire events

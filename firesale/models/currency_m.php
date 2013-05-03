@@ -11,8 +11,6 @@
 class Currency_m extends MY_Model
 {
 
-    protected $cache = array();
-
     /**
      * Loads the parent constructor and gets an
      * instance of CI.
@@ -28,15 +26,9 @@ class Currency_m extends MY_Model
 
     public function get($id = NULL)
     {
-
-        // Check cache
-        if ( $id !== NULL && array_key_exists($id, $this->cache) ) {
-            return $this->cache[$id];
-        }
-
         // If no id given, get the default currency
-        if($id === NULL) {
-            $id = $this->db->select('value')->get_where('settings', array('slug' => 'firesale_currency'))->row()->value;
+        if ($id === NULL) {
+            $id = (int)$this->settings->get('firesale_currency');
         }
 
         // Get the currency
@@ -51,9 +43,6 @@ class Currency_m extends MY_Model
             $row->symbol     = str_replace('&Acirc;', '', htmlspecialchars(str_replace('{{ price }}', '', $row->cur_format)));
             $row->symbol     = html_entity_decode($row->symbol, NULL, 'UTF-8');
 
-            // Add to cache
-            $this->cache[$id] = $row;
-
             return $row;
         }
 
@@ -65,17 +54,15 @@ class Currency_m extends MY_Model
     {
 
         // Variables
-        $currency = $this->get($id);
+        $currency = $this->pyrocache->model('currency_m', 'get', array($id), $this->firesale->cache_time);
 
         return str_replace('{{ price }}', '', $currency->symbol);
     }
 
     public function can_delete($currency)
     {
-
         // Get usage count
-        $query = $this->db->where('currency', $currency)
-                          ->get('firesale_orders');
+        $query = $this->db->where('currency', $currency)->get('firesale_orders');
 
         // return
         return ( $query->num_rows() || $currency == 1 ? false : true );
@@ -89,7 +76,7 @@ class Currency_m extends MY_Model
         }
 
         // Get currency data
-        $currency = $this->get($currency);
+        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
 
         // Check valid option
         if ( ! is_object($currency) ) {

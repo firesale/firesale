@@ -36,10 +36,10 @@ class Front_cart extends Public_Controller
         $this->load->model('firesale/modifier_m');
 
         // Require login?
-        if ( $this->settings->get('firesale_login') == 1 AND !$this->current_user ) {
+        if ( $this->settings->get('firesale_login') == 1 and ! $this->current_user ) {
 
             // Posted to cart
-            if ( $this->uri->segment('2') == 'insert' AND $code = $this->input->post('prd_code') ) {
+            if ( $this->uri->segment('2') == 'insert' and $code = $this->input->post('prd_code') ) {
                 $qty = $this->input->post('prd_qty');
                 $url = $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
             } else {
@@ -59,12 +59,6 @@ class Front_cart extends Public_Controller
 
             // Redirect
             redirect('users/login');
-        }
-
-        // Force https?
-        if ( ( ! isset($_SERVER['HTTPS']) or $_SERVER['HTTPS'] == 'off' ) and $this->settings->get('firesale_https') ) {
-            $redirect = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
-            header("Location: $redirect");
         }
 
         // Get the stream
@@ -607,21 +601,14 @@ class Front_cart extends Public_Controller
                     'discover'   => 'Discover'
                 );
 
-                // Format order
-                foreach ($order['items'] AS $key => $item) {
-                    $order['items'][$key]['price'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
-                    $order['items'][$key]['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
-                }
-
                 // Format currency
                 $order['price_tax']     = $order['price_total'] - $order['price_sub'] - $order['price_ship'];
                 $order['price_sub_tax'] = $order['price_sub'] + $order['price_tax'];
-
-                $order['price_tax']     = $this->currency_m->format_string($order['price_tax'], $this->fs_cart->currency(), FALSE);
-                $order['price_sub_tax'] = $this->currency_m->format_string($order['price_sub_tax'], $this->fs_cart->currency(), FALSE);
-                $order['price_sub']     = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
-                $order['price_ship']    = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
-                $order['price_total']   = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
+                $order['price_tax']     = $this->currency_m->format_string($order['price_tax'], (object)$order['currency'], FALSE);
+                $order['price_sub_tax'] = $this->currency_m->format_string($order['price_sub_tax'], (object)$order['currency'], FALSE);
+                $order['price_sub']     = $this->currency_m->format_string($order['price_sub'], (object)$order['currency'], FALSE);
+                $order['price_ship']    = $this->currency_m->format_string($order['price_ship'], (object)$order['currency'], FALSE);
+                $order['price_total']   = $this->currency_m->format_string($order['price_total'], (object)$order['currency'], FALSE);
 
                 $gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 

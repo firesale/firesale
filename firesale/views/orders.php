@@ -4,7 +4,7 @@
       <section class="order small">
         <header>
           <h3><?php echo lang('firesale:orders:label_order_id'); ?>: <span>#{{ id }}</span></h3>
-          <h3 class="right">{{ status.value }}</h3>
+          <h3 class="right">{{ order_status.value }}</h3>
         </header>
         <ul>
           <li><strong><?php echo lang('firesale:orders:label_date_placed'); ?>:</strong> {{ helper:date timestamp=created format="d/m/Y" }}</li>
