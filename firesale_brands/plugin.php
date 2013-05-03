@@ -21,7 +21,7 @@ class Plugin_Firesale_brands extends Plugin
 
         if ( ! $brands = $this->cache->get($cache_key) ) {
             // Build query
-            $query = $this->db->select('id')
+            $query = $this->db->select('firesale_brands.id')
                               ->where('status', '1');
 
             // Add to query

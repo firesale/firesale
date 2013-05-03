@@ -26,10 +26,10 @@ class Brands_m extends MY_Model
 
         // Set query paramaters
         $params	 = array(
-                    'stream' 	=> 'firesale_brands',
+                    'stream' 	  => 'firesale_brands',
                     'namespace'	=> 'firesale_brands',
-                    'where'		=> "{$type} = '{$id_slug}' AND status = '1'",
-                    'limit'		=> '1'
+                    'where'     => SITE_REF."_firesale_brands.{$type} = '{$id_slug}' AND ".SITE_REF."_firesale_brands.status = '1'",
+                    'limit'		  => '1'
                    );
 
         // Get entries
