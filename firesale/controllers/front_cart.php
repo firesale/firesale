@@ -146,7 +146,7 @@ class Front_cart extends Public_Controller
                         ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
                         
                         // Build cart data
-                        $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $this->input->post('options'));
+                        $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
 
                         // Update stock levels
                         if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }

@@ -133,6 +133,7 @@
     $lang['firesale:vars:none']           = 'No Variations Found';
     $lang['firesale:vars:create']         = 'Add a Variation';
     $lang['firesale:vars:stock_low']      = 'Not enough stock of %s to buy this item';
+    $lang['firesale:vars:category']       = 'Build from Category';
 
     // Instructions
     $lang['firesale:inst_rrp']   = 'Retail price before and after tax';

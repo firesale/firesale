@@ -48,7 +48,8 @@ class Modifier_m extends MY_Model
                     'var_id' => ( isset($variation) ? $variation['id'] : '' ),
                     'type'   => $modifier['type']['key'],
                     'title'  => $modifier['title'],
-                    'value'  => ( isset($variation) ? $variation['title'] : $var )
+                    'value'  => ( isset($variation) ? $variation['title'] : $var ),
+                    'price'  => $variation['price']
                 );
 
                 // Unset before next loop
