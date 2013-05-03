@@ -133,13 +133,15 @@ class Front_cart extends Public_Controller
                 foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code) {
 
                     // Get product
-                    $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+                    $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+                    $modifiers = current($product['modifiers']);
 
                     // Increase price based on options
                     $product['price_rounded'] += $this->input->post('price') or 0;
                     $product['price']         += $this->input->post('price') or 0;
 
-                    if ($product != FALSE AND ( $product['stock_status']['key'] == 6 OR $qtys[$key] > 0 )) {
+                if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
+                    ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
                         $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $this->input->post('options'));
                         if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
                     }
@@ -150,9 +152,11 @@ class Front_cart extends Public_Controller
 
         } else {
 
-            $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+            $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+            $modifiers = current($product['modifiers']);
 
-            if ($product != FALSE AND ( $product['stock_status']['key'] == 6 OR $qty > 0 )) {
+            if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
+                ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
                 $data[] = $this->cart_m->build_data($product, $qty);
                 $this->session->set_userdata('added', $product['id']);
                 if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
