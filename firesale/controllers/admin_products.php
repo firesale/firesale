@@ -473,16 +473,10 @@ class Admin_products extends Admin_Controller
         $this->data->fields = $fields;
         $this->data->parent = $parent;
 
-        // Single products can link to products
-        if ($this->data->parent->type == '3') {
-            $this->data->products = $this->pyrocache->model('products_m', 'build_dropdown', array(), $this->firesale->cache_time);
-        }
-
         // Add page data
         $this->template->set_layout(false)
                        ->set($this->data)
                        ->build('admin/products/variation');
-
     }
 
     public function duplicate($prod_id = 0 )

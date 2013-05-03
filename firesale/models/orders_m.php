@@ -404,9 +404,9 @@ class Orders_m extends MY_Model
                 'qty'            => $qty,
                 'tax_band'       => $product['tax_band']['id'],
                 'options'        => isset($product['options']) ? serialize($product['options']) : ''
-             );
+            );
 
-             if ( $this->db->insert('firesale_orders_items', $data) ) {
+            if ( $this->db->insert('firesale_orders_items', $data) ) {
                 Events::trigger('clear_cache');
                 return TRUE;
             }
@@ -591,7 +591,7 @@ class Orders_m extends MY_Model
     {
 
         // Variables
-        $low	 = 10; // Move to settings
+        $low	 = $this->settings->get('firesale_low') or 10;
         $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
 
         if ($product) {
@@ -603,10 +603,7 @@ class Orders_m extends MY_Model
             if ($product['stock_status']['key'] == 6) {
                 // Unlimited, do nothing
                 return TRUE;
-            } elseif ($data['stock'] < 0) {
-                // We dun fucked up
-                $data['stock_status'] = 3;
-            } elseif ($data['stock'] == 0) {
+            } elseif ($data['stock'] <= 0) {
                 $data['stock_status'] = 3;
             } elseif ($data['stock'] <= $low) {
                 $data['stock_status'] = 2;
@@ -641,7 +638,7 @@ class Orders_m extends MY_Model
             if ($status == 3) {
 
                 // Get the order
-                $order = $this->orders_m->get_order_by_id($order_id);
+                $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order_id), $this->firesale->cache_time);
 
                 // Email the user
                 Events::trigger('email', array_merge($order, array('slug' => 'order-dispatched', 'to' => $order['bill_to']['email'])), 'array');

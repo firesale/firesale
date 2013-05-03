@@ -291,7 +291,6 @@ class Cart_m extends MY_Model
      */
     public function sale_complete($order)
     {
-
         // Update this order status
         $this->orders_m->update_status($order['id'], 2);
 
@@ -303,6 +302,18 @@ class Cart_m extends MY_Model
             $this->orders_m->update_product_stock($item['product_id'], $item['qty']);
         }
 
+        // Update variation stock
+        foreach ( $order['items'] as $item ) {
+            if ( ! empty($item['options']) ) {
+                $item['options'] = current($item['options']);
+                foreach ( $item['options'] as $option ) {
+                    $product = $this->db->select('product')->where('id', $option['var_id'])->get('firesale_product_variations')->row();
+                    if( $product ) {
+                        $this->orders_m->update_product_stock($product->product, $item['qty']);
+                    }
+                }
+            }
+        }
     }
 
 }
