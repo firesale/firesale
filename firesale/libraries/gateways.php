@@ -7,7 +7,7 @@
  *
  * Written by: Chris Harvey (FireSale Team)
  */
-class gateways
+class Gateways
 {
     private $gateway_path = 'gateways';
     protected $_CI;

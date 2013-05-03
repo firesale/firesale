@@ -43,7 +43,7 @@ class Fs_cart extends CI_Cart
     {
         if ( ! isset($this->currency)) {
             $currency = $this->ci->session->userdata('currency');
-            $this->currency = $this->ci->currency_m->get($currency ? $currency : 1);
+            $this->currency = $this->ci->pyrocache->model('currency_m', 'get', array($currency ? $currency : NULL), $this->ci->firesale->cache_time);
         }
 
         return $this->currency;
@@ -56,7 +56,7 @@ class Fs_cart extends CI_Cart
         foreach ($this->contents() as $item) {
             $this->ci->load->model('firesale/taxes_m');
 
-            $percentage = $this->ci->taxes_m->get_percentage($item['tax_band']);
+            $percentage = $this->ci->pyrocache->model('taxes_m', 'get_percentage', array($item['tax_band']), $this->ci->firesale->cache_time);
 
             $tax_mod = 1 - ($percentage / 100);
 

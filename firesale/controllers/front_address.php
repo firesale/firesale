@@ -15,7 +15,6 @@ class Front_address extends Public_Controller
 
     public function __construct()
     {
-
         parent::__construct();
 
         // Add data array
@@ -39,18 +38,16 @@ class Front_address extends Public_Controller
         // Load css/js
         $this->template->append_css('module::firesale.css')
                        ->append_js('module::firesale.js');
-
     }
 
     public function index()
     {
-
         // Set query paramaters
         $params	 = array(
-                    'stream' 	=> 'firesale_addresses',
-                    'namespace'	=> 'firesale_addresses',
-                    'where'     => SITE_REF."_firesale_addresses.created_by = '{$this->user}' AND ".SITE_REF."_firesale_addresses.title != ''"
-                   );
+            'stream' 	=> 'firesale_addresses',
+            'namespace'	=> 'firesale_addresses',
+            'where'     => SITE_REF."_firesale_addresses.created_by = '{$this->user}' AND ".SITE_REF."_firesale_addresses.title != ''"
+        );
 
         // Get entries
         $addresses = $this->streams->entries->get_entries($params);
@@ -70,16 +67,14 @@ class Front_address extends Public_Controller
 
         // Build page
         $this->template->build('addresses');
-
     }
 
     public function create()
     {
-
         // Variables
         $skip  = array('btnAction');
         $extra = array(
-            'return'          => $this->routes_m->build_url('addresses').'/edit/-id-',
+            'return'          => $this->pyrocache->model('routes_m', 'build_url', array('addresses'), $this->firesale->cache_time).'/edit/-id-',
             'success_message' => lang('firesale:addresses:add_success'),
             'failure_message' => lang('firesale:addresses:add_error')
         );
@@ -100,7 +95,6 @@ class Front_address extends Public_Controller
 
         // Build page
         $this->template->build('address_create');
-
     }
 
     public function edit($id)
@@ -109,7 +103,7 @@ class Front_address extends Public_Controller
         // Variables
         $skip  = array('btnAction');
         $extra = array(
-            'return'          => $this->routes_m->build_url('addresses').'/edit/-id-',
+            'return'          => $this->pyrocache->model('routes_m', 'build_url', array('addresses'), $this->firesale->cache_time).'/edit/-id-',
             'success_message' => lang('firesale:addresses:edit_success'),
             'failure_message' => lang('firesale:addresses:edit_error')
         );

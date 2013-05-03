@@ -40,12 +40,12 @@ class Modifier_m extends MY_Model
 
             // Change options
             $post['options'][$mod] = array(
-                                        'mod_id' => $modifier['id'],
-                                        'var_id' => ( isset($variation) ? $variation['id'] : '' ),
-                                        'type'   => $modifier['type']['key'],
-                                        'title'  => $modifier['title'],
-                                        'value'  => ( isset($variation) ? $variation['title'] : $var )
-                                     );
+                'mod_id' => $modifier['id'],
+                'var_id' => ( isset($variation) ? $variation['id'] : '' ),
+                'type'   => $modifier['type']['key'],
+                'title'  => $modifier['title'],
+                'value'  => ( isset($variation) ? $variation['title'] : $var )
+            );
 
             // Unset before next loop
             unset($modifier);
@@ -114,7 +114,7 @@ class Modifier_m extends MY_Model
         // Variables
         $return     = array();
         $tmp        = array();
-        $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : $this->settings->get('firesale_currency') );
         $currency   = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
         $variations = $this->db->select('v.*, vp.firesale_products_id AS product')
                                ->from('firesale_product_variations AS v')
@@ -129,7 +129,7 @@ class Modifier_m extends MY_Model
             // Format difference
             $before = ( substr($variation['price'], 0, 1) == '-' ? '-' : ( 0 + $variation['price'] > 0 ? '+' : '' ) );
             $price  = str_replace('-', '', $variation['price']);
-            
+
             // Assign variables
             $variation['difference'] = $before.$this->currency_m->format_string($price, $currency);
             $variation['product']    = $this->pyrocache->model('products_m', 'get_product', array($variation['product'], null, true), $this->firesale->cache_time);
@@ -499,7 +499,7 @@ class Modifier_m extends MY_Model
         }
 
         for ($i = 0; $i < $size; $i ++) {
-            
+
             $result[$i] = array();
 
             for ($j = 0; $j < $sizeIn; $j ++) {
@@ -509,7 +509,7 @@ class Modifier_m extends MY_Model
             for ($j = ($sizeIn -1); $j >= 0; $j --) {
                 if (next($arrays[$j])) {
                     break;
-                } else if (isset ($arrays[$j])) {
+                } elseif (isset ($arrays[$j])) {
                     reset($arrays[$j]);
                 }
             }

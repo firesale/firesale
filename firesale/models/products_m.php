@@ -153,7 +153,7 @@ class Products_m extends MY_Model
 
         // Variables
         $user_currency = $this->session->userdata('currency');
-        $currency      = $currency ? $currency : ($user_currency ? $user_currency : 1);        
+        $currency      = $currency ? $currency : ($user_currency ? $user_currency : NULL);
 
         // Set params
         $params = array(
@@ -474,7 +474,7 @@ class Products_m extends MY_Model
 
         // Clone them
         if ( $images->num_rows() ) {
-            
+
             // Create folder
             $folder = $this->create_file_folder($parent->id, $product['title'], $product['slug']);
             $folder = (object)$folder['data'];

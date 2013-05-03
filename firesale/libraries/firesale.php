@@ -4,11 +4,11 @@ class Firesale
 {
 
     protected $sections    = array();
-    private   $_CI         = null;
-    public    $elements    = array();
-    public    $assets      = array();
-    public    $roles       = array('shipping' => NULL);
-    public    $cache_time  = 86400;
+    private $_CI         = null;
+    public $elements    = array();
+    public $assets      = array();
+    public $roles       = array('shipping' => NULL);
+    public $cache_time  = 86400;
 
     public function __construct()
     {
@@ -22,7 +22,7 @@ class Firesale
     {
 
         if ( ! function_exists('module_exists') or module_exists('firesale')) {
-            
+
             $installed = $this->_CI->db->where('installed', 1)
                                        ->where('slug', 'firesale')
                                        ->count_all_results('modules');

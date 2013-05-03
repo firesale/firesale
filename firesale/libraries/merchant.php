@@ -30,7 +30,6 @@
 if ( ! class_exists('CI_Driver')) get_instance()->load->library('driver');
 
 define('MERCHANT_CONFIG_PATH', realpath(dirname(__FILE__).'/../config'));
-define('MERCHANT_DRIVER_PATH', realpath(dirname(__FILE__).'/gateways'));
 define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/../vendor'));
 
 /**
@@ -38,7 +37,7 @@ define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/../vendor'));
  *
  * Payment processing for CodeIgniter
  */
-class merchant
+class Merchant
 {
     public static $CURRENCIES_WITHOUT_DECIMALS = array('JPY');
 
@@ -52,6 +51,10 @@ class merchant
     );
 
     private $_driver;
+
+    protected $driver_paths = array(
+        realpath(dirname(__FILE__).'/gateways')
+    );
 
     public function __construct($driver = NULL)
     {
@@ -87,6 +90,13 @@ class merchant
         return str_replace('Merchant_', '', $class_name);
     }
 
+    public function add_driver_path($path)
+    {
+        $path = realpath($path);
+
+        if (is_dir($path)) $this->driver_paths[] = $path;
+    }
+
     /**
      * Load and create a new instance of a driver.
      * $driver can be specified either as a class name (Merchant_paypal) or a short name (paypal)
@@ -101,12 +111,16 @@ class merchant
 
         if ( ! class_exists($driver_class)) {
             // attempt to load driver file
-            $driver_path = MERCHANT_DRIVER_PATH.'/'.strtolower($driver_class).'.php';
-            if ( ! file_exists($driver_path)) return FALSE;
-            require_once($driver_path);
+            foreach ($this->driver_paths as $path) {
+                $driver_path = $path.'/'.strtolower($driver_class).'.php';
 
-            // did the driver file implement the class?
-            if ( ! class_exists($driver_class)) return FALSE;
+                if ( ! file_exists($driver_path)) continue;
+
+                require_once($driver_path);
+
+                // did the driver file implement the class?
+                if ( ! class_exists($driver_class)) return FALSE;
+            }
         }
 
         // ensure class is not abstract
@@ -120,20 +134,22 @@ class merchant
         static $valid_drivers = array();
 
         if (empty($valid_drivers)) {
-            foreach (scandir(MERCHANT_DRIVER_PATH) as $file_name) {
-                $driver_path = MERCHANT_DRIVER_PATH.'/'.$file_name;
-                if (stripos($file_name, 'merchant_') === 0 AND is_file($driver_path)) {
-                    require_once($driver_path);
+            foreach ($this->driver_paths as $path) {
+                foreach (scandir($path) as $file_name) {
+                    $driver_path = $path.'/'.$file_name;
+                    if (stripos($file_name, 'merchant_') === 0 AND is_file($driver_path)) {
+                        require_once($driver_path);
 
-                    // does the file implement an appropriately named class?
-                    $driver_class = ucfirst(str_replace('.php', '', $file_name));
-                    if ( ! class_exists($driver_class)) continue;
+                        // does the file implement an appropriately named class?
+                        $driver_class = ucfirst(str_replace('.php', '', $file_name));
+                        if ( ! class_exists($driver_class)) continue;
 
-                    // ensure class is not abstract
-                    $reflection_class = new ReflectionClass($driver_class);
-                    if ($reflection_class->isAbstract()) continue;
+                        // ensure class is not abstract
+                        $reflection_class = new ReflectionClass($driver_class);
+                        if ($reflection_class->isAbstract()) continue;
 
-                    $valid_drivers[] = str_replace('Merchant_', '', $driver_class);
+                        $valid_drivers[] = str_replace('Merchant_', '', $driver_class);
+                    }
                 }
             }
         }

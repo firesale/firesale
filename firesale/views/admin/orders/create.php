@@ -47,8 +47,8 @@
                         <table class="cart"<?php echo ( ( isset($products) && empty($products) ) || !isset($products) ? ' style="display: none"' : '' ); ?>>
                             <thead>
                                 <tr>
-                                    <th class="remove"><?php echo lang('firesale:label_remove'); ?></th>
-                                    <th class="image"><?php echo lang('firesale:label_image'); ?></th>
+                                    <th class="remove" style="width: 20px"><?php echo lang('firesale:label_remove'); ?></th>
+                                    <th class="image" style="width: 64px"><?php echo lang('firesale:label_image'); ?></th>
                                     <th class="name"><?php echo lang('firesale:label_title'); ?></th>
                                     <th class="model"><?php echo lang('firesale:label_id'); ?></th>
                                     <th class="model"><?php echo lang('firesale:label_options'); ?></th>
@@ -62,7 +62,7 @@
                             <?php foreach( $products AS $product ): ?>
                                 <tr class="prod-<?php echo $product['id']; ?>">
                                         <td class="remove"><input type="checkbox" name="item[<?php echo $product['id']; ?>][remove]" value="1" /></td>
-                                        <td class="image"><img src="/files/thumb/<?php echo $product['image']; ?>/64/64" class="image" alt="Product Image" /></td>
+                                        <td class="image"><img src="<?php echo site_url('files/thumb/'.$product['image'].'/64/64'); ?>" class="image" alt="Product Image" /></td>
                                         <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
                                         <td class="model"><?php echo $product['code']; ?></td>
                                         <td class="model">

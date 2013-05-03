@@ -4,7 +4,7 @@ class Plugin_Firesale extends Plugin
 {
 
     public $version = '1.2.0';
-    
+
     public $name = array(
         'en'    => 'FireSale'
     );
@@ -232,8 +232,7 @@ class Plugin_Firesale extends Plugin
             ->get()
             ->result();
 
-        foreach ($result as &$product)
-        {
+        foreach ($result as &$product) {
             $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
         }
 
@@ -275,7 +274,7 @@ class Plugin_Firesale extends Plugin
         $this->load->library('fs_cart');
 
         // Get currency
-        $currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 ));
+        $currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL ));
 
         // Variables
         $data 		 	= new stdClass;
@@ -284,17 +283,17 @@ class Plugin_Firesale extends Plugin
         // Loop products in cart
         foreach ( $this->fs_cart->contents() as $id => $item ) {
 
-            $product = $this->products_m->get($item['id']);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($item['id']), $this->firesale->cache_time);
 
             if ($product !== FALSE) {
 
-                $data->products[] = array(
-                    'id'		=> $id,
-                    'code' 		=> $product->code,
-                    'slug'		=> $product->slug,
-                    'quantity'	=> $item['qty'],
-                    'name'		=> $item['name']
-                );
+                $product['quantity'] = $item['qty'];
+                $product['name']     = $item['name'];
+                $product['price']    = $item['price'];
+                $product['ship']     = $item['ship'];
+
+                $data->products[] = $product;
+
             }
 
         }
@@ -331,10 +330,10 @@ class Plugin_Firesale extends Plugin
     }
 
     /**
-     * Returns a PluginDoc array that PyroCMS uses 
+     * Returns a PluginDoc array that PyroCMS uses
      * to build the reference in the admin panel
      *
-     * All options are listed here but refer 
+     * All options are listed here but refer
      * to the Blog plugin for a larger example
      *
      * @return array
@@ -465,7 +464,7 @@ class Plugin_Firesale extends Plugin
                 )
             )
         );
-    
+
         return $info;
     }
 

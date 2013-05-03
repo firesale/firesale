@@ -32,24 +32,24 @@
 
 class Merchant_manual extends Merchant_driver
 {
-	public function default_settings()
-	{
-		return array();
-	}
+    public function default_settings()
+    {
+        return array();
+    }
 
-	/**
-	 * Hey, cool! This driver just authorizes anything you throw at it.
-	 */
-	public function authorize()
-	{
-		return new Merchant_response(Merchant_response::AUTHORIZED);
-	}
+    /**
+     * Hey, cool! This driver just authorizes anything you throw at it.
+     */
+    public function authorize()
+    {
+        return new Merchant_response(Merchant_response::AUTHORIZED);
+    }
 
-	/**
-	 * We also can also capture anything you like.
-	 */
-	public function capture()
-	{
-		return new Merchant_response(Merchant_response::COMPLETE);
-	}
+    /**
+     * We also can also capture anything you like.
+     */
+    public function capture()
+    {
+        return new Merchant_response(Merchant_response::COMPLETE);
+    }
 }

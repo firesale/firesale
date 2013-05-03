@@ -115,7 +115,7 @@ class Orders_m extends MY_Model
                     case 'product':
 
                         // Get possible IDs
-                        $query = $this->db->select('order_id')->where('product_id', $query)->group_by('order_id')->get('firesale_orders_items')->result_array();
+                        $query = $this->db->select('order_id')->where('product_id', $value)->group_by('order_id')->get('firesale_orders_items')->result_array();
                         $ids   = array();
 
                         // Loop IDs
@@ -303,7 +303,7 @@ class Orders_m extends MY_Model
 
             // No currency set?
             if ($order['currency'] == NULL) {
-                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(1), $this->firesale->cache_time);
+                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(), $this->firesale->cache_time);
             }
 
             // Format prices
@@ -340,7 +340,7 @@ class Orders_m extends MY_Model
         }
 
         // Get currency
-        $user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : 1 );
+        $user_currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
         $currency      = $this->currency_m->get($user_currency);
 
         // Append input
@@ -350,7 +350,7 @@ class Orders_m extends MY_Model
         $input['ip']			 = $_SERVER['REMOTE_ADDR'];
         $input['created'] 		 = date("Y-m-d H:i:s");
         $input['ordering_count'] = 0;
-        $input['currency']       = $user_currency;
+        $input['currency']       = $currency->id;
         $input['exchange_rate']  = $currency->exch_rate;
         unset($input['btnAction']);
         unset($input['bill_details_same']);
@@ -435,7 +435,7 @@ class Orders_m extends MY_Model
     {
 
         // Get tax rate
-        $user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : 1;
+        $user_currency = $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL;
         $currency      = $this->currency_m->get($user_currency);
 
         // Variables
@@ -535,11 +535,11 @@ class Orders_m extends MY_Model
 
         // Set query paramaters
         $params	 = array(
-                    'stream' 	=> 'firesale_orders',
-                    'namespace'	=> 'firesale_orders',
-                    'where'		=> SITE_REF."_firesale_orders.id = '{$order_id}'",
-                    'limit'		=> 1
-                   );
+            'stream' 	=> 'firesale_orders',
+            'namespace'	=> 'firesale_orders',
+            'where'		=> SITE_REF."_firesale_orders.id = '{$order_id}'",
+            'limit'		=> 1
+        );
 
         // Get entries
         $order = $this->streams->entries->get_entries($params);
@@ -550,6 +550,7 @@ class Orders_m extends MY_Model
             $order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int) $order_id))->result_array();
             $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['price_ship'] ), 2);
 
+            // Loop items
             foreach ($order['items'] AS $key => &$item) {
 
                 // Get the product
@@ -557,13 +558,19 @@ class Orders_m extends MY_Model
 
                 // Check it exists
                 if ($product !== FALSE) {
-                    $item['id']              = $product['id'];
-                    $item                    = array_merge($product, $item);
-                    $item['total']           = number_format(( $item['price'] * $item['qty'] ), 2);
-                    $item['price_formatted'] = $item['total'];
-                    $item['no']              = ( $key + 1 );
-                }
 
+                    // Build initial item
+                    $item['id']    = $product['id'];
+                    $item['price'] = (float)number_format($item['price'], 2);
+                    $item          = array_merge($product, $item);
+
+                    // Format and assign data
+                    $item['total']   = $this->currency_m->format_string(($item['price']*$item['qty']), (object)$order['currency'], FALSE, FALSE);
+                    $item['price']   = $this->currency_m->format_string($item['price'], (object)$order['currency'], FALSE, FALSE);
+                    $item['options'] = unserialize($item['options']);
+                    $item['image']   = $this->products_m->get_single_image($item['product_id']);
+                    $item['no']      = ( $key + 1 );
+                }
             }
 
             return $order;
@@ -651,7 +658,7 @@ class Orders_m extends MY_Model
 
     /**
      * Gets a complete count of the number of orders in a given filter
-     * 
+     *
      * @param  string [$where] The where clause of the filter option
      * @return int    The count of the total result set
      * @access public

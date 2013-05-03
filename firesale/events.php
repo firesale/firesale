@@ -25,6 +25,21 @@ class Events_Firesale
             // Load required items
             $this->ci->load->library('firesale/exchange');
         }
+
+        // Check routes redirecting
+        if ( ( ! isset($_SERVER['HTTPS']) or $_SERVER['HTTPS'] != 'on' ) and substr($this->ci->module, 0, 8) == 'firesale' ) {
+
+            // Load required items
+            $this->ci->load->model('firesale/routes_m');
+
+            // Get the route
+            $route = $this->ci->pyrocache->model('routes_m', 'get_by_module_controller', array($this->ci->module, $this->ci->uri->rsegment(1)), $this->ci->firesale->cache_time);
+
+            // Check and redirect
+            if ( $route !== false and $route->https == '1' ) {
+                redirect(str_replace('http://', 'https://', current_url()));
+            }
+        }
     }
 
     public function settings_updated($settings)
@@ -44,6 +59,11 @@ class Events_Firesale
             } else {
                 $this->ci->routes_m->remove(lang('firesale:sections:dashboard'));
             }
+        }
+
+        // Clear cache on currency change
+        if ( isset($settings['firesale_currency']) or isset($settings['firesale_show_variations'])) {
+            Events::trigger('clear_cache');
         }
     }
 
