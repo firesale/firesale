@@ -38,7 +38,7 @@ define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/../vendor'));
  *
  * Payment processing for CodeIgniter
  */
-class merchant
+class Merchant
 {
     public static $CURRENCIES_WITHOUT_DECIMALS = array('JPY');
 

@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class firesale
+class Firesale
 {
 
     protected $sections    = array();
