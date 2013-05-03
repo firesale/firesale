@@ -16,7 +16,6 @@ class Front_cart extends Public_Controller
 
     public function __construct()
     {
-
         parent::__construct();
 
         // Load ci-merchant language file
@@ -41,8 +40,8 @@ class Front_cart extends Public_Controller
 
             // Posted to cart
             if ( $this->uri->segment('2') == 'insert' AND $code = $this->input->post('prd_code') ) {
-                $qty  = $this->input->post('prd_qty');
-                $url  = $this->routes_m->build_url('cart').'/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
+                $qty = $this->input->post('prd_qty');
+                $url = $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
             } else {
                 $url = current_url();
             }
@@ -71,16 +70,9 @@ class Front_cart extends Public_Controller
         // Get the stream
         $this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
 
-        // Load shipping model
-        if ( isset($this->firesale->roles['shipping']) ) {
-            $role = $this->firesale->roles['shipping'];
-            $this->load->model($role['module'] . '/' . $role['model']);
-        }
-
         // Load css/js
         $this->template->append_css('module::firesale.css')
                        ->append_js('module::firesale.js');
-
     }
 
     public function index()
@@ -187,7 +179,7 @@ class Front_cart extends Public_Controller
         if ( $this->input->is_ajax_request() ) {
             exit($this->cart_m->ajax_response('ok'));
         } else {
-            redirect($this->routes_m->build_url('cart'));
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         }
 
     }
@@ -198,7 +190,7 @@ class Front_cart extends Public_Controller
         // Make sure there are items in cart
         if ( ! $this->fs_cart->total_items()) {
             $this->session->set_flashdata('message', lang('firesale:cart:empty'));
-            redirect($this->routes_m->build_url('cart'));
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         } else {
 
             // Variables
@@ -277,12 +269,12 @@ class Front_cart extends Public_Controller
                 }
 
                 // Send to checkout
-                redirect($this->routes_m->build_url('cart').'/checkout');
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
 
             } elseif ($this->input->is_ajax_request()) {
                 exit($this->cart_m->ajax_response('ok'));
             } else {
-                redirect($this->routes_m->build_url('cart'));
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
             }
 
         }
@@ -310,7 +302,7 @@ class Front_cart extends Public_Controller
         if ($this->input->is_ajax_request()) {
             exit('success');
         } else {
-            redirect(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->routes_m->build_url('cart'));
+            redirect(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         }
 
     }
@@ -321,7 +313,7 @@ class Front_cart extends Public_Controller
         // No checkout without items
         if ( ! $this->fs_cart->total_items()) {
             $this->session->set_flashdata('message', lang('firesale:cart:empty'));
-            redirect($this->routes_m->build_url('cart'));
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         } else {
 
             // Libraries
@@ -408,8 +400,7 @@ class Front_cart extends Public_Controller
                         $this->session->set_userdata('order_id', $id);
 
                         // Redirect to payment
-                        redirect($this->routes_m->build_url('cart').'/payment');
-
+                        redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
                     }
 
                 }
@@ -466,7 +457,7 @@ class Front_cart extends Public_Controller
             }
 
             // Build page
-            $this->template->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
+            $this->template->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
                            ->set_breadcrumb(lang('firesale:checkout:title'))
                            ->title(lang('firesale:checkout:title'))
                            ->build('checkout', $data);
@@ -516,9 +507,9 @@ class Front_cart extends Public_Controller
 
                 // Run payment
                 $params = array_merge(array(
-                    'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback/' . $gateway . '/' . $order['id']),
-                    'return_url' => site_url($this->routes_m->build_url('cart') . '/success'),
-                    'cancel_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
+                    'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
+                    'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
+                    'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
                 ), $posted_data ? $posted_data : array(), array(
                     'currency_code'  => $this->fs_cart->currency()->cur_code,
                     'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
@@ -633,8 +624,8 @@ class Front_cart extends Public_Controller
                 // Build page
                 $this->template->set_layout('default.html')
                                ->title(lang('firesale:payment:title'))
-                               ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart').'/payment')
-                               ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
+                               ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
+                               ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
                                ->set_breadcrumb(lang('firesale:payment:title'))
                                ->set('currency', $this->fs_cart->currency())
                                ->set('payment', $gateway_view)
@@ -643,7 +634,7 @@ class Front_cart extends Public_Controller
             }
 
         } else {
-            redirect($this->routes_m->build_url('cart').'/checkout');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
         }
 
     }
@@ -662,7 +653,7 @@ class Front_cart extends Public_Controller
             ))->row_array();
 
             $response = $this->merchant->purchase_return(array_merge($transaction, array(
-                'failure_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
+                'failure_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
             )));
 
             $status = '_order_' . $response->status();
@@ -681,7 +672,7 @@ class Front_cart extends Public_Controller
                 $this->$status($order, TRUE);
             }
         } else {
-            redirect($this->routes_m->build_url('cart'));
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         }
     }
 
@@ -690,7 +681,7 @@ class Front_cart extends Public_Controller
         $this->orders_m->update_status($order['id'], 4);
 
         if ( ! $callback)
-            redirect($this->routes_m->build_url('cart').'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
     }
 
     private function _order_failed($order, $callback = FALSE)
@@ -698,9 +689,9 @@ class Front_cart extends Public_Controller
         $this->orders_m->update_status($order['id'], 7);
 
         if (! $callback) {
-            redirect($this->routes_m->build_url('cart').'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
         } else {
-            $this->merchant->confirm_return(site_url($this->routes_m->build_url('cart') . '/cancel'));
+            $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
         }
     }
 
@@ -709,7 +700,7 @@ class Front_cart extends Public_Controller
         $this->orders_m->update_status($order['id'], 8);
 
         if ( ! $callback)
-            redirect($this->routes_m->build_url('cart').'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
 
     }
 
@@ -718,7 +709,7 @@ class Front_cart extends Public_Controller
         $this->orders_m->update_status($order['id'], 9);
 
         if ( ! $callback)
-            redirect($this->routes_m->build_url('cart').'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
     }
 
     private function _order_authorized($order, $callback = FALSE)
@@ -755,9 +746,9 @@ class Front_cart extends Public_Controller
 
             // Build page
             $this->template->title(lang('firesale:payment:title_success'))
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
+                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
+                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
+                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
                            ->set_breadcrumb(lang('firesale:payment:title_success'))
                            ->order = $order;
 
@@ -767,7 +758,7 @@ class Front_cart extends Public_Controller
             // Build the page
             $this->template->build('payment_complete', $order);
         } else {
-            $this->merchant->confirm_return(site_url($this->routes_m->build_url('cart') . '/success'));
+            $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'));
         }
 
     }
@@ -790,9 +781,9 @@ class Front_cart extends Public_Controller
                 $this->merchant->initialize($this->gateways->settings($gateway));
 
                 $params = array_merge(array(
-                    'notify_url' => site_url($this->routes_m->build_url('cart') . '/callback'),
-                    'return_url' => site_url($this->routes_m->build_url('cart') . '/success'),
-                    'cancel_url' => site_url($this->routes_m->build_url('cart') . '/cancel')
+                    'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback'),
+                    'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
+                    'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
                 ), array(
                     'currency_code'  => $this->fs_cart->currency()->cur_code,
                     'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
@@ -837,9 +828,9 @@ class Front_cart extends Public_Controller
             $this->fs_cart->destroy();
 
             $this->template->title(lang('firesale:payment:title_success'))
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
+                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
+                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
+                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
                            ->set_breadcrumb(lang('firesale:payment:title_success'))
                            ->build('payment_complete', $order);
         } else {
@@ -857,9 +848,9 @@ class Front_cart extends Public_Controller
             $this->fs_cart->destroy();
 
             $this->template->title('Order Cancelled')
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->routes_m->build_url('cart'))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->routes_m->build_url('cart').'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->routes_m->build_url('cart').'/payment')
+                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
+                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
+                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
                            ->set_breadcrumb(lang('Order Cancelled'))
                            ->build('payment_cancelled');
         } else {

@@ -809,12 +809,12 @@ class Module_Firesale extends Module
         if ($old_version < '1.2.2') {
 
             // Add settings
-            $this->settings('add', array('firesale_dashboard', 'firesale_https'));
+            $this->settings('add', array('firesale_dashboard'));
 
             // Add https option
             $fields   = array();
             $template = array('namespace' => 'firesale_routes', 'assign' => 'firesale_routes', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
-            $fields[] = array('name' => 'lang:firesale:label_use_https', 'slug' => 'https', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => 0));
+            $fields[] = array('name' => 'lang:firesale:label_use_https', 'slug' => 'https', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:global:no\n1 : lang:global:yes", 'choice_type' => 'dropdown', 'default_value' => '0'));
             $this->add_stream_fields($fields, $template);
 
             // Update routes
@@ -822,7 +822,7 @@ class Module_Firesale extends Module
             $query = $this->db->select('id, title, translation, route')->like('route', '([a-z0-9-]+)')->get('firesale_routes');
             if ( $query->num_rows() ) {
                 foreach ( $query->result_array() as $result ) {
-                    $this->db->where('id', $result['id'])->update('firesale_routes', array('route' => str_replace('([a-z0-9-]+)', '([a-z0-9-_]+)', $result['route'])));
+                    $this->db->where('id', $result['id'])->update('firesale_routes', array('https' => '0', 'route' => str_replace('([a-z0-9-]+)', '([a-z0-9-_]+)', $result['route'])));
                     $this->routes_m->write($result['title'], html_entity_decode($result['route']), html_entity_decode($result['translation']));
                 }
             }
@@ -875,7 +875,6 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'image_background', 'title' => lang('firesale:settings_image_background'), 'description' => lang('firesale:settings_image_background_inst'), 'default' => 'ffffff', 'value' => 'ffffff', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
-        $settings[] = array('slug' => 'firesale_https', 'title' => lang('firesale:settings_https'), 'description' => lang('firesale:settings_https_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
         // Get existing settings
         foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }
@@ -944,14 +943,14 @@ class Module_Firesale extends Module
 
         // Routes
         $routes   = array();
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category_custom', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-_/]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-_]+)', 'translation' => 'firesale/front_product/index/$1');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:order_single', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category_custom', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-_/]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-_]+)', 'translation' => 'firesale/front_product/index/$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:order_single', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1', 'https' => '0');
 
         // Perform
         foreach ($routes AS $route) {
