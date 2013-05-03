@@ -63,7 +63,7 @@ $(function() {
 		e.preventDefault();
 		var _t = $(this), p = $('#add_product').val();
 		_t.attr('disabled', '');
-		$.getJSON('/admin/firesale/products/ajax_product/' + p, function(d) {
+		$.getJSON(SITE_URL+'/admin/firesale/products/ajax_product/' + p, function(d) {
 			if( d != 'false' )
 			{
 				var id = _t.parents('form').attr('action').split('/').slice(-1)[0];
