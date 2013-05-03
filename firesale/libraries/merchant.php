@@ -52,12 +52,12 @@ class Merchant
 
     private $_driver;
 
-    protected $driver_paths = array(
-        realpath(dirname(__FILE__).'/gateways')
-    );
+    protected $driver_paths = array();
 
     public function __construct($driver = NULL)
     {
+        $this->driver_paths[] = realpath(dirname(__FILE__).'/gateways');
+        
         if ( ! empty($driver)) {
             $this->load($driver);
         }
