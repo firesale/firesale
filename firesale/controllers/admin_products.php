@@ -80,8 +80,8 @@ class Admin_products extends Admin_Controller
         $this->data->count        = ( $this->data->count ? count($this->data->count) : 0 );
         $this->data->pagination   = create_pagination('/admin/firesale/products/', $this->data->count, $this->perpage, 4);
         $this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + $this->pyrocache->model('categories_m', 'dropdown_values', array(), $this->firesale->cache_time);
-        $this->data->status       = $this->pyrocache->model('products_m', 'status_dropdown', array(( $type == 'status' ? $value : -1 ), $this->firesale->cache_time));
-        $this->data->stock_status = $this->pyrocache->model('products_m', 'stock_status_dropdown', array(( $type == 'stock_status' ? $value : -1 ), $this->firesale->cache_time));
+        $this->data->status       = $this->pyrocache->model('products_m', 'status_dropdown', array(( $type == 'status' ? $value : -1 )), $this->firesale->cache_time);
+        $this->data->stock_status = $this->pyrocache->model('products_m', 'stock_status_dropdown', array(( $type == 'stock_status' ? $value : -1 )), $this->firesale->cache_time);
         $this->data->min_max      = $this->pyrocache->model('products_m', 'price_min_max', array(), $this->firesale->cache_time);
 
         // Add page data
