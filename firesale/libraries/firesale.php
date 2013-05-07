@@ -16,6 +16,7 @@ class Firesale
         $this->_CI =& get_instance();
         $this->_CI->load->driver('cache', array('adapter' => ( function_exists('apc_fetch') ? 'apc' : 'file' ), 'backup' => 'file'));
         $this->_CI->lang->load('firesale/firesale');
+        $this->_CI->load->helper('firesale/gateway');
     }
 
     public function is_installed()
