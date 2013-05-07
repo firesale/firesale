@@ -378,7 +378,7 @@ class Module_Firesale extends Module
                             `firesale_product_variations_id` int(11) NOT NULL,
                             `firesale_products_id` int(11) NOT NULL,
                             PRIMARY KEY (`id`)
-                          ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;");
+                          ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;");
 
         ###########
         ## TAXES ##
@@ -411,7 +411,7 @@ class Module_Firesale extends Module
               `id` int(11) NOT NULL,
               `key` varchar(64) NOT NULL,
               `value` text NOT NULL
-            ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
         ");
 
         // Load the gateways class
