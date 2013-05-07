@@ -97,6 +97,11 @@ class Merchant
         if (is_dir($path)) $this->driver_paths[] = $path;
     }
 
+    public function get_driver_paths()
+    {
+        return $this->driver_paths;
+    }
+
     /**
      * Load and create a new instance of a driver.
      * $driver can be specified either as a class name (Merchant_paypal) or a short name (paypal)

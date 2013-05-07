@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-require_once(MERCHANT_DRIVER_PATH.'/merchant_paypal_base.php');
+require_gateway('paypal_base');
 
 /**
  * Merchant Paypal Pro Class
