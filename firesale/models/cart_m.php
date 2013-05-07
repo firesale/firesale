@@ -88,9 +88,17 @@ class Cart_m extends MY_Model
             // Format prices
             $prod_price = round(preg_replace('/[^0-9\.]+/', '', $product['price']), 1);
             $item_price = round(preg_replace('/[^0-9\.]+/', '', $item['price']), 1);
+            $mod_price  = $prod_price;
+
+            // Build modifier price
+            if ( ! empty($item['options']) ) {
+                foreach ( $item['options'] as $option ) { 
+                    $mod_price += $option['price'];
+                }
+            }
 
             // if cart has not been modified (e.g. discount codes) and price has changed
-            if ( ( ! isset($item['modified']) or ! $item['modified']) and $item_price != $prod_price ) {
+            if ( ( ! isset($item['modified']) or ! $item['modified']) and $item_price != $prod_price and $mod_price != $item_price ) {
 
                 $changed           = true;
                 $data              = array();
@@ -291,7 +299,6 @@ class Cart_m extends MY_Model
      */
     public function sale_complete($order)
     {
-
         // Update this order status
         $this->orders_m->update_status($order['id'], 2);
 
@@ -303,6 +310,17 @@ class Cart_m extends MY_Model
             $this->orders_m->update_product_stock($item['product_id'], $item['qty']);
         }
 
+        // Update variation stock
+        foreach ( $order['items'] as $item ) {
+            if ( ! empty($item['options']) ) {
+                foreach ( $item['options'] as $option ) {
+                    $product = $this->db->select('product')->where('id', $option['var_id'])->get('firesale_product_variations')->row();
+                    if( $product ) {
+                        $this->orders_m->update_product_stock($product->product, $item['qty']);
+                    }
+                }
+            }
+        }
     }
 
 }

@@ -65,7 +65,7 @@ class Admin_orders extends Admin_Controller
         $orders['entries'] = $this->orders_m->format_order($orders['entries']);
 
         // Get filter data
-        $users    = $this->pyrocache->model('orders_m', 'user_field', array(( $type == 'created_by' ? $query : NULL), $this->firesale->cache_time));
+        $users    = $this->pyrocache->model('orders_m', 'user_field', array(( $type == 'created_by' ? $query : NULL)), $this->firesale->cache_time);
         $products = $this->pyrocache->model('orders_m', 'product_dropdown', array(null, false, false), $this->firesale->cache_time);
         $status   = $this->pyrocache->model('orders_m', 'status_field', array(), $this->firesale->cache_time);
 
@@ -162,7 +162,7 @@ class Admin_orders extends Admin_Controller
                               );
 
         // Add users as first general field
-        $users = $this->pyrocache->model('orders_m', 'user_field', array(( $row != NULL ? $row->created_by : NULL ), $this->firesale->cache_time));
+        $users = $this->pyrocache->model('orders_m', 'user_field', array(( $row != NULL ? $row->created_by : NULL )), $this->firesale->cache_time);
         array_unshift($this->data->fields['general']['details'], $users);
 
         // Move/format ship_to and bill_to
@@ -172,7 +172,7 @@ class Admin_orders extends Admin_Controller
         array_unshift($this->data->fields['bill']['details'], $bill);
 
         // Get currency
-        $this->data->currency = $this->pyrocache->model('currency_m', 'get', array(( $id != NULL && $row->currency != NULL ? $row->currency : NULL ), $this->firesale->cache_time));
+        $this->data->currency = $this->pyrocache->model('currency_m', 'get', array(( $id != NULL && $row->currency != NULL ? $row->currency : NULL )), $this->firesale->cache_time);
 
         // Get products
         if ($id != NULL) {

@@ -367,7 +367,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'title', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255));
         $fields[] = array('name' => 'lang:firesale:label_mod_price', 'slug' => 'price', 'type' => 'decimal', 'instructions' => 'lang:firesale:label_mod_price_inst', 'extra' => array('decimal_places' => '2'));
         $fields[] = array('name' => 'lang:firesale:label_parent', 'slug' => 'parent', 'type' => 'integer', 'extra' => array('max_length' => 6, 'default_value' => 0));
-
+        $fields[] = array('name' => 'lang:firesale:label_product', 'slug' => 'product', 'type' => 'relationship', 'required' => false, 'extra' => array('max_length' => 5, 'choose_stream' => $products->id));
         $this->add_stream_fields($fields, $template);
 
         // Create lookup table
@@ -808,7 +808,7 @@ class Module_Firesale extends Module
         if ($old_version < '1.2.2') {
 
             // Add settings
-            $this->settings('add', array('firesale_dashboard'));
+            $this->settings('add', array('firesale_dashboard', 'firesale_low'));
 
             // Add https option
             $fields   = array();
@@ -833,6 +833,13 @@ class Module_Firesale extends Module
             // Change settings for currency
             $this->settings('remove', array('firesale_currency'));
             $this->settings('add', array('firesale_currency'));
+
+            // Add product tie-in to single-product variations
+            $fields   = array();
+            $products = $this->streams->streams->get_stream('firesale_products', 'firesale_products');
+            $template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+            $fields[] = array('name' => 'lang:firesale:label_product', 'slug' => 'product', 'type' => 'relationship', 'required' => false, 'extra' => array('max_length' => 5, 'choose_stream' => $products->id));
+            $this->add_stream_fields($fields, $template);
         }
 
         // Tracking
@@ -874,6 +881,7 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'image_background', 'title' => lang('firesale:settings_image_background'), 'description' => lang('firesale:settings_image_background_inst'), 'default' => 'ffffff', 'value' => 'ffffff', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_low', 'title' => lang('firesale:settings_low'), 'description' => lang('firesale:settings_low_inst'), 'default' => '10', 'value' => '10', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
         // Get existing settings
         foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }

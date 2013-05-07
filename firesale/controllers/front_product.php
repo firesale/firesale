@@ -30,7 +30,6 @@ class Front_product extends Public_Controller
 
     public function index($product)
     {
-
         // Get the product
         $product = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
 
@@ -73,7 +72,6 @@ class Front_product extends Public_Controller
 
     public function ajax_modifier_data()
     {
-
         // Check for data
         if ( $this->input->post() ) {
 
@@ -98,7 +96,6 @@ class Front_product extends Public_Controller
             echo json_encode($data);
             exit();
         }
-
     }
 
 }

@@ -104,44 +104,6 @@ $(function() {
 			$('input[name=slug]').attr('id', 'slug_old').addClass('disabled');
 		}
 
-		/**************
-		** MODIFIERS **
-		**************/
-
-		$('.modifiers tbody').sortable({
-			handle: 'span.mod-mover',
-			update: function() {
-				$('.modifiers tbody > tr').removeClass('alt');
-				$('.modifiers tbody > tr:nth-child(even)').addClass('alt');
-				var order = [];
-				$('.modifiers tbody > tr').each(function() { order.push(this.id); });
-				order = order.join(',');
-				$.post(SITE_URL + 'admin/firesale/products/ajax_order_modifiers', { order: order });
-			}
-		});
-
-		$('.modifiers tbody table tbody').sortable({
-			handle: 'span.var-mover',
-			update: function() {
-				$('.modifiers table tbody > tr').removeClass('alt');
-				$('.modifiers table tbody > tr:nth-child(even)').addClass('alt');
-				var order = [];
-				$('.modifiers table tbody > tr').each(function() { order.push(this.id); });
-				order = order.join(',');
-				$.post(SITE_URL + 'admin/firesale/products/ajax_order_variations', { order: order });
-			}
-		});
-
-		$('.modifiers th .mod-min').live('click', function(e) {
-			e.preventDefault();
-			$('.modifiers td .mod-min').click();
-		});
-		$('.modifiers td .mod-min').live('click', function(e) {
-			e.preventDefault();
-			$(this).parents('tr').find('table').slideToggle(250);
-			$(this).toggleClass('show');
-		});
-
 		/*********************
 		** DYNAMIC TAX LINK **
 		*********************/

@@ -15,46 +15,52 @@ class Modifier_m extends MY_Model
 
     public function cart_variation($options)
     {
-
         // Variables
-        $modifiers     = $this->get_modifiers($options['prd_code'][0]);
-        $stream        = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
-        $post          = $_POST;
-        $post['price'] = 0;
-        $ids           = array();
+        $stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+        $post   = $_POST;
 
-        // Loop through options
-        foreach ($options['options'] as $mod => $var) {
+        // Loop through all options
+        foreach ($options['options'] as $i => $opts ) {
 
-            // Get variations
-            $modifier = $modifiers[$mod];
+            // Get/Set defaults
+            $modifiers     = $this->pyrocache->model('modifier_m', 'get_modifiers', array($options['prd_code'][$i]), $this->firesale->cache_time);
+            $post['price'] = 0;
+            $ids           = array();
+            
+            // Loop through these options
+            foreach ( $opts as $mod => $var) {
 
-            // Check type
-            if ($modifier['type']['key'] == '1') {
-                $variation = $modifier['variations'][$var];
-                $ids[] = $var;
-            } elseif ($modifier['type']['key'] == '3') {
-                $variation      = $modifier['variations'][$var];
-                $post['price'] += $variation['price'];
+                // Get variations
+                $modifier = $modifiers[$mod];
+
+                // Check type
+                if ($modifier['type']['key'] == '1') {
+                    $variation = $modifier['variations'][$var];
+                    $ids[] = $var;
+                } elseif ($modifier['type']['key'] == '3') {
+                    $variation      = $modifier['variations'][$var];
+                    $post['price'] += $variation['price'];
+                }
+
+                // Change options
+                $post['options'][$i][$mod] = array(
+                    'mod_id' => $modifier['id'],
+                    'var_id' => ( isset($variation) ? $variation['id'] : '' ),
+                    'type'   => $modifier['type']['key'],
+                    'title'  => $modifier['title'],
+                    'value'  => ( isset($variation) ? $variation['title'] : $var ),
+                    'price'  => $variation['price']
+                );
+
+                // Unset before next loop
+                unset($modifier);
+                unset($variation);
             }
 
-            // Change options
-            $post['options'][$mod] = array(
-                'mod_id' => $modifier['id'],
-                'var_id' => ( isset($variation) ? $variation['id'] : '' ),
-                'type'   => $modifier['type']['key'],
-                'title'  => $modifier['title'],
-                'value'  => ( isset($variation) ? $variation['title'] : $var )
-            );
-
-            // Unset before next loop
-            unset($modifier);
-            unset($variation);
-        }
-
-        // Get correct ID for options
-        if ( ! empty($ids) ) {
-            $post['prd_code'][0] = $this->variation_exists($ids, $stream->id);
+            // Get correct ID for options
+            if ( ! empty($ids) ) {
+                $post['prd_code'][$i] = $this->variation_exists($ids, $stream->id);
+            }
         }
 
         // Retrun
@@ -483,6 +489,62 @@ class Modifier_m extends MY_Model
         }
 
         return $this->array_cartesian_product($options);
+    }
+
+    public function single_product_stock($product_id, $options, $qty)
+    {
+        // Variables
+        $opts = array();
+
+        // Ensure we have options
+        if ( empty($options) ) {
+            return true;
+        }
+
+        // Loop the options we have
+        foreach ( $options as $option ) {
+
+            // Check for the right type
+            if ( $option['type'] != '3' ) {
+                continue;
+            }
+
+            // Get stock level
+            $product = $this->db->select('p.id, p.title, p.stock, p.stock_status')
+                                ->from('firesale_product_variations AS v')
+                                ->join('firesale_products AS p', 'p.id = v.product', 'inner')
+                                ->where('v.id', $option['var_id'])
+                                ->get()
+                                ->row();
+
+            // Check product is set, status and quantity
+            if ( $product and $product->stock_status != 6 ) {
+                
+                // Add to options
+                if ( ! array_key_exists($product->id, $opts) ) {
+                    $opts[$product->id] = array(
+                        'title' => $product->title,
+                        'stock' => $product->stock,
+                        'qty'   => 0
+                    );
+                }
+
+                // Increase qty
+                $opts[$product->id]['qty'] += $qty;
+            }
+        }
+
+        // Check options
+        if ( ! empty($opts) ) {
+            foreach ( $opts as $option ) {
+                if ( $option['stock'] < $option['qty'] ) {
+                    return $option['title'];
+                }
+            }
+        }
+        
+        // Seems okay!
+        return true;
     }
 
     // Stack overflow

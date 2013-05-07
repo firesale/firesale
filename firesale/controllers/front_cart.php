@@ -130,13 +130,25 @@ class Front_cart extends Public_Controller
                     $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
                     $modifiers = current($product['modifiers']);
 
+                    // Check status
+                    $status = $this->modifier_m->single_product_stock($product['id'], $_POST['options'][$key], (int)$qtys[$key]);
+                    if ( $status !== true ) {
+                        $this->session->set_flashdata('error', sprintf(lang('firesale:vars:stock_low'), $status));
+                        redirect($_SERVER['HTTP_REFERER']);
+                    }
+
                     // Increase price based on options
                     $product['price_rounded'] += $this->input->post('price') or 0;
                     $product['price']         += $this->input->post('price') or 0;
 
-                if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
-                    ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
-                        $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $this->input->post('options'));
+                    // Check product, stock and modifiers
+                    if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
+                        ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
+                        
+                        // Build cart data
+                        $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
+
+                        // Update stock levels
                         if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
                     }
 
@@ -146,13 +158,19 @@ class Front_cart extends Public_Controller
 
         } else {
 
+            // Get product
             $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
             $modifiers = current($product['modifiers']);
 
+            // Check product, stock and modifiers
             if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
                 ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
+                
+                // Build cart data
                 $data[] = $this->cart_m->build_data($product, $qty);
                 $this->session->set_userdata('added', $product['id']);
+
+                // Update stock levels
                 if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
             }
 
@@ -485,7 +503,7 @@ class Front_cart extends Public_Controller
     public function payment()
     {
 
-        $order = $this->orders_m->get_order_by_id($this->session->userdata('order_id'));
+        $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($this->session->userdata('order_id')), $this->firesale->cache_time);
 
         if ( ! empty($order) AND $this->gateways->is_enabled($order['gateway']['id'])) {
 
@@ -632,7 +650,8 @@ class Front_cart extends Public_Controller
 
     public function callback($gateway = NULL, $order_id = NULL)
     {
-        $order = $this->orders_m->get_order_by_id($order_id);
+
+        $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order_id), $this->firesale->cache_time);
 
         if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND ! empty($order)) {
             $this->merchant->load($gateway);
@@ -765,7 +784,7 @@ class Front_cart extends Public_Controller
 
         if ( $order_id = $this->session->userdata('order_id') ) {
 
-            $order = $this->orders_m->get_order_by_id($order_id);
+            $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order_id), $this->firesale->cache_time);
 
             if ( ! is_null($gateway)) {
                 $this->merchant->load($gateway);
