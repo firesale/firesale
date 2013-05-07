@@ -55,6 +55,11 @@ class Plugin_Firesale extends Plugin
         return FALSE;
     }
 
+    public function enabled_gateways()
+    {
+        return $this->gateways->get_enabled();
+    }
+
     public function categories()
     {
 
