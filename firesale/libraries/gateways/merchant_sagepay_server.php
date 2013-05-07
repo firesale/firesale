@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-require_once(MERCHANT_DRIVER_PATH.'/merchant_sagepay_base.php');
+require_gateway('sagepay_base');
 
 /**
  * Merchant SagePay Direct Class
