@@ -14,7 +14,7 @@ function require_gateway($gateway)
 
     if ( ! class_exists($driver_class)) {
 
-        foreach ($this->get_driver_paths() as $path) {
+        foreach ($ci->merchant->get_driver_paths() as $path) {
             $driver_path = $path.'/'.strtolower($driver_class).'.php';
 
             if ( ! file_exists($driver_path)) continue;
