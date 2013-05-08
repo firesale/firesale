@@ -602,7 +602,10 @@ class Front_cart extends Public_Controller
                 // Variables
                 $var['months'] = array();
                 $currentMonth  = (int) date('m');
-                for ($x = $currentMonth; $x < $currentMonth+12; $x++) { $var['months'][$x] = date('F', mktime(0, 0, 0, $x, 1)); }
+                for ($x = $currentMonth; $x < $currentMonth+12; $x++) {
+                    $time = mktime(0, 0, 0, $x, 1);
+                    $var['months'][date('m', $time)] = date('F', $time);
+                }
 
                 $current_year = date('Y');
                 for ($i = $current_year; $i < $current_year + 15; $i++)
