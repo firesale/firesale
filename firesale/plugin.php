@@ -307,7 +307,7 @@ class Plugin_Firesale extends Plugin
         $data->tax   = $this->currency_m->format_string($this->fs_cart->tax(), $currency, false);
         $data->sub   = $this->currency_m->format_string($this->fs_cart->subtotal(), $currency, false);
         $data->total = $this->currency_m->format_string($this->fs_cart->total(), $currency, false);
-        $data->count = $this->fs_cart->total_items();
+        $data->count = $this->fs_cart->total_items() ? $this->fs_cart->total_items() : '&#48;';
 
         // Fix helper variables
         $data->products = reassign_helper_vars($data->products);
