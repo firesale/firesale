@@ -835,6 +835,9 @@ class Module_Firesale extends Module
             $this->settings('remove', array('firesale_currency'));
             $this->settings('add', array('firesale_currency'));
 
+            // Update currency setting
+            $this->db->where('slug', 'firesale_currency')->update('settings', array('value' => 1));
+
             // Add product tie-in to single-product variations
             $fields   = array();
             $products = $this->streams->streams->get_stream('firesale_products', 'firesale_products');

@@ -42,7 +42,7 @@ class Fs_cart extends CI_Cart
     public function currency()
     {
         if ( ! isset($this->currency)) {
-            $currency = $this->ci->session->userdata('currency');
+            $currency = $this->ci->session->userdata('currency') ? $this->ci->session->userdata('currency') : $this->ci->settings->get('firesale_currency');
             $this->currency = $this->ci->pyrocache->model('currency_m', 'get', array($currency ? $currency : NULL), $this->ci->firesale->cache_time);
         }
 
