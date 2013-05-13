@@ -101,7 +101,6 @@ class Front_orders extends Public_Controller
 
             // Build page
             $this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
-                           ->set_breadcrumb('Home', '/')
                            ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->pyrocache->model('routes_m', 'build_url', array('orders'), $this->firesale->cache_time))
                            ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id))
                            ->set($order);
