@@ -194,6 +194,8 @@ class Front_cart extends Public_Controller
         // Return for ajax or redirect
         if ( $this->input->is_ajax_request() ) {
             exit($this->cart_m->ajax_response('ok'));
+        } else if ( $this->input->post('btnAction') == 'buy' ) {
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
         } else {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         }

@@ -1168,12 +1168,11 @@ class Module_Firesale extends Module
 
     public function add_stream_fields($fields, $template)
     {
-      // Combine
-      foreach ($fields AS &$field) { $field = array_merge($template, $field); }
+        // Combine
+        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
 
-      // Add fields to stream
-      $this->streams->fields->add_fields($fields);
-
+        // Add fields to stream
+        $this->streams->fields->add_fields($fields);
     }
 
     public function statistics($action, $old_version = null)
