@@ -1,13 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Cart controller
- *
- * @author		Chris Harvey
- * @author		Jamie Holdroyd
- * @package		FireSale\Core\Controllers
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Front_cart extends Public_Controller
 {
 
@@ -144,7 +154,7 @@ class Front_cart extends Public_Controller
                     // Check product, stock and modifiers
                     if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
                         ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
-                        
+
                         // Build cart data
                         $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
 
@@ -165,7 +175,7 @@ class Front_cart extends Public_Controller
             // Check product, stock and modifiers
             if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
                 ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
-                
+
                 // Build cart data
                 $data[] = $this->cart_m->build_data($product, $qty);
                 $this->session->set_userdata('added', $product['id']);
@@ -194,7 +204,7 @@ class Front_cart extends Public_Controller
         // Return for ajax or redirect
         if ( $this->input->is_ajax_request() ) {
             exit($this->cart_m->ajax_response('ok'));
-        } else if ( $this->input->post('btnAction') == 'buy' ) {
+        } elseif ( $this->input->post('btnAction') == 'buy' ) {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
         } else {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));

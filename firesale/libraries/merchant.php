@@ -37,7 +37,7 @@ define('MERCHANT_VENDOR_PATH', realpath(dirname(__FILE__).'/../vendor'));
  *
  * Payment processing for CodeIgniter
  */
-class Merchant
+class merchant
 {
     public static $CURRENCIES_WITHOUT_DECIMALS = array('JPY');
 
@@ -57,7 +57,7 @@ class Merchant
     public function __construct($driver = NULL)
     {
         $this->driver_paths[] = realpath(dirname(__FILE__).'/gateways');
-        
+
         if ( ! empty($driver)) {
             $this->load($driver);
         }

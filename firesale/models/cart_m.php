@@ -1,13 +1,23 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Cart model
- *
- * @author		Chris Harvey
- * @author		Jamie Holdroyd
- * @package		FireSale\Core\Models
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Cart_m extends MY_Model
 {
 
@@ -92,7 +102,7 @@ class Cart_m extends MY_Model
 
             // Build modifier price
             if ( ! empty($item['options']) ) {
-                foreach ( $item['options'] as $option ) { 
+                foreach ( $item['options'] as $option ) {
                     $mod_price += $option['price'];
                 }
             }

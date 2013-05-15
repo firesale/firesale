@@ -32,4 +32,4 @@
                     </tr>
                 <?php endif; ?>
                 </tbody>
-            </table>                
+            </table>
