@@ -187,6 +187,11 @@ class Products_m extends MY_Model
             $product['snippet']      = truncate_words($product['description']);
             $product['category']     = $this->get_categories($product['id']);
             $product['image']        = $this->get_single_image($product['id']);
+            $product['images']       = $this->get_images($product['slug']);
+
+            // New product?
+            $duration = ( time() - (int)$this->settings->get('firesale_new') );
+            $product['new'] = ( $product['created'] > $duration ? '1' : '0' );
 
             // Get variation and modifer data
             $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;

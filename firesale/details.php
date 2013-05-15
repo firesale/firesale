@@ -844,6 +844,9 @@ class Module_Firesale extends Module
             $template = array('namespace' => 'firesale_product_variations', 'assign' => 'firesale_product_variations', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_product', 'slug' => 'product', 'type' => 'relationship', 'required' => false, 'extra' => array('max_length' => 5, 'choose_stream' => $products->id));
             $this->add_stream_fields($fields, $template);
+
+            // Add new setting
+            $this->settings('add', array('firesale_new'));
         }
 
         // Tracking
@@ -886,6 +889,7 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'firesale_login', 'title' => lang('firesale:settings_login'), 'description' => lang('firesale:settings_login_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_low', 'title' => lang('firesale:settings_low'), 'description' => lang('firesale:settings_low_inst'), 'default' => '10', 'value' => '10', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_new', 'title' => lang('firesale:settings_new'), 'description' => lang('firesale:settings_new_inst'), 'default' => '86400', 'value' => '86400', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
         // Get existing settings
         foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }
@@ -949,7 +953,6 @@ class Module_Firesale extends Module
 
             // Add is_core
             $this->db->query("ALTER TABLE `".SITE_REF."_firesale_routes` ADD `is_core` BOOLEAN NOT NULL DEFAULT '0'");
-
         }
 
         // Routes
