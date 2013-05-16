@@ -434,7 +434,7 @@ class Front_cart extends Public_Controller
                 }
 
                 // Set error flashdata & continue to page build
-                $this->session->set_flashdata('error', implode('<br />', $this->form_validation->error_array()));
+                $this->session->set_userdata('flash:old:error', implode('<br />', $this->form_validation->error_array()));
 
             } else {
 
@@ -501,13 +501,49 @@ class Front_cart extends Public_Controller
 
     public function _validate_shipping($value)
     {
-        return TRUE;
+
+        if ($value) {
+
+            $cart = $this->fs_cart->contents();
+            $total = $this->fs_cart->total();
+    
+            $weight = 0;
+    
+            foreach ($cart as $item) {
+                if ($item['weight']) {
+                    $weight += intval($item['weight']);
+                }
+            }
+        
+            $query = $this->db->get_where('firesale_shipping', array('id' => $value));
+    
+            if ($query->num_rows()) {
+
+                $result = $query->row();
+
+                if ($result->price_min > $total) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_price'));
+                } elseif ($result->price_max < $total) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_price'));
+                } elseif ($result->weight_min > $weight) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_weight'));
+                } elseif ($result->weight_max < $weight) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_weight'));
+                } else {
+                   return TRUE;  
+                }
+                
+            }
+        } else {
+            $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_invalid')); 
+        }
+
+        return FALSE;
     }
 
     public function _validate_gateway($value)
     {
-        // Chris: Move to language
-        $this->form_validation->set_message('_validate_gateway', 'The payment gateway you selected is not valid');
+        $this->form_validation->set_message('_validate_gateway', lang('firesale:checkout:gateway_invalid'));
 
         return $this->gateways->is_enabled($value);
     }

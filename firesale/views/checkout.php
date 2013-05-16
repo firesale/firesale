@@ -140,7 +140,7 @@
         <?php endif; ?>
 
             <h3 id="payment"<?php echo ( form_error('gateway') ? ' class="error"' : '' ); ?>><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>
-            <fieldset<?php echo ( form_error('shipping') ? ' class="error"' : '' ); ?>>
+            <fieldset<?php echo ( form_error('gateway') ? ' class="error"' : '' ); ?>>
 
                 <p><?php echo lang('firesale:checkout:select_payment_method'); ?></p>
                 <br />
