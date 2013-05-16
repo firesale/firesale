@@ -32,6 +32,9 @@ class Admin_orders extends Admin_Controller
         // Assign data object
         $this->data = new StdClass;
 
+        // Button events
+        Events::trigger('button_build', $this->template);
+
         // Load the models
         $this->load->library('files/files');
         $this->load->model('orders_m');
@@ -87,6 +90,7 @@ class Admin_orders extends Admin_Controller
         $this->data->filter_status = form_dropdown('order_status', $status, null);
         $this->data->filter_prods  = form_dropdown('product', $products, null);
         $this->data->min_max       = $this->orders_m->min_max_price();
+        $this->data->buttons       = ( $this->template->buttons ? $this->template->buttons : '' );
 
         // Build template
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:orders'))

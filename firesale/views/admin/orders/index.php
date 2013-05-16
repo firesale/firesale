@@ -106,6 +106,7 @@
                 <button class="btn red confirm" value="delete" name="btnAction" type="submit" disabled="">
                     <span><?php echo lang('firesale:orders:delete'); ?></span>
                 </button>
+                <?php echo $buttons; ?>
             </div>
 
         <?php echo form_close(); ?>
