@@ -177,7 +177,7 @@ class Front_cart extends Public_Controller
                 ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
 
                 // Build cart data
-                $data[] = $this->cart_m->build_data($product, $qty);
+                $data[] = $this->cart_m->build_data($product, $qty, null);
                 $this->session->set_userdata('added', $product['id']);
 
                 // Update stock levels
