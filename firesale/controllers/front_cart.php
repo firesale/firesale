@@ -22,6 +22,8 @@ class Front_cart extends Public_Controller
 {
 
     public $validation_rules = array();
+    public static $valid_gateway = true;
+    public static $valid_shipping = true;
     public $stream;
 
     public function __construct()
@@ -434,7 +436,7 @@ class Front_cart extends Public_Controller
                 }
 
                 // Set error flashdata & continue to page build
-                $this->session->set_flashdata('error', implode('<br />', $this->form_validation->error_array()));
+                $this->session->set_userdata('flash:old:error', implode('<br />', $this->form_validation->error_array()));
 
             } else {
 
@@ -478,6 +480,8 @@ class Front_cart extends Public_Controller
             // Get fields
             $data['ship_fields'] = $this->address_m->get_address_form('ship', 'new', ( $input ? $input : null ));
             $data['bill_fields'] = $this->address_m->get_address_form('bill', 'new', ( $input ? $input : null ));
+            $data['valid_shipping'] = self::$valid_shipping;
+            $data['valid_gateway']  = self::$valid_gateway;
 
             // Check for shipping option set in cart
             if ( $this->session->userdata('shipping') ) {
@@ -501,15 +505,56 @@ class Front_cart extends Public_Controller
 
     public function _validate_shipping($value)
     {
-        return TRUE;
+
+        if ($value) {
+
+            $cart = $this->fs_cart->contents();
+            $total = $this->fs_cart->total();
+    
+            $weight = 0;
+    
+            foreach ($cart as $item) {
+                if ($item['weight']) {
+                    $weight += intval($item['weight']);
+                }
+            }
+        
+            $query = $this->db->get_where('firesale_shipping', array('id' => $value));
+    
+            if ($query->num_rows()) {
+
+                $result = $query->row();
+
+                if ($result->price_min > $total) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_price'));
+                } elseif ($result->price_max < $total) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_price'));
+                } elseif ($result->weight_min > $weight) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_weight'));
+                } elseif ($result->weight_max < $weight) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_weight'));
+                } else {
+                   return TRUE;  
+                }
+                
+            }
+        } else {
+            $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_invalid'));
+            self::$valid_shipping = false; 
+        }
+
+        return FALSE;
     }
 
     public function _validate_gateway($value)
     {
-        // Chris: Move to language
-        $this->form_validation->set_message('_validate_gateway', 'The payment gateway you selected is not valid');
+        $this->form_validation->set_message('_validate_gateway', lang('firesale:checkout:gateway_invalid'));
 
-        return $this->gateways->is_enabled($value);
+        $valid = $this->gateways->is_enabled($value);
+
+        self::$valid_gateway = $valid;
+
+        return $valid;
     }
 
     public function payment()

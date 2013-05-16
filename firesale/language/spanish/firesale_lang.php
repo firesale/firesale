@@ -356,6 +356,12 @@
     $lang['firesale:checkout:select_shipping_method'] = 'Por favor seleccione su método de envío preferido antes de continuar';
     $lang['firesale:checkout:select_payment_method']  = 'Por favor, seleccione su forma de pago preferida abajo antes de continuar';
     $lang['firesale:checkout:submit_and_pay']         = 'Enviar y Pagar';
+    $lang['firesale:checkout:shipping_min_price']     = 'The total value of your cart items does not meet the minimum for the selected shipping method';#Translate
+    $lang['firesale:checkout:shipping_max_price']     = 'The total value of your cart items exceeds the maximum for the selected shipping method';#Translate
+    $lang['firesale:checkout:shipping_min_weight']    = 'The total weight of your cart items does not meet the minimum for the selected shipping method';#Translate
+    $lang['firesale:checkout:shipping_max_weight']    = 'The total weight of your cart items exceeds the maximum for the selected shipping method';#Translate
+    $lang['firesale:checkout:shipping_invalid']       = 'The shipping method you selected is not valid';#Translate
+    $lang['firesale:checkout:gateway_invalid']        = 'The payment gateway you selected is not valid';#Translate
 
     // Routes
     $lang['firesale:routes:title']          = 'Rutas';
