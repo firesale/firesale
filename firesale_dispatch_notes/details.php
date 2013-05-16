@@ -21,11 +21,13 @@
 class Module_Firesale_dispatch_notes extends Module {
 	
 	public $version = '1.0.0';
-	
+    public $language_file = 'firesale_dispatch_notes/firesale';
+
     public function __construct()
     {
         parent::__construct();
         $this->load->library('firesale/firesale');
+        $this->lang->load($this->language_file);
     }
 
 	public function info()
