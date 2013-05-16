@@ -87,6 +87,7 @@
                 <?php $this->load->view('admin/partials/buttons', array('buttons' => array('delete') )); ?>
                 <button class="btn green" name="btnAction" value="duplicate"><span><?php echo lang('firesale:label_duplicate'); ?></span></button>
                 <button class="btn blue quickedit" name="btnAction" value="quickedit"><?php echo lang('firesale:prod_button_quick_edit'); ?></button>
+                <?php echo $buttons; ?>
             </div>
 
             </div>
