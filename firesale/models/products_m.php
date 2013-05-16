@@ -727,6 +727,14 @@ class Products_m extends MY_Model
         return implode(',', $cats);
     }
 
+    /**
+     * Builds the breadcrumbs for a products categories.
+     *
+     * @param  array   $category  An array of categories to loop and assign
+     * @param  string  &$template The template class to assign them to
+     * @return integer The id of the parent category for the product
+     * @access public
+     */
     public function build_breadcrumbs($category, &$template)
     {
 
@@ -806,9 +814,19 @@ class Products_m extends MY_Model
         return FALSE;
     }
 
+    /**
+     * Gets the all images for a product.
+     *
+     * @param  string $slug The Product slug to query
+     * @return array the files for the give product
+     * @access public
+     */
     public function get_images($slug)
     {
+        // Load required items
+        $this->load->library('files/files');
 
+        // Variables
         $folder = get_file_folder_by_slug($slug, 'product-images');
         $images = Files::folder_contents($folder->id);
 
