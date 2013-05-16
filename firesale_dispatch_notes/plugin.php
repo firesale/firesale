@@ -1,26 +1,25 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Plugin_Firesale_Discount_Codes extends Plugin
+/**
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/dispatch_notes
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
+class Plugin_Firesale_dispatch_notes extends Plugin
 {
 
-    public function __construct()
-    {
-
-		$this->load->model('categories_m');
-		$this->load->model('products_m');
-		$this->load->model('codes_m');
-
-	}
-
-	public function code_applied()
-	{
-
-		if( $this->session->userdata('discount_code') )
-		{
-			return TRUE;
-		}
-
-		return FALSE;
-	}
 
 }
