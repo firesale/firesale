@@ -112,8 +112,8 @@
 
         <?php if( $ship_req && isset($shipping) && is_array($shipping) ): ?>
 
-            <h3 id="shipping"<?php echo ( form_error('shipping') ? ' class="error"' : '' ); ?>><a href="#shipping"><?php echo lang('firesale:checkout:title:ship_method'); ?></a></h3>
-            <fieldset<?php echo ( form_error('shipping') ? ' class="error"' : '' ); ?>>
+            <h3 id="shipping"<?php echo ( ! $valid_shipping ? ' class="error"' : '' ); ?>><a href="#shipping"><?php echo lang('firesale:checkout:title:ship_method'); ?></a></h3>
+            <fieldset<?php echo ( ! $valid_shipping ? ' class="error"' : '' ); ?>>
 
                 <p><?php echo lang('firesale:checkout:select_shipping_method'); ?></p>
                 <br />
@@ -139,8 +139,8 @@
 
         <?php endif; ?>
 
-            <h3 id="payment"<?php echo ( form_error('gateway') ? ' class="error"' : '' ); ?>><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>
-            <fieldset<?php echo ( form_error('gateway') ? ' class="error"' : '' ); ?>>
+            <h3 id="payment"<?php echo ( ! $valid_gateway ? ' class="error"' : '' ); ?>><a href="#payment"><?php echo lang('firesale:checkout:title:payment_method'); ?></a></h3>
+            <fieldset<?php echo ( ! $valid_gateway ? ' class="error"' : '' ); ?>>
 
                 <p><?php echo lang('firesale:checkout:select_payment_method'); ?></p>
                 <br />

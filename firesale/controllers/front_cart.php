@@ -22,6 +22,8 @@ class Front_cart extends Public_Controller
 {
 
     public $validation_rules = array();
+    public static $valid_gateway = true;
+    public static $valid_shipping = true;
     public $stream;
 
     public function __construct()
@@ -478,6 +480,8 @@ class Front_cart extends Public_Controller
             // Get fields
             $data['ship_fields'] = $this->address_m->get_address_form('ship', 'new', ( $input ? $input : null ));
             $data['bill_fields'] = $this->address_m->get_address_form('bill', 'new', ( $input ? $input : null ));
+            $data['valid_shipping'] = self::$valid_shipping;
+            $data['valid_gateway']  = self::$valid_gateway;
 
             // Check for shipping option set in cart
             if ( $this->session->userdata('shipping') ) {
@@ -535,7 +539,8 @@ class Front_cart extends Public_Controller
                 
             }
         } else {
-            $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_invalid')); 
+            $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_invalid'));
+            self::$valid_shipping = false; 
         }
 
         return FALSE;
@@ -545,7 +550,11 @@ class Front_cart extends Public_Controller
     {
         $this->form_validation->set_message('_validate_gateway', lang('firesale:checkout:gateway_invalid'));
 
-        return $this->gateways->is_enabled($value);
+        $valid = $this->gateways->is_enabled($value);
+
+        self::$valid_gateway = $valid;
+
+        return $valid;
     }
 
     public function payment()
