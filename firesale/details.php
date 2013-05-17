@@ -571,7 +571,7 @@ class Module_Firesale extends Module
         Files::create_folder(0, 'Product Images');
 
         // Tracking
-        $this->statistics('install');
+        statistics('install', $this->version);
 
         // Return
         return TRUE;
@@ -649,7 +649,7 @@ class Module_Firesale extends Module
         Events::trigger('clear_cache');
 
         // Tracking
-        $this->statistics('uninstall');
+        statistics('uninstall', $this->version);uninstall
 
         // Return
         return TRUE;
@@ -868,7 +868,7 @@ class Module_Firesale extends Module
         }
 
         // Tracking
-        $this->statistics('upgrade', $old_version);
+        statistics('upgrade', $this->version, $old_version);
 
         return TRUE;
     }
@@ -1194,32 +1194,6 @@ class Module_Firesale extends Module
 
         // Add fields to stream
         $this->streams->fields->add_fields($fields);
-    }
-
-    public function statistics($action, $old_version = null)
-    {
-
-        // Build initial data
-        $data = array(
-            'module'          => 'firesale',
-            'action'          => $action,
-            'version'         => $this->version,
-            'pyro_version'    => CMS_VERSION,
-            'php_version'     => phpversion(),
-            'server_hash'     => md5($this->input->server('SERVER_NAME').$this->input->server('SERVER_ADDR').$this->input->server('SERVER_SIGNATURE')),
-            'server_software' => $this->input->server('SERVER_SOFTWARE')
-        );
-
-        // Upgrade
-        if ( $action == 'upgrade' and $old_version !== null ) {
-            $data['old_version'] = $old_version;
-        }
-
-        // Perform request
-        include $_SERVER['DOCUMENT_ROOT'].'/system/sparks/curl/1.2.1/libraries/Curl.php';
-        $url = 'https://www.getfiresale.org/stats/add';
-        $curl = new Curl;
-        $curl->simple_post($url, $data);
     }
 
 }

@@ -312,3 +312,48 @@ function nice_time($time)
     }
 
 }
+
+/**
+ * Track the install, uninstall and upgrade status of a module.
+ * 
+ * @param  string $action      The action being performed - install, uninstall or upgrade
+ * @param  string $version     The current version being installed
+ * @param  string $old_version The old version being upgraded from
+ * @return void
+ */
+function statistics($action, $version, $old_version = null)
+{
+    // Variables
+    $_CI =& get_instance();
+    $url =  'https://www.getfiresale.org/stats/add';
+    $uri =  $_CI->uri->rsegment_array();
+
+    // Build initial data
+    $data = array(
+        'module'          => end($uri),
+        'action'          => $action,
+        'version'         => $version,
+        'pyro_version'    => CMS_VERSION,
+        'php_version'     => phpversion(),
+        'server_hash'     => md5($_CI->input->server('SERVER_NAME').$_CI->input->server('SERVER_ADDR').$_CI->input->server('SERVER_SIGNATURE')),
+        'server_software' => $_CI->input->server('SERVER_SOFTWARE')
+    );
+
+    // Upgrade
+    if ( $action == 'upgrade' and $old_version !== null ) {
+        $data['old_version'] = $old_version;
+    }
+
+    // Perform request
+    if ( class_exists('Curl') ) {
+        include $_SERVER['DOCUMENT_ROOT'].'/system/sparks/curl/1.2.1/libraries/Curl.php';
+        $curl = new Curl;
+        $curl->simple_post($url, $data);
+    } else {
+        $request = http_build_query($data);
+        echo $url.'?'.$request;
+        exit();
+        file_get_contents($url.'?'.$request);
+    }
+
+}
