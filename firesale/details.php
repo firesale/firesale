@@ -82,23 +82,23 @@ class Module_Firesale extends Module
                 'pl' => 'Lekka i elastyczna platforma eCommerce dla PyroCMS',
                 'es' => 'The lightweight & extensible eCommerce platform for PyroCMS'  # translate
             ),
-            'frontend'    	=> TRUE,
-            'backend'		=> TRUE,
-            'author'   => 'Jamie Holdroyd & Chris Harvey',
-            'roles' => array(
+            'frontend' => TRUE,
+            'backend'  => TRUE,
+            'author'   => 'Moltin Ltd',
+            'roles'    => array(
                 'edit_orders', 'access_routes', 'create_edit_routes', 'access_gateways', 'install_uninstall_gateways',
                 'enable_disable_gateways', 'edit_gateways', 'access_currency', 'install_uninstall_currency',
                 'access_taxes', 'add_edit_taxes'
             ),
             'sections' => array(
-                'dashboard' => array(
-                    'name'  => 'firesale:sections:dashboard',
-                    'uri'   => 'admin/firesale',
+                'dashboard'         => array(
+                    'name'          => 'firesale:sections:dashboard',
+                    'uri'           => 'admin/firesale',
                 ),
-                'categories' => array(
-                    'name'   => 'firesale:sections:categories',
-                    'uri'    => 'admin/firesale/categories',
-                    'shortcuts' => array(
+                'categories'        => array(
+                    'name'          => 'firesale:sections:categories',
+                    'uri'           => 'admin/firesale/categories',
+                    'shortcuts'     => array(
                         array(
                             'name'  => 'firesale:shortcuts:cat_create',
                             'uri'   => 'admin/firesale/categories',
@@ -106,10 +106,10 @@ class Module_Firesale extends Module
                         )
                     )
                 ),
-                'products' => array(
-                    'name' => 'firesale:sections:products',
-                    'uri'  => 'admin/firesale/products',
-                    'shortcuts' => array(
+                'products'          => array(
+                    'name'          => 'firesale:sections:products',
+                    'uri'           => 'admin/firesale/products',
+                    'shortcuts'     => array(
                         array(
                             'name'  => 'firesale:shortcuts:prod_create',
                             'uri'   => 'admin/firesale/products/create',
@@ -117,10 +117,10 @@ class Module_Firesale extends Module
                         )
                     )
                 ),
-                'orders' => array(
-                    'name' => 'firesale:sections:orders',
-                    'uri'  => 'admin/firesale/orders',
-                    'shortcuts' => array(
+                'orders'            => array(
+                    'name'          => 'firesale:sections:orders',
+                    'uri'           => 'admin/firesale/orders',
+                    'shortcuts'     => array(
                         array(
                             'name'  => 'firesale:shortcuts:create_order',
                             'uri'   => 'admin/firesale/orders/create',
@@ -136,8 +136,8 @@ class Module_Firesale extends Module
         // Access Routes
         if (group_has_role('firesale', 'access_routes')) {
             $info['sections']['routes'] = array(
-                'name' => 'firesale:sections:routes',
-                'uri'  => 'admin/firesale/routes',
+                'name'      => 'firesale:sections:routes',
+                'uri'       => 'admin/firesale/routes',
                 'shortcuts' => array()
             );
         }
@@ -161,8 +161,8 @@ class Module_Firesale extends Module
         // Access Gateways
         if (group_has_role('firesale', 'access_gateways')) {
             $info['sections']['gateways'] = array(
-                'name' => 'firesale:sections:gateways',
-                'uri'  => 'admin/firesale/gateways',
+                'name'      => 'firesale:sections:gateways',
+                'uri'       => 'admin/firesale/gateways',
                 'shortcuts' => array()
             );
         }
@@ -181,8 +181,8 @@ class Module_Firesale extends Module
         // Access Currency
         if (group_has_role('firesale', 'access_currency')) {
             $info['sections']['currency'] = array(
-                'name' => 'firesale:sections:currency',
-                'uri'  => 'admin/firesale/currency',
+                'name'      => 'firesale:sections:currency',
+                'uri'       => 'admin/firesale/currency',
                 'shortcuts' => array()
             );
         }
@@ -190,8 +190,8 @@ class Module_Firesale extends Module
         // Access Taxes
         if (group_has_role('firesale', 'access_taxes')) {
             $info['sections']['taxes'] = array(
-                'name' => 'firesale:sections:taxes',
-                'uri'  => 'admin/firesale/taxes',
+                'name'      => 'firesale:sections:taxes',
+                'uri'       => 'admin/firesale/taxes',
                 'shortcuts' => array()
             );
         }
@@ -234,14 +234,14 @@ class Module_Firesale extends Module
         add_admin_menu_place('lang:firesale:title', 2);
 
         // Assign common items
-        $menu['lang:firesale:title']['lang:firesale:sections:dashboard']  = 'admin/firesale';
-        $menu['lang:firesale:title']['lang:firesale:sections:categories'] = 'admin/firesale/categories';
-        $menu['lang:firesale:title']['lang:firesale:sections:products']   = 'admin/firesale/products';
-        $menu['lang:firesale:title']['lang:firesale:sections:orders']     = 'admin/firesale/orders';
+        $menu['lang:firesale:title']['lang:firesale:sections:dashboard']    = 'admin/firesale';
+        $menu['lang:firesale:title']['lang:firesale:sections:categories']   = 'admin/firesale/categories';
+        $menu['lang:firesale:title']['lang:firesale:sections:products']     = 'admin/firesale/products';
+        $menu['lang:firesale:title']['lang:firesale:sections:orders']       = 'admin/firesale/orders';
 
         // Add routes
         if (group_has_role('firesale', 'access_routes')) {
-            $menu['lang:firesale:title']['lang:firesale:sections:routes'] = 'admin/firesale/routes';
+            $menu['lang:firesale:title']['lang:firesale:sections:routes']   = 'admin/firesale/routes';
         }
 
         // Add gateways
@@ -256,7 +256,7 @@ class Module_Firesale extends Module
 
         // Add taxes
         if (group_has_role('firesale', 'access_taxes')) {
-            $menu['lang:firesale:title']['lang:firesale:sections:taxes'] = 'admin/firesale/taxes';
+            $menu['lang:firesale:title']['lang:firesale:sections:taxes']    = 'admin/firesale/taxes';
         }
 
     }
@@ -649,7 +649,7 @@ class Module_Firesale extends Module
         Events::trigger('clear_cache');
 
         // Tracking
-        statistics('uninstall', $this->version);uninstall
+        statistics('uninstall', $this->version);
 
         // Return
         return TRUE;
