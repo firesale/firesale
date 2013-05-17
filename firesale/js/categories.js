@@ -61,6 +61,9 @@ $(function(){
 				$('input[name=slug]').attr('id', 'slug_old').addClass('disabled');
 			}
 
+			// Update form action
+			$('#tabs').attr('action', SITE_URL+'admin/firesale/categories/'+data.id);
+
 			$('button.delete').remove();
 			$('.one_half.last .title h4').text('Edit "' + data.title + '"');
 			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Save</span></button>')
@@ -103,5 +106,23 @@ $(function(){
 	}).trigger('hashchange');
 	
 	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
+
+	function build_alert(response) {
+		if( $(response).find('.alert').size() > 0 ) {
+			$(response).find('.alert').each(function() {
+				var c = $(this).attr('class');
+				$('#content-body > .alert').remove();
+				$('#content-body').prepend('<div class="'+c+'">'+$(this).html()+'</div>');
+			});
+		}
+	}
+
+	$('#tabs .btn.blue').live('click', function(e) {
+		e.preventDefault();
+		var p = $(this).parents('form');
+		$.post(p.attr('action'), p.serialize()+'&btnAction=save', function(response) {
+			build_alert(response);
+		});
+	});
 	
 });
