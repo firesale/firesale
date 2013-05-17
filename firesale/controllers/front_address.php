@@ -69,7 +69,7 @@ class Front_address extends Public_Controller
 
         // Add page content
         $this->template->title(lang('firesale:addresses:title'))
-                       ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+                       ->set_breadcrumb(lang('firesale:addresses:title'))
                        ->set($this->data);
 
         // Fire events
@@ -96,8 +96,9 @@ class Front_address extends Public_Controller
         $this->data->fields[0]['required'] = '<span>*</span>';
 
         // Add page content
-        $this->template->title(lang('firesale:addresses:title'))
+        $this->template->title(lang('firesale:addresses:new_address'))
                        ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+                       ->set_breadcrumb(lang('firesale:addresses:new_address'))
                        ->set($this->data);
 
         // Fire events
@@ -131,8 +132,9 @@ class Front_address extends Public_Controller
             $this->data->fields[0]['required'] = '<span>*</span>';
 
             // Build page
-            $this->template->title(lang('firesale:addresses:title'))
+            $this->template->title(lang('firesale:addresses:edit_address'))
                            ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+                           ->set_breadcrumb(lang('firesale:addresses:edit_address'))
                            ->build('address_create', $this->data);
 
         } else {
