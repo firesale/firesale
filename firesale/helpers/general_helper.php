@@ -351,8 +351,6 @@ function statistics($action, $version, $old_version = null)
         $curl->simple_post($url, $data);
     } else {
         $request = http_build_query($data);
-        echo $url.'?'.$request;
-        exit();
         file_get_contents($url.'?'.$request);
     }
 
