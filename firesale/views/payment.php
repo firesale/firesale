@@ -1,10 +1,9 @@
-
       <div class="firesale width-full confirmation">
 
         <div class="firesale width-onethird">
           <h2>Shipping Address</h2>
           <ul>
-            {{ if ship_to.firstname }}<li>{{ ship_to.fistname }}</li> {{ endif }}
+            {{ if ship_to.firstname }}<li>{{ ship_to.firstname }}</li> {{ endif }}
             {{ if ship_to.address1 }}<li>{{ ship_to.address1 }}</li> {{ endif }}
             {{ if ship_to.address2 }}<li>{{ ship_to.address2 }}</li> {{ endif }}
             {{ if ship_to.city }}<li>{{ ship_to.city }}</li> {{ endif }}
@@ -17,7 +16,7 @@
         <div class="firesale width-onethird">
           <h2>Payment Address</h2>
           <ul>
-            {{ if bill_to.firstname }}<li>{{ bill_to.fistname }}</li> {{ endif }}
+            {{ if bill_to.firstname }}<li>{{ bill_to.firstname }}</li> {{ endif }}
             {{ if bill_to.address1 }}<li>{{ bill_to.address1 }}</li> {{ endif }}
             {{ if bill_to.address2 }}<li>{{ bill_to.address2 }}</li> {{ endif }}
             {{ if bill_to.city }}<li>{{ bill_to.city }}</li> {{ endif }}
