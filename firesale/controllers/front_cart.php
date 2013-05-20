@@ -391,6 +391,18 @@ class Front_cart extends Public_Controller
                     $shipping['price'] = '0.00';
                 }
 
+                // Same as billing address
+                if ($input['ship_to'] == "same_as_billing") {
+                    foreach ($input as $key => $field) {
+                        if (substr($key, 0, 5) != 'bill_') continue;
+
+                        $input[str_replace("bill_", "ship_", $key)] = $field;
+                    }
+
+                    // Don't save this address
+                    $input['ship_title'] = "";
+                }
+
                 // Modify posted data
                 $input['shipping']	   = ( isset($input['shipping']) ? $input['shipping'] : 0 );
                 $input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
