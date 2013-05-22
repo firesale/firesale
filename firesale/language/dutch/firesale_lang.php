@@ -1,6 +1,26 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
+    // General Titles
     $lang['firesale:title']                                 = 'FireSale';
+    $lang['firesale:store']                                 = 'Store'; # translate
     $lang['firesale:title:general']                         = 'Algemeen';
     $lang['firesale:title:details']                         = 'Uw Details';
     $lang['firesale:title:address']                         = 'UW Adres';
@@ -133,6 +153,9 @@
     $lang['firesale:vars:stock_low']      					= 'Er is niet voldoende voorraad van %s om dit product te kopen';
     $lang['firesale:vars:category']       					= 'Opgebouwd van Categorie';
 
+    // New Products
+    $lang['firesale:new:title']                             = 'New Products'; # translate
+
     // Instructions
     $lang['firesale:inst_rrp']                              = 'Aanbevolen Verkoop Prijs voor en naar BTW';
     $lang['firesale:inst_price']                            = 'Huidige Verkoop Prijs voor en naar BTW (als deze lager is dan de Aanbevolen Verkoop Prijs, and wordt deze getoon als een product die in uitverkoop is';
@@ -218,6 +241,8 @@
     $lang['firesale:label_pricehigh']                       = 'Prijs Hoog &gt; Laag';
     $lang['firesale:label_modelaz']                         = 'Model A - Z';
     $lang['firesale:label_modelza']                         = 'Model Z - A';
+    $lang['firesale:label_creatednew']                      = 'Newest - Oldest'; # translate
+    $lang['firesale:label_createdold']                      = 'Oldest - Newest'; # translate
 
     $lang['firesale:label_time_now']                        = 'minder dan een minuut geleden.';
     $lang['firesale:label_time_min']                        = 'ongeveer een minuut geleden.';
@@ -372,6 +397,7 @@
     $lang['firesale:routes:orders']                         = 'Gebruikers Bestelling';
     $lang['firesale:routes:addresses']                      = 'Gebruikers Adres';
     $lang['firesale:routes:currency']                       = 'Valuta Wisselaar';
+    $lang['firesale:routes:new_products']                   = 'New Products'; # translate
 
     // Currency
     $lang['firesale:shortcuts:install_currency']            = 'Installeer een valuta';
@@ -474,6 +500,8 @@
     $lang['firesale:settings_low_inst']              		= 'Het aantal producten dat er overzijn voordat het als lage voorraad wordt aanschouwd';
     $lang['firesale:settings_new']                   		= 'Nieuw Product Tijd';
     $lang['firesale:settings_new_inst']              		= 'De tijd in seconden dat een product als nieuw wordt aanschouwd';
+    $lang['firesale:settings_basic']                        = 'Basic Checkout View'; # translate
+    $lang['firesale:settings_basic_inst']                   = 'Minimal checkout layout, requires a minimal.html layout in your theme'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']                 = 'Kan de FireSale module niet installeren, FireSale heeft PyroCMS v2.1.5 of hoger nodig';

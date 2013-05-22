@@ -150,6 +150,11 @@
     $lang['firesale:vars:delete_error']   = 'Error deleting the variation'; # translate
     $lang['firesale:vars:none']           = 'No Variations Found'; # translate
     $lang['firesale:vars:create']         = 'Add a Variation'; # translate
+    $lang['firesale:vars:stock_low']      = 'Not enough stock of %s to buy this item'; # translate
+    $lang['firesale:vars:category']       = 'Build from Category'; # translate
+
+    // New Products
+    $lang['firesale:new:title'] = 'New Products'; # translate
 
     // Instructions
     $lang['firesale:inst_rrp']	 = 'Mažmeninė kaina prieš ir po PVM';
@@ -230,12 +235,14 @@
     $lang['firesale:label_ship_req']      = 'Siuntimas privalomas';
     $lang['firesale:label_address_title'] = 'Save Address as'; # Translate
 
-    $lang['firesale:label_nameaz']    = 'Vardas A - Z';
-    $lang['firesale:label_nameza']    = 'Vardas Z - A';
-    $lang['firesale:label_pricelow']  = 'Kaina mažesnė &gt; didesnė';
-    $lang['firesale:label_pricehigh'] = 'kaina didesnė &gt; mažesnė';
-    $lang['firesale:label_modelaz']   = 'Modelis A - Z';
-    $lang['firesale:label_modelza']   = 'Modelis Z - A';
+    $lang['firesale:label_nameaz']     = 'Vardas A - Z';
+    $lang['firesale:label_nameza']     = 'Vardas Z - A';
+    $lang['firesale:label_pricelow']   = 'Kaina mažesnė &gt; didesnė';
+    $lang['firesale:label_pricehigh']  = 'kaina didesnė &gt; mažesnė';
+    $lang['firesale:label_modelaz']    = 'Modelis A - Z';
+    $lang['firesale:label_modelza']    = 'Modelis Z - A';
+    $lang['firesale:label_creatednew'] = 'Newest - Oldest'; # translate
+    $lang['firesale:label_createdold'] = 'Oldest - Newest'; # translate
 
     $lang['firesale:label_time_now']   = 'mažiau nei prieš minutę.';
     $lang['firesale:label_time_min']   = 'prieš minutę.';
@@ -249,6 +256,8 @@
     $lang['firesale:label_route']       = 'Maršrutas';
     $lang['firesale:label_translation'] = 'Vertimas';
     $lang['firesale:label_table']       = 'Lentelė';
+    $lang['firesale:label_https']       = 'HTTPS'; # translate
+    $lang['firesale:label_use_https']   = 'Enable HTTPS'; # translate
 
     $lang['firesale:label_cur_code']        = 'Valiutos kodas';
     $lang['firesale:label_cur_code_inst']   = 'ISO-4217 Formatas';
@@ -388,6 +397,7 @@
     $lang['firesale:routes:orders']          = 'User Orders'; # translate
     $lang['firesale:routes:addresses']       = 'User Addresses'; # translate
     $lang['firesale:routes:currency']        = 'Currency Switcher'; # translate
+    $lang['firesale:routes:new_products']    = 'New Products'; # translate
 
     // Currency
     $lang['firesale:shortcuts:install_currency'] = 'Install new Currency'; # translate
@@ -487,8 +497,12 @@
     $lang['firesale:settings_login_inst']            = 'Ensure a user is logged in before allowing them to buy products'; # translate
     $lang['firesale:settings_dashboard']             = 'Override Default Dashboard'; # translate
     $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default'; # translate
-    $lang['firesale:settings_https']                 = 'Enable HTTPS for Cart'; # translate
-    $lang['firesale:settings_https_inst']            = 'All cart pages will be forced to use a secure connection'; # translate
+    $lang['firesale:settings_low']                   = 'Low Stock Level'; # translate
+    $lang['firesale:settings_low_inst']              = 'The number of products remaining before stock is considered low'; # translate
+    $lang['firesale:settings_new']                   = 'New Product Time'; # translate
+    $lang['firesale:settings_new_inst']              = 'The time in seconds that a product is considered new'; # translate
+    $lang['firesale:settings_basic']                 = 'Basic Checkout View'; # translate
+    $lang['firesale:settings_basic_inst']            = 'Minimal checkout layout, requires a minimal.html layout in your theme'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above'; #Translate

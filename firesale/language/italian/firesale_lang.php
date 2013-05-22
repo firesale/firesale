@@ -150,6 +150,11 @@
     $lang['firesale:vars:delete_error']   = 'Si è verificato un errore nel cancelalre la variazione';
     $lang['firesale:vars:none']           = 'Non ci sono varianti';
     $lang['firesale:vars:create']         = 'Aggiungi variante';
+    $lang['firesale:vars:stock_low']      = 'Not enough stock of %s to buy this item'; # translate
+    $lang['firesale:vars:category']       = 'Build from Category'; # translate
+
+    // New Products
+    $lang['firesale:new:title'] = 'New Products'; # translate
 
     // Instructions
     $lang['firesale:inst_rrp']   = 'Prezzo di vendita prima e dopo le tasse';
@@ -230,12 +235,14 @@
     $lang['firesale:label_ship_req']      = 'Richiede spedizione';
     $lang['firesale:label_address_title'] = 'Save Address as'; # Translate
 
-    $lang['firesale:label_nameaz']    = 'Nome A - Z';
-    $lang['firesale:label_nameza']    = 'Nome Z - A';
-    $lang['firesale:label_pricelow']  = 'Prezzo Basso &gt; Alto';
-    $lang['firesale:label_pricehigh'] = 'Prezzo Alto &gt; Basso';
-    $lang['firesale:label_modelaz']   = 'Modello A - Z';
-    $lang['firesale:label_modelza']   = 'Modello Z - A';
+    $lang['firesale:label_nameaz']     = 'Nome A - Z';
+    $lang['firesale:label_nameza']     = 'Nome Z - A';
+    $lang['firesale:label_pricelow']   = 'Prezzo Basso &gt; Alto';
+    $lang['firesale:label_pricehigh']  = 'Prezzo Alto &gt; Basso';
+    $lang['firesale:label_modelaz']    = 'Modello A - Z';
+    $lang['firesale:label_modelza']    = 'Modello Z - A';
+    $lang['firesale:label_creatednew'] = 'Newest - Oldest'; # translate
+    $lang['firesale:label_createdold'] = 'Oldest - Newest'; # translate
 
     $lang['firesale:label_time_now']   = 'meno di un minuto fa.';
     $lang['firesale:label_time_min']   = 'circa un minuto fa.';
@@ -249,6 +256,8 @@
     $lang['firesale:label_route']       = 'Reindirizzamento';
     $lang['firesale:label_translation'] = 'Traduzione';
     $lang['firesale:label_table']       = 'Tabella';
+    $lang['firesale:label_https']       = 'HTTPS'; # translate
+    $lang['firesale:label_use_https']   = 'Enable HTTPS'; # translate
 
     $lang['firesale:label_cur_code']        = 'Codice Valuta';
     $lang['firesale:label_cur_code_inst']   = 'Formato ISO-4217';
@@ -388,6 +397,7 @@
     $lang['firesale:routes:orders']          = 'User Orders'; # translate
     $lang['firesale:routes:addresses']       = 'User Addresses'; # translate
     $lang['firesale:routes:currency']        = 'Currency Switcher'; # translate
+    $lang['firesale:routes:new_products']    = 'New Products'; # translate
 
     // Currency
     $lang['firesale:shortcuts:install_currency'] = 'Installa nuova Valuta';
@@ -486,8 +496,12 @@
     $lang['firesale:settings_login_inst']            = 'Assicurarsi che l\'utente sia loggato prima di permettere l\'acquisto dei prodotti';
     $lang['firesale:settings_dashboard']             = 'Override Default Dashboard'; # translate
     $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default'; # translate
-    $lang['firesale:settings_https']                 = 'Enable HTTPS for Cart'; # translate
-    $lang['firesale:settings_https_inst']            = 'All cart pages will be forced to use a secure connection'; # translate
+    $lang['firesale:settings_low']                   = 'Low Stock Level'; # translate
+    $lang['firesale:settings_low_inst']              = 'The number of products remaining before stock is considered low'; # translate
+    $lang['firesale:settings_new']                   = 'New Product Time'; # translate
+    $lang['firesale:settings_new_inst']              = 'The time in seconds that a product is considered new'; # translate
+    $lang['firesale:settings_basic']                 = 'Basic Checkout View'; # translate
+    $lang['firesale:settings_basic_inst']            = 'Minimal checkout layout, requires a minimal.html layout in your theme'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Non è possibile installare il modulo FireSale, FireSale richiede PyroCMS v2.1.4 o superiore';

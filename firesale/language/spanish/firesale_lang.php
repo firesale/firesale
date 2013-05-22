@@ -150,6 +150,11 @@
     $lang['firesale:vars:delete_error']   = 'Error al eliminar la variación';
     $lang['firesale:vars:none']           = 'No se encontraron variación';
     $lang['firesale:vars:create']         = 'Agreag Variación';
+    $lang['firesale:vars:stock_low']      = 'Not enough stock of %s to buy this item'; # translate
+    $lang['firesale:vars:category']       = 'Build from Category'; # translate
+
+    // New Products
+    $lang['firesale:new:title'] = 'New Products'; # translate
 
     // Instructions
     $lang['firesale:inst_rrp']   = 'Precio de venta antes y después de impuestos';
@@ -230,12 +235,14 @@
     $lang['firesale:label_ship_req']      = 'Requiere Envio';
     $lang['firesale:label_address_title'] = 'Guardr Dirección como';
 
-    $lang['firesale:label_nameaz']    = 'Nombre A - Z';
-    $lang['firesale:label_nameza']    = 'Nombre Z - A';
-    $lang['firesale:label_pricelow']  = 'Pricio Bajo &gt; Alto';
-    $lang['firesale:label_pricehigh'] = 'Price Alto &gt; Bajo';
-    $lang['firesale:label_modelaz']   = 'Modelo A - Z';
-    $lang['firesale:label_modelza']   = 'Modelo Z - A';
+    $lang['firesale:label_nameaz']     = 'Nombre A - Z';
+    $lang['firesale:label_nameza']     = 'Nombre Z - A';
+    $lang['firesale:label_pricelow']   = 'Pricio Bajo &gt; Alto';
+    $lang['firesale:label_pricehigh']  = 'Price Alto &gt; Bajo';
+    $lang['firesale:label_modelaz']    = 'Modelo A - Z';
+    $lang['firesale:label_modelza']    = 'Modelo Z - A';
+    $lang['firesale:label_creatednew'] = 'Newest - Oldest'; # translate
+    $lang['firesale:label_createdold'] = 'Oldest - Newest'; # translate
 
     $lang['firesale:label_time_now']   = 'menos de un minuto.';
     $lang['firesale:label_time_min']   = 'cerca de un  minuto.';
@@ -249,6 +256,8 @@
     $lang['firesale:label_route']       = 'Ruta';
     $lang['firesale:label_translation'] = 'Traslado';
     $lang['firesale:label_table']       = 'Tabla';
+    $lang['firesale:label_https']       = 'HTTPS'; # translate
+    $lang['firesale:label_use_https']   = 'Enable HTTPS'; # translate
 
     $lang['firesale:label_cur_code']        = 'Código de moneda';
     $lang['firesale:label_cur_code_inst']   = 'ISO-4217 Format';
@@ -388,6 +397,7 @@
     $lang['firesale:routes:orders']          = 'Pedidos de usuarios';
     $lang['firesale:routes:addresses']       = 'Dirección de usuarios';
     $lang['firesale:routes:currency']        = 'Moneda';
+    $lang['firesale:routes:new_products']    = 'New Products'; # translate
 
     // Currency
     $lang['firesale:shortcuts:install_currency'] = 'Instalar nueva Moneda';
@@ -486,8 +496,12 @@
     $lang['firesale:settings_login_inst']            = 'Asegura que un usuario inicie sesión para comprar productos';
     $lang['firesale:settings_dashboard']             = 'Reemplazar panel predeterminado';
     $lang['firesale:settings_dashboard_inst']        = 'Muestra el Panel de FireSale en vez del predeterminado';
-    $lang['firesale:settings_https']                 = 'Enable HTTPS for Cart'; # translate
-    $lang['firesale:settings_https_inst']            = 'All cart pages will be forced to use a secure connection'; # translate
+    $lang['firesale:settings_low']                   = 'Low Stock Level'; # translate
+    $lang['firesale:settings_low_inst']              = 'The number of products remaining before stock is considered low'; # translate
+    $lang['firesale:settings_new']                   = 'New Product Time'; # translate
+    $lang['firesale:settings_new_inst']              = 'The time in seconds that a product is considered new'; # translate
+    $lang['firesale:settings_basic']                 = 'Basic Checkout View'; # translate
+    $lang['firesale:settings_basic_inst']            = 'Minimal checkout layout, requires a minimal.html layout in your theme'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'No se puede instalar el módulo firesale, FireSale requiere PyroCMS v2.1.5 or superior';
