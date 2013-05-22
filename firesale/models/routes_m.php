@@ -63,9 +63,27 @@ class Routes_m extends MY_Model
                 // Check table
                 if ( ! empty($route->table) AND $id != NULL ) {
 
+                    // Start query
+                    $this->db->from($route->table.' AS t');
+
+                    // Build query columns
+                    if ( $route->table == 'firesale_orders' ) {
+                        $this->db->select('t.id');
+                    } else if ( $route->table == 'firesale_products' ) {
+                        $this->db->select('t.id, t.slug, t.title, t.is_variation, v.parent')
+                                 ->join('firesale_product_variations_firesale_products AS vp', 'vp.firesale_products_id = t.id', 'left')
+                                 ->join('firesale_product_variations AS v', 'v.id = vp.row_id', 'left');
+                    } else {
+                        $this->db->select('t.id, t.slug, t.title');
+                    }
+
                     // Get type
-                    $query = $this->db->select('id' . ( $route->table != 'firesale_orders' ? ', slug, title' : '' ))->where('id', $id)->get($route->table);
-                    $type  = $query->row();
+                    $type = $this->db->where('t.id', $id)->get()->row();
+
+                    // Check type
+                    if (  $route->table == 'firesale_products' and $type->is_variation == '1' ) {
+                        $type = $this->db->where('id', $type->parent)->get($route->table)->row();
+                    }
 
                     // Perform replacements
                     $formatted = @str_replace(array('{{ id }}', '{{ slug }}', '{{ title }}'), array($type->id, $type->slug, $type->title), $formatted);
