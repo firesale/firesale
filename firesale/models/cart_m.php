@@ -249,7 +249,8 @@ class Cart_m extends MY_Model
             'ship'     => $product['ship_req']['key'],
             'weight'   => ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
             'image'	   => $this->products_m->get_single_image($product['id']),
-            'options'  => $options
+            'options'  => $options,
+            'parent'   => $product['modifiers'][0]['parent']
         );
 
         return $data;
