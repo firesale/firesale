@@ -662,6 +662,7 @@ class Module_Firesale extends Module
         $this->load->driver('Streams');
         $this->load->model('firesale/categories_m');
         $this->load->model('firesale/products_m');
+        $this->load->model('firesale/routes_m');
         $this->load->library('files/files');
 
         // Pre 1.1.0
