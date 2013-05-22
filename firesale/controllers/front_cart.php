@@ -118,72 +118,65 @@ class Front_cart extends Public_Controller
 
     public function insert($prd_code = NULL, $qty = 1)
     {
-
         // Variables
         $data = array();
         $tmp  = array();
 
-        // Add an item to the cart, either by post or from the URL
-        if ($prd_code === NULL) {
+        // Setup post data
+        if ($prd_code !== NULL) {
 
-            if (is_array($this->input->post('prd_code'))) {
+            // Set basics
+            $_POST['prd_code'][] = $prd_code;
+            $_POST['qty'][]      = $qty;
 
-                $qtys = $this->input->post('qty', TRUE);
-
-                // Check for options
-                if ( $this->input->post('options') ) {
-                    // Modify post
-                    $_POST = $this->modifier_m->cart_variation($this->input->post());
+            // Get product and check variations
+            $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+            if ( $product['modifiers'] ) {
+                foreach ( $product['modifiers'] as $variation ) {
+                    $_POST['options'][][$variation['id']] = $variation['var_id'];
                 }
+            }
+        }
 
-                foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code) {
+        // Add an item to the cart
+        if (is_array($this->input->post('prd_code'))) {
 
-                    // Get product
-                    $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
-                    $modifiers = current($product['modifiers']);
+            $qtys = $this->input->post('qty', TRUE);
 
-                    // Check status
-                    $status = $this->modifier_m->single_product_stock($product['id'], $_POST['options'][$key], (int)$qtys[$key]);
-                    if ( $status !== true ) {
-                        $this->session->set_flashdata('error', sprintf(lang('firesale:vars:stock_low'), $status));
-                        redirect($_SERVER['HTTP_REFERER']);
-                    }
-
-                    // Increase price based on options
-                    $product['price_rounded'] += $this->input->post('price') or 0;
-                    $product['price']         += $this->input->post('price') or 0;
-
-                    // Check product, stock and modifiers
-                    if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
-                        ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
-
-                        // Build cart data
-                        $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
-
-                        // Update stock levels
-                        if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
-                    }
-
-                }
-
+            // Check for options
+            if ( $this->input->post('options') ) {
+                // Modify post
+                $_POST = $this->modifier_m->cart_variation($this->input->post());
             }
 
-        } else {
+            foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code) {
 
-            // Get product
-            $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
-            $modifiers = current($product['modifiers']);
+                // Get product
+                $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+                $modifiers = current($product['modifiers']);
 
-            // Check product, stock and modifiers
-            if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
-                ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
+                // Check status
+                $status = $this->modifier_m->single_product_stock($product['id'], $_POST['options'][$key], (int)$qtys[$key]);
+                if ( $status !== true ) {
+                    $this->session->set_flashdata('error', sprintf(lang('firesale:vars:stock_low'), $status));
+                    redirect($_SERVER['HTTP_REFERER']);
+                }
 
-                // Build cart data
-                $data[] = $this->cart_m->build_data($product, $qty, null);
-                $this->session->set_userdata('added', $product['id']);
+                // Increase price based on options
+                $product['price_rounded'] += $this->input->post('price') or 0;
+                $product['price']         += $this->input->post('price') or 0;
 
-                // Update stock levels
-                if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
+                // Check product, stock and modifiers
+                if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
+                    ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
+                    
+                    // Build cart data
+                    $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
+
+                    // Update stock levels
+                    if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
+                }
+
             }
 
         }
@@ -206,7 +199,7 @@ class Front_cart extends Public_Controller
         // Return for ajax or redirect
         if ( $this->input->is_ajax_request() ) {
             exit($this->cart_m->ajax_response('ok'));
-        } elseif ( $this->input->post('btnAction') == 'buy' ) {
+        } else if ( $this->input->post('btnAction') == 'buy' ) {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
         } else {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
