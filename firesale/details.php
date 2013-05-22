@@ -868,6 +868,9 @@ class Module_Firesale extends Module
 
             // Add new "new" route
             $this->routes_m->create(array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}', 'route' => 'new(/[0-9]+)?', 'translation' => 'firesale/front_new/index/$1', 'https' => '0'));
+            
+            // Add basic checkout setting
+            $this->settings('add', array('firesale_basic_checkout'));
         }
 
         // Tracking
@@ -911,6 +914,7 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'firesale_dashboard', 'title' => lang('firesale:settings_dashboard'), 'description' => lang('firesale:settings_dashboard_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_low', 'title' => lang('firesale:settings_low'), 'description' => lang('firesale:settings_low_inst'), 'default' => '10', 'value' => '10', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_new', 'title' => lang('firesale:settings_new'), 'description' => lang('firesale:settings_new_inst'), 'default' => '86400', 'value' => '86400', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_basic_checkout', 'title' => lang('firesale:settings_basic'), 'description' => lang('firesale:settings_basic_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
         // Get existing settings
         foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }

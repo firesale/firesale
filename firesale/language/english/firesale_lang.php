@@ -500,6 +500,8 @@
     $lang['firesale:settings_low_inst']              = 'The number of products remaining before stock is considered low';
     $lang['firesale:settings_new']                   = 'New Product Time';
     $lang['firesale:settings_new_inst']              = 'The time in seconds that a product is considered new';
+    $lang['firesale:settings_basic']                 = 'Basic Checkout View';
+    $lang['firesale:settings_basic_inst']            = 'Minimal checkout layout, requires a minimal.html layout in your theme';
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';
