@@ -705,7 +705,7 @@ class Front_cart extends Public_Controller
                 if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
                     $this->template->set_layout('minimal.html');
                 } else {
-                    $this->template->set_layout('default.html')
+                    $this->template->set_layout('default.html');
                 }
 
                 // Build page
