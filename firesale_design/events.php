@@ -110,7 +110,7 @@ class Events_Firesale_design
             unset($controller->tabs['_images']);
 
             // Add metadata to tabs
-            $controller->tabs['design'] = '{{ firesale_design:form type="'.$page.'" id="'.$id.'" }}';
+            $controller->tabs['_design'] = '{{ firesale_design:form type="'.$page.'" id="'.$id.'" }}';
 
             // Add images back in
             $controller->tabs['_images'] = array();
