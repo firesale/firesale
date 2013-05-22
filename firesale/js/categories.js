@@ -12,7 +12,7 @@ $(function(){
 	
 	if ( $('input[name=id]').val() > 0 ) {
 		$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Save</span></button>')
-			.append(( $('input[name=id]').val() != 1 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
+			.append(( $('input[name=id]').val() != 1 ? ' <button type="submit" name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 	}
 
 	$(window).bind('hashchange', function() {
@@ -35,7 +35,8 @@ $(function(){
 
 	$('#tabs').live('submit', function(e) {
 		e.preventDefault();
-		$.post($(this).attr('action'), $(this).serialize()+'&btnAction=save', function(response) {
+		var action = $(this).find('button[clicked=true]').val();
+		$.post($(this).attr('action'), $(this).serialize()+'&btnAction='+( typeof action == 'undefined' ? 'save' : action ), function(response) {
 			build_alert(response);
 			if( $(response).find('#category-sort').size() > 0 ) {
 				$('#category-sort').html($(response).find('#category-sort').html());
@@ -105,7 +106,7 @@ function bind_tree($tabi) {
 			$('button.delete').remove();
 			$('.one_half.last .title h4').text('Edit "' + data.title + '"');
 			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Save</span></button>')
-			.append(( data.id != 1 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
+			.append(( data.id != 1 ? ' <button type="submit" name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 
 			$('#tabs').tabs('add', '#images', 'Images');
 			$("#images").load(SITE_URL+'admin/firesale/categories/ajax_cat_images/' + $details_id.val(), function() {
@@ -121,6 +122,11 @@ function bind_tree($tabi) {
 						});
 					}
 				});
+			});
+
+			$("#tabs button[type=submit]").unbind('click').bind('click', function() {
+			    $("button", $(this).parents("form")).removeAttr("clicked");
+			    $(this).attr("clicked", "true");
 			});
 
 		});
