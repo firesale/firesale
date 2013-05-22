@@ -269,6 +269,8 @@ function get_order($id = null)
     $_ORDER[4] = array('title' => lang('firesale:label_pricehigh'), 'by' => 'price', 'dir' => 'desc');
     $_ORDER[5] = array('title' => lang('firesale:label_modelaz'), 'by' => 'code', 'dir' => 'asc');
     $_ORDER[6] = array('title' => lang('firesale:label_modelza'), 'by' => 'code', 'dir' => 'desc');
+    $_ORDER[7] = array('title' => lang('firesale:label_creatednew'), 'by' => 'created', 'dir' => 'asc');
+    $_ORDER[8] = array('title' => lang('firesale:label_createdold'), 'by' => 'created', 'dir' => 'desc');
 
     // Return
     if ($id != null) {

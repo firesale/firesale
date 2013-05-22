@@ -235,12 +235,14 @@
     $lang['firesale:label_ship_req']      = 'Requires Shipping';
     $lang['firesale:label_address_title'] = 'Save Address as';
 
-    $lang['firesale:label_nameaz']    = 'Name A - Z';
-    $lang['firesale:label_nameza']    = 'Name Z - A';
-    $lang['firesale:label_pricelow']  = 'Price Low &gt; High';
-    $lang['firesale:label_pricehigh'] = 'Price High &gt; Low';
-    $lang['firesale:label_modelaz']   = 'Model A - Z';
-    $lang['firesale:label_modelza']   = 'Model Z - A';
+    $lang['firesale:label_nameaz']     = 'Name A - Z';
+    $lang['firesale:label_nameza']     = 'Name Z - A';
+    $lang['firesale:label_pricelow']   = 'Price Low &gt; High';
+    $lang['firesale:label_pricehigh']  = 'Price High &gt; Low';
+    $lang['firesale:label_modelaz']    = 'Model A - Z';
+    $lang['firesale:label_modelza']    = 'Model Z - A';
+    $lang['firesale:label_creatednew'] = 'Newest - Oldest';
+    $lang['firesale:label_createdold'] = 'Oldest - Newest';
 
     $lang['firesale:label_time_now']   = 'less than a minute ago.';
     $lang['firesale:label_time_min']   = 'about a minute ago.';
