@@ -263,10 +263,15 @@ class Products_m extends MY_Model
                 $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
                 $query->where('p.price <', 'p.rrp');
+            } elseif ($value == 'asc' or $value == 'desc' ) {
+                $query->order_by('p.'.$key, $value);
             } elseif ($key == 'price') {
                 list($from, $to) = explode('-', $value);
                 $query->where('p.price >=', $from)
                       ->where('p.price <=', $to);
+            } elseif ($key == 'new' ) {
+                $new = ( 0 + $this->settings->get('firesale_new') );
+                $query->where('p.created >=', ( time() - $new ));
             } elseif( strlen($value) > 0 AND $value != '-1' ) {
                 $query->where($key, $value);
             }

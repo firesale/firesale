@@ -153,6 +153,9 @@
     $lang['firesale:vars:stock_low']      = 'Not enough stock of %s to buy this item';
     $lang['firesale:vars:category']       = 'Build from Category';
 
+    // New Products
+    $lang['firesale:new:title'] = 'New Products';
+
     // Instructions
     $lang['firesale:inst_rrp']   = 'Retail price before and after tax';
     $lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)';
@@ -392,6 +395,7 @@
     $lang['firesale:routes:orders']          = 'User Orders';
     $lang['firesale:routes:addresses']       = 'User Addresses';
     $lang['firesale:routes:currency']        = 'Currency Switcher';
+    $lang['firesale:routes:new_products']    = 'New Products';
 
     // Currency
     $lang['firesale:shortcuts:install_currency'] = 'Install new Currency';
