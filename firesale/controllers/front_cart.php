@@ -392,6 +392,7 @@ class Front_cart extends Public_Controller
                         $input[str_replace("bill_", "ship_", $key)] = $field;
                     }
 
+                    $input['ship_to'] = $input['bill_to'];
                     // Don't save this address
                     $input['ship_title'] = "";
                 }
