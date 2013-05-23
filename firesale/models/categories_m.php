@@ -465,4 +465,29 @@ class Categories_m extends MY_Model
 
     }
 
+    /**
+     * Builds the breadcrumbs for the given category page
+     * 
+     * @param  array  $category The current category
+     * @param  object $template Template object reference
+     * @return void
+     */
+    public function build_breadcrumbs($category, &$template)
+    {
+        if ( $category == null ) {
+            $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
+            $template->set_breadcrumb(lang('firesale:cats_all_products'));
+        } else {
+            $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
+            foreach ($cats as $key => $cat) {
+                $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
+                if ($category['id'] == $cat['id']) {
+                    $template->set_breadcrumb($cat['title']);
+                } else {
+                    $template->set_breadcrumb($cat['title'], $url);
+                }
+            }
+        }
+    }
+
 }

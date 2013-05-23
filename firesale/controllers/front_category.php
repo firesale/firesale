@@ -110,48 +110,37 @@ class Front_category extends Public_Controller
 
             // Get from cache
             if ( ! $ids = $this->cache->get($cache_key) ) {
-                // Otherwise run query
                 $ids = $this->db->query($query)->result_array();
             }
 
             // Loop and get products
             foreach ($ids AS $id) {
-                $product    			= $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+                $product                = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
                 $product['description'] = strip_tags($product['description']);
-                $products[] 			= $product;
+                $products[]             = $product;
             }
+
+            // Assign pagination
+            if ( ! empty($products) ) {
+                
+                // Variables
+                $cat   = ( isset($category['id']) ? $category['id'] : NULL );
+                $url   = str_replace('/{{ slug }}', '', $this->pyrocache->model('routes_m', 'build_url', array('category', $cat), $this->firesale->cache_time));
+                $total = $this->pyrocache->model('categories_m', 'total_products', array($cat), $this->firesale->cache_time);
+
+                // Build pagination
+                $this->data->pagination = create_pagination($url, $total, $this->perpage, ( 2 + substr_count($url, '/') ));
+                $this->data->pagination['shown'] = count($products);
+            }
+
+            // Breadcrumbs
+            $this->categories_m->build_breadcrumbs($category, $this->template);
 
             // Assign data
             $this->data->category = $category;
             $this->data->products = reassign_helper_vars($products);
             $this->data->ordering = get_order();
-
-            // Assign pagination
-            if ( !empty($products) ) {
-                $cat = ( isset($category['id']) ? $category['id'] : NULL );
-                $url = str_replace('/{{ slug }}', '', $this->pyrocache->model('routes_m', 'build_url', array('category', $cat), $this->firesale->cache_time));
-                $this->data->pagination = create_pagination($url, $this->categories_m->total_products($cat), $this->perpage, ( 2 + substr_count($url, '/') ));
-                $this->data->pagination['shown'] = count($products);
-            }
-
-            // Breadcrumbs
-            if ( $category == null ) {
-                $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
-                $this->template->set_breadcrumb(lang('firesale:cats_all_products'));
-            } else {
-                $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
-                foreach ($cats as $key => $cat) {
-                    $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
-                    if ($category['id'] == $cat['id']) {
-                        $this->template->set_breadcrumb($cat['title']);
-                    } else {
-                        $this->template->set_breadcrumb($cat['title'], $url);
-                    }
-                }
-            }
-
-            // Assign parent data
-            $this->data->parent = ( isset($category['parent']['id']) && $category['parent']['id'] > 0 ? $category['parent']['id'] : $category['id'] );
+            $this->data->parent   = ( isset($category['parent']['id']) && $category['parent']['id'] > 0 ? $category['parent']['id'] : $category['id'] );
 
             // Set category in session
             $this->session->set_userdata('category', $this->data->category['id']);
