@@ -333,6 +333,7 @@ class Plugin_Firesale extends Plugin
                 $product['name']     = $item['name'];
                 $product['price']    = $item['price'];
                 $product['ship']     = $item['ship'];
+                $product['subtotal'] = $this->currency_m->format_string($item['subtotal'], $currency, false);
 
                 $data->products[] = $product;
 
