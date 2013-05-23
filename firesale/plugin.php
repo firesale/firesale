@@ -202,7 +202,7 @@ class Plugin_Firesale extends Plugin
 
                 switch (trim(substr($key, 0, 9))) {
 
-                    case 'parse_params':
+                    case 'parse_par':
                     break;
 
                     case 'attribute':
