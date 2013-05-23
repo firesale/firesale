@@ -189,7 +189,18 @@ class Plugin_Firesale extends Plugin
             // Add to query
             foreach ($attributes AS $key => $val) {
 
-                switch ($key) {
+                switch (trim(substr($key, 0, 9))) {
+
+                    case 'parse_params':
+                    break;
+
+                    case 'attribute':
+                        $r = array_map('strrev', explode('=', strrev($val), 2));
+                        $query->join('firesale_attributes_assignments AS aa', 'aa.row_id = p.id', 'inner')
+                              ->join('firesale_attributes AS a', 'a.id = aa.attribute_id', 'inner')
+                              ->where('aa.value', trim($r[0]))
+                              ->where('a.title', trim($r[1]));
+                    break;
 
                     case 'limit':
                         $query->limit($val);
@@ -206,9 +217,6 @@ class Plugin_Firesale extends Plugin
 
                     case 'where':
                         $query->where($val, null, false);
-                    break;
-
-                    case 'parse_params':
                     break;
 
                     default:
