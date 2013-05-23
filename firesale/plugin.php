@@ -117,6 +117,22 @@ class Plugin_Firesale extends Plugin
 
                     case 'parse_params':
                     break;
+                    
+                    // Decide the order if required, default to database order
+                    case 'order-by':
+                        if(isset($attributes['order-dir']))
+                        {
+                            $dir = $attributes['order-dir'];
+                        }
+                        else
+                        {
+                            $dir = 'asc';
+                        }
+                        $this->db->order_by($val, $dir);
+                        break;
+                    
+                    case 'order-dir':
+                        break;
 
                     default:
                         $query->where($key, $val);
