@@ -114,7 +114,6 @@ class Plugin_Firesale extends Plugin
                     case 'order':
                         list($by, $dir) = explode(' ', $val);
                         $query->order_by($by, $dir);
-                        $custom_order = true;
                     break;
 
                     case 'empty':
@@ -139,7 +138,6 @@ class Plugin_Firesale extends Plugin
                             $dir = 'asc';
                         }
                         $query->order_by($val, $dir);
-                        $custom_order = true;
                         break;
                     
                     case 'order-dir':
