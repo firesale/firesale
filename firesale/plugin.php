@@ -125,6 +125,8 @@ class Plugin_Firesale extends Plugin
                     break;
 
                     case 'parse_params':
+                    case 'order-by':
+                    case 'order-dir':
                     break;
 
                     default:
