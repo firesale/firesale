@@ -85,10 +85,10 @@ class Plugin_Firesale extends Plugin
         $attributes = $this->attributes();
         
         // if no ordering specified default to tree order
-        if(!isset($attributes['order']) and !isset($attributes['order-by']))
-        {
-            $attributes['order-by'] = 'ordering_count';
-            $attributes['order-dir'] = 'asc';
+        if ( ! isset($attributes['order']) and ! isset($attributes['order-by']) ) {
+            $attributes['order'] = 'ordering_count asc';
+        } else if ( isset($attributes['order-by']) ) {
+            $attributes['order'] = $attributes['order-by'].' '.( isset($attributes['order-dir']) ? $attributes['order-dir'] : 'asc' );
         }
         
         // Are we cached?
@@ -126,22 +126,6 @@ class Plugin_Firesale extends Plugin
 
                     case 'parse_params':
                     break;
-                    
-                    // Decide the order if required, default to tree ordering
-                    case 'order-by':
-                        if(isset($attributes['order-dir']))
-                        {
-                            $dir = $attributes['order-dir'];
-                        }
-                        else
-                        {
-                            $dir = 'asc';
-                        }
-                        $query->order_by($val, $dir);
-                        break;
-                    
-                    case 'order-dir':
-                        break;
 
                     default:
                         $query->where($key, $val);
