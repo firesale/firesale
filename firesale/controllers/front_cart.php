@@ -126,14 +126,28 @@ class Front_cart extends Public_Controller
         if ($prd_code !== NULL) {
 
             // Set basics
-            $_POST['prd_code'][] = $prd_code;
-            $_POST['qty'][]      = $qty;
+            $_POST['prd_code'][0] = $prd_code;
+            $_POST['qty'][0]      = $qty;
 
-            // Get product and check variations
+            // Get product
             $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+
+            // Check for variations
+            if ( $product['modifiers'] ) {
+                foreach ( $product['modifiers'] as $modifier ) {
+                    if ( $modifier['type']['key'] == '1' ) {
+                        $id  = $modifier['variations'][1]['product']['id'];
+                        $_POST['prd_code'][0] = $id;
+                        $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
+                        break;
+                    }
+                }
+            }
+
+            // Check and add variations
             if ( $product['modifiers'] ) {
                 foreach ( $product['modifiers'] as $variation ) {
-                    $_POST['options'][][$variation['id']] = $variation['var_id'];
+                    $_POST['options'][0][$variation['id']] = $variation['var_id'];
                 }
             }
         }
