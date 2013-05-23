@@ -2,13 +2,13 @@
       <div class="firesale width-onefourth sidebar left">
         <h2>Categories</h2>
         <ul class="icon-arrow categories">
-{{ firesale:categories limit="0" }}
+{{ firesale:categories parent="0" }}
 {{ if parent == id }}
           <li>
             <a href="{{ firesale:url route="category" id=id }}"><strong>{{ title }}</strong></a>
             <ul>
-{{ firesale:sub_categories category=parent limit="0" }}
-              <li><a href="{{ firesale:url route="category" id=id }}">{{ if category.id == id }}<strong>{{ title }}</strong>{{ else { }}{{ title }}{{ endif }}</a></li>{ /firesale:sub_categories }}
+{{ firesale:sub_categories parent=id }}
+              <li><a href="{{ firesale:url route="category" id=id }}">{{ if category.id == id }}<strong>{{ title }}</strong>{{ else }}{{ title }}{{ endif }}</a></li>{{ /firesale:sub_categories }}
             </ul>
           </li>
 {{ else }}
