@@ -41,6 +41,7 @@ $(function(){
 			if( $(response).find('#category-sort').size() > 0 ) {
 				$('#category-sort').html($(response).find('#category-sort').html());
 				$('#cat_'+$('#id').val()+' > div > a').addClass('selected');
+				$('ul.sortable').find('li').die();
 				bind_tree(tabi);
 			}
 		});
