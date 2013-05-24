@@ -1,13 +1,23 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Categories model
- *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Models
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Categories_m extends MY_Model
 {
 
@@ -453,6 +463,31 @@ class Categories_m extends MY_Model
 
         }
 
+    }
+
+    /**
+     * Builds the breadcrumbs for the given category page
+     * 
+     * @param  array  $category The current category
+     * @param  object $template Template object reference
+     * @return void
+     */
+    public function build_breadcrumbs($category, &$template)
+    {
+        if ( $category == null ) {
+            $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
+            $template->set_breadcrumb(lang('firesale:cats_all_products'));
+        } else {
+            $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
+            foreach ($cats as $key => $cat) {
+                $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
+                if ($category['id'] == $cat['id']) {
+                    $template->set_breadcrumb($cat['title']);
+                } else {
+                    $template->set_breadcrumb($cat['title'], $url);
+                }
+            }
+        }
     }
 
 }

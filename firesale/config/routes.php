@@ -1,6 +1,7 @@
 <?php  if (!defined('BASEPATH')) exit('No direct script access allowed');
 
     $route['firesale/admin/products(/[0-9]+)?'] = 'admin_products/index$1';
+    $route['firesale/admin/categories(/:num)?'] = 'admin_categories/index$1';
     $route['firesale/admin/categories(/:any)?'] = 'admin_categories$1';
     $route['firesale/admin/taxes(/:num)?']      = 'admin_taxes/index$1';
     $route['firesale/admin/taxes(/:any)?']      = 'admin_taxes$1';

@@ -1,13 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Address controller
- *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Controllers
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Front_address extends Public_Controller
 {
 
@@ -59,7 +69,7 @@ class Front_address extends Public_Controller
 
         // Add page content
         $this->template->title(lang('firesale:addresses:title'))
-                       ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+                       ->set_breadcrumb(lang('firesale:addresses:title'))
                        ->set($this->data);
 
         // Fire events
@@ -86,8 +96,9 @@ class Front_address extends Public_Controller
         $this->data->fields[0]['required'] = '<span>*</span>';
 
         // Add page content
-        $this->template->title(lang('firesale:addresses:title'))
+        $this->template->title(lang('firesale:addresses:new_address'))
                        ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+                       ->set_breadcrumb(lang('firesale:addresses:new_address'))
                        ->set($this->data);
 
         // Fire events
@@ -121,8 +132,9 @@ class Front_address extends Public_Controller
             $this->data->fields[0]['required'] = '<span>*</span>';
 
             // Build page
-            $this->template->title(lang('firesale:addresses:title'))
+            $this->template->title(lang('firesale:addresses:edit_address'))
                            ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
+                           ->set_breadcrumb(lang('firesale:addresses:edit_address'))
                            ->build('address_create', $this->data);
 
         } else {

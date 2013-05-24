@@ -1,6 +1,24 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class Admin extends Admin_Controller
+/**
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/attributes
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
+class admin extends Admin_Controller
 {
     public function __construct()
     {
@@ -18,7 +36,7 @@ class Admin extends Admin_Controller
         $id    = $this->attributes_m->create($title);
 
         // Check
-        if( $id > 0 ) { 
+        if( $id > 0 ) {
             echo 'ok|' . $id . '|' . $title;
             exit();
         }

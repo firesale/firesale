@@ -10,20 +10,60 @@ $(function(){
 		var s = $(this).val().split('/'); $(this).val(s[s.length-1]);
 	}).change();
 	
+	if ( $('input[name=id]').val() > 0 ) {
+		$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Save</span></button>')
+			.append(( $('input[name=id]').val() != 1 ? ' <button type="submit" name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
+	}
+
+	$(window).bind('hashchange', function() {
+		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
+			$item_list.find('li a[href=#'+window.location.hash.replace('#', '')+']').click();
+		}
+	}).trigger('hashchange');
+	
+	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
+
+	function build_alert(response) {
+		if( $(response).find('.alert').size() > 0 ) {
+			$(response).find('.alert').each(function() {
+				var c = $(this).attr('class');
+				$('#content-body > .alert').remove();
+				$('#content-body').prepend('<div class="'+c+'">'+$(this).html()+'</div>');
+			});
+		}
+	}
+
+	$('#tabs').live('submit', function(e) {
+		e.preventDefault();
+		var action = $(this).find('button[clicked=true]').val();
+		$.post($(this).attr('action'), $(this).serialize()+'&btnAction='+( typeof action == 'undefined' ? 'save' : action ), function(response) {
+			build_alert(response);
+			if( $(response).find('#category-sort').size() > 0 ) {
+				$('#category-sort').html($(response).find('#category-sort').html());
+				$('#cat_'+$('#id').val()+' > div > a').addClass('selected');
+				$('ul.sortable').find('li').die();
+				bind_tree(tabi);
+			}
+		});
+	});
+
+	bind_tree(tabi);
+	
+});
+
+function bind_tree($tabi) {
+
 	$item_list	= $('ul.sortable');
 	$url		= 'admin/firesale/categories/order';
 	$cookie		= 'open_cats';
-	
+
 	$details 	= $('div#category-sort');
 	$details.append('<input type="hidden" name="cat-id" id="cat-id" value="" />');
 	$details_id	= $('div#category-sort #cat-id');
 
-	if ( $('input[name=id]').val() > 0 ) {
-		$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
-			.append(( $('input[name=id]').val() > 2 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
-	}
+	$item_list.find('li a').unbind('click').click(function(e) {
 
-	$item_list.find('li a').live('click', function(e) {
+		e.preventDefault();
 
 		$a          = $(this);
 		cat_id		= $a.attr('rel');
@@ -32,7 +72,7 @@ $(function(){
 		$a.addClass('selected');
 		$details_id.val(cat_id);
 
-		tabs.tabs('remove', tabi, 0);
+		$('#tabs').tabs('remove', $tabi, 0);
 		
 		$.getJSON(SITE_URL+'admin/firesale/categories/ajax_cat_details/' + $details_id.val(), function(data) {
 
@@ -61,12 +101,15 @@ $(function(){
 				$('input[name=slug]').attr('id', 'slug_old').addClass('disabled');
 			}
 
+			// Update form action
+			$('#tabs').attr('action', SITE_URL+'admin/firesale/categories/'+data.id);
+
 			$('button.delete').remove();
 			$('.one_half.last .title h4').text('Edit "' + data.title + '"');
-			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Edit Category</span></button>')
-			.append(( data.id > 2 ? ' <button name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
+			$('div.buttons').html('').append('<button type="submit" class="btn blue" value="save" name="btnAction"><span>Save</span></button>')
+			.append(( data.id != 1 ? ' <button type="submit" name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 
-			tabs.tabs('add', '#images', 'Images');
+			$('#tabs').tabs('add', '#images', 'Images');
 			$("#images").load(SITE_URL+'admin/firesale/categories/ajax_cat_images/' + $details_id.val(), function() {
 				bind_upload('admin/firesale/categories/upload/'+data.id);
 				$('#dropbox').sortable({
@@ -80,6 +123,11 @@ $(function(){
 						});
 					}
 				});
+			});
+
+			$("#tabs button[type=submit]").unbind('click').bind('click', function() {
+			    $("button", $(this).parents("form")).removeAttr("clicked");
+			    $(this).attr("clicked", "true");
 			});
 
 		});
@@ -96,12 +144,4 @@ $(function(){
 		$details_id	= $('div#category-sort #cat-id');
 	});
 
-	$(window).bind('hashchange', function() {
-		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
-			$item_list.find('li a[href=#'+window.location.hash.replace('#', '')+']').click();
-		}
-	}).trigger('hashchange');
-	
-	pyro.generate_slug($('input[name=title]'), $('input[name=slug]'), '-');
-	
-});
+}

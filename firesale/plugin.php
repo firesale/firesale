@@ -1,5 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Plugin_Firesale extends Plugin
 {
 
@@ -65,6 +83,15 @@ class Plugin_Firesale extends Plugin
 
         // Variables
         $attributes = $this->attributes();
+        
+        // if no ordering specified default to tree order
+        if ( ! isset($attributes['order']) and ! isset($attributes['order-by']) ) {
+            $attributes['order'] = 'ordering_count asc';
+        } else if ( isset($attributes['order-by']) ) {
+            $attributes['order'] = $attributes['order-by'].' '.( isset($attributes['order-dir']) ? $attributes['order-dir'] : 'asc' );
+        }
+        
+        // Are we cached?
         $cache_key  = md5(BASE_URL.implode('|', $attributes));
 
         // Get from cache
@@ -98,6 +125,8 @@ class Plugin_Firesale extends Plugin
                     break;
 
                     case 'parse_params':
+                    case 'order-by':
+                    case 'order-dir':
                     break;
 
                     default:
@@ -171,7 +200,18 @@ class Plugin_Firesale extends Plugin
             // Add to query
             foreach ($attributes AS $key => $val) {
 
-                switch ($key) {
+                switch (trim(substr($key, 0, 9))) {
+
+                    case 'parse_par':
+                    break;
+
+                    case 'attribute':
+                        $r = array_map('strrev', explode('=', strrev($val), 2));
+                        $query->join('firesale_attributes_assignments AS aa', 'aa.row_id = p.id', 'inner')
+                              ->join('firesale_attributes AS a', 'a.id = aa.attribute_id', 'inner')
+                              ->where('aa.value', trim($r[0]))
+                              ->where('a.title', trim($r[1]));
+                    break;
 
                     case 'limit':
                         $query->limit($val);
@@ -188,9 +228,6 @@ class Plugin_Firesale extends Plugin
 
                     case 'where':
                         $query->where($val, null, false);
-                    break;
-
-                    case 'parse_params':
                     break;
 
                     default:
@@ -296,6 +333,8 @@ class Plugin_Firesale extends Plugin
                 $product['name']     = $item['name'];
                 $product['price']    = $item['price'];
                 $product['ship']     = $item['ship'];
+                $product['subtotal'] = $this->currency_m->format_string($item['subtotal'], $currency, false);
+                $product['rowid']    = $item['rowid'];
 
                 $data->products[] = $product;
 
@@ -307,7 +346,7 @@ class Plugin_Firesale extends Plugin
         $data->tax   = $this->currency_m->format_string($this->fs_cart->tax(), $currency, false);
         $data->sub   = $this->currency_m->format_string($this->fs_cart->subtotal(), $currency, false);
         $data->total = $this->currency_m->format_string($this->fs_cart->total(), $currency, false);
-        $data->count = $this->fs_cart->total_items();
+        $data->count = $this->fs_cart->total_items() ? $this->fs_cart->total_items() : '&#48;';
 
         // Fix helper variables
         $data->products = reassign_helper_vars($data->products);

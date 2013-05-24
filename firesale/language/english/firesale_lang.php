@@ -1,5 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
     // General Titles
     $lang['firesale:title']         = 'FireSale';
     $lang['firesale:store']         = 'Store';
@@ -135,6 +153,9 @@
     $lang['firesale:vars:stock_low']      = 'Not enough stock of %s to buy this item';
     $lang['firesale:vars:category']       = 'Build from Category';
 
+    // New Products
+    $lang['firesale:new:title'] = 'New Products';
+
     // Instructions
     $lang['firesale:inst_rrp']   = 'Retail price before and after tax';
     $lang['firesale:inst_price'] = 'Current selling price before and after tax (if lower than RRP, seen as sale price)';
@@ -214,12 +235,14 @@
     $lang['firesale:label_ship_req']      = 'Requires Shipping';
     $lang['firesale:label_address_title'] = 'Save Address as';
 
-    $lang['firesale:label_nameaz']    = 'Name A - Z';
-    $lang['firesale:label_nameza']    = 'Name Z - A';
-    $lang['firesale:label_pricelow']  = 'Price Low &gt; High';
-    $lang['firesale:label_pricehigh'] = 'Price High &gt; Low';
-    $lang['firesale:label_modelaz']   = 'Model A - Z';
-    $lang['firesale:label_modelza']   = 'Model Z - A';
+    $lang['firesale:label_nameaz']     = 'Name A - Z';
+    $lang['firesale:label_nameza']     = 'Name Z - A';
+    $lang['firesale:label_pricelow']   = 'Price Low &gt; High';
+    $lang['firesale:label_pricehigh']  = 'Price High &gt; Low';
+    $lang['firesale:label_modelaz']    = 'Model A - Z';
+    $lang['firesale:label_modelza']    = 'Model Z - A';
+    $lang['firesale:label_creatednew'] = 'Newest - Oldest';
+    $lang['firesale:label_createdold'] = 'Oldest - Newest';
 
     $lang['firesale:label_time_now']   = 'less than a minute ago.';
     $lang['firesale:label_time_min']   = 'about a minute ago.';
@@ -342,6 +365,12 @@
     $lang['firesale:checkout:select_shipping_method'] = 'Please select your preferred shipping method below before continuing';
     $lang['firesale:checkout:select_payment_method']  = 'Please select your preferred payment method below before continuing';
     $lang['firesale:checkout:submit_and_pay']         = 'Submit &amp; Pay';
+    $lang['firesale:checkout:shipping_min_price']     = 'The total value of your cart items does not meet the minimum for the selected shipping method';
+    $lang['firesale:checkout:shipping_max_price']     = 'The total value of your cart items exceeds the maximum for the selected shipping method';
+    $lang['firesale:checkout:shipping_min_weight']    = 'The total weight of your cart items does not meet the minimum for the selected shipping method';
+    $lang['firesale:checkout:shipping_max_weight']    = 'The total weight of your cart items exceeds the maximum for the selected shipping method';
+    $lang['firesale:checkout:shipping_invalid']       = 'The shipping method you selected is not valid';
+    $lang['firesale:checkout:gateway_invalid']        = 'The payment gateway you selected is not valid';
 
     // Routes
     $lang['firesale:routes:title']          = 'Routes';
@@ -368,6 +397,7 @@
     $lang['firesale:routes:orders']          = 'User Orders';
     $lang['firesale:routes:addresses']       = 'User Addresses';
     $lang['firesale:routes:currency']        = 'Currency Switcher';
+    $lang['firesale:routes:new_products']    = 'New Products';
 
     // Currency
     $lang['firesale:shortcuts:install_currency'] = 'Install new Currency';
@@ -468,6 +498,10 @@
     $lang['firesale:settings_dashboard_inst']        = 'Show the FireSale dashboard instead of the default';
     $lang['firesale:settings_low']                   = 'Low Stock Level';
     $lang['firesale:settings_low_inst']              = 'The number of products remaining before stock is considered low';
+    $lang['firesale:settings_new']                   = 'New Product Time';
+    $lang['firesale:settings_new_inst']              = 'The time in seconds that a product is considered new';
+    $lang['firesale:settings_basic']                 = 'Basic Checkout View';
+    $lang['firesale:settings_basic_inst']            = 'Minimal checkout layout, requires a minimal.html layout in your theme';
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';

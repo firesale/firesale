@@ -1,13 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Orders controller
- *
- * @author		Jamie Holdroyd
- * @author		Chris Harvey
- * @package		FireSale\Core\Controllers
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Front_orders extends Public_Controller
 {
 
@@ -68,7 +78,7 @@ class Front_orders extends Public_Controller
 
             // Build page
             $this->template->title(lang('firesale:orders:my_orders'))
-                           ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->routes_m->build_url('orders'))
+                           ->set_breadcrumb(lang('firesale:orders:my_orders'))
                            ->set($this->data);
 
             // Fire events
@@ -101,9 +111,8 @@ class Front_orders extends Public_Controller
 
             // Build page
             $this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
-                           ->set_breadcrumb('Home', '/')
                            ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->pyrocache->model('routes_m', 'build_url', array('orders'), $this->firesale->cache_time))
-                           ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id), $this->pyrocache->model('routes_m', 'build_url', array('orders-single', $id), $this->firesale->cache_time))
+                           ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id))
                            ->set($order);
 
             // Fire events

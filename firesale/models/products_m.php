@@ -1,13 +1,23 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Products model
- *
- * @author  Jamie Holdroyd
- * @author  Chris Harvey
- * @package FireSale\Core\Models
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Products_m extends MY_Model
 {
     /**
@@ -187,6 +197,11 @@ class Products_m extends MY_Model
             $product['snippet']      = truncate_words($product['description']);
             $product['category']     = $this->get_categories($product['id']);
             $product['image']        = $this->get_single_image($product['id']);
+            $product['images']       = $this->get_images($product['slug']);
+
+            // New product?
+            $duration = ( time() - (int)$this->settings->get('firesale_new') );
+            $product['new'] = ( $product['created'] > $duration ? '1' : '0' );
 
             // Get variation and modifer data
             $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
@@ -248,10 +263,15 @@ class Products_m extends MY_Model
                 $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
                 $query->where('p.price <', 'p.rrp');
+            } elseif ($value == 'asc' or $value == 'desc' ) {
+                $query->order_by('p.'.$key, $value);
             } elseif ($key == 'price') {
                 list($from, $to) = explode('-', $value);
                 $query->where('p.price >=', $from)
                       ->where('p.price <=', $to);
+            } elseif ($key == 'new' ) {
+                $new = ( 0 + $this->settings->get('firesale_new') );
+                $query->where('p.created >=', ( time() - $new ));
             } elseif( strlen($value) > 0 AND $value != '-1' ) {
                 $query->where($key, $value);
             }
@@ -712,6 +732,14 @@ class Products_m extends MY_Model
         return implode(',', $cats);
     }
 
+    /**
+     * Builds the breadcrumbs for a products categories.
+     *
+     * @param  array   $category  An array of categories to loop and assign
+     * @param  string  &$template The template class to assign them to
+     * @return integer The id of the parent category for the product
+     * @access public
+     */
     public function build_breadcrumbs($category, &$template)
     {
 
@@ -791,9 +819,19 @@ class Products_m extends MY_Model
         return FALSE;
     }
 
+    /**
+     * Gets the all images for a product.
+     *
+     * @param  string $slug The Product slug to query
+     * @return array the files for the give product
+     * @access public
+     */
     public function get_images($slug)
     {
+        // Load required items
+        $this->load->library('files/files');
 
+        // Variables
         $folder = get_file_folder_by_slug($slug, 'product-images');
         $images = Files::folder_contents($folder->id);
 

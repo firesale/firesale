@@ -1,13 +1,23 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Products admin controller
- *
- * @author      Jamie Holdroyd
- * @author      Chris Harvey
- * @package     FireSale\Core\Controllers
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Admin_products extends Admin_Controller
 {
 
@@ -23,6 +33,12 @@ class Admin_products extends Admin_Controller
 
         parent::__construct();
 
+        // Add data object
+        $this->data = new stdClass;
+
+        // Button events
+        Events::trigger('button_build', $this->template);
+
         // Load libraries, drivers & models
         $this->load->driver('Streams');
         $this->load->model(array(
@@ -37,9 +53,6 @@ class Admin_products extends Admin_Controller
         $this->load->library('streams_core/fields');
         $this->load->library('files/files');
         $this->load->helper('general');
-
-        // Add data object
-        $this->data = new stdClass;
 
         // Add metadata
         $this->template->append_css('module::products.css')
@@ -83,6 +96,7 @@ class Admin_products extends Admin_Controller
         $this->data->status       = $this->pyrocache->model('products_m', 'status_dropdown', array(( $type == 'status' ? $value : -1 )), $this->firesale->cache_time);
         $this->data->stock_status = $this->pyrocache->model('products_m', 'stock_status_dropdown', array(( $type == 'stock_status' ? $value : -1 )), $this->firesale->cache_time);
         $this->data->min_max      = $this->pyrocache->model('products_m', 'price_min_max', array(), $this->firesale->cache_time);
+        $this->data->buttons      = ( $this->template->buttons ? $this->template->buttons : '' );
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:products'))

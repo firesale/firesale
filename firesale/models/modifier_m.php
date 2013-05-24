@@ -1,13 +1,23 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Modifier model
- *
- * @author      Jamie Holdroyd
- * @author      Chris Harvey
- * @package     FireSale\Core\Models
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Modifier_m extends MY_Model
 {
     private $cache_mods = array();
@@ -26,7 +36,7 @@ class Modifier_m extends MY_Model
             $modifiers     = $this->pyrocache->model('modifier_m', 'get_modifiers', array($options['prd_code'][$i]), $this->firesale->cache_time);
             $post['price'] = 0;
             $ids           = array();
-            
+
             // Loop through these options
             foreach ( $opts as $mod => $var) {
 
@@ -519,7 +529,7 @@ class Modifier_m extends MY_Model
 
             // Check product is set, status and quantity
             if ( $product and $product->stock_status != 6 ) {
-                
+
                 // Add to options
                 if ( ! array_key_exists($product->id, $opts) ) {
                     $opts[$product->id] = array(
@@ -542,7 +552,7 @@ class Modifier_m extends MY_Model
                 }
             }
         }
-        
+
         // Seems okay!
         return true;
     }

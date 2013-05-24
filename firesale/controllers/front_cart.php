@@ -1,17 +1,29 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * Cart controller
- *
- * @author		Chris Harvey
- * @author		Jamie Holdroyd
- * @package		FireSale\Core\Controllers
- *
- */
+* This file is part of FireSale, a PHP based eCommerce system built for
+* PyroCMS.
+*
+* Copyright (c) 2013 Moltin Ltd.
+* http://github.com/firesale/firesale
+*
+* For the full copyright and license information, please view the LICENSE
+* file that was distributed with this source code.
+*
+* @package firesale/core
+* @author FireSale <support@getfiresale.org>
+* @copyright 2013 Moltin Ltd.
+* @version master
+* @link http://github.com/firesale/firesale
+*
+*/
+
 class Front_cart extends Public_Controller
 {
 
     public $validation_rules = array();
+    public static $valid_gateway = true;
+    public static $valid_shipping = true;
     public $stream;
 
     public function __construct()
@@ -106,72 +118,80 @@ class Front_cart extends Public_Controller
 
     public function insert($prd_code = NULL, $qty = 1)
     {
-
         // Variables
         $data = array();
         $tmp  = array();
 
-        // Add an item to the cart, either by post or from the URL
-        if ($prd_code === NULL) {
+        // Setup post data
+        if ($prd_code !== NULL) {
 
-            if (is_array($this->input->post('prd_code'))) {
-
-                $qtys = $this->input->post('qty', TRUE);
-
-                // Check for options
-                if ( $this->input->post('options') ) {
-                    // Modify post
-                    $_POST = $this->modifier_m->cart_variation($this->input->post());
-                }
-
-                foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code) {
-
-                    // Get product
-                    $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
-                    $modifiers = current($product['modifiers']);
-
-                    // Check status
-                    $status = $this->modifier_m->single_product_stock($product['id'], $_POST['options'][$key], (int)$qtys[$key]);
-                    if ( $status !== true ) {
-                        $this->session->set_flashdata('error', sprintf(lang('firesale:vars:stock_low'), $status));
-                        redirect($_SERVER['HTTP_REFERER']);
-                    }
-
-                    // Increase price based on options
-                    $product['price_rounded'] += $this->input->post('price') or 0;
-                    $product['price']         += $this->input->post('price') or 0;
-
-                    // Check product, stock and modifiers
-                    if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
-                        ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
-                        
-                        // Build cart data
-                        $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
-
-                        // Update stock levels
-                        if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
-                    }
-
-                }
-
-            }
-
-        } else {
+            // Set basics
+            $_POST['prd_code'][0] = $prd_code;
+            $_POST['qty'][0]      = $qty;
 
             // Get product
-            $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
-            $modifiers = current($product['modifiers']);
+            $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
 
-            // Check product, stock and modifiers
-            if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
-                ( ! isset($modifiers['type']['key']) or ( isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
-                
-                // Build cart data
-                $data[] = $this->cart_m->build_data($product, $qty);
-                $this->session->set_userdata('added', $product['id']);
+            // Check for variations
+            if ( $product['modifiers'] ) {
+                foreach ( $product['modifiers'] as $modifier ) {
+                    if ( $modifier['type']['key'] == '1' ) {
+                        $id  = $modifier['variations'][1]['product']['id'];
+                        $_POST['prd_code'][0] = $id;
+                        $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
+                        break;
+                    }
+                }
+            }
 
-                // Update stock levels
-                if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
+            // Check and add variations
+            if ( $product['modifiers'] ) {
+                foreach ( $product['modifiers'] as $variation ) {
+                    $_POST['options'][0][$variation['id']] = $variation['var_id'];
+                }
+            }
+        }
+
+        // Add an item to the cart
+        if (is_array($this->input->post('prd_code'))) {
+
+            $qtys = $this->input->post('qty', TRUE);
+
+            // Check for options
+            if ( $this->input->post('options') ) {
+                // Modify post
+                $_POST = $this->modifier_m->cart_variation($this->input->post());
+            }
+
+            foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code) {
+
+                // Get product
+                $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+                $modifiers = current($product['modifiers']);
+
+                // Check status
+                $status = $this->modifier_m->single_product_stock($product['id'], $_POST['options'][$key], (int)$qtys[$key]);
+                if ( $status !== true ) {
+                    $this->session->set_flashdata('error', sprintf(lang('firesale:vars:stock_low'), $status));
+                    redirect($_SERVER['HTTP_REFERER']);
+                }
+
+                // Increase price based on options
+                $product['price_rounded'] += $this->input->post('price') or 0;
+                $product['price']         += $this->input->post('price') or 0;
+
+                // Check product, stock and modifiers
+                if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
+                    ( (!is_array($modifiers['type']) or (is_array($modifiers) and ! isset($modifiers['type']['key']))) or 
+                        ( is_array($modifiers['type']) and isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
+                    
+                    // Build cart data
+                    $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
+
+                    // Update stock levels
+                    if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
+                }
+
             }
 
         }
@@ -190,10 +210,12 @@ class Front_cart extends Public_Controller
         }
 
         Events::trigger('cart_updated');
-
+        
         // Return for ajax or redirect
         if ( $this->input->is_ajax_request() ) {
             exit($this->cart_m->ajax_response('ok'));
+        } else if ( $this->input->post('btnAction') == 'buy' ) {
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
         } else {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         }
@@ -377,6 +399,19 @@ class Front_cart extends Public_Controller
                     $shipping['price'] = '0.00';
                 }
 
+                // Same as billing address
+                if ($input['ship_to'] == "same_as_billing") {
+                    foreach ($input as $key => $field) {
+                        if (substr($key, 0, 5) != 'bill_') continue;
+
+                        $input[str_replace("bill_", "ship_", $key)] = $field;
+                    }
+
+                    $input['ship_to'] = $input['bill_to'];
+                    // Don't save this address
+                    $input['ship_title'] = "";
+                }
+
                 // Modify posted data
                 $input['shipping']	   = ( isset($input['shipping']) ? $input['shipping'] : 0 );
                 $input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
@@ -422,7 +457,7 @@ class Front_cart extends Public_Controller
                 }
 
                 // Set error flashdata & continue to page build
-                $this->session->set_flashdata('error', implode('<br />', $this->form_validation->error_array()));
+                $this->session->set_userdata('flash:old:error', implode('<br />', $this->form_validation->error_array()));
 
             } else {
 
@@ -466,10 +501,17 @@ class Front_cart extends Public_Controller
             // Get fields
             $data['ship_fields'] = $this->address_m->get_address_form('ship', 'new', ( $input ? $input : null ));
             $data['bill_fields'] = $this->address_m->get_address_form('bill', 'new', ( $input ? $input : null ));
+            $data['valid_shipping'] = self::$valid_shipping;
+            $data['valid_gateway']  = self::$valid_gateway;
 
             // Check for shipping option set in cart
             if ( $this->session->userdata('shipping') ) {
                 $data['shipping'] = $this->session->userdata('shipping');
+            }
+
+            // Minimal layout
+            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                $this->template->set_layout('minimal.html');
             }
 
             // Build page
@@ -489,15 +531,56 @@ class Front_cart extends Public_Controller
 
     public function _validate_shipping($value)
     {
-        return TRUE;
+
+        if ($value) {
+
+            $cart = $this->fs_cart->contents();
+            $total = $this->fs_cart->total();
+    
+            $weight = 0;
+    
+            foreach ($cart as $item) {
+                if ($item['weight']) {
+                    $weight += intval($item['weight']);
+                }
+            }
+        
+            $query = $this->db->get_where('firesale_shipping', array('id' => $value));
+    
+            if ($query->num_rows()) {
+
+                $result = $query->row();
+
+                if ($result->price_min > $total) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_price'));
+                } elseif ($result->price_max < $total) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_price'));
+                } elseif ($result->weight_min > $weight) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_weight'));
+                } elseif ($result->weight_max < $weight) {
+                    $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_weight'));
+                } else {
+                   return TRUE;  
+                }
+                
+            }
+        } else {
+            $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_invalid'));
+            self::$valid_shipping = false; 
+        }
+
+        return FALSE;
     }
 
     public function _validate_gateway($value)
     {
-        // Chris: Move to language
-        $this->form_validation->set_message('_validate_gateway', 'The payment gateway you selected is not valid');
+        $this->form_validation->set_message('_validate_gateway', lang('firesale:checkout:gateway_invalid'));
 
-        return $this->gateways->is_enabled($value);
+        $valid = $this->gateways->is_enabled($value);
+
+        self::$valid_gateway = $valid;
+
+        return $valid;
     }
 
     public function payment()
@@ -633,9 +716,15 @@ class Front_cart extends Public_Controller
 
                 $gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
+                // Minimal layout
+                if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                    $this->template->set_layout('minimal.html');
+                } else {
+                    $this->template->set_layout('default.html');
+                }
+
                 // Build page
-                $this->template->set_layout('default.html')
-                               ->title(lang('firesale:payment:title'))
+                $this->template->title(lang('firesale:payment:title'))
                                ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
                                ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
                                ->set_breadcrumb(lang('firesale:payment:title'))
@@ -839,6 +928,11 @@ class Front_cart extends Public_Controller
             }
 
             $this->fs_cart->destroy();
+
+            // Minimal layout
+            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                $this->template->set_layout('minimal.html');
+            }
 
             $this->template->title(lang('firesale:payment:title_success'))
                            ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
