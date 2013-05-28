@@ -236,17 +236,18 @@ class Address_m extends MY_Model
         // Pull out post data
         if ( $input !== null ) {
 
-            // Loop post data
+            // Fix key names based on type
             foreach( $input as $key => $val ) {
-                if( substr($key, 0, 5) == $type.'_' ) {
-                    $data[substr($key, 5)] = $val;
-                } else {
-                    $data[$key] = $val;
-                }
+                if( substr($key, 0, 5) == $type.'_' ) { $data[substr($key, 5)] = $val; } else { $data[$key] = $val; }
             }
 
             // Set into post
             $_POST = $data;
+        }
+
+        // Fix language settings
+        if ( ! empty($_POST) ) {
+            $this->address_langauge_fix($stream->id, $type);
         }
 
         // Get fields
@@ -254,10 +255,20 @@ class Address_m extends MY_Model
 
         // Format fields
         foreach( $fields AS $field ) {
+            
+            // Prefix input slugs
             $key = ( in_array($field['input_slug'], $address) ? 'address' : 'details' );
             if( $type != NULL ) {
                 $field['input'] = str_replace(array('id="', 'name="'), array('id="' . $type . '_', 'name="' . $type . '_'), $field['input']);
             }
+
+            // Correct titles
+            if ( substr($field['input_title'], 0, 5) == 'lang:' ) {
+                $key = substr($field['input_title'], 5);
+                $this->lang->language[$key] = str_replace(lang('firesale:title:'.$type).' ', '', lang($key));
+            }
+
+            // Reassign
             $tabs[$key][] = $field;
         }
 
@@ -265,6 +276,39 @@ class Address_m extends MY_Model
         $_POST = $input;
 
         return $tabs;
+    }
+
+    /**
+     * Fixes the language strings for an address form to better display if an error
+     * has occured with billing or shipping fields.
+     * 
+     * @param  int $stream_id The stream ID for the address form
+     * @param  string $type   The type to deal with bill or ship
+     * @return void
+     */
+    public function address_langauge_fix($stream_id, $type)
+    {
+        // Check type
+        if ( $type === null ) { return; }
+
+        // Variables
+        $other = ( $type == 'bill' ? 'ship' : 'bill' );
+
+        // Get fields
+        $fields = $this->db->select('f.field_name')
+                           ->from('data_fields AS f')
+                           ->join('data_field_assignments AS fa', 'fa.field_id = f.id', 'inner')
+                           ->where('fa.stream_id', $stream_id)
+                           ->get()
+                           ->result_array();
+
+        // Loop and reassign fields
+        foreach ( $fields as $field ) {
+            $key   = substr($field['field_name'], 5);
+            $field = lang($key);
+            $clean = str_replace(lang('firesale:title:'.$other).' ', '', $field);
+            $this->lang->language[$key] = lang('firesale:title:'.$type).' '.$clean;
+        }
     }
 
 }
