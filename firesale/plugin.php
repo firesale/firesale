@@ -253,8 +253,12 @@ class Plugin_Firesale extends Plugin
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
         }
 
-        // Return results
-        return $results;
+        if ($results) {
+            return array(array('products' => $results));
+        }
+
+        // Nothing?
+        return array('products' => FALSE);
     }
 
     public function bestsellers()
@@ -278,7 +282,12 @@ class Plugin_Firesale extends Plugin
             $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
         }
 
-        return $result;
+        if ($results) {
+            return array(array('bestsellers' => $results));
+        }
+
+        // Nothing?
+        return array('bestsellers' => FALSE);
     }
 
     public function modifier_form()
