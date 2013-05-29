@@ -852,8 +852,7 @@ class Front_cart extends Public_Controller
 
         // Format order
         foreach ($order['items'] as &$item) {
-            $item['price_formatted'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
-            $item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
+            $item['total'] = $this->currency_m->format_string(($item['price_rounded'] * $item['qty']), $this->fs_cart->currency());
         }
 
         // Format currency
@@ -882,6 +881,11 @@ class Front_cart extends Public_Controller
 
             // Fire events
             Events::trigger('page_build', $this->template);
+
+            // Minimal layout
+            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                $this->template->set_layout('minimal.html');
+            }
 
             // Build the page
             $this->template->build('payment_complete', $order);
