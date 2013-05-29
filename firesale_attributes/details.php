@@ -35,10 +35,12 @@ class Module_Firesale_Attributes extends Module
 
         $info = array(
             'name' => array(
-                'en' => 'FireSale Attributes'
+                'en' => 'FireSale Attributes',
+                'it' => 'FireSale Attributi'
             ),
             'description' => array(
-                'en' => 'Product attribute management.'
+                'en' => 'Product attribute management.',
+                'it' => 'Gestione attributi dei prodotti'
             ),
             'frontend' 		=> false,
             'backend' 		=> false,
