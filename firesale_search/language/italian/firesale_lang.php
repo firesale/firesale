@@ -32,4 +32,4 @@
     $lang['firesale:search:label_nothing_found'] 	= 'Non è stato trovato nessun prdotto!';
 
     // Routes
-    $lang['firesale:routes:search'] = 'Search'; #translate
+    $lang['firesale:routes:search'] = 'Cerca';
