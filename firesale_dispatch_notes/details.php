@@ -35,10 +35,12 @@ class Module_Firesale_dispatch_notes extends Module {
 
 		$info = array(
 			'name' => array(
-				'en' => 'FireSale Dispatch Notes'
+				'en' => 'FireSale Dispatch Notes',
+				'it' => 'FireSale note di spedizione'
 			),
 			'description' => array(
-				'en' => 'Print dispatch notes for your orders'
+				'en' => 'Print dispatch notes for your orders',
+				'it' => 'Stampa le note di spedizione per gli ordini'
 			),
 			'frontend'		=> false,
 			'backend'		=> false,
