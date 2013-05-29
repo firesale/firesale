@@ -21,10 +21,6 @@
 class Shipping_m extends MY_Model
 {
 
-    public $fired  = array(
-                        'form_build' => FALSE
-                    );
-
     public function get_option_by_id($id)
     {
 
@@ -36,6 +32,21 @@ class Shipping_m extends MY_Model
         }
 
         return '0.00';
+    }
+
+    public function get_options($where = 'status = 1')
+    {
+        // Select shipping options
+        $params  = array(
+            'stream'    => 'firesale_shipping',
+            'namespace' => 'firesale_shipping',
+            'order_by'  => 'price',
+            'sort'      => 'asc',
+            'where'     => $where
+        );
+
+        // Get options
+        return $this->streams->entries->get_entries($params);
     }
 
     public function calculate_methods($cart)
@@ -52,16 +63,8 @@ class Shipping_m extends MY_Model
             $total_value  += ( $item['price']  * $item['qty'] );
         }
 
-        // Select shipping options
-        $params	 = array(
-            'stream'    => 'firesale_shipping',
-            'namespace' => 'firesale_shipping',
-            'order_by'  => 'price',
-            'sort'      => 'asc'
-        );
-
         // Get options
-        $options = $this->streams->entries->get_entries($params);
+        $options = $this->pyrocache->model('shipping_m', 'get_options', array(), $this->firesale->cache_time);
 
         // Loop options and perform checks
         foreach ($options['entries'] AS $option) {
