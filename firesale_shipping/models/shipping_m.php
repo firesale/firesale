@@ -65,8 +65,7 @@ class Shipping_m extends MY_Model
 
         // Loop options and perform checks
         foreach ($options['entries'] AS $option) {
-            $viable = $this->check_methods($option, $total_weight, $total_value);
-            if ( $viable ) {
+            if ( $this->check_methods($option, $total_weight, $total_value) ) {
                 $total_options[] = $option;
             }
         }
@@ -77,46 +76,17 @@ class Shipping_m extends MY_Model
 
     public function check_methods($method, $weight, $price)
     {
-
-        // Variables
-        $_return  = FALSE;
-        $_options = array('price_min', 'price_max', 'weight_min', 'weight_max');
-
-        // Loop it!
-        foreach ($_options AS $key => $option) {
-
-            // Variables
-            $name   = substr($option, 0, -4);
-            $max    = ( ( $key + 1 ) % 2 == 1 ? TRUE : FALSE );
-
-            // Values
-            $first  = $method[$option];
-            $second = $method[( $max ? str_replace('_min', '_max', $option) : str_replace('_max', '_min', $option) )];
-            $value  = $$name;
-
-            if ( $first != NULL AND $this->compare_values((float) $first, $value, $max) ) {
-                if ( ( $second != NULL AND $this->compare_values((float) $second, $value, $max, TRUE) ) OR $second == NULL ) {
-                    $_return = TRUE;
-                } else {
-                    $_return = FALSE;
-                }
-            }
-
+        // Check pricing
+        if ( $price < $method['price_min'] or $price > $method['price_max'] ) {
+            return false;
         }
 
-        // Return
-        return $_return;
-    }
-
-    public function compare_values($var1, $var2, $max, $reverse = FALSE)
-    {
-
-        if ( $max OR ( !$max AND $reverse ) ) {
-            return ( $var1 <= $var2 );
-        } else {
-            return ( $var1 >= $var2 );
+        // Check weight
+        if ( $weight < $method['weight_min'] or $weight > $method['weight_max'] ) {
+            return false;
         }
 
+        return true;
     }
 
 }
