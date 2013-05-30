@@ -162,8 +162,8 @@ class Front_cart extends Public_Controller
             if ( $product['modifiers'] ) {
                 foreach ( $product['modifiers'] as $modifier ) {
                     if ( $modifier['type']['key'] == '1' ) {
-                        $id  = $modifier['variations'][1]['product']['id'];
-                        $_POST['prd_code'][0] = $id;
+                        $variation = current($modifier['variations']);
+                        $_POST['prd_code'][0] = $variation['product']['id'];
                         $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
                         break;
                     }
