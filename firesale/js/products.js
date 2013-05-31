@@ -52,6 +52,8 @@ $(function() {
 			update_products(window.location.hash.replace('#', ''));
 		}
 
+		buttons = $('.table_action_buttons').html();
+
 		bind_keys($('#product_table'));
 	}
 
@@ -120,7 +122,7 @@ $(function() {
 	
 });
 	
-	var req = null;
+	var req = null, buttons;
 
 	function tax_link(price, before) {
 		var tmp = before.clone();before.parent().parent().remove();
@@ -168,7 +170,7 @@ $(function() {
 		
 		$('#product_table tbody .actions').attr('style', 'width: 88px !important');
 
-		id.html('<input type="hidden" name="product['+_id+'][old_id]" value="' + id.text() + '" /><input type="text" id="id" name="product['+_id+'][id]" value="' + id.text() + '" />');
+		id.html('<input type="text" id="id" name="product['+_id+'][id]" value="' + id.text() + '" />');
 		title.html('<input type="text" id="title" name="product['+_id+'][title]" value="' + title.text().replace(/"/g, '&quot;') + '" />');
 		stock.html('<input type="text" id="stock" name="product['+_id+'][stock]" value="' + ( stock.text() == 'Unlimited (∞)' ? '0' : stock.text() ) + '" />');
 		price.html('<input type="text" id="price" name="product['+_id+'][price]" value="' + price.text().replace(/[^0-9\.]/g, '') + '" />');
@@ -203,7 +205,7 @@ $(function() {
 	}
 
 	function bind_pagination() {
-		$('#product_table tfoot td div a').click(function(e) {
+		$('#product_table tfoot td div a').live('click', function(e) {
 			e.preventDefault();
 			var page = $(this).attr('href').split('/');
 				page = page[page.length-1];
@@ -221,13 +223,12 @@ $(function() {
 		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, dataType: 'html', global: false, data: $('#filters').serialize(), success: function(data) {
 			$('#product_table').parent().find('.no_data').remove();
 			$('.overlay').remove();
+			$('.table_action_buttons').html(buttons);
 			if( $(data).find('#product_table').size() > 0 ) {
 				$('#product_table tbody').html($(data).find('#product_table tbody').html());
 				$('#product_table tfoot').html($(data).find('#product_table tfoot').html());
 				$('#product_table').show();
 				$('#product_table').trigger("update"); 
-				bind_quickedit();
-				bind_pagination();
 			} else if( $(data).find('.no_data').size() > 0 ) {
 				$('#product_table').hide();
 				$('<div class="no_data">'+$(data).find('.no_data').html()+'</div>').insertBefore($('#product_table'));
