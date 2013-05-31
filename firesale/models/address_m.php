@@ -33,12 +33,12 @@ class Address_m extends MY_Model
 
         // Set query paramaters
         $params	 = array(
-                    'stream' 	=> 'firesale_addresses',
-                    'namespace'	=> 'firesale_addresses',
-                    'where'		=> SITE_REF."_firesale_addresses.created_by = '{$user}' AND ".SITE_REF."_firesale_addresses.title != ''",
-                    'order_by'	=> 'id',
-                    'sort'		=> 'desc'
-                   );
+            'stream'    => 'firesale_addresses',
+            'namespace' => 'firesale_addresses',
+            'where'     => SITE_REF."_firesale_addresses.created_by = '{$user}' AND ".SITE_REF."_firesale_addresses.title != ''",
+            'order_by'  => 'id',
+            'sort'      => 'desc'
+        );
 
         // Get addresses
         $addresses = $this->streams->entries->get_entries($params);
@@ -110,7 +110,7 @@ class Address_m extends MY_Model
         $query = $this->db->select('id')->where($items)->get('firesale_addresses');
 
         // Add
-        if ( !$query->num_rows() ) {
+        if ( ! $query->num_rows() ) {
 
             // Add to items
             $items['created']        = date("Y-m-d H:i:s");
@@ -118,15 +118,11 @@ class Address_m extends MY_Model
 
             // Insert
             $this->db->insert('firesale_addresses', $items);
-
             return $this->db->insert_id();
-
-        } else {
-            $result = $query->row();
-
-            return $result->id;
         }
 
+        $result = $query->row();
+        return $result->id;
     }
 
     /**
@@ -158,7 +154,6 @@ class Address_m extends MY_Model
             $_rule   		= $rule;
             $_rule['field'] = $type . '_' . $_rule['field'];
             $rules[] 		= $_rule;
-
         }
 
         // Set validation rules
@@ -168,7 +163,7 @@ class Address_m extends MY_Model
         if ( $this->form_validation->run() === TRUE ) {
             if ( $id > 0 AND $this->db->where('id', $id)->update('firesale_addresses', $update) ) {
                 return $id;
-            } elseif ( $id <= 0 AND $address_id = $this->add_address($input, $type) ) {
+            } else if ( $id <= 0 AND $address_id = $this->add_address($input, $type) ) {
                 return $address_id;
             }
         }
