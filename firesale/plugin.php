@@ -325,7 +325,8 @@ class Plugin_Firesale extends Plugin
         $this->load->library('fs_cart');
 
         // Get currency
-        $currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL ));
+        $currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
+        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
 
         // Variables
         $data 		 	= new stdClass;
