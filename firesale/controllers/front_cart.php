@@ -159,7 +159,7 @@ class Front_cart extends Public_Controller
             $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
 
             // Check for variations
-            if ( $product['modifiers'] ) {
+            if ( $product['modifiers'] and $product['is_variation'] == '0' ) {
                 foreach ( $product['modifiers'] as $modifier ) {
                     if ( $modifier['type']['key'] == '1' ) {
                         $variation = current($modifier['variations']);
