@@ -131,6 +131,7 @@ function reassign_helper_vars($array)
         $item['first']    = ( $count == 1 ? '1' : '0' );
         $item['last']     = ( count($array) == $count ? '1' : '0' );
         $item['odd_even'] = $odd_even = ( $odd_even == 'even' ? 'odd' : 'even' );
+        $item['count']    = $count;
     }
 
     return $array;
