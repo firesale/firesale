@@ -403,6 +403,26 @@ class Plugin_Firesale extends Plugin
         return array('data' => $data);
     }
 
+    public function orders()
+    {
+        // Variables
+        $default = ( isset($this->current_user->id) ? $this->current_user->id : null );
+        $user    = $this->attribute('user_id', $default);
+        $data    = array();
+
+        // Check for user
+        if ( $user !== null ) {
+           
+            $this->load->model('orders_m');
+
+            // Get addresses
+            $data['entries'] = $this->pyrocache->model('orders_m', 'get_orders_by_user', array($user), $this->firesale->cache_time);
+            $data['total']   = count($data['entries']);
+        }
+
+        return array('data' => $data);
+    }
+
     /**
      * Returns a PluginDoc array that PyroCMS uses
      * to build the reference in the admin panel

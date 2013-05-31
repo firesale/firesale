@@ -590,6 +590,37 @@ class Orders_m extends MY_Model
     }
 
     /**
+     * Returns a list of orders for a given user
+     * @param  int $user_id The user id to query for
+     * @return array an array of orders
+     */
+    public function get_orders_by_user($user_id)
+    {
+        // Get IDS
+        $orders = $this->db->where('created_by', $user_id)
+                           ->order_by('created', 'desc')
+                           ->get('firesale_orders')
+                           ->result_array();
+
+        // Check for orders
+        if ( ! empty($orders) ) {
+
+            // Loop and get data
+            foreach ( $orders as &$order ) {
+                $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order['id']), $this->firesale->cache_time);
+            }
+
+            // Format orders
+            $orders = $this->format_order($orders);
+
+            // Reassign help
+            $orders = reassign_helper_vars($orders);
+        }
+
+        return $orders;
+    }
+
+    /**
      * Updates a products stock level and status based on it.
      *
      * @param  integer $id    The Product ID to update
