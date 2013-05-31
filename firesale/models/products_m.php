@@ -270,8 +270,8 @@ class Products_m extends MY_Model
                 $query->where('p.price >=', $from)
                       ->where('p.price <=', $to);
             } elseif ($key == 'new' ) {
-                $new = ( 0 + $this->settings->get('firesale_new') );
-                $query->where('p.created >=', ( time() - $new ));
+                $new = (int)$this->settings->get('firesale_new');
+                $query->where('p.created >=', date('Y-m-d H:i:s', ( time() - $new )));
             } elseif( strlen($value) > 0 AND $value != '-1' ) {
                 $query->where($key, $value);
             }

@@ -57,14 +57,16 @@ class Front_new extends Public_Controller
         $this->data->order  = get_order(( $order != null ? $order : '1' ));
 
         // Get product IDs
-		$filter   = array('new' => '', $this->data->order['by'] => $this->data->order['dir']);
-		$ids      = $this->pyrocache->model('products_m', 'get_products', array($filter, $start, $this->perpage), $this->firesale->cache_time);;
-		$total    = count($this->products_m->get_products(array('new' => '')));
-		$products = array();
+        $filter   = array('new' => '', $this->data->order['by'] => $this->data->order['dir']);
+        $ids      = $this->products_m->get_products($filter, $start, $this->perpage);
+        $total    = ( $ids ? count($this->products_m->get_products($filter)) : 0 );
+        $products = array();
         
         // Loop and get product data
-        foreach ( $ids as $id ) {
-        	$products[] = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+        if ( ! empty($ids) ) {
+            foreach ( $ids as $id ) {
+                $products[] = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+            }
         }
 
         // Assign pagination
