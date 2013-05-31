@@ -98,21 +98,20 @@ class Admin_routes extends Admin_Controller
 
             // Got an ID back
             if ( is_numeric($fields) ) {
+                
                 // Add the route
                 $this->routes_m->write($input['title'], $input['route'], $input['translation']);
-            }
-
-            // Redirect
-            if ( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) ) {
-                redirect('admin/firesale/routes');
-            } else {
 
                 // Success, clear cache!
                 Events::trigger('clear_cache');
 
-                redirect('admin/firesale/routes/edit/'.$fields);
+                // Redirect
+                if ( $input['btnAction'] == 'save_exit') {
+                    redirect('admin/firesale/routes');
+                } else {
+                    redirect('admin/firesale/routes/edit/'.$fields);
+                }
             }
-
         }
 
         // Assign data
@@ -181,15 +180,14 @@ class Admin_routes extends Admin_Controller
 
                 // Success, clear cache!
                 Events::trigger('clear_cache');
-            }
 
-            // Redirect
-            if ( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) ) {
-                redirect('admin/firesale/routes');
-            } else {
-                redirect('admin/firesale/routes/edit/'.$id);
+                // Redirect
+                if ( $input['btnAction'] == 'save_exit' ) {
+                    redirect('admin/firesale/routes');
+                } else {
+                    redirect('admin/firesale/routes/edit/'.$id);
+                }
             }
-
         }
 
         // Assign data
