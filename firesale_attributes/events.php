@@ -52,7 +52,7 @@ class Events_Firesale_attributes
             unset($controller->tabs['_images']);
 
             // Add metadata to tabs
-            $controller->tabs['attributes'] = '{{ firesale_attributes:form product="'.$id.'" }}';
+            $controller->tabs['_attributes'] = '{{ firesale_attributes:form product="'.$id.'" }}';
 
             // Append metadata
             asset_namespace('firesale_attributes');
