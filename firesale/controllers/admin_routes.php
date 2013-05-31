@@ -124,7 +124,6 @@ class Admin_routes extends Admin_Controller
                        ->append_js('module::jquery.caret.js')
                        ->append_js('module::routes.js')
                        ->build('admin/routes/create');
-
     }
 
     public function edit($id)
@@ -204,7 +203,6 @@ class Admin_routes extends Admin_Controller
                        ->append_js('module::jquery.caret.js')
                        ->append_js('module::routes.js')
                        ->build('admin/routes/edit');
-
     }
 
     public function rebuild($redirect = true)
