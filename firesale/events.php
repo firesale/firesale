@@ -120,7 +120,11 @@ class Events_Firesale
         if ( $data['year'] !== false ) {
             $data['year']['sales']       = json_encode($data['year']['sales']);
             $data['year']['count']       = json_encode($data['year']['count']);
-            $data['year']['currency']    = $currency->symbol;
+            if(!empty($currency)){
+                $data['year']['currency']    = $currency->symbol;
+            }else{
+                $data['year']['currency']    = '';
+            }
         }
 
         // Build and return data
