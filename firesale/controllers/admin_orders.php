@@ -135,6 +135,12 @@ class Admin_orders extends Admin_Controller
 
             }
 
+            // Check for user change
+            if ( $this->input->post('created_by') != $row->created_by ) {
+                $this->db->where('id', $row->id)->update('firesale_orders', array('created_by' => $this->input->post('created_by')));
+                $this->db->where('order_id', $row->id)->update('firesale_orders_items', array('created_by' => $this->input->post('created_by')));
+            }
+
             // Check for address
             if ( !isset($input['shipping']) OR $input['shipping'] == NULL ) {
                 $input['shipping'] = '0';
