@@ -262,7 +262,7 @@ class Products_m extends MY_Model
             } elseif ($key == 'search' AND strlen($value) > 0 ) {
                 $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
-                $query->where('p.price <', 'p.rrp');
+                $query->where('p.price < p.rrp');
             } elseif ($value == 'asc' or $value == 'desc' ) {
                 $query->order_by('p.'.$key, $value);
             } elseif ($key == 'price') {
