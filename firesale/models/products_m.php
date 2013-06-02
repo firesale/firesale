@@ -247,7 +247,7 @@ class Products_m extends MY_Model
             } elseif ($key == 'search' AND strlen($value) > 0 ) {
                 $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
-                $query->where('p.price <', 'p.rrp');
+                $query->where('p.price < p.rrp');
             } elseif ($key == 'price') {
                 list($from, $to) = explode('-', $value);
                 $query->where('p.price >=', $from)
