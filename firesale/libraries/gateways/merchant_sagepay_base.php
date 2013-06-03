@@ -42,6 +42,7 @@ abstract class Merchant_sagepay_base extends Merchant_driver
             'vendor' => '',
             'test_mode' => FALSE,
             'simulator_mode' => FALSE,
+            'skip_confirmation_page' => FALSE,
         );
     }
 

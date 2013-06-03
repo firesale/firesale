@@ -618,13 +618,16 @@ class Front_cart extends Public_Controller
 
             // Get the gateway slug
             $gateway = $this->gateways->slug_from_id($order['gateway']['id']);
-
+            $settings = $this->gateways->settings($gateway);
+            
             // Initialize CI-Merchant
             $this->merchant->load($gateway);
-            $this->merchant->initialize($this->gateways->settings($gateway));
+            $this->merchant->initialize($settings);
+
+            $skip = isset($settings['skip_confirmation_page']) and $settings['skip_confirmation_page'];
 
             // Begin payment processing
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' or $skip) {
                 // Load the routes model
                 $this->load->model('routes_m');
 
