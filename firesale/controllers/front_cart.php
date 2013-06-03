@@ -682,6 +682,13 @@ class Front_cart extends Public_Controller
                     $this->session->set_flashdata('error', $process->message());
                 }
 
+                // Minimal layout
+                if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                    $this->template->set_layout('minimal.html');
+                } else {
+                    $this->template->set_layout('default.html');
+                }
+
                 $theme_path = $this->template->get_theme_path();
                 if ($process->is_redirect()) {
                     if (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/all.php')) {
