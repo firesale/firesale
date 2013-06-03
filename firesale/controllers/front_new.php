@@ -61,21 +61,25 @@ class Front_new extends Public_Controller
         $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
         $category = implode('/', $args);
         $filter   = array('new' => '', $this->data->order['by'] => $this->data->order['dir']);
+        $title    = lang('firesale:new:title');
 
         // Add category
         if ( strlen($category) > 0 ) {
             
             // Get category ID
-            $id = $this->db->select('id')->where('slug', $category)->get('firesale_categories')->row()->id;
-            
+            $category = $this->db->select('title, id, slug')->where('slug', $category)->get('firesale_categories')->row();
+
             // Not found
-            if ( $id === null ) {
+            if ( $category === null ) {
                 show_404();
                 return;
             }
 
             // Add to filter
-            $filter['category'] = $id;
+            $filter['category'] = $category->id;
+
+            // Update title
+            $title = sprintf(lang('firesale:new:in:title'), $category->title);
         }
 
         // Get product IDs
@@ -102,7 +106,7 @@ class Front_new extends Public_Controller
         $this->data->ordering = get_order();
 
         // Build Page
-        $this->template->title(lang('firesale:new:title'))
+        $this->template->title($title)
                        ->append_css('module::firesale.css')
                        ->append_js('module::firesale.js')
                        ->set($this->data)

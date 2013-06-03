@@ -154,7 +154,8 @@
     $lang['firesale:vars:category']       = 'Build from Category'; # translate
 
     // New Products
-    $lang['firesale:new:title'] = 'New Products';
+    $lang['firesale:new:title']    = 'New Products';
+    $lang['firesale:new:in:title'] = 'New Products in %s'; # translate
 
     // Instructions
     $lang['firesale:inst_rrp']   = 'Preço de venda antes e após impostos';

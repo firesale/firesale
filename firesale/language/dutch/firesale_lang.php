@@ -155,6 +155,7 @@
 
     // New Products
     $lang['firesale:new:title']                             = 'New Products'; # translate
+    $lang['firesale:new:in:title']                          = 'New Products in %s'; # translate
 
     // Instructions
     $lang['firesale:inst_rrp']                              = 'Aanbevolen Verkoop Prijs voor en naar BTW';

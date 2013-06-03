@@ -19,7 +19,7 @@
 */
 
     // General Titles
-    $lang['firesale:title']         = 'FireSale';
+    $lang['firesale:title']         = 'Store';
     $lang['firesale:store']         = 'Store';
     $lang['firesale:title:general'] = 'General';
     $lang['firesale:title:details'] = 'Your Details';
@@ -39,6 +39,7 @@
     $lang['firesale:sections:routes']       = 'Routes';
     $lang['firesale:sections:currency']     = 'Currency';
     $lang['firesale:sections:taxes']        = 'Taxes';
+    $lang['firesale:sections:customers']    = 'Customers';
 
     // Global Search
     $lang['firesale:product']    = 'Product';
@@ -154,7 +155,13 @@
     $lang['firesale:vars:category']       = 'Build from Category';
 
     // New Products
-    $lang['firesale:new:title'] = 'New Products';
+    $lang['firesale:new:title']    = 'New Products';
+    $lang['firesale:new:in:title'] = 'New Products in %s';
+
+    // Customers
+    $lang['firesale:cust:title']      = 'Customers';
+    $lang['firesale:cust:all:title']  = 'All Customers';
+    $lang['firesale:cust:char:title'] = 'Surnames beginning with "%s"';
 
     // Instructions
     $lang['firesale:inst_rrp']   = 'Retail price before and after tax';
