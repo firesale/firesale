@@ -991,7 +991,7 @@ class Module_Firesale extends Module
         $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index', 'https' => '0');
         $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1', 'https' => '0');
         $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}', 'route' => 'new(/[0-9]+)?', 'translation' => 'firesale/front_new/index/$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}/{{ pagination }}', 'route' => 'new(/:any)?(/[0-9]+)?', 'translation' => 'firesale/front_new/index$1$2', 'https' => '0');
 
         // Perform
         foreach ($routes AS $route) {

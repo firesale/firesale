@@ -49,15 +49,36 @@ class Front_new extends Public_Controller
         $this->perpage = $this->settings->get('firesale_perpage');
     }
 
-    public function index($start = 0)
+    public function index()
     {
         // Get cookie data
         $order              = $this->input->cookie('firesale_listing_order');
         $this->data->layout = $this->input->cookie('firesale_listing_style') or 'grid';
         $this->data->order  = get_order(( $order != null ? $order : '1' ));
 
-        // Get product IDs
+        // Variables
+        $args     = func_get_args();
+        $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
+        $category = implode('/', $args);
         $filter   = array('new' => '', $this->data->order['by'] => $this->data->order['dir']);
+
+        // Add category
+        if ( strlen($category) > 0 ) {
+            
+            // Get category ID
+            $id = $this->db->select('id')->where('slug', $category)->get('firesale_categories')->row()->id;
+            
+            // Not found
+            if ( $id === null ) {
+                show_404();
+                return;
+            }
+
+            // Add to filter
+            $filter['category'] = $id;
+        }
+
+        // Get product IDs
         $ids      = $this->products_m->get_products($filter, $start, $this->perpage);
         $total    = ( $ids ? count($this->products_m->get_products($filter)) : 0 );
         $products = array();
