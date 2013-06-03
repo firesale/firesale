@@ -274,7 +274,8 @@ function get_order($id = null)
     $_ORDER[8] = array('title' => lang('firesale:label_createdold'), 'by' => 'created', 'dir' => 'asc');
 
     // Return
-    if ($id != null) {
+    if ($id !== null) {
+        $_ORDER[$id]['key'] = $id;
         return $_ORDER[$id];
     }
 
