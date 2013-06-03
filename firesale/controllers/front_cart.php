@@ -692,12 +692,14 @@ class Front_cart extends Public_Controller
                 $theme_path = $this->template->get_theme_path();
                 if ($process->is_redirect()) {
                     if (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/all.php')) {
-                        $this->template->set('redirect_url', $process->redirect_url())
+                        $this->template->title(lang('firesale:payment:title'))
+                                       ->set('redirect_url', $process->redirect_url())
                                        ->set('redirect_method', $process->redirect_method())
                                        ->set('redirect_data', $process->redirect_data())
                                        ->build('gateways/redirect/all');
                     } elseif (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/' . $gateway . '.php')) {
-                        $this->template->set('redirect_url', $process->redirect_url())
+                        $this->template->title(lang('firesale:payment:title'))
+                                       ->set('redirect_url', $process->redirect_url())
                                        ->set('redirect_method', $process->redirect_method())
                                        ->set('redirect_data', $process->redirect_data())
                                        ->build('gateways/redirect/' . $gateway);
