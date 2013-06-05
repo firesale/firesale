@@ -206,6 +206,7 @@ class Products_m extends MY_Model
             // Check images
             if ( $product['is_variation'] == '1' and empty($product['images']) ) {
                 $product['images'] = $this->get_parent_images($product['id']);
+                $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
             }
 
             // Append data from other modules
