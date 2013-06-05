@@ -29,14 +29,6 @@ class Products_m extends MY_Model
     public $_table = 'firesale_products';
 
     /**
-     * Caches all product queries by slug or id
-     *
-     * @var array
-     * @access protected
-     */
-    protected $cache = array('id' => array(), 'slug' => array());
-
-    /**
      * Contains an array of the possible stock status options
      *
      * @var array
@@ -211,15 +203,16 @@ class Products_m extends MY_Model
             $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
             $product = array_merge($product, $pricing);
 
+            // Check images
+            if ( $product['is_variation'] == '1' and empty($product['images']) ) {
+                $product['images'] = $this->get_parent_images($product['id']);
+            }
+
             // Append data from other modules
             $results = Events::trigger('product_get', $product, 'array');
             foreach ($results as $result) {
                 $product = array_merge($product, $result);
             }
-
-            // Add to cache
-            $this->cache['id'][$product['id']]     = $product;
-            $this->cache['slug'][$product['slug']] = $product;
 
             // Return
             return $product;
@@ -842,6 +835,34 @@ class Products_m extends MY_Model
         }
 
         return $images['data']['file'];
+    }
+
+    /**
+     * Gets an array of the parent products images
+     * 
+     * @param  int $id The id of the product to query
+     * @return array   The array of images, boolean false on not found
+     */
+    public function get_parent_images($id)
+    {
+        // Get parent slug
+        $slug = $this->db->select('p.slug')
+                         ->from('firesale_product_variations_firesale_products AS pvp', 'inner')
+                         ->join('firesale_product_variations AS pv', 'pv.id = pvp.row_id', 'inner')
+                         ->join('firesale_product_modifiers AS pm', 'pm.id = pv.parent', 'inner')
+                         ->join('firesale_products AS p', 'p.id = pm.parent', 'inner')
+                         ->where('pvp.firesale_products_id', $id)
+                         ->group_by('p.slug')
+                         ->get();
+
+        // Check result
+        if ( $slug->num_rows() ) {
+            $slug = $slug->row()->slug;
+            return $this->get_images($slug);
+        }
+
+        // Nothing found
+        return false;
     }
 
     /**
