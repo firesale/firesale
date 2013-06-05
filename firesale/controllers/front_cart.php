@@ -426,7 +426,7 @@ class Front_cart extends Public_Controller
                 }
 
                 // Same as billing address
-                if ($input['ship_to'] == "same_as_billing") {
+                if ($data['ship_req'] and $input['ship_to'] == "same_as_billing") {
                     foreach ($input as $key => $field) {
                         if (substr($key, 0, 5) != 'bill_') continue;
 

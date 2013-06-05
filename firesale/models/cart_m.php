@@ -147,7 +147,6 @@ class Cart_m extends MY_Model
      */
     public function build_validation($ship = TRUE)
     {
-
         // Variables
         $rules  = array();
         $input  = $this->input->post();
@@ -178,12 +177,16 @@ class Cart_m extends MY_Model
 
         // Set callbacks
         $rules[] = array('field' => 'gateway', 'label' => 'lang:firesale:label_gateway', 'rules' => 'callback__validate_gateway');
-        $rules[] = array('field' => 'shipping', 'label' => 'lang:firesale:label_shipping', 'rules' => 'callback__validate_shipping');
         if ( $ship AND isset($input['ship_to']) ) {
             $rules[] = array('field' => 'ship_to', 'label' => 'lang:firesale:label_ship_to', 'rules' => 'callback__validate_address');
         }
         if ( isset($input['bill_to']) ) {
             $rules[] = array('field' => 'bill_to', 'label' => 'lang:firesale:label_bill_to', 'rules' => 'callback__validate_address');
+        }
+
+        // Shipping
+        if ( $ship ) { 
+            $rules[] = array('field' => 'shipping', 'label' => 'lang:firesale:label_shipping', 'rules' => 'callback__validate_shipping');
         }
 
         // Return
