@@ -1,5 +1,4 @@
-
-    <form method="post" action="{{ firesale:url route="cart" }}/update" class="firesale">
+    <?php echo form_open("{{ firesale:url route='cart' base='no' }}/update", array('class' => 'firesale')); ?>
 
         <table class="cart">
             <thead>
@@ -54,4 +53,4 @@
             <br class="clear" />
         </section>
 
-    </form>
+    <?php echo form_close(); ?>
