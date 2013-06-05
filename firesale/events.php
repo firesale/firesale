@@ -29,9 +29,10 @@ class Events_Firesale
         $this->ci =& get_instance();
 
         // register the events
-        Events::register('public_controller', array($this, 'public_controller'));
-        Events::register('settings_updated', array($this, 'settings_updated'));
-        Events::register('clear_cache', array($this, 'clear_cache'));
+        Events::register('public_controller',  array($this, 'public_controller'));
+        Events::register('settings_updated',   array($this, 'settings_updated'));
+        Events::register('clear_cache',        array($this, 'clear_cache'));
+        Events::register('cart_item_added',    array($this, 'cart_item_added'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_sales'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_stock'));
     }
@@ -99,6 +100,15 @@ class Events_Firesale
         $this->ci->pyrocache->delete_all('row_m');
         $this->ci->pyrocache->delete_all('products_m');
         $this->ci->cache->clean();
+    }
+
+    public function cart_item_added()
+    {
+        if ( $this->ci->uri->rsegment(1) == 'front_cart' and $this->ci->settings->get('firesale_disabled') == '1' ) {
+            $this->ci->fs_cart->destroy();
+            $this->ci->session->set_flashdata('error', $this->ci->settings->get('firesale_disabled_msg'));
+            redirect($this->ci->input->server('HTTP_REFERER'));
+        }
     }
 
     public function firesale_dashboard_sales()
