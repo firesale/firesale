@@ -504,10 +504,6 @@
     $lang['firesale:settings_new_inst']              = 'The time in seconds that a product is considered new'; # translate
     $lang['firesale:settings_basic']                 = 'Basic Checkout View'; # translate
     $lang['firesale:settings_basic_inst']            = 'Minimal checkout layout, requires a minimal.html layout in your theme'; # translate
-    $lang['firesale:settings_disabled']              = 'Disable Product Sales'; # translate
-    $lang['firesale:settings_disabled_inst']         = 'Everything looks normal but nothing can be added to cart or paid for'; # translate
-    $lang['firesale:settings_disabled_msg']          = 'Disabled Message'; # translate
-    $lang['firesale:settings_disabled_msg_inst']     = 'A flashdata error shown to users after they attempt to add an item to their cart'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Tidak dapat memasang modul FireSale, FireSale harus menggunakan PyroCMS versi 2.1.4 ke atas';
