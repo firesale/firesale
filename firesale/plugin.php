@@ -95,7 +95,7 @@ class Plugin_Firesale extends Plugin
         $cache_key  = md5(BASE_URL.implode('|', $attributes));
 
         // Get from cache
-        if ( ! $categories = $this->cache->get($cache_key) ) {
+        if ( ! $results = $this->cache->get($cache_key) ) {
 
             // Build query
             $query = $this->db->select('id')
@@ -138,21 +138,21 @@ class Plugin_Firesale extends Plugin
             }
 
             // Get categories
-            $categories = $query->get()->result_array();
+            $results = $query->get()->result_array();
 
             // Loop and get objects
-            foreach ($categories AS &$category) {
+            foreach ($results AS &$category) {
                 $category = $this->pyrocache->model('categories_m', 'get_category', array($category['id']), $this->firesale->cache_time);
             }
 
             // Fix helper variables
-            $categories = reassign_helper_vars($categories);
+            $results = reassign_helper_vars($results);
 
             // Add to cache
-            $this->cache->save($cache_key, $categories, $this->firesale->cache_time);
+            $this->cache->save($cache_key, $results, $this->firesale->cache_time);
         }
 
-        return $categories;
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     public function sub_categories()
@@ -253,12 +253,8 @@ class Plugin_Firesale extends Plugin
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
         }
 
-        if ($results) {
-            return array(array('products' => $results));
-        }
-
-        // Nothing?
-        return array('products' => FALSE);
+        // Send it back
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     public function bestsellers()
@@ -268,7 +264,7 @@ class Plugin_Firesale extends Plugin
 
         list($order, $order_dir) = explode(' ', $order);
 
-        $result = $this->db
+        $results = $this->db
             ->select("COUNT(oo.product_id) as count, p.id")
             ->from('firesale_products AS p')
             ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
@@ -278,16 +274,11 @@ class Plugin_Firesale extends Plugin
             ->get()
             ->result();
 
-        foreach ($result as &$product) {
+        foreach ($results as &$product) {
             $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
         }
 
-        if ($results) {
-            return array(array('bestsellers' => $results));
-        }
-
-        // Nothing?
-        return array('bestsellers' => FALSE);
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     public function modifier_form()
@@ -309,7 +300,7 @@ class Plugin_Firesale extends Plugin
         }
 
         // Assign data
-        $data = new stdClass;
+        $data            = new stdClass;
         $data->type      = $type;
         $data->product   = $product;
         $data->modifiers = $product['modifiers'];
