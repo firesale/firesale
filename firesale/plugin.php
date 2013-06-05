@@ -371,7 +371,7 @@ class Plugin_Firesale extends Plugin
         // Fix helper variables
         $results = reassign_helper_vars($results);
 
-        return $results;
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     public function addresses()
@@ -379,7 +379,8 @@ class Plugin_Firesale extends Plugin
         // Variables
         $default = ( isset($this->current_user->id) ? $this->current_user->id : null );
         $user    = $this->attribute('user_id', $default);
-        $data    = array();
+        $total   = 0;
+        $results = false;
 
         // Check for user
         if ( $user !== null ) {
@@ -387,11 +388,10 @@ class Plugin_Firesale extends Plugin
             $this->load->model('address_m');
 
             // Get addresses
-            $data['entries'] = $this->pyrocache->model('address_m', 'get_addresses', array($user), $this->firesale->cache_time);
-            $data['total']   = count($data['entries']);
+            $results = $this->pyrocache->model('address_m', 'get_addresses', array($user), $this->firesale->cache_time);
         }
 
-        return array('data' => $data);
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     public function orders()
@@ -399,7 +399,8 @@ class Plugin_Firesale extends Plugin
         // Variables
         $default = ( isset($this->current_user->id) ? $this->current_user->id : null );
         $user    = $this->attribute('user_id', $default);
-        $data    = array();
+        $total   = 0;
+        $results = false;
 
         // Check for user
         if ( $user !== null ) {
@@ -407,11 +408,10 @@ class Plugin_Firesale extends Plugin
             $this->load->model('orders_m');
 
             // Get addresses
-            $data['entries'] = $this->pyrocache->model('orders_m', 'get_orders_by_user', array($user), $this->firesale->cache_time);
-            $data['total']   = count($data['entries']);
+            $results = $this->pyrocache->model('orders_m', 'get_orders_by_user', array($user), $this->firesale->cache_time);
         }
 
-        return array('data' => $data);
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     /**
