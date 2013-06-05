@@ -49,12 +49,13 @@ class Plugin_Firesale extends Plugin
         $route = $this->attribute('route');
         $id    = $this->attribute('id');
         $after = $this->attribute('after');
+        $base = $this->attribute('base', 'yes');
 
         // Get the URL
         $url = $this->pyrocache->model('routes_m', 'build_url', array($route, $id), $this->firesale->cache_time);
 
         // Build the URL
-        return BASE_URL.$url.$after;
+        return (($base == 'yes') ? BASE_URL : '').$url.$after;
     }
 
     public function module_installed()

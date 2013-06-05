@@ -1,5 +1,4 @@
-
-    <form method="post" action="{{ firesale:url route='cart' }}/insert">
+    <?php echo form_open("{{ firesale:url route='cart' base='no' }}/insert"); ?>
         <input type="hidden" name="prd_code[0]" value="<?php echo $product['id']; ?>" />
         <fieldset>
             <ul>
@@ -46,4 +45,4 @@
             </div>
 
         </fieldset>
-    </form>
+    <?php echo form_close(); ?>
