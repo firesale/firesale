@@ -875,6 +875,9 @@ class Module_Firesale extends Module
 
             // Add disabled options
             $this->settings('add', array('firesale_disabled', 'firesale_disabled_msg'));
+
+            // Update currency settings
+            $this->db->where('slug', 'firesale_currency')->update('settings', array('options' => 'func:get_currencies'));
         }
 
         // Tracking
@@ -896,17 +899,8 @@ class Module_Firesale extends Module
         $settings   = array();
         $current    = array();
 
-        // Make list of currencies (if any) for default currency setting
-        $default_currency_options = array();
-        if($currencies = $this->db->get('firesale_currency')->result_array()) {
-            foreach($currencies as $k => $currency) {
-                $default_currency_options[] = $currency['id'].'='.$currency['cur_code'];
-            }
-        }
-        $default_currency_options = implode('|', $default_currency_options);
-
         // Settings
-        $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => '1', 'value' => '1', 'type' => 'select', 'options' => $default_currency_options, 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => '1', 'value' => '1', 'type' => 'select', 'options' => 'func:get_currencies', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_currency_key', 'title' => lang('firesale:settings_currency_key'), 'description' => lang('firesale:settings_currency_key_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 1, 'module' => 'firesale' );
         $settings[] = array('slug' => 'firesale_current_currency', 'title' => lang('firesale:settings_current_currency'), 'description' => lang('firesale:settings_current_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale' );
         $settings[] = array('slug' => 'firesale_currency_updated', 'title' => lang('firesale:settings_currency_updated'), 'description' => lang('firesale:settings_currency_updated_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale');

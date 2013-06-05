@@ -288,6 +288,28 @@ function get_order($id = null)
 }
 
 /**
+* Builds a pipe seperated list of available currencies
+*
+* @return string
+*/
+function get_currencies()
+{
+    // Variables
+    $_CI =& get_instance();
+    $currencies =  '';
+
+    // Get them
+    $results = $_CI->db->select('id, cur_code')->get('firesale_currency')->result_array();
+
+    // Format
+    foreach ( $results as $result ) {
+        $currencies .= ( strlen($currencies) > 0 ? '|' : '' ).$result['id'].'='.$result['cur_code'];
+    }
+
+    return $currencies;
+}
+
+/**
  * Generates a "twitter-like" time string displaying how long ago since a given
  * unix time occured.
  *
