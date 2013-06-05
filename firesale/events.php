@@ -25,7 +25,6 @@ class Events_Firesale
 
     public function __construct()
     {
-
         $this->ci =& get_instance();
 
         // register the events
@@ -104,7 +103,7 @@ class Events_Firesale
 
     public function cart_item_added()
     {
-        if ( $this->ci->uri->rsegment(1) == 'front_cart' and $this->ci->settings->get('firesale_disabled') == '1' ) {
+        if ( $this->ci->settings->get('firesale_disabled') == '1' ) {
             $this->ci->fs_cart->destroy();
             $this->ci->session->set_flashdata('error', $this->ci->settings->get('firesale_disabled_msg'));
             redirect($this->ci->input->server('HTTP_REFERER'));
