@@ -63,11 +63,11 @@ $(function() {
 		e.preventDefault();
 		var _t = $(this), p = $('#add_product').val();
 		_t.attr('disabled', '');
-		$.getJSON(SITE_URL+'/admin/firesale/products/ajax_product/' + p, function(d) {
+		$.getJSON(SITE_URL+'admin/firesale/products/ajax_product/' + p, function(d) {
 			if( d != 'false' )
 			{
 				var id = _t.parents('form').attr('action').split('/').slice(-1)[0];
-				$.getJSON('/admin/firesale/orders/ajax_add_product/' + id + '/' + p + '/' + $('#add_qty').val(), function(r) {
+				$.getJSON(SITE_URL+'admin/firesale/orders/ajax_add_product/' + id + '/' + p + '/' + $('#add_qty').val(), function(r) {
 					if( r != 'false' )
 					{
 						notif('success', 'Product added to order successfully - Make sure to save and update pricing');
