@@ -441,7 +441,12 @@ class Modifier_m extends MY_Model
         $update['is_variation'] = '1';
 
         // Perform update
-        return $this->db->where('id', $id)->update('firesale_products', $update);
+        $status = $this->db->where('id', $id)->update('firesale_products', $update);
+
+        // Just because
+        Events::trigger('variation_created', array('product' => $update, 'variations' => $variations, 'stream_id' => $stream_id));
+
+        return $status;
     }
 
     public function variation_exists($variations, $stream_id)

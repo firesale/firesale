@@ -30,13 +30,15 @@ class Events_Firesale_attributes
 
         // Load required items
         $this->ci->load->helper('firesale/general');
+        $this->ci->load->model('firesale_attributes/attributes_m');
         $this->ci->load->driver('Streams');
 
         // register the events
-        Events::register('form_build',      array($this, 'form_build'));
-        Events::register('clear_cache',     array($this, 'clear_cache'));
-        Events::register('product_updated', array($this, 'product_updated'));
-        Events::register('product_get',     array($this, 'product_get'));
+        Events::register('form_build',        array($this, 'form_build'));
+        Events::register('clear_cache',       array($this, 'clear_cache'));
+        Events::register('variation_created', array($this, 'variation_created'));
+        Events::register('product_updated',   array($this, 'product_updated'));
+        Events::register('product_get',       array($this, 'product_get'));
     }
 
     public function form_build($controller)
@@ -68,6 +70,11 @@ class Events_Firesale_attributes
     public function clear_cache()
     {
         $this->ci->pyrocache->delete_all('attributes_m');
+    }
+
+    public function variation_created($data)
+    {
+        $this->ci->attributes_m->variation($data['product'], $data['variations']);
     }
 
     public function product_updated($input)
