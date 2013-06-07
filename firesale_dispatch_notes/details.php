@@ -20,7 +20,7 @@
 
 class Module_Firesale_dispatch_notes extends Module {
 	
-	public $version = '1.0.2';
+	public $version = '1.0.2-dev';
     public $language_file = 'firesale_dispatch_notes/firesale';
 
     public function __construct()
