@@ -622,11 +622,12 @@ class Front_cart extends Public_Controller
             // Get the gateway slug
             $gateway = $this->gateways->slug_from_id($order['gateway']['id']);
             $settings = $this->gateways->settings($gateway);
-            
+                
             // Initialize CI-Merchant
             $this->merchant->load($gateway);
             $this->merchant->initialize($settings);
 
+            // Skip confirmation
             $skip = isset($settings['skip_confirmation_page']) and $settings['skip_confirmation_page'];
 
             // Begin payment processing
@@ -819,20 +820,25 @@ class Front_cart extends Public_Controller
         }
     }
 
-    private function _order_processing()
+    private function _order_processing($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 4);
+        $skip = $this->_skip($order['gateway']['id']);
 
-        if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+        if (! $callback) {
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+        } else {
+            $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
+        }
     }
 
     private function _order_failed($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 7);
+        $skip = $this->_skip($order['gateway']['id']);
 
         if (! $callback) {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
         } else {
             $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
         }
@@ -841,18 +847,20 @@ class Front_cart extends Public_Controller
     private function _order_declined($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 8);
+        $skip = $this->_skip($order['gateway']['id']);
 
         if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
 
     }
 
     private function _order_mismatch($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 9);
+        $skip = $this->_skip($order['gateway']['id']);
 
         if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
     }
 
     private function _order_authorized($order, $callback = FALSE)
@@ -1009,6 +1017,15 @@ class Front_cart extends Public_Controller
             show_404();
         }
 
+    }
+
+    public function _skip($gateway)
+    {
+        // Get the gateway slug
+        $gateway = $this->gateways->slug_from_id($gateway);
+        $settings = $this->gateways->settings($gateway);
+
+        return ( isset($settings['skip_confirmation_page']) ? $settings['skip_confirmation_page'] : false );
     }
 
 }
