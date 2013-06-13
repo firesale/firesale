@@ -438,12 +438,11 @@ class Front_cart extends Public_Controller
                 // Same as billing address
                 if ($data['ship_req'] and $input['ship_to'] == "same_as_billing") {
                     foreach ($input as $key => $field) {
-                        if (substr($key, 0, 5) != 'bill_') continue;
+                        if (substr($key, 0, 5) != 'bill_' OR $key == "bill_to") continue;
 
                         $input[str_replace("bill_", "ship_", $key)] = $field;
                     }
-
-                    $input['ship_to'] = $input['bill_to'];
+                    
                     // Don't save this address
                     $input['ship_title'] = "";
                 }
@@ -464,7 +463,7 @@ class Front_cart extends Public_Controller
                 // Run validation
                 if ($this->form_validation->run() === TRUE) {
                     // Check for addresses
-                    if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' ) ) {
+                    if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
                         $input['ship_to'] = $this->address_m->add_address($input, 'ship');
                     }
 
