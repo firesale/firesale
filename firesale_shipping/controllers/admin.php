@@ -87,6 +87,8 @@ class admin extends Admin_Controller
                         'error_message'		=> lang('firesale:shipping:' . ( $id == NULL ? 'add' : 'edit' ) . '_error')
                       );
 
+            Events::trigger('clear_cache');
+
         } else {
             $input = FALSE;
             $skip  = array();
