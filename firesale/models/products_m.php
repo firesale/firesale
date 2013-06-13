@@ -169,7 +169,7 @@ class Products_m extends MY_Model
 
         // Display variations?
         if (! $show_variations) {
-            $params['where'] .= ' AND is_variation = 0';
+            $params['where'] .= ' AND '.SITE_REF.'_firesale_products.is_variation = 0';
         }
 
         // Get entries
