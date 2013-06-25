@@ -83,7 +83,8 @@ class Plugin_Firesale extends Plugin
     {
 
         // Variables
-        $attributes = ksort($this->attributes());
+        $attributes = $this->attributes();
+        ksort($attributes);
         
         // if no ordering specified default to tree order
         if ( ! isset($attributes['order']) and ! isset($attributes['order-by']) ) {
@@ -180,7 +181,8 @@ class Plugin_Firesale extends Plugin
     {
 
         // Variables
-        $attributes      = ksort($this->attributes());
+        $attributes = $this->attributes();
+        ksort($attributes);
         $show_variations = (bool) $this->settings->get('firesale_show_variations');
         $cache_key       = md5('products'.BASE_URL.implode('|', $attributes));
 
@@ -268,7 +270,9 @@ class Plugin_Firesale extends Plugin
     {
         $limit = $this->attribute('limit', 10);
         $order = $this->attribute('order', 'p.created asc');
-        $cache_key = md5('bestsellers'.BASE_URL.implode('|', ksort($this->attributes())));
+        $attributes = $this->attributes();
+        ksort($attributes);
+        $cache_key = md5('bestsellers'.BASE_URL.implode('|', $attributes));
 
         if ( ! $results = $this->cache->get($cache_key) ) {
 
