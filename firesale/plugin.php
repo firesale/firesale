@@ -79,7 +79,7 @@ class Plugin_Firesale extends Plugin
         return $this->gateways->get_enabled();
     }
 
-    public function categories()
+    public function categories($loop = null)
     {
 
         // Variables
@@ -153,21 +153,21 @@ class Plugin_Firesale extends Plugin
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
         }
 
-        return array(array('total' => count($results), 'entries' => $results));
+        return array(array('total' => count($results), $loop.'entries' => $results));
     }
 
     public function sub_categories()
     {
 
         // Return
-        return $this->categories();
+        return $this->categories('sub_');
     }
 
     public function sub_sub_categories()
     {
 
         // Return
-        return $this->categories();
+        return $this->categories('sub_sub_');
     }
 
     public function products()
