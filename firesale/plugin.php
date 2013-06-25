@@ -268,24 +268,33 @@ class Plugin_Firesale extends Plugin
     {
         $limit = $this->attribute('limit', 10);
         $order = $this->attribute('order', 'p.created asc');
+        $cache_key = md5('bestsellers'.BASE_URL.implode('|', ksort($this->attributes())));
 
-        list($order, $order_dir) = explode(' ', $order);
+        if ( ! $results = $this->cache->get($cache_key) ) {
 
-        $results = $this->db
-            ->select("COUNT(oo.product_id) as count, p.id")
-            ->from('firesale_products AS p')
-            ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
-            ->order_by('count', 'desc')
-            ->order_by($order, $order_dir)
-            ->limit($limit)
-            ->get()
-            ->result();
+            list($order, $order_dir) = explode(' ', $order);
+    
+            $results = $this->db
+                ->select("COUNT(oo.product_id) as count, p.id")
+                ->from('firesale_products AS p')
+                ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
+                ->order_by('count', 'desc')
+                ->order_by($order, $order_dir)
+                ->limit($limit)
+                ->get()
+                ->result();
+    
+            foreach ($results as &$product) {
+                $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
+            }
+    
+            // Add to cache
+            $this->cache->save($cache_key, $results, $this->firesale->cache_time);
 
-        foreach ($results as &$product) {
-            $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
         }
 
         return array(array('total' => count($results), 'entries' => $results));
+
     }
 
     public function modifier_form()
