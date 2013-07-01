@@ -305,9 +305,10 @@ class Plugin_Firesale extends Plugin
     {
 
         // Variables
-        $type    = $this->attribute('type', 'select'); // radio
-        $product = $this->attribute('product');
-        $product = $this->products_m->get_product($product);
+        $type       = $this->attribute('type', 'select'); // radio
+        $difference = $this->attribute('difference', 'difference'); // display the price difference or the actual price
+        $product    = $this->attribute('product');
+        $product    = $this->products_m->get_product($product);
 
         // Format data
         foreach ($product['modifiers'] as &$modifier) {
@@ -320,10 +321,11 @@ class Plugin_Firesale extends Plugin
         }
 
         // Assign data
-        $data            = new stdClass;
-        $data->type      = $type;
-        $data->product   = $product;
-        $data->modifiers = $product['modifiers'];
+        $data             = new stdClass;
+        $data->type       = $type;
+        $data->difference = $difference;
+        $data->product    = $product;
+        $data->modifiers  = $product['modifiers'];
 
         // Build form
         return $this->parser->parse('partials/modifier_form', $data, true);
