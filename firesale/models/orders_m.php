@@ -76,6 +76,7 @@ class Orders_m extends MY_Model
 
         if ( $this->db->where('id', $order_id)->delete('firesale_orders') ) {
             if ( $this->db->where('order_id', $order_id)->delete('firesale_orders_items') ) {
+                Events::trigger('order_deleted', $order_id);
                 return TRUE;
             }
         }
