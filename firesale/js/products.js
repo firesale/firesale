@@ -83,7 +83,7 @@ $(function() {
 			stop: function(event, ui) {
 				var o = '';
 				$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });
-				$.post(SITE_URL+'admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
+				$.post(SITE_URL+'admin/firesale/ajax/images_order', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
 					if( data != 'ok' ) { alert(data); }
 				});
 			}
@@ -190,9 +190,9 @@ $(function() {
 		$('#products').unbind('submit').submit(function(e) {
 			e.preventDefault();
 			var action = $(this).find('button[clicked=true]').val();
-			var url = SITE_URL+'firesale/admin_products/ajax_quick_edit?r='+Math.floor(Math.random()*99999), data = $(this).serialize()+'&btnAction='+action;
+			var url = SITE_URL+'admin/firesale/ajax/product_edit?r='+Math.floor(Math.random()*99999), data = $(this).serialize()+'&btnAction='+action;
 			$.ajax({type: "POST", url: url, global: false, dataType: 'html', data: data, success: function(response) {
-				$.get(SITE_URL+'firesale/admin_products/index', function(response) {
+				$.get(SITE_URL+'admin/firesale/products/index', function(response) {
 					build_alert(response);
 					if( $(response).find('#products').size() > 0 ) {
 						$('#products').html($(response).find('#products').html());
@@ -220,7 +220,7 @@ $(function() {
 		if( req != null ) { req.abort(); }
 		create_overlay($('#product_table'));
 		$.cookie('fspf_values', $('#filters').serialize());
-		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, dataType: 'html', global: false, data: $('#filters').serialize(), success: function(data) {
+		req = $.ajax({type: "POST", url: SITE_URL+'admin/firesale/ajax/product_filter/'+extra, dataType: 'html', global: false, data: $('#filters').serialize(), success: function(data) {
 			$('#product_table').parent().find('.no_data').remove();
 			$('.overlay').remove();
 			$('.table_action_buttons').html(buttons);
