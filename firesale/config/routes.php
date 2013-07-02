@@ -35,5 +35,6 @@ $route['firesale/admin/gateways(/:num)?']   = 'admin/gateways/index$1';
 $route['firesale/admin/gateways(/:any)?']   = 'admin/gateways$1';
 $route['firesale/admin/liveedit(/:num)?']   = 'admin/liveedit/index$1';
 $route['firesale/admin/liveedit(/:any)?']   = 'admin/liveedit$1';
+$route['firesale/admin/ajax(/:any)?']       = 'admin/ajax$1';
 $route['firesale/admin(/:num)?']            = 'admin/dashboard/index$1';
 $route['firesale/admin(/:any)?']            = 'admin/dashboard$1';

@@ -74,7 +74,7 @@ function bind_tree($tabi) {
 
 		$('#tabs').tabs('remove', $tabi, 0);
 		
-		$.getJSON(SITE_URL+'admin/firesale/categories/ajax_cat_details/' + $details_id.val(), function(data) {
+		$.getJSON(SITE_URL+'admin/firesale/ajax/category_details/' + $details_id.val(), function(data) {
 
 			$('input[name=slug]').attr('id', 'slug').removeClass('disabled');
 
@@ -110,7 +110,7 @@ function bind_tree($tabi) {
 			.append(( data.id != 1 ? ' <button type="submit" name="btnAction" value="delete" class="btn red confirm"><span>Delete</span></button>' : '' ));
 
 			$('#tabs').tabs('add', '#images', 'Images');
-			$("#images").load(SITE_URL+'admin/firesale/categories/ajax_cat_images/' + $details_id.val(), function() {
+			$("#images").load(SITE_URL+'admin/firesale/ajax/category_images/' + $details_id.val(), function() {
 				bind_upload('admin/firesale/categories/upload/'+data.id);
 				$('#dropbox').sortable({
 					cursor: 'move',
@@ -118,7 +118,7 @@ function bind_tree($tabi) {
 					stop: function(event, ui) {
 						var o = '';
 						$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });
-						$.post(SITE_URL+'admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
+						$.post(SITE_URL+'admin/firesale/ajax/order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
 							if( data != 'ok' ) { alert(data); }
 						});
 					}
