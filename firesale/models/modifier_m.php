@@ -567,6 +567,7 @@ class Modifier_m extends MY_Model
     public function array_cartesian_product($arrays)
     {
         $result = array();
+        $keys   = array_keys($arrays);
         $arrays = array_values($arrays);
         $sizeIn = sizeof($arrays);
         $size   = $sizeIn > 0 ? 1 : 0;
@@ -580,6 +581,7 @@ class Modifier_m extends MY_Model
             $result[$i] = array();
 
             for ($j = 0; $j < $sizeIn; $j ++) {
+                // $result[$i][$keys[$j]] = current($arrays[$j]);
                 array_push($result[$i], current($arrays[$j]));
             }
 
@@ -594,6 +596,40 @@ class Modifier_m extends MY_Model
         }
 
         return $result;
+    }
+
+    public function jsdata($modifiers)
+    {
+        // Variables
+        $variations = $this->possible_variations($modifiers);
+        $stream     = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+        $data       = array();
+
+        // Loop possible variations
+        foreach ( $variations as $variation ) 
+        {
+            // Find product ID
+            $id  = $this->pyrocache->model('modifier_m', 'variation_exists', array($variation, $stream->id), $this->firesale->cache_time);
+            $key = implode('', $variation);
+
+            // Check product
+            if ( $id !== false )
+            {
+                $product    = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
+                $data[$key] = array(
+                    $product['rrp_formatted'],
+                    $product['price_formatted'],
+                    $product['code'],
+                    (int)$product['status']['key'],
+                    (int)$product['stock'],
+                    (int)$product['stock_status']['key'],
+                    $product['stock_status']['value'],
+                    $product['image']
+                );
+            }
+        }
+
+        return json_encode($data);
     }
 
 }

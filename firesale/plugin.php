@@ -303,12 +303,11 @@ class Plugin_Firesale extends Plugin
 
     public function modifier_form()
     {
-
         // Variables
         $type       = $this->attribute('type', 'select'); // radio
         $difference = $this->attribute('difference', 'difference'); // display the price difference or the actual price
         $product    = $this->attribute('product');
-        $product    = $this->products_m->get_product($product);
+        $product    = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
 
         // Format data
         foreach ($product['modifiers'] as &$modifier) {
@@ -326,6 +325,7 @@ class Plugin_Firesale extends Plugin
         $data->difference = $difference;
         $data->product    = $product;
         $data->modifiers  = $product['modifiers'];
+        $data->jsdata     = $this->pyrocache->model('modifier_m', 'jsdata', array($product['modifiers']), $this->firesale->cache_time);
 
         // Build form
         return $this->parser->parse('partials/modifier_form', $data, true);
