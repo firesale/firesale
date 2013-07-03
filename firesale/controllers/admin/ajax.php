@@ -226,4 +226,73 @@ class Ajax extends Admin_Controller
         exit();
     }
 
+    public function order_add_product($order, $id, $qty)
+    {
+        // Load required items
+        $this->load->model('orders_m');
+        $this->load->model('products_m');
+
+        // Get order
+        $order_info = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order), $this->firesale->cache_time);
+
+        // Get product
+        $product = $this->pyrocache->model('products_m', 'get_product', array($id, $order_info['currency']['id']), $this->firesale->cache_time);
+
+        // Insert/Update item
+        if ( $this->orders_m->insert_update_order_item($order, $product, $qty) ) {
+
+            // Update price
+            $this->orders_m->update_order_cost($order, true, false);
+
+            // Return to the browser
+            $qty = ( $product['stock_status']['key'] != 6 && $qty > $product['stock'] ? $product['stock'] : $qty );
+            $data = array('qty' => $qty, 'price' => $product['price'], 'total' => number_format($qty * $product['price'], 2));
+            echo json_encode($data);
+            exit();
+        }
+    }
+
+    public function order_address($user, $id)
+    {
+        // Load required items
+        $this->load->model('address_m');
+
+        // Get Address
+        $address = $this->pyrocache->model('address_m', 'get_address', array($id, $user), $this->firesale->cache_time);
+        echo json_encode($address);
+        exit();
+    }
+
+    public function order_filter()
+    {
+        // Load required items
+        $this->load->model('orders_m');
+
+        // Variables
+        $perpage = 30;
+        $start   = ( isset($_POST['start']) ? $_POST['start'] : 0 );
+        $start   = ( $start > 0 ? ( $start - 1 ) * $perpage : 0 );
+        $where   = array();
+
+        unset($_POST['start']);
+
+        // Variables
+        $pagination = array('uri_segment' => 5, 'per_page' => $perpage, 'base_url' => 'admin/firesale/orders/');
+        $params     = array('stream' => 'firesale_orders', 'namespace' => 'firesale_orders', 'limit' => $perpage, 'offset' => $start, 'order_by' => 'id', 'sort' => 'desc');
+
+        // Add filter params
+        $params['where'] = $this->orders_m->add_filters($_POST);
+
+        // Get entries
+        $orders = $this->streams->entries->get_entries($params);
+
+        // Assign variables
+        $this->data->orders     = $this->orders_m->format_order($orders['entries']);
+        $this->data->total      = $this->pyrocache->model('orders_m', 'order_count', array($params['where']), $this->firesale->cache_time);
+        $this->data->pagination = create_pagination('/admin/firesale/orders/', $this->data->total, $this->perpage, 5);
+
+        // Build page
+        $this->template->set_layout(false)->build('admin/orders/index', $this->data);
+    }
+
 }
