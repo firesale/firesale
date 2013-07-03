@@ -291,7 +291,7 @@ class Plugin_Firesale extends Plugin
                 return array(array('total' => 0, 'entries' => array()));
             }
 
-            $resuls = $query->result();
+            $results = $query->result();
     
             foreach ($results as &$product) {
                 $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
