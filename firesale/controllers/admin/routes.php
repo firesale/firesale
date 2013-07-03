@@ -273,18 +273,4 @@ class Routes extends Admin_Controller
         redirect('admin/firesale/routes');
     }
 
-    public function ajax_order()
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-            echo order_table($this->input->post('order'), 'firesale_routes', 'route_');
-            $this->routes_m->clear();
-            $this->rebuild(false);
-            exit();
-        }
-
-        echo 'error';
-        exit();
-    }
-
 }
