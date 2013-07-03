@@ -278,15 +278,20 @@ class Plugin_Firesale extends Plugin
 
             list($order, $order_dir) = explode(' ', $order);
     
-            $results = $this->db
+            $query = $this->db
                 ->select("COUNT(oo.product_id) as count, p.id")
                 ->from('firesale_products AS p')
                 ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
                 ->order_by('count', 'desc')
                 ->order_by($order, $order_dir)
                 ->limit($limit)
-                ->get()
-                ->result();
+                ->get();
+
+            if (! $query->num_rows()) {
+                return array(array('total' => 0, 'entries' => array()));
+            }
+
+            $resuls = $query->result();
     
             foreach ($results as &$product) {
                 $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
