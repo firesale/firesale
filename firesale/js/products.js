@@ -220,7 +220,8 @@ $(function() {
 		if( req != null ) { req.abort(); }
 		create_overlay($('#product_table'));
 		$.cookie('fspf_values', $('#filters').serialize());
-		req = $.ajax({type: "POST", url: SITE_URL+'admin/firesale/ajax/product_filter/'+extra, dataType: 'html', global: false, data: $('#filters').serialize(), success: function(data) {
+		var data = $('#filters').serialize()+'&csrf_hash_name='+$('input[name=csrf_hash_name]').val();
+		req = $.ajax({type: "POST", url: SITE_URL+'admin/firesale/ajax/product_filter/'+extra, dataType: 'html', global: false, data: data, success: function(data) {
 			$('#product_table').parent().find('.no_data').remove();
 			$('.overlay').remove();
 			$('.table_action_buttons').html(buttons);
