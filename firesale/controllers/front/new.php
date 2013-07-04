@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Front_new extends Public_Controller
+class New extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
@@ -49,22 +49,49 @@ class Front_new extends Public_Controller
         $this->perpage = $this->settings->get('firesale_perpage');
     }
 
-    public function index($start = 0)
+    public function index()
     {
         // Get cookie data
         $order              = $this->input->cookie('firesale_listing_order');
         $this->data->layout = $this->input->cookie('firesale_listing_style') or 'grid';
         $this->data->order  = get_order(( $order != null ? $order : '1' ));
 
+        // Variables
+        $args     = func_get_args();
+        $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
+        $category = implode('/', $args);
+        $filter   = array('new' => '', $this->data->order['by'] => $this->data->order['dir']);
+        $title    = lang('firesale:new:title');
+
+        // Add category
+        if ( strlen($category) > 0 ) {
+            
+            // Get category ID
+            $category = $this->db->select('title, id, slug')->where('slug', $category)->get('firesale_categories')->row();
+
+            // Not found
+            if ( $category === null ) {
+                show_404();
+                return;
+            }
+
+            // Add to filter
+            $filter['category'] = $category->id;
+
+            // Update title
+            $title = sprintf(lang('firesale:new:in:title'), $category->title);
+        }
+
         // Get product IDs
-		$filter   = array('new' => '', $this->data->order['by'] => $this->data->order['dir']);
-		$ids      = $this->pyrocache->model('products_m', 'get_products', array($filter, $start, $this->perpage), $this->firesale->cache_time);;
-		$total    = count($this->products_m->get_products(array('new' => '')));
-		$products = array();
+        $ids      = $this->products_m->get_products($filter, $start, $this->perpage);
+        $total    = ( $ids ? count($this->products_m->get_products($filter)) : 0 );
+        $products = array();
         
         // Loop and get product data
-        foreach ( $ids as $id ) {
-        	$products[] = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+        if ( ! empty($ids) ) {
+            foreach ( $ids as $id ) {
+                $products[] = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+            }
         }
 
         // Assign pagination
@@ -79,7 +106,7 @@ class Front_new extends Public_Controller
         $this->data->ordering = get_order();
 
         // Build Page
-        $this->template->title(lang('firesale:new:title'))
+        $this->template->title($title)
                        ->append_css('module::firesale.css')
                        ->append_js('module::firesale.js')
                        ->set($this->data)

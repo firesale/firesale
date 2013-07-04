@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Admin_gateways extends Admin_Controller
+class Gateways extends Admin_Controller
 {
     public $section = 'gateways';
 
@@ -126,12 +126,14 @@ class Admin_gateways extends Admin_Controller
 
                 $gateway_id = $this->db->insert_id();
 
-                foreach ($additional_fields as $field) {
-                    $this->db->insert('firesale_gateway_settings', array(
-                        'id'	=> $gateway_id,
-                        'key'	=> $field['field'],
-                        'value'	=> set_value($field['field'])
-                    ));
+                if(!empty($additional_fields)){
+                    foreach ($additional_fields as $field) {
+                        $this->db->insert('firesale_gateway_settings', array(
+                            'id'	=> $gateway_id,
+                            'key'	=> $field['field'],
+                            'value'	=> set_value($field['field'])
+                        ));
+                    }
                 }
 
                 if ($this->db->trans_status() !== FALSE) {

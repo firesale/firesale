@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Front_category extends Public_Controller
+class Category extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the

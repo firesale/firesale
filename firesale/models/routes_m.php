@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -240,11 +240,8 @@ class Routes_m extends MY_Model
 
     public function write($title, $route, $map, $old_title = false)
     {
-        // CH: Are we in the PyroCMS installer?
-        $path = defined('PYROPATH') ? PYROPATH : APPPATH;
-
         // Variables
-        $file    = $path.'config/routes.php';
+        $file    = $this->_path().'config/routes.php';
         $content = file_get_contents($file);
         $before  = "\n/* End of file routes.php */";
         $title   = ( substr($title, 0, 5) == 'lang:' ? lang(substr($title, 5)) : $title );
@@ -276,9 +273,8 @@ class Routes_m extends MY_Model
 
     public function remove($title)
     {
-
         // Variables
-        $file    = APPPATH.'config/routes.php';
+        $file    = $this->_path().'config/routes.php';
         $content = file_get_contents($file);
         $title   = ( substr($title, 0, 5) == 'lang:' ? lang(substr($title, 5)) : $title );
         $regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
@@ -301,6 +297,11 @@ class Routes_m extends MY_Model
         foreach ( $routes as $route ) {
             $this->remove($route['title']);
         }
+    }
+
+    public function _path()
+    {
+        return defined('PYROPATH') ? PYROPATH : APPPATH;
     }
 
 }

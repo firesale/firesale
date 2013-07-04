@@ -15,13 +15,13 @@
                 <table>
                     <thead>
                         <tr>
-                            <th><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
+                            <th style="width: 13px"><input type="checkbox" name="action_to_all" value="" class="check-all" /></th>
                             <th><?php echo lang('firesale:label_title'); ?></th>
                             <th><?php echo lang('firesale:label_company'); ?></th>
                             <th><?php echo lang('firesale:label_price'); ?></th>
                             <th><?php echo lang('firesale:label_price_min_max'); ?></th>
                             <th><?php echo lang('firesale:label_weight_min_max'); ?></th>
-                            <th style="width: 120px"></th>
+                            <th style="width: 125px"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -41,8 +41,10 @@
                                 <?php echo ( strlen($option['weight_max']) > 0 ? $option['weight_max'] :  'Unlimited' ); ?> kg
                             </td>
                             <td>
-                                <a class="btn orange" href="<?php echo site_url('admin/firesale_shipping/edit/'.$option['id']); ?>"><?php echo lang('global:edit'); ?></a>
-                                <a class="btn confirm red" href="<?php echo site_url('admin/firesale_shipping/delete/'.$option['id']); ?>"><?php echo lang('global:delete'); ?></a>
+                                <center>
+                                    <a class="btn orange" href="<?php echo site_url('admin/firesale_shipping/edit/'.$option['id']); ?>"><?php echo lang('global:edit'); ?></a>
+                                    <a class="btn confirm red" href="<?php echo site_url('admin/firesale_shipping/delete/'.$option['id']); ?>"><?php echo lang('global:delete'); ?></a>
+                                </center>
                             </td>
                         </tr>
                     <?php endforeach; ?>

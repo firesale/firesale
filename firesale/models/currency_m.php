@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -147,6 +147,12 @@ class Currency_m extends MY_Model
 
     public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
     {
+        if(empty($currency)){
+            $currency = new stdClass();
+            $currency->cur_format = "";
+            $currency->cur_format_dec = "";
+            $currency->cur_format_sep = "";
+        }
         // Format initial value
         if ($fix and $price > 0) {
             switch ($currency->cur_format_num) {
@@ -190,48 +196,6 @@ class Currency_m extends MY_Model
 
         // Return
         return $formatted;
-    }
-
-
-    /**
-     * Updates the options for the select/dropdown "Default Currency Code" in settings
-     */
-    public function update_default_currency_options()
-    {
-        // Get current settings
-        $setting = $this->db->get_where('settings', array('slug' => 'firesale_currency'))->row_array();
-
-        // Variables
-        $options = array();
-        $codes   = array();
-
-        if($currencies = $this->db->get('firesale_currency')->result_array()) {
-            foreach($currencies as $k => $currency) {
-                $codes[$currency['id']] = $currency['cur_code'];
-                $options[] = $currency['id'].'='.$currency['cur_code'];
-            }
-        }
-        $setting['options'] = implode('|', $options);
-
-        // Make sure saved currency is still in the list (it might have been deleted)
-        if(!isset($codes[$setting['value']])) {
-            // It's not, so try the default
-            if(isset($codes[$setting['default']]))
-                $setting['value'] = $setting['default'];
-
-            // Default gone too, so use the first enabled currency
-            else {
-                foreach($currencies as $currency) {
-                    if(!$currency['enabled'])
-                        continue;
-                    $setting['value'] = $setting['default'] = $currency['id'];
-                    break;
-                }
-            }
-        }
-
-        // Update the setting
-        $this->db->where('slug', 'firesale_currency')->update('settings', $setting);
     }
 
 }

@@ -13,19 +13,15 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
 class firesale
 {
+    private $_CI        = null;
 
-    protected $sections    = array();
-    private $_CI         = null;
-    public $elements    = array();
-    public $assets      = array();
-    public $roles       = array('shipping' => NULL);
     public $cache_time  = 86400;
 
     public function __construct()

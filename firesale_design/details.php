@@ -20,7 +20,7 @@
 
 class Module_Firesale_design extends Module
 {
-    public $version = '1.0.1';
+    public $version = '1.0.2-dev';
     public $language_file = 'firesale_design/firesale';
 
     public function __construct()
@@ -37,10 +37,12 @@ class Module_Firesale_design extends Module
 
         $info = array(
             'name' => array(
-                'en' => 'FireSale Design'
+                'en' => 'FireSale Design',
+                'it' => 'FireSale Design',
             ),
             'description' => array(
-                'en' => 'Complete control over your page layouts, style and javascript'
+                'en' => 'Complete control over your page layouts, style and javascript',
+                'it' => 'Controllo completo sul layout della pagina, sugli stili e sul javascript'
             ),
             'frontend' => FALSE,
             'backend'  => FALSE,

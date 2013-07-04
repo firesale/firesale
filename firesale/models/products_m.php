@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -27,14 +27,6 @@ class Products_m extends MY_Model
      * @access public
      */
     public $_table = 'firesale_products';
-
-    /**
-     * Caches all product queries by slug or id
-     *
-     * @var array
-     * @access protected
-     */
-    protected $cache = array('id' => array(), 'slug' => array());
 
     /**
      * Contains an array of the possible stock status options
@@ -177,7 +169,7 @@ class Products_m extends MY_Model
 
         // Display variations?
         if (! $show_variations) {
-            $params['where'] .= ' AND is_variation = 0';
+            $params['where'] .= ' AND '.SITE_REF.'_firesale_products.is_variation = 0';
         }
 
         // Get entries
@@ -211,15 +203,17 @@ class Products_m extends MY_Model
             $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
             $product = array_merge($product, $pricing);
 
+            // Check images
+            if ( $product['is_variation'] == '1' and empty($product['images']) ) {
+                $product['images'] = $this->get_parent_images($product['id']);
+                $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
+            }
+
             // Append data from other modules
             $results = Events::trigger('product_get', $product, 'array');
             foreach ($results as $result) {
                 $product = array_merge($product, $result);
             }
-
-            // Add to cache
-            $this->cache['id'][$product['id']]     = $product;
-            $this->cache['slug'][$product['slug']] = $product;
 
             // Return
             return $product;
@@ -262,7 +256,7 @@ class Products_m extends MY_Model
             } elseif ($key == 'search' AND strlen($value) > 0 ) {
                 $query->where("( p.`title` LIKE '%{$value}%' OR p.`code` LIKE '%{$value}%' OR p.`description` LIKE '%{$value}%' )");
             } elseif ($key == 'sale' AND $value == '1') {
-                $query->where('p.price <', 'p.rrp');
+                $query->where('p.price < p.rrp');
             } elseif ($value == 'asc' or $value == 'desc' ) {
                 $query->order_by('p.'.$key, $value);
             } elseif ($key == 'price') {
@@ -270,8 +264,8 @@ class Products_m extends MY_Model
                 $query->where('p.price >=', $from)
                       ->where('p.price <=', $to);
             } elseif ($key == 'new' ) {
-                $new = ( 0 + $this->settings->get('firesale_new') );
-                $query->where('p.created >=', ( time() - $new ));
+                $new = (int)$this->settings->get('firesale_new');
+                $query->where('p.created >=', date('Y-m-d H:i:s', ( time() - $new )));
             } elseif( strlen($value) > 0 AND $value != '-1' ) {
                 $query->where($key, $value);
             }
@@ -842,6 +836,34 @@ class Products_m extends MY_Model
         }
 
         return $images['data']['file'];
+    }
+
+    /**
+     * Gets an array of the parent products images
+     * 
+     * @param  int $id The id of the product to query
+     * @return array   The array of images, boolean false on not found
+     */
+    public function get_parent_images($id)
+    {
+        // Get parent slug
+        $slug = $this->db->select('p.slug')
+                         ->from('firesale_product_variations_firesale_products AS pvp', 'inner')
+                         ->join('firesale_product_variations AS pv', 'pv.id = pvp.row_id', 'inner')
+                         ->join('firesale_product_modifiers AS pm', 'pm.id = pv.parent', 'inner')
+                         ->join('firesale_products AS p', 'p.id = pm.parent', 'inner')
+                         ->where('pvp.firesale_products_id', $id)
+                         ->group_by('p.slug')
+                         ->get();
+
+        // Check result
+        if ( $slug->num_rows() ) {
+            $slug = $slug->row()->slug;
+            return $this->get_images($slug);
+        }
+
+        // Nothing found
+        return false;
     }
 
     /**

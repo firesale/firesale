@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -131,6 +131,7 @@ function reassign_helper_vars($array)
         $item['first']    = ( $count == 1 ? '1' : '0' );
         $item['last']     = ( count($array) == $count ? '1' : '0' );
         $item['odd_even'] = $odd_even = ( $odd_even == 'even' ? 'odd' : 'even' );
+        $item['count']    = $count;
     }
 
     return $array;
@@ -269,11 +270,12 @@ function get_order($id = null)
     $_ORDER[4] = array('title' => lang('firesale:label_pricehigh'), 'by' => 'price', 'dir' => 'desc');
     $_ORDER[5] = array('title' => lang('firesale:label_modelaz'), 'by' => 'code', 'dir' => 'asc');
     $_ORDER[6] = array('title' => lang('firesale:label_modelza'), 'by' => 'code', 'dir' => 'desc');
-    $_ORDER[7] = array('title' => lang('firesale:label_creatednew'), 'by' => 'created', 'dir' => 'asc');
-    $_ORDER[8] = array('title' => lang('firesale:label_createdold'), 'by' => 'created', 'dir' => 'desc');
+    $_ORDER[7] = array('title' => lang('firesale:label_creatednew'), 'by' => 'created', 'dir' => 'desc');
+    $_ORDER[8] = array('title' => lang('firesale:label_createdold'), 'by' => 'created', 'dir' => 'asc');
 
     // Return
-    if ($id != null) {
+    if ($id !== null) {
+        $_ORDER[$id]['key'] = $id;
         return $_ORDER[$id];
     }
 
@@ -283,6 +285,28 @@ function get_order($id = null)
     }
 
     return $_ORDER;
+}
+
+/**
+* Builds a pipe seperated list of available currencies
+*
+* @return string
+*/
+function get_currencies()
+{
+    // Variables
+    $_CI =& get_instance();
+    $currencies =  '';
+
+    // Get them
+    $results = $_CI->db->select('id, cur_code')->get('firesale_currency')->result_array();
+
+    // Format
+    foreach ( $results as $result ) {
+        $currencies .= ( strlen($currencies) > 0 ? '|' : '' ).$result['id'].'='.$result['cur_code'];
+    }
+
+    return $currencies;
 }
 
 /**

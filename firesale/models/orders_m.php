@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -76,6 +76,7 @@ class Orders_m extends MY_Model
 
         if ( $this->db->where('id', $order_id)->delete('firesale_orders') ) {
             if ( $this->db->where('order_id', $order_id)->delete('firesale_orders_items') ) {
+                Events::trigger('order_deleted', $order_id);
                 return TRUE;
             }
         }
@@ -587,6 +588,37 @@ class Orders_m extends MY_Model
         }
 
         return FALSE;
+    }
+
+    /**
+     * Returns a list of orders for a given user
+     * @param  int $user_id The user id to query for
+     * @return array an array of orders
+     */
+    public function get_orders_by_user($user_id)
+    {
+        // Get IDS
+        $orders = $this->db->where('created_by', $user_id)
+                           ->order_by('created', 'desc')
+                           ->get('firesale_orders')
+                           ->result_array();
+
+        // Check for orders
+        if ( ! empty($orders) ) {
+
+            // Loop and get data
+            foreach ( $orders as &$order ) {
+                $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order['id']), $this->firesale->cache_time);
+            }
+
+            // Format orders
+            $orders = $this->format_order($orders);
+
+            // Reassign help
+            $orders = reassign_helper_vars($orders);
+        }
+
+        return $orders;
     }
 
     /**

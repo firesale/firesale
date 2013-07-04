@@ -32,7 +32,7 @@ class Attributes_m extends MY_Model
             $id      = 0;
 
             // Insert it
-            if( !$results->num_rows() ) {
+            if( ! $results->num_rows() ) {
 
                 $this->db->insert('firesale_attributes', array('title' => $title));
                 $id = $this->db->insert_id();
@@ -51,6 +51,60 @@ class Attributes_m extends MY_Model
 
         // Failed or invalid
         return 0;
+    }
+
+    public function variation($product, $variations)
+    {
+        // Variables
+        $stream = $this->streams->streams->get_stream('firesale_products', 'firesale_products');
+
+        // Loop variations
+        foreach ( $variations as $variation ) {
+
+            // Get product
+            $query = $this->db->select('pvp.firesale_products_id AS id, pm.title AS key, pv.title AS value')
+                              ->from('firesale_product_variations AS pv')
+                              ->join('firesale_product_variations_firesale_products AS pvp', 'pv.id = pvp.row_id', 'inner')
+                              ->join('firesale_product_modifiers AS pm', 'pm.id = pv.parent', 'inner')
+                              ->where('pv.id', $variation)
+                              ->get();
+
+            // Check results
+            if ( $query->num_rows() ) {
+
+                // Loop results
+                foreach ( $query->result_array() as $result ) {
+
+                    // Create attribute
+                    $result['attribute'] = $this->create($result['key'], true);
+
+                    // Build data
+                    $data = array(
+                         'stream_id'    => $stream->id,
+                         'row_id'       => $result['id'],
+                         'attribute_id' => $result['attribute']
+                    );
+
+                    // Update value
+                    if ( $this->db->where($data)->get('firesale_attributes_assignments')->num_rows() ) {
+        
+                        $this->db->where($data)->update('firesale_attributes_assignments', array(
+                            'value' => $result['value']
+                        ));
+        
+                    // Create value
+                    } else {
+        
+                        $data['value'] = $result['value'];
+                        $this->db->insert('firesale_attributes_assignments', $data);    
+                    }
+
+                }
+
+            }
+
+        }
+
     }
 
     public function build_dropdown()

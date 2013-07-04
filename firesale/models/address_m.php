@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -33,12 +33,12 @@ class Address_m extends MY_Model
 
         // Set query paramaters
         $params	 = array(
-                    'stream' 	=> 'firesale_addresses',
-                    'namespace'	=> 'firesale_addresses',
-                    'where'		=> SITE_REF."_firesale_addresses.created_by = '{$user}' AND ".SITE_REF."_firesale_addresses.title != ''",
-                    'order_by'	=> 'id',
-                    'sort'		=> 'desc'
-                   );
+            'stream'    => 'firesale_addresses',
+            'namespace' => 'firesale_addresses',
+            'where'     => SITE_REF."_firesale_addresses.created_by = '{$user}' AND ".SITE_REF."_firesale_addresses.title != ''",
+            'order_by'  => 'id',
+            'sort'      => 'desc'
+        );
 
         // Get addresses
         $addresses = $this->streams->entries->get_entries($params);
@@ -110,7 +110,7 @@ class Address_m extends MY_Model
         $query = $this->db->select('id')->where($items)->get('firesale_addresses');
 
         // Add
-        if ( !$query->num_rows() ) {
+        if ( ! $query->num_rows() ) {
 
             // Add to items
             $items['created']        = date("Y-m-d H:i:s");
@@ -118,15 +118,11 @@ class Address_m extends MY_Model
 
             // Insert
             $this->db->insert('firesale_addresses', $items);
-
             return $this->db->insert_id();
-
-        } else {
-            $result = $query->row();
-
-            return $result->id;
         }
 
+        $result = $query->row();
+        return $result->id;
     }
 
     /**
@@ -158,7 +154,6 @@ class Address_m extends MY_Model
             $_rule   		= $rule;
             $_rule['field'] = $type . '_' . $_rule['field'];
             $rules[] 		= $_rule;
-
         }
 
         // Set validation rules
@@ -168,7 +163,7 @@ class Address_m extends MY_Model
         if ( $this->form_validation->run() === TRUE ) {
             if ( $id > 0 AND $this->db->where('id', $id)->update('firesale_addresses', $update) ) {
                 return $id;
-            } elseif ( $id <= 0 AND $address_id = $this->add_address($input, $type) ) {
+            } else if ( $id <= 0 AND $address_id = $this->add_address($input, $type) ) {
                 return $address_id;
             }
         }
@@ -236,17 +231,18 @@ class Address_m extends MY_Model
         // Pull out post data
         if ( $input !== null ) {
 
-            // Loop post data
+            // Fix key names based on type
             foreach( $input as $key => $val ) {
-                if( substr($key, 0, 5) == $type.'_' ) {
-                    $data[substr($key, 5)] = $val;
-                } else {
-                    $data[$key] = $val;
-                }
+                if( substr($key, 0, 5) == $type.'_' ) { $data[substr($key, 5)] = $val; } else { $data[$key] = $val; }
             }
 
             // Set into post
             $_POST = $data;
+        }
+
+        // Fix language settings
+        if ( ! empty($_POST) ) {
+            $this->address_langauge_fix($stream->id, $type);
         }
 
         // Get fields
@@ -254,10 +250,20 @@ class Address_m extends MY_Model
 
         // Format fields
         foreach( $fields AS $field ) {
+            
+            // Prefix input slugs
             $key = ( in_array($field['input_slug'], $address) ? 'address' : 'details' );
             if( $type != NULL ) {
                 $field['input'] = str_replace(array('id="', 'name="'), array('id="' . $type . '_', 'name="' . $type . '_'), $field['input']);
             }
+
+            // Correct titles
+            if ( substr($field['input_title'], 0, 5) == 'lang:' ) {
+                $key = substr($field['input_title'], 5);
+                $this->lang->language[$key] = str_replace(lang('firesale:title:'.$type).' ', '', lang($key));
+            }
+
+            // Reassign
             $tabs[$key][] = $field;
         }
 
@@ -265,6 +271,39 @@ class Address_m extends MY_Model
         $_POST = $input;
 
         return $tabs;
+    }
+
+    /**
+     * Fixes the language strings for an address form to better display if an error
+     * has occured with billing or shipping fields.
+     * 
+     * @param  int $stream_id The stream ID for the address form
+     * @param  string $type   The type to deal with bill or ship
+     * @return void
+     */
+    public function address_langauge_fix($stream_id, $type)
+    {
+        // Check type
+        if ( $type === null ) { return; }
+
+        // Variables
+        $other = ( $type == 'bill' ? 'ship' : 'bill' );
+
+        // Get fields
+        $fields = $this->db->select('f.field_name')
+                           ->from('data_fields AS f')
+                           ->join('data_field_assignments AS fa', 'fa.field_id = f.id', 'inner')
+                           ->where('fa.stream_id', $stream_id)
+                           ->get()
+                           ->result_array();
+
+        // Loop and reassign fields
+        foreach ( $fields as $field ) {
+            $key   = substr($field['field_name'], 5);
+            $field = lang($key);
+            $clean = str_replace(lang('firesale:title:'.$other).' ', '', $field);
+            $this->lang->language[$key] = lang('firesale:title:'.$type).' '.$clean;
+        }
     }
 
 }

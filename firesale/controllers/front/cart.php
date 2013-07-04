@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Front_cart extends Public_Controller
+class Cart extends Public_Controller
 {
 
     public $validation_rules = array();
@@ -86,24 +86,9 @@ class Front_cart extends Public_Controller
 
         // Check for price change
         $this->cart_m->check_price();
-
-        // Assign Variables
-        $data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
-        $data['tax']   		 = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
-        $data['total']   	 = $this->currency_m->format_string($this->fs_cart->total(), $this->fs_cart->currency(), false);
-        $data['currency']    = $this->fs_cart->currency();
-        $data['contents']    = $this->fs_cart->contents();
-
-        // Add item id
-        $i = 1;
-        foreach ($data['contents'] AS &$product) {
-
-            $product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
-            $product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
-            $product['no']       = $i;
-
-            $i++;
-        }
+        
+        // get the cart data
+        $data = $this->cart_data();
 
         // Add page data
         $this->template->set_breadcrumb(lang('firesale:cart:title'))
@@ -114,6 +99,54 @@ class Front_cart extends Public_Controller
 
         // Build page
         $this->template->build('cart', $data);
+    }
+    
+    /**
+     * Return the cart as a json object
+     */
+    public function json()
+    {
+        // Check for price change
+        $this->cart_m->check_price();
+        
+        // get the cart data
+        $data = $this->cart_data();
+        
+        // output json response
+        $this->output->set_content_type('application/json')
+                ->set_output(json_encode($data));
+    }
+    
+    protected function cart_data()
+    {
+        $data = array();
+        
+        // Assign Variables
+        $data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
+        $data['tax']         = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
+        $data['total']       = $this->currency_m->format_string($this->fs_cart->total(), $this->fs_cart->currency(), false);
+        $data['currency']    = $this->fs_cart->currency();
+        $data['contents']    = $this->fs_cart->contents();
+
+        // Add item id
+        $i = 1;
+        foreach ($data['contents'] AS &$product) {
+
+            // General data
+            $product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
+            $product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
+            $product['no']       = $i;
+
+            // Images
+            if ( $product['image'] == false ) {
+                $product['images'] = $this->pyrocache->model('products_m', 'get_parent_images', array($product['id']), $this->firesale->cache_time);
+                $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
+            }
+
+            $i++;
+        }
+        
+        return $data;
     }
 
     public function insert($prd_code = NULL, $qty = 1)
@@ -132,22 +165,25 @@ class Front_cart extends Public_Controller
             // Get product
             $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
 
-            // Check for variations
-            if ( $product['modifiers'] ) {
-                foreach ( $product['modifiers'] as $modifier ) {
-                    if ( $modifier['type']['key'] == '1' ) {
-                        $id  = $modifier['variations'][1]['product']['id'];
-                        $_POST['prd_code'][0] = $id;
-                        $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
-                        break;
-                    }
-                }
-            }
-
             // Check and add variations
             if ( $product['modifiers'] ) {
+
+                // Loop modifiers
                 foreach ( $product['modifiers'] as $variation ) {
-                    $_POST['options'][0][$variation['id']] = $variation['var_id'];
+
+                    // Update ID
+                    if ( $product['is_variation'] == '1' ) {
+                        $_POST['prd_code'][0] = $modifier['parent'];
+                    }
+
+                    // Add option
+                    if ( isset($variation['variations']) ) {
+                        $variation = current($variation['variations']);
+                        $_POST['options'][0][$variation['parent']] = $variation['id'];
+                    } else {
+                        $_POST['options'][0][$variation['id']] = $variation['var_id'];
+                    }
+
                 }
             }
         }
@@ -400,14 +436,13 @@ class Front_cart extends Public_Controller
                 }
 
                 // Same as billing address
-                if ($input['ship_to'] == "same_as_billing") {
+                if ($data['ship_req'] and $input['ship_to'] == "same_as_billing") {
                     foreach ($input as $key => $field) {
-                        if (substr($key, 0, 5) != 'bill_') continue;
+                        if (substr($key, 0, 5) != 'bill_' OR $key == "bill_to") continue;
 
                         $input[str_replace("bill_", "ship_", $key)] = $field;
                     }
-
-                    $input['ship_to'] = $input['bill_to'];
+                    
                     // Don't save this address
                     $input['ship_title'] = "";
                 }
@@ -428,7 +463,7 @@ class Front_cart extends Public_Controller
                 // Run validation
                 if ($this->form_validation->run() === TRUE) {
                     // Check for addresses
-                    if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' ) ) {
+                    if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
                         $input['ship_to'] = $this->address_m->add_address($input, 'ship');
                     }
 
@@ -592,13 +627,17 @@ class Front_cart extends Public_Controller
 
             // Get the gateway slug
             $gateway = $this->gateways->slug_from_id($order['gateway']['id']);
-
+            $settings = $this->gateways->settings($gateway);
+                
             // Initialize CI-Merchant
             $this->merchant->load($gateway);
-            $this->merchant->initialize($this->gateways->settings($gateway));
+            $this->merchant->initialize($settings);
+
+            // Skip confirmation
+            $skip = isset($settings['skip_confirmation_page']) and $settings['skip_confirmation_page'];
 
             // Begin payment processing
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' or $skip) {
                 // Load the routes model
                 $this->load->model('routes_m');
 
@@ -656,20 +695,32 @@ class Front_cart extends Public_Controller
                     $this->session->set_flashdata('error', $process->message());
                 }
 
+                // Minimal layout
+                if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                    $this->template->set_layout('minimal.html');
+                } else {
+                    $this->template->set_layout('default.html');
+                }
+
                 $theme_path = $this->template->get_theme_path();
                 if ($process->is_redirect()) {
+                    $this->template->title(lang('firesale:payment:title'))
+                        ->set('redirect_url', $process->redirect_url())
+                        ->set('redirect_method', $process->redirect_method())
+                        ->set('redirect_data', $process->redirect_data());
+
                     if (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/all.php')) {
-                        $this->template->set('redirect_url', $process->redirect_url())
-                                       ->set('redirect_method', $process->redirect_method())
-                                       ->set('redirect_data', $process->redirect_data())
-                                       ->build('gateways/redirect/all');
+
+                        $this->tempalte->build('gateways/redirect/all');
+
                     } elseif (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/' . $gateway . '.php')) {
-                        $this->template->set('redirect_url', $process->redirect_url())
-                                       ->set('redirect_method', $process->redirect_method())
-                                       ->set('redirect_data', $process->redirect_data())
-                                       ->build('gateways/redirect/' . $gateway);
+
+                        $this->template->build('gateways/redirect/' . $gateway);
+
                     } else {
+
                         $process->redirect();
+
                     }
                 } else {
                     if ( ! method_exists($this, $status)) {
@@ -758,63 +809,57 @@ class Front_cart extends Public_Controller
                 'failure_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
             )));
 
-            $status = '_order_' . $response->status();
-            $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status()))->num_rows();
-            $processed OR $this->db->insert('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status(), 'data' => serialize($response->data())));
-
-            if (! $processed) {
-                // Check status
-                if ($response->status() == 'authorized') {
-                    if ($response->amount() != $order['price_total']) {
-                        $status = '_order_mismatch';
-                    }
-                }
-
-                // Run status function
-                $this->$status($order, TRUE);
-            }
+            $this->process_transaction($gateway, $response);
+            
         } else {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         }
     }
 
-    private function _order_processing()
+    protected function _order_processing($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 4);
-
-        if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
-    }
-
-    private function _order_failed($order, $callback = FALSE)
-    {
-        $this->orders_m->update_status($order['id'], 7);
+        $skip = $this->_skip($order['gateway']['id']);
 
         if (! $callback) {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
         } else {
             $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
         }
     }
 
-    private function _order_declined($order, $callback = FALSE)
+    protected function _order_failed($order, $callback = FALSE)
+    {
+        $this->orders_m->update_status($order['id'], 7);
+        $skip = $this->_skip($order['gateway']['id']);
+
+        if (! $callback) {
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+        } else {
+            $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
+        }
+    }
+
+    protected function _order_declined($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 8);
+        $skip = $this->skip($order['gateway']['id']);
 
         if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
 
     }
 
-    private function _order_mismatch($order, $callback = FALSE)
+    protected function _order_mismatch($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 9);
+        $skip = $this->skip($order['gateway']['id']);
 
         if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
     }
 
-    private function _order_authorized($order, $callback = FALSE)
+    protected function _order_authorized($order, $callback = FALSE)
     {
 
         // Sale made, run updates
@@ -826,8 +871,7 @@ class Front_cart extends Public_Controller
 
         // Format order
         foreach ($order['items'] as &$item) {
-            $item['price_formatted'] = $this->currency_m->format_string($item['price'], $this->fs_cart->currency());
-            $item['total'] = $this->currency_m->format_string(($item['price'] * $item['qty']), $this->fs_cart->currency());
+            $item['total'] = $this->currency_m->format_string(($item['price_rounded'] * $item['qty']), $this->fs_cart->currency());
         }
 
         // Format currency
@@ -857,6 +901,11 @@ class Front_cart extends Public_Controller
             // Fire events
             Events::trigger('page_build', $this->template);
 
+            // Minimal layout
+            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                $this->template->set_layout('minimal.html');
+            }
+
             // Build the page
             $this->template->build('payment_complete', $order);
         } else {
@@ -865,7 +914,7 @@ class Front_cart extends Public_Controller
 
     }
 
-    private function _order_complete()
+    protected function _order_complete()
     {
         $args = func_get_args();
         call_user_func_array(array($this, '_order_authorized'), $args);
@@ -907,24 +956,7 @@ class Front_cart extends Public_Controller
 
                 $response = $this->merchant->purchase_return($params);
 
-                $status = '_order_' . $response->status();
-
-                $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
-                $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
-
-                if ( ! $processed) {
-                    // Check status
-                    if ($response->status() == 'authorized' or $response->status() == 'complete') {
-                        if (method_exists($response, 'amount')) {
-                            if ($response->amount() != $order['price_total']) {
-                                $status = '_order_mismatch';
-                            }
-                        }
-                    }
-
-                    // Run status function
-                    $this->$status($order, FALSE);
-                }
+                $this->process_transaction($gateway, $response);
             }
 
             $this->fs_cart->destroy();
@@ -948,22 +980,49 @@ class Front_cart extends Public_Controller
 
     public function cancel()
     {
-        if ($order_id = $this->session->userdata('order_id')) {
-            $this->orders_m->delete_order($order_id);
-            $this->session->unset_userdata('order_id');
+        $this->orders_m->delete_order($order_id);
+        $this->session->unset_userdata('order_id');
 
-            $this->fs_cart->destroy();
+        $this->fs_cart->destroy();
 
-            $this->template->title('Order Cancelled')
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
-                           ->set_breadcrumb(lang('Order Cancelled'))
-                           ->build('payment_cancelled');
-        } else {
-            show_404();
+        $this->template->title('Order Cancelled')
+            ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
+            ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
+            ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
+            ->set_breadcrumb(lang('Order Cancelled'))
+            ->build('payment_cancelled');
+
+    }
+
+    protected function skip($gateway)
+    {
+        // Get the gateway slug
+        $gateway = $this->gateways->slug_from_id($gateway);
+        $settings = $this->gateways->settings($gateway);
+
+        return ( isset($settings['skip_confirmation_page']) ? $settings['skip_confirmation_page'] : false );
+    }
+
+    protected function process_transaction($gateway, $response)
+    {
+        $status = '_order_' . $response->status();
+
+        $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
+        $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
+
+        if ( ! $processed) {
+            // Check status
+            if ($response->status() == 'authorized' or $response->status() == 'complete') {
+                if (method_exists($response, 'amount')) {
+                    if ($response->amount() != $order['price_total']) {
+                        $status = '_order_mismatch';
+                    }
+                }
+            }
+
+            // Run status function
+            $this->$status($order, FALSE);
         }
-
     }
 
 }

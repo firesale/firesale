@@ -20,7 +20,7 @@
 
 class Module_Firesale_Search extends Module
 {
-    public $version = '1.2.1';
+    public $version = '1.2.2-dev';
     public $language_file = 'firesale_search/firesale';
 
     public function __construct()

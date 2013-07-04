@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Admin_products extends Admin_Controller
+class Products extends Admin_Controller
 {
 
     public $stream  = NULL;
@@ -601,140 +601,6 @@ class Admin_products extends Admin_Controller
 
         // Redirect
         redirect($_SERVER['HTTP_REFERER']);
-    }
-
-    public function ajax_quick_edit()
-    {
-
-        // Ajax only, sorry
-        if ( $this->input->is_ajax_request() ) {
-
-            // Variables
-            $update = true;
-            $start  = $this->input->post('start');
-            $post   = $this->input->post('product');
-
-            // Check action
-            if ( $this->input->post('btnAction') == 'save' ) {
-
-                // Check products are set
-                if ( $post and ! empty($post) ) {
-                    // Loop products
-                    foreach ( $this->input->post('product') as $id => $product ) {
-                        // Update products
-                        if ( ! $this->products_m->update_product($id, $product, $this->stream->id, true) ) {
-                            $update = false;
-                        }
-                    }
-                }
-
-                // Set flashdata
-                if ( $update ) {
-                    $this->session->set_flashdata('success', lang('firesale:prod_edit_success'));
-                } else {
-                    $this->session->set_flashdata('error', lang('firesale:prod_edit_error'));
-                }
-            }
-
-            // Clear cache
-            Events::trigger('clear_cache');
-
-            // Clear post
-            unset($_POST);
-
-            // Call index for layout update
-            echo ( $update ? 'ok' : 'error' );
-        }
-
-    }
-
-    public function ajax_product($id)
-    {
-        if ( $this->input->is_ajax_request() ) {
-            echo json_encode($this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time));
-            exit();
-        }
-    }
-
-    public function ajax_order_images()
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-
-            $order = $this->input->post('order');
-
-            if ( strlen($order) > 0 ) {
-
-                $order = explode(',', $order);
-
-                for ( $i = 0; $i < count($order); $i++ ) {
-                    $this->db->where('id', $order[$i])->update('files', array('sort' => $i));
-                }
-
-                // Updated, clear cache!
-                Events::trigger('clear_cache');
-
-                echo 'ok';
-                exit();
-            }
-
-        }
-
-        echo 'error';
-        exit();
-    }
-
-    public function ajax_order_modifiers()
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-            echo order_table($this->input->post('order'), 'firesale_product_modifiers', 'mod_');
-            exit();
-        }
-
-        echo 'error';
-        exit();
-    }
-
-    public function ajax_order_variations()
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-            echo order_table($this->input->post('order'), 'firesale_product_variations', 'var_');
-            exit();
-        }
-
-        echo 'error';
-        exit();
-    }
-
-    public function ajax_filter($page)
-    {
-        if ( $this->input->is_ajax_request() ) {
-
-            // Variables
-            $data  = array('products' => array(), 'pagination' => '');
-            $start = ( isset($_POST['start']) ? $_POST['start'] : $page );
-            $start = ( $start > 0 ? ( $start - 1 ) * $this->perpage : 0 );
-
-            unset($_POST['start']);
-
-            // Get filtered product IDs
-            $data['count'] = $this->pyrocache->model('products_m', 'get_products', array($this->input->post()), $this->firesale->cache_time);
-            $products      = $this->pyrocache->model('products_m', 'get_products', array($this->input->post(), $start, $this->perpage), $this->firesale->cache_time);
-
-            // Get product data
-            foreach ( $products as $product ) {
-                $data['products'][] = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
-            }
-
-            // Assign data
-            $data['count']      = ( $data['count'] ? count($data['count']) : 0 );
-            $data['pagination'] = create_pagination('admin/firesale/products/', $data['count'], $this->perpage, 4);
-
-            // Build page
-            $this->template->set_layout(false)->set($data)->build('admin/products/index');
-        }
     }
 
 }

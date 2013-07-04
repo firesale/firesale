@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -49,12 +49,13 @@ class Plugin_Firesale extends Plugin
         $route = $this->attribute('route');
         $id    = $this->attribute('id');
         $after = $this->attribute('after');
+        $base = $this->attribute('base', 'yes');
 
         // Get the URL
         $url = $this->pyrocache->model('routes_m', 'build_url', array($route, $id), $this->firesale->cache_time);
 
         // Build the URL
-        return BASE_URL.$url.$after;
+        return (($base == 'yes') ? BASE_URL : '').$url.$after;
     }
 
     public function module_installed()
@@ -83,6 +84,7 @@ class Plugin_Firesale extends Plugin
 
         // Variables
         $attributes = $this->attributes();
+        ksort($attributes);
         
         // if no ordering specified default to tree order
         if ( ! isset($attributes['order']) and ! isset($attributes['order-by']) ) {
@@ -92,10 +94,10 @@ class Plugin_Firesale extends Plugin
         }
         
         // Are we cached?
-        $cache_key  = md5(BASE_URL.implode('|', $attributes));
+        $cache_key  = md5('categories'.BASE_URL.implode('|', $attributes));
 
         // Get from cache
-        if ( ! $categories = $this->cache->get($cache_key) ) {
+        if ( ! $results = $this->cache->get($cache_key) ) {
 
             // Build query
             $query = $this->db->select('id')
@@ -138,21 +140,27 @@ class Plugin_Firesale extends Plugin
             }
 
             // Get categories
-            $categories = $query->get()->result_array();
+            $results = $query->get()->result_array();
 
             // Loop and get objects
-            foreach ($categories AS &$category) {
+            foreach ($results AS &$category) {
                 $category = $this->pyrocache->model('categories_m', 'get_category', array($category['id']), $this->firesale->cache_time);
             }
 
             // Fix helper variables
-            $categories = reassign_helper_vars($categories);
+            $results = reassign_helper_vars($results);
 
             // Add to cache
-            $this->cache->save($cache_key, $categories, $this->firesale->cache_time);
+            $this->cache->save($cache_key, $results, $this->firesale->cache_time);
         }
 
-        return $categories;
+        if ($results) {
+            return $results;
+        }
+
+        // Nothing?
+        return FALSE;
+
     }
 
     public function sub_categories()
@@ -173,9 +181,10 @@ class Plugin_Firesale extends Plugin
     {
 
         // Variables
-        $attributes      = $this->attributes();
+        $attributes = $this->attributes();
+        ksort($attributes);
         $show_variations = (bool) $this->settings->get('firesale_show_variations');
-        $cache_key       = md5(BASE_URL.implode('|', $attributes));
+        $cache_key       = md5('products'.BASE_URL.implode('|', $attributes));
 
         // Get from cache
         if ( ! $results = $this->cache->get($cache_key) ) {
@@ -253,41 +262,57 @@ class Plugin_Firesale extends Plugin
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
         }
 
-        // Return results
-        return $results;
+        // Send it back
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     public function bestsellers()
     {
         $limit = $this->attribute('limit', 10);
         $order = $this->attribute('order', 'p.created asc');
+        $attributes = $this->attributes();
+        ksort($attributes);
+        $cache_key = md5('bestsellers'.BASE_URL.implode('|', $attributes));
 
-        list($order, $order_dir) = explode(' ', $order);
+        if ( ! $results = $this->cache->get($cache_key) ) {
 
-        $result = $this->db
-            ->select("COUNT(oo.product_id) as count, p.id")
-            ->from('firesale_products AS p')
-            ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
-            ->order_by('count', 'desc')
-            ->order_by($order, $order_dir)
-            ->limit($limit)
-            ->get()
-            ->result();
+            list($order, $order_dir) = explode(' ', $order);
+    
+            $query = $this->db
+                ->select("COUNT(oo.product_id) as count, p.id")
+                ->from('firesale_products AS p')
+                ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
+                ->order_by('count', 'desc')
+                ->order_by($order, $order_dir)
+                ->limit($limit)
+                ->get();
 
-        foreach ($result as &$product) {
-            $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
+            if (! $query->num_rows()) {
+                return array(array('total' => 0, 'entries' => array()));
+            }
+
+            $results = $query->result();
+    
+            foreach ($results as &$product) {
+                $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
+            }
+    
+            // Add to cache
+            $this->cache->save($cache_key, $results, $this->firesale->cache_time);
+
         }
 
-        return $result;
+        return array(array('total' => count($results), 'entries' => $results));
+
     }
 
     public function modifier_form()
     {
-
         // Variables
-        $type    = $this->attribute('type', 'select'); // radio
-        $product = $this->attribute('product');
-        $product = $this->products_m->get_product($product);
+        $type       = $this->attribute('type', 'select'); // radio
+        $difference = $this->attribute('difference', 'difference'); // display the price difference or the actual price
+        $product    = $this->attribute('product');
+        $product    = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
 
         // Format data
         foreach ($product['modifiers'] as &$modifier) {
@@ -300,10 +325,12 @@ class Plugin_Firesale extends Plugin
         }
 
         // Assign data
-        $data = new stdClass;
-        $data->type      = $type;
-        $data->product   = $product;
-        $data->modifiers = $product['modifiers'];
+        $data             = new stdClass;
+        $data->type       = $type;
+        $data->difference = $difference;
+        $data->product    = $product;
+        $data->modifiers  = $product['modifiers'];
+        $data->jsdata     = $this->pyrocache->model('modifier_m', 'jsdata', array($product['modifiers']), $this->firesale->cache_time);
 
         // Build form
         return $this->parser->parse('partials/modifier_form', $data, true);
@@ -316,7 +343,8 @@ class Plugin_Firesale extends Plugin
         $this->load->library('fs_cart');
 
         // Get currency
-        $currency = $this->currency_m->get(( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL ));
+        $currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
+        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
 
         // Variables
         $data 		 	= new stdClass;
@@ -370,7 +398,47 @@ class Plugin_Firesale extends Plugin
         // Fix helper variables
         $results = reassign_helper_vars($results);
 
-        return $results;
+        return array(array('total' => count($results), 'entries' => $results));
+    }
+
+    public function addresses()
+    {
+        // Variables
+        $default = ( isset($this->current_user->id) ? $this->current_user->id : null );
+        $user    = $this->attribute('user_id', $default);
+        $total   = 0;
+        $results = false;
+
+        // Check for user
+        if ( $user !== null ) {
+           
+            $this->load->model('address_m');
+
+            // Get addresses
+            $results = $this->pyrocache->model('address_m', 'get_addresses', array($user), $this->firesale->cache_time);
+        }
+
+        return array(array('total' => count($results), 'entries' => $results));
+    }
+
+    public function orders()
+    {
+        // Variables
+        $default = ( isset($this->current_user->id) ? $this->current_user->id : null );
+        $user    = $this->attribute('user_id', $default);
+        $total   = 0;
+        $results = false;
+
+        // Check for user
+        if ( $user !== null ) {
+           
+            $this->load->model('orders_m');
+
+            // Get addresses
+            $results = $this->pyrocache->model('orders_m', 'get_orders_by_user', array($user), $this->firesale->cache_time);
+        }
+
+        return array(array('total' => count($results), 'entries' => $results));
     }
 
     /**

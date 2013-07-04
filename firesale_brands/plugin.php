@@ -83,8 +83,12 @@ class Plugin_Firesale_brands extends Plugin
 
         }
 
-        // Return results
-        return $brands;
+        if ($brands) {
+            return array(array('brands' => $brands));
+        }
+
+        // Nothing?
+        return array('brands' => FALSE);
     }
 
 }

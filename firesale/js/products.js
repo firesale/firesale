@@ -52,6 +52,8 @@ $(function() {
 			update_products(window.location.hash.replace('#', ''));
 		}
 
+		buttons = $('.table_action_buttons').html();
+
 		bind_keys($('#product_table'));
 	}
 
@@ -81,7 +83,7 @@ $(function() {
 			stop: function(event, ui) {
 				var o = '';
 				$('#dropbox .preview').each(function(){ o += ',' + $(this).attr('id').replace('image-', ''); });
-				$.post(SITE_URL+'admin/firesale/products/ajax_order_images', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
+				$.post(SITE_URL+'admin/firesale/ajax/images_order', { order: o.substr(1), csrf_hash_name: $.cookie(pyro.csrf_cookie_name) }, function(data) {
 					if( data != 'ok' ) { alert(data); }
 				});
 			}
@@ -120,7 +122,7 @@ $(function() {
 	
 });
 	
-	var req = null;
+	var req = null, buttons;
 
 	function tax_link(price, before) {
 		var tmp = before.clone();before.parent().parent().remove();
@@ -168,7 +170,7 @@ $(function() {
 		
 		$('#product_table tbody .actions').attr('style', 'width: 88px !important');
 
-		id.html('<input type="hidden" name="product['+_id+'][old_id]" value="' + id.text() + '" /><input type="text" id="id" name="product['+_id+'][id]" value="' + id.text() + '" />');
+		id.html('<input type="text" id="id" name="product['+_id+'][id]" value="' + id.text() + '" />');
 		title.html('<input type="text" id="title" name="product['+_id+'][title]" value="' + title.text().replace(/"/g, '&quot;') + '" />');
 		stock.html('<input type="text" id="stock" name="product['+_id+'][stock]" value="' + ( stock.text() == 'Unlimited (∞)' ? '0' : stock.text() ) + '" />');
 		price.html('<input type="text" id="price" name="product['+_id+'][price]" value="' + price.text().replace(/[^0-9\.]/g, '') + '" />');
@@ -188,9 +190,9 @@ $(function() {
 		$('#products').unbind('submit').submit(function(e) {
 			e.preventDefault();
 			var action = $(this).find('button[clicked=true]').val();
-			var url = SITE_URL+'firesale/admin_products/ajax_quick_edit?r='+Math.floor(Math.random()*99999), data = $(this).serialize()+'&btnAction='+action;
+			var url = SITE_URL+'admin/firesale/ajax/product_edit?r='+Math.floor(Math.random()*99999), data = $(this).serialize()+'&btnAction='+action;
 			$.ajax({type: "POST", url: url, global: false, dataType: 'html', data: data, success: function(response) {
-				$.get(SITE_URL+'firesale/admin_products/index', function(response) {
+				$.get(SITE_URL+'admin/firesale/products/index', function(response) {
 					build_alert(response);
 					if( $(response).find('#products').size() > 0 ) {
 						$('#products').html($(response).find('#products').html());
@@ -203,7 +205,7 @@ $(function() {
 	}
 
 	function bind_pagination() {
-		$('#product_table tfoot td div a').click(function(e) {
+		$('#product_table tfoot td div a').live('click', function(e) {
 			e.preventDefault();
 			var page = $(this).attr('href').split('/');
 				page = page[page.length-1];
@@ -218,16 +220,16 @@ $(function() {
 		if( req != null ) { req.abort(); }
 		create_overlay($('#product_table'));
 		$.cookie('fspf_values', $('#filters').serialize());
-		req = $.ajax({type: "POST", url: SITE_URL+'firesale/admin_products/ajax_filter/'+extra, dataType: 'html', global: false, data: $('#filters').serialize(), success: function(data) {
+		var data = $('#filters').serialize()+'&csrf_hash_name='+$('input[name=csrf_hash_name]').val();
+		req = $.ajax({type: "POST", url: SITE_URL+'admin/firesale/ajax/product_filter/'+extra, dataType: 'html', global: false, data: data, success: function(data) {
 			$('#product_table').parent().find('.no_data').remove();
 			$('.overlay').remove();
+			$('.table_action_buttons').html(buttons);
 			if( $(data).find('#product_table').size() > 0 ) {
 				$('#product_table tbody').html($(data).find('#product_table tbody').html());
 				$('#product_table tfoot').html($(data).find('#product_table tfoot').html());
 				$('#product_table').show();
 				$('#product_table').trigger("update"); 
-				bind_quickedit();
-				bind_pagination();
 			} else if( $(data).find('.no_data').size() > 0 ) {
 				$('#product_table').hide();
 				$('<div class="no_data">'+$(data).find('.no_data').html()+'</div>').insertBefore($('#product_table'));

@@ -20,7 +20,7 @@
 
 class Module_Firesale_Attributes extends Module
 {
-    public $version = '1.0.1';
+    public $version = '1.0.2-dev';
     public $language_file = 'firesale_attributes/firesale';
 
     public function __construct()
@@ -35,10 +35,12 @@ class Module_Firesale_Attributes extends Module
 
         $info = array(
             'name' => array(
-                'en' => 'FireSale Attributes'
+                'en' => 'FireSale Attributes',
+                'it' => 'FireSale Attributi'
             ),
             'description' => array(
-                'en' => 'Product attribute management.'
+                'en' => 'Product attribute management.',
+                'it' => 'Gestione attributi dei prodotti'
             ),
             'frontend' 		=> false,
             'backend' 		=> false,

@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Admin_routes extends Admin_Controller
+class Routes extends Admin_Controller
 {
 
     public $section = 'routes';
@@ -98,21 +98,20 @@ class Admin_routes extends Admin_Controller
 
             // Got an ID back
             if ( is_numeric($fields) ) {
+                
                 // Add the route
                 $this->routes_m->write($input['title'], $input['route'], $input['translation']);
-            }
-
-            // Redirect
-            if ( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) ) {
-                redirect('admin/firesale/routes');
-            } else {
 
                 // Success, clear cache!
                 Events::trigger('clear_cache');
 
-                redirect('admin/firesale/routes/edit/'.$fields);
+                // Redirect
+                if ( $input['btnAction'] == 'save_exit') {
+                    redirect('admin/firesale/routes');
+                } else {
+                    redirect('admin/firesale/routes/edit/'.$fields);
+                }
             }
-
         }
 
         // Assign data
@@ -125,7 +124,6 @@ class Admin_routes extends Admin_Controller
                        ->append_js('module::jquery.caret.js')
                        ->append_js('module::routes.js')
                        ->build('admin/routes/create');
-
     }
 
     public function edit($id)
@@ -181,15 +179,14 @@ class Admin_routes extends Admin_Controller
 
                 // Success, clear cache!
                 Events::trigger('clear_cache');
-            }
 
-            // Redirect
-            if ( $input['btnAction'] == 'save_exit' OR ! is_numeric($fields) ) {
-                redirect('admin/firesale/routes');
-            } else {
-                redirect('admin/firesale/routes/edit/'.$id);
+                // Redirect
+                if ( $input['btnAction'] == 'save_exit' ) {
+                    redirect('admin/firesale/routes');
+                } else {
+                    redirect('admin/firesale/routes/edit/'.$id);
+                }
             }
-
         }
 
         // Assign data
@@ -206,7 +203,6 @@ class Admin_routes extends Admin_Controller
                        ->append_js('module::jquery.caret.js')
                        ->append_js('module::routes.js')
                        ->build('admin/routes/edit');
-
     }
 
     public function rebuild($redirect = true)
@@ -275,20 +271,6 @@ class Admin_routes extends Admin_Controller
         // Something went wrong
         $this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
         redirect('admin/firesale/routes');
-    }
-
-    public function ajax_order()
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-            echo order_table($this->input->post('order'), 'firesale_routes', 'route_');
-            $this->routes_m->clear();
-            $this->rebuild(false);
-            exit();
-        }
-
-        echo 'error';
-        exit();
     }
 
 }

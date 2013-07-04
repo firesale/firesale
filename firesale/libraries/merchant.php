@@ -121,6 +121,7 @@ class merchant
 
                 if ( ! file_exists($driver_path)) continue;
 
+                define('MERCHANT_DRIVER_PATH', $path.'/');
                 require_once($driver_path);
 
                 // did the driver file implement the class?

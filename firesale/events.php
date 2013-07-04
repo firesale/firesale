@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -25,13 +25,13 @@ class Events_Firesale
 
     public function __construct()
     {
-
         $this->ci =& get_instance();
 
         // register the events
-        Events::register('public_controller', array($this, 'public_controller'));
-        Events::register('settings_updated', array($this, 'settings_updated'));
-        Events::register('clear_cache', array($this, 'clear_cache'));
+        Events::register('public_controller',  array($this, 'public_controller'));
+        Events::register('settings_updated',   array($this, 'settings_updated'));
+        Events::register('clear_cache',        array($this, 'clear_cache'));
+        Events::register('cart_item_added',    array($this, 'cart_item_added'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_sales'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_stock'));
     }
@@ -101,6 +101,15 @@ class Events_Firesale
         $this->ci->cache->clean();
     }
 
+    public function cart_item_added()
+    {
+        if ( $this->ci->settings->get('firesale_disabled') == '1' ) {
+            $this->ci->fs_cart->destroy();
+            $this->ci->session->set_flashdata('error', $this->ci->settings->get('firesale_disabled_msg'));
+            redirect($this->ci->input->server('HTTP_REFERER'));
+        }
+    }
+
     public function firesale_dashboard_sales()
     {
 
@@ -120,7 +129,11 @@ class Events_Firesale
         if ( $data['year'] !== false ) {
             $data['year']['sales']       = json_encode($data['year']['sales']);
             $data['year']['count']       = json_encode($data['year']['count']);
-            $data['year']['currency']    = $currency->symbol;
+            if(!empty($currency)){
+                $data['year']['currency']    = $currency->symbol;
+            }else{
+                $data['year']['currency']    = '';
+            }
         }
 
         // Build and return data

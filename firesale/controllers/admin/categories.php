@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Admin_categories extends Admin_Controller
+class Categories extends Admin_Controller
 {
 
     /**
@@ -292,53 +292,6 @@ class Admin_categories extends Admin_Controller
         // Seems it was unsuccessful
         echo json_encode(array('status' => FALSE, 'message' => 'Error uploading image'));
         exit();
-    }
-
-    /**
-     * Gets the category details and returns a JSON
-     * array for use in the front-end view editing.
-     *
-     * @param  integer $id The Category ID to retrieve
-     * @return string  A JSON Object containing the
-     *				  Category information.
-     * @access public
-     */
-    public function ajax_cat_details($id)
-    {
-        if ( $this->input->is_ajax_request() ) {
-            $cat = $this->pyrocache->model('categories_m', 'get_category', array($id), $this->firesale->cache_time);
-            echo json_encode($cat);
-            exit();
-        }
-    }
-
-    /**
-     * Gets the category images and returns an HTML string to be appended into the
-     * tab created for each category.
-     *
-     * @param  integer $id The Category ID to retrieve
-     * @return string  HTML for dropbox and image display
-     * @access public
-     */
-    public function ajax_cat_images($id)
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-
-            // Variables
-            $data = array();
-            $row  = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, false), $this->firesale->cache_time);
-
-            if ($row != FALSE) {
-                $folder         = get_file_folder_by_slug($row->slug, 'category-images');
-                $images         = Files::folder_contents($folder->id);
-                $data['images'] = $images['data']['file'];
-            }
-
-            // Return to script
-            echo $this->parser->parse('admin/categories/images', $data, true);
-            exit();
-        }
     }
 
 }
