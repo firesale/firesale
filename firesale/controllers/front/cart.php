@@ -720,7 +720,7 @@ class Cart extends Public_Controller
                     } else {
 
                         $process->redirect();
-                        
+
                     }
                 } else {
                     if ( ! method_exists($this, $status)) {
@@ -969,24 +969,7 @@ class Cart extends Public_Controller
 
                 $response = $this->merchant->purchase_return($params);
 
-                $status = '_order_' . $response->status();
-
-                $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
-                $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
-
-                if ( ! $processed) {
-                    // Check status
-                    if ($response->status() == 'authorized' or $response->status() == 'complete') {
-                        if (method_exists($response, 'amount')) {
-                            if ($response->amount() != $order['price_total']) {
-                                $status = '_order_mismatch';
-                            }
-                        }
-                    }
-
-                    // Run status function
-                    $this->$status($order, FALSE);
-                }
+                $this->process_transaction($gateway, $response);
             }
 
             $this->fs_cart->destroy();
@@ -1031,6 +1014,28 @@ class Cart extends Public_Controller
         $settings = $this->gateways->settings($gateway);
 
         return ( isset($settings['skip_confirmation_page']) ? $settings['skip_confirmation_page'] : false );
+    }
+
+    protected function process_transaction($gateway, $response)
+    {
+        $status = '_order_' . $response->status();
+
+        $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
+        $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
+
+        if ( ! $processed) {
+            // Check status
+            if ($response->status() == 'authorized' or $response->status() == 'complete') {
+                if (method_exists($response, 'amount')) {
+                    if ($response->amount() != $order['price_total']) {
+                        $status = '_order_mismatch';
+                    }
+                }
+            }
+
+            // Run status function
+            $this->$status($order, FALSE);
+        }
     }
 
 }
