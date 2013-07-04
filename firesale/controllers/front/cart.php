@@ -853,7 +853,7 @@ class Cart extends Public_Controller
     private function _order_declined($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 8);
-        $skip = $this->_skip($order['gateway']['id']);
+        $skip = $this->skip($order['gateway']['id']);
 
         if ( ! $callback)
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
@@ -863,7 +863,7 @@ class Cart extends Public_Controller
     private function _order_mismatch($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 9);
-        $skip = $this->_skip($order['gateway']['id']);
+        $skip = $this->skip($order['gateway']['id']);
 
         if ( ! $callback)
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
@@ -1021,7 +1021,7 @@ class Cart extends Public_Controller
 
     }
 
-    public function _skip($gateway)
+    protected function skip($gateway)
     {
         // Get the gateway slug
         $gateway = $this->gateways->slug_from_id($gateway);
