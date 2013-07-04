@@ -826,7 +826,7 @@ class Cart extends Public_Controller
         }
     }
 
-    private function _order_processing($order, $callback = FALSE)
+    protected function _order_processing($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 4);
         $skip = $this->_skip($order['gateway']['id']);
@@ -838,7 +838,7 @@ class Cart extends Public_Controller
         }
     }
 
-    private function _order_failed($order, $callback = FALSE)
+    protected function _order_failed($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 7);
         $skip = $this->_skip($order['gateway']['id']);
@@ -850,7 +850,7 @@ class Cart extends Public_Controller
         }
     }
 
-    private function _order_declined($order, $callback = FALSE)
+    protected function _order_declined($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 8);
         $skip = $this->skip($order['gateway']['id']);
@@ -860,7 +860,7 @@ class Cart extends Public_Controller
 
     }
 
-    private function _order_mismatch($order, $callback = FALSE)
+    protected function _order_mismatch($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 9);
         $skip = $this->skip($order['gateway']['id']);
@@ -869,7 +869,7 @@ class Cart extends Public_Controller
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
     }
 
-    private function _order_authorized($order, $callback = FALSE)
+    protected function _order_authorized($order, $callback = FALSE)
     {
 
         // Sale made, run updates
@@ -924,7 +924,7 @@ class Cart extends Public_Controller
 
     }
 
-    private function _order_complete()
+    protected function _order_complete()
     {
         $args = func_get_args();
         call_user_func_array(array($this, '_order_authorized'), $args);
