@@ -809,21 +809,8 @@ class Cart extends Public_Controller
                 'failure_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
             )));
 
-            $status = '_order_' . $response->status();
-            $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status()))->num_rows();
-            $processed OR $this->db->insert('firesale_transactions', array('reference' => $response->reference(), 'order_id' => $order_id, 'gateway' => $gateway, 'status' => $response->status(), 'data' => serialize($response->data())));
-
-            if (! $processed) {
-                // Check status
-                if ($response->status() == 'authorized') {
-                    if ($response->amount() != $order['price_total']) {
-                        $status = '_order_mismatch';
-                    }
-                }
-
-                // Run status function
-                $this->$status($order, TRUE);
-            }
+            $this->process_transaction($gateway, $response);
+            
         } else {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
         }
