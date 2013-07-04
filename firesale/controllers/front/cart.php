@@ -1007,21 +1007,17 @@ class Cart extends Public_Controller
 
     public function cancel()
     {
-        if ($order_id = $this->session->userdata('order_id')) {
-            $this->orders_m->delete_order($order_id);
-            $this->session->unset_userdata('order_id');
+        $this->orders_m->delete_order($order_id);
+        $this->session->unset_userdata('order_id');
 
-            $this->fs_cart->destroy();
+        $this->fs_cart->destroy();
 
-            $this->template->title('Order Cancelled')
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
-                           ->set_breadcrumb(lang('Order Cancelled'))
-                           ->build('payment_cancelled');
-        } else {
-            show_404();
-        }
+        $this->template->title('Order Cancelled')
+            ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
+            ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
+            ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
+            ->set_breadcrumb(lang('Order Cancelled'))
+            ->build('payment_cancelled');
 
     }
 
