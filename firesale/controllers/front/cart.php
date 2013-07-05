@@ -675,8 +675,6 @@ class Cart extends Public_Controller
                 // Minimal layout
                 if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
                     $this->template->set_layout('minimal.html');
-                } else {
-                    $this->template->set_layout('default.html');
                 }
 
                 $theme_path = $this->template->get_theme_path();
