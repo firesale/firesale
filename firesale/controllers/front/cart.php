@@ -644,28 +644,7 @@ class Cart extends Public_Controller
                 $posted_data = $this->input->post(NULL, TRUE);
 
                 // Run payment
-                $params = array_merge(array(
-                    'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
-                    'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
-                    'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
-                ), $posted_data ? $posted_data : array(), array(
-                    'currency_code'  => $this->fs_cart->currency()->cur_code,
-                    'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
-                    'order_id'       => $this->session->userdata('order_id'),
-                    'transaction_id' => $this->session->userdata('order_id'),
-                    'reference'      => 'Order #' . $this->session->userdata('order_id'),
-                    'description'    => 'Order #' . $this->session->userdata('order_id'),
-                    'first_name'     => $order['bill_to']['firstname'],
-                    'last_name'      => $order['bill_to']['lastname'],
-                    'address1'       => $order['bill_to']['address1'],
-                    'address2'       => $order['bill_to']['address2'],
-                    'city'           => $order['bill_to']['city'],
-                    'region'         => $order['bill_to']['county'],
-                    'country'        => $order['bill_to']['country']['code'],
-                    'postcode'       => $order['bill_to']['postcode'],
-                    'phone'          => $order['bill_to']['phone'],
-                    'email'          => $order['bill_to']['email'],
-                ));
+                $params = $this->build_params($gateway, $order, $posted_data)
 
                 $process = $this->merchant->purchase($params);
 
@@ -931,28 +910,7 @@ class Cart extends Public_Controller
                 $this->merchant->load($gateway);
                 $this->merchant->initialize($this->gateways->settings($gateway));
 
-                $params = array_merge(array(
-                    'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback'),
-                    'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
-                    'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
-                ), array(
-                    'currency_code'  => $this->fs_cart->currency()->cur_code,
-                    'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
-                    'order_id'       => $order_id,
-                    'transaction_id' => $order_id,
-                    'reference'      => 'Order #' . $order_id,
-                    'description'    => 'Order #' . $order_id,
-                    'first_name'     => $order['bill_to']['firstname'],
-                    'last_name'      => $order['bill_to']['lastname'],
-                    'address1'       => $order['ship_to']['address1'],
-                    'address2'       => $order['ship_to']['address2'],
-                    'city'           => $order['ship_to']['city'],
-                    'region'         => $order['ship_to']['county'],
-                    'country'        => $order['ship_to']['country']['code'],
-                    'postcode'       => $order['ship_to']['postcode'],
-                    'phone'          => $order['ship_to']['phone'],
-                    'email'          => $order['ship_to']['email'],
-                ));
+                $params = $this->build_params($gateway, $order);
 
                 $response = $this->merchant->purchase_return($params);
 
@@ -1025,4 +983,29 @@ class Cart extends Public_Controller
         }
     }
 
+    protected function build_params($gateway, $order, $override = false)
+    {
+        return array_merge(array(
+            'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
+            'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
+            'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
+        ), $override ? $override : array(), array(
+            'currency_code'  => $this->fs_cart->currency()->cur_code,
+            'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
+            'order_id'       => $this->session->userdata('order_id'),
+            'transaction_id' => $this->session->userdata('order_id'),
+            'reference'      => 'Order #' . $this->session->userdata('order_id'),
+            'description'    => 'Order #' . $this->session->userdata('order_id'),
+            'first_name'     => $order['bill_to']['firstname'],
+            'last_name'      => $order['bill_to']['lastname'],
+            'address1'       => $order['bill_to']['address1'],
+            'address2'       => $order['bill_to']['address2'],
+            'city'           => $order['bill_to']['city'],
+            'region'         => $order['bill_to']['county'],
+            'country'        => $order['bill_to']['country']['code'],
+            'postcode'       => $order['bill_to']['postcode'],
+            'phone'          => $order['bill_to']['phone'],
+            'email'          => $order['bill_to']['email'],
+        ));
+    }
 }
