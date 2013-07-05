@@ -559,11 +559,6 @@ class Cart extends Public_Controller
 
     }
 
-    public function _validate_address($value)
-    {
-        return TRUE;
-    }
-
     public function _validate_shipping($value)
     {
 
