@@ -34,18 +34,21 @@ class Cart extends Public_Controller
         $this->lang->load('merchant');
 
         // Load cart class, the ci-merchant class and the gateways class
-        $this->load->library(array('fs_cart', 'merchant', 'gateways'));
+        $this->load->library(array('fs_cart', 'merchant', 'gateways', 'files/files'));
+
+        // We need streams
+        $this->load->driver('Streams');
 
         // Load the required models
-        $this->load->driver('Streams');
-        $this->load->library('files/files');
-        $this->load->model('firesale/cart_m');
-        $this->load->model('firesale/orders_m');
-        $this->load->model('firesale/address_m');
-        $this->load->model('firesale/categories_m');
-        $this->load->model('firesale/products_m');
-        $this->load->model('firesale/routes_m');
-        $this->load->model('firesale/modifier_m');
+        $this->load->model(array(
+            'firesale/cart_m',
+            'firesale/orders_m',
+            'firesale/address_m',
+            'firesale/categories_m',
+            'firesale/products_m',
+            'firesale/routes_m',
+            'firesale/modifier_m'
+        );
 
         // Require login?
         if ( $this->settings->get('firesale_login') == 1 and ! $this->current_user ) {
