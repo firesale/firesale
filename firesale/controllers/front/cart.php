@@ -684,13 +684,13 @@ class Cart extends Public_Controller
                         ->set('redirect_method', $process->redirect_method())
                         ->set('redirect_data', $process->redirect_data());
 
-                    if (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/all.php')) {
-
-                        $this->tempalte->build('gateways/redirect/all');
-
-                    } elseif (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/' . $gateway . '.php')) {
+                    if (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/' . $gateway . '.php')) {
 
                         $this->template->build('gateways/redirect/' . $gateway);
+
+                    } elseif (file_exists($theme_path . 'views/modules/firesale/gateways/redirect/all.php')) {
+
+                        $this->tempalte->build('gateways/redirect/all');
 
                     } else {
 
