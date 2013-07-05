@@ -981,7 +981,7 @@ class Cart extends Public_Controller
         }
     }
 
-    protected function build_params($gateway, $order, $override = false)
+    protected function build_params($gateway, $order, array $override = null)
     {
         return array_merge(array(
             'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
