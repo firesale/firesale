@@ -48,7 +48,7 @@ class Cart extends Public_Controller
             'firesale/products_m',
             'firesale/routes_m',
             'firesale/modifier_m'
-        );
+        ));
 
         // Require login?
         if ( $this->settings->get('firesale_login') == 1 and ! $this->current_user ) {
@@ -642,7 +642,7 @@ class Cart extends Public_Controller
                 $posted_data = $this->input->post(NULL, TRUE);
 
                 // Run payment
-                $params = $this->build_params($gateway, $order, $posted_data)
+                $params = $this->build_params($gateway, $order, $posted_data);
 
                 $process = $this->merchant->purchase($params);
 
