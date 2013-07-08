@@ -457,22 +457,23 @@ class Modifier_m extends MY_Model
         array_shift($variations);
 
         // Variables
-        $sql = "SELECT fp_0.`firesale_products_id`
-                FROM `".SITE_REF."_firesale_product_variations_firesale_products` AS `fp_0`";
+        $query = $this->db->select('fp_0.`firesale_products_id`')
+                          ->from('firesale_product_variations_firesale_products` AS `fp_0`');
 
         if ( ! empty($variations) ) {
             // Loop variations
             foreach ($variations as $key => $variation) {
                 $key += 1;
-                $sql .= "\nINNER JOIN `" . SITE_REF . "_firesale_product_variations_firesale_products` AS `fp_{$key}` ON ( `fp_{$key}`.`row_id` = {$variation} AND `fp_{$key}`.`firesale_products_id` = fp_0.`firesale_products_id` )";
+                $query->join("firesale_product_variations_firesale_products` AS `fp_{$key}`", "( `fp_{$key}`.`row_id` = {$variation} AND `fp_{$key}`.`firesale_products_id` = fp_0.`firesale_products_id` )", 'inner');
             }
         }
 
         // Append where
-        $sql .= "\nWHERE fp_0.`row_id` = {$id}\nAND fp_0.`firesale_product_variations_id` = {$stream_id}";
+        $query->where('`fp_0`.`row_id`', $id)
+              ->where('`fp_0`.`firesale_product_variations_id`', $stream_id);
 
         // Run query
-        $query = $this->db->query($sql);
+        $query = $query->get();
 
         // Check for results
         if ( $query->num_rows() ) {
@@ -483,6 +484,23 @@ class Modifier_m extends MY_Model
 
         // Not found
         return FALSE;
+    }
+
+    public function variation_parent($product_id)
+    {
+        $query = $this->db->select('pm.parent')
+                          ->from('firesale_product_variations_firesale_products AS pvp')
+                          ->join('firesale_product_variations AS pv', 'pv.id = pvp.row_id', 'inner')
+                          ->join('firesale_product_modifiers AS pm', 'pm.id = pv.parent', 'inner')
+                          ->where('pvp.firesale_products_id', $product_id)
+                          ->get();
+
+        if ( $query->num_rows() )
+        {
+            return $query->row()->parent;
+        }
+
+        return false;
     }
 
     public function possible_variations($modifiers)
