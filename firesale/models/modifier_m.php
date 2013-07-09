@@ -503,6 +503,24 @@ class Modifier_m extends MY_Model
         return false;
     }
 
+    public function variation_value($product_id, $option)
+    {
+        $query = $this->db->select('pv.title')
+                          ->from('firesale_product_variations_firesale_products AS pvp')
+                          ->join('firesale_product_variations AS pv', 'pv.id = pvp.row_id', 'inner')
+                          ->join('firesale_product_modifiers AS pm', 'pm.id = pv.parent', 'inner')
+                          ->where('pvp.firesale_products_id', $product_id)
+                          ->where('pm.title', $option)
+                          ->get();
+
+        if ( $query->num_rows() )
+        {
+            return $query->row()->title;
+        }
+
+        return null;
+    }
+
     public function possible_variations($modifiers)
     {
 
