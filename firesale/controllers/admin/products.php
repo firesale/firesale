@@ -600,7 +600,7 @@ class Products extends Admin_Controller
         }
 
         // Redirect
-        redirect($_SERVER['HTTP_REFERER']);
+        redirect($_SERVER['HTTP_REFERER']."#images");
     }
 
 }
