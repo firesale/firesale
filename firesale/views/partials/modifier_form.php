@@ -19,7 +19,6 @@
                         <input type="radio" name="options[0][<?php echo $modifier['id']; ?>]" id="options_<?php echo $variation['id']; ?>" value="<?php echo $variation['id']; ?>" <?php echo $variation['selected']; ?>/>
                         <label for="options_<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (<?php echo ( $difference == 'difference' ? $variation['difference'] : $variation['product']['price_formatted'] ); ?>)</label>
                     <?php else: ?>
-                    >
                             <option <?php echo $variation['selected']; ?>value="<?php echo $variation['id']; ?>"><?php echo $variation['title']; ?> (<?php echo ( $difference == 'difference' ? $variation['difference'] : $variation['product']['price_formatted'] ); ?>)</option>
                     <?php endif; ?>
                     <?php endforeach; ?>
