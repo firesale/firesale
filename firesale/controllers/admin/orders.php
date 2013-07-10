@@ -177,8 +177,8 @@ class Orders extends Admin_Controller
         $this->data->id     = $id;
         $this->data->fields = array(
                                 'general' => array('details' => $fields),
-                                'ship'    => $this->address_m->get_address_form('ship', ( isset($row->ship_to) ? 'edit' : 'new' ), ( isset($row->ship_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : NULL )),
-                                'bill'    => $this->address_m->get_address_form('bill', ( isset($row->bill_to) ? 'edit' : 'new' ), ( isset($row->bill_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : NULL ))
+                                'ship'    => $this->address_m->get_address_form('ship', ( isset($row->ship_to) ? 'edit' : 'new' ), ( isset($row->ship_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : $this->input->post() )),
+                                'bill'    => $this->address_m->get_address_form('bill', ( isset($row->bill_to) ? 'edit' : 'new' ), ( isset($row->bill_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : $this->input->post() ))
                               );
 
         // Add users as first general field
