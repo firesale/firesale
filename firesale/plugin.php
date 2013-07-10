@@ -333,7 +333,7 @@ class Plugin_Firesale extends Plugin
         $data->jsdata     = $this->pyrocache->model('modifier_m', 'jsdata', array($product['modifiers']), $this->firesale->cache_time);
 
         // Build form
-        return $this->parser->parse('partials/modifier_form', $data, true);
+        return $this->module_view('firesale', 'partials/modifier_form', $data, true);
     }
 
     public function cart()

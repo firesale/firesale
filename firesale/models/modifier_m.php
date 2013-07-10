@@ -457,14 +457,14 @@ class Modifier_m extends MY_Model
         array_shift($variations);
 
         // Variables
-        $query = $this->db->select('fp_0.`firesale_products_id`')
+        $query = $this->db->select('`fp_0`.`firesale_products_id`')
                           ->from('firesale_product_variations_firesale_products` AS `fp_0`');
 
         if ( ! empty($variations) ) {
             // Loop variations
             foreach ($variations as $key => $variation) {
                 $key += 1;
-                $query->join("firesale_product_variations_firesale_products` AS `fp_{$key}`", "( `fp_{$key}`.`row_id` = {$variation} AND `fp_{$key}`.`firesale_products_id` = fp_0.`firesale_products_id` )", 'inner');
+                $query->join("`".SITE_REF."_firesale_product_variations_firesale_products` AS `fp_{$key}`", "( `fp_{$key}`.`row_id` = '{$variation}' AND `fp_{$key}`.`firesale_products_id` = `fp_0`.`firesale_products_id` )", 'inner', false);
             }
         }
 
@@ -512,12 +512,12 @@ class Modifier_m extends MY_Model
                           ->where('pvp.firesale_products_id', $product_id)
                           ->where('pm.title', $option)
                           ->get();
-
+    
         if ( $query->num_rows() )
         {
             return $query->row()->title;
         }
-
+    
         return null;
     }
 
