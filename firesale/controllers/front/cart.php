@@ -422,9 +422,9 @@ class Cart extends Public_Controller
 
                 // Variables
                 $posted = true;
-                $input 	= $this->input->post();
-                $skip	= array('btnAction', 'bill_details_same');
-                $extra 	= array('return' => 'cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => false, 'error_message' => false);
+                $input  = $this->input->post();
+                $skip   = array('btnAction', 'bill_details_same');
+                $extra  = array('return' => 'cart/payment', 'error_start' => '<div class="error-box">', 'error_end' => '</div>', 'success_message' => false, 'error_message' => false);
 
                 // Shipping option
                 if ( $data['ship_req'] AND ! empty($data['shipping']) AND isset($input['shipping'])) {
@@ -451,13 +451,13 @@ class Cart extends Public_Controller
                 }
 
                 // Modify posted data
-                $input['shipping']	   = ( isset($input['shipping']) ? $input['shipping'] : 0 );
+                $input['shipping']     = ( isset($input['shipping']) ? $input['shipping'] : 0 );
                 $input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
                 $input['order_status'] = '1'; // Unpaid
                 $input['price_sub']    = $this->fs_cart->subtotal();
                 $input['price_ship']   = $shipping['price'];
                 $input['price_total']  = number_format($this->fs_cart->total() + $shipping['price'], 2);
-                $_POST 				   = $input;
+                $_POST                 = $input;
 
                 // Generate validation
                 $rules = $this->cart_m->build_validation($data['ship_req']);
@@ -642,7 +642,7 @@ class Cart extends Public_Controller
                 $posted_data = $this->input->post(NULL, TRUE);
 
                 // Run payment
-                $params = $this->build_params($gateway, $order, $posted_data);
+                $params = $this->cart_m->build_transaction($gateway, $order, $posted_data);
 
                 $process = $this->merchant->purchase($params);
 
@@ -904,7 +904,7 @@ class Cart extends Public_Controller
                 $this->merchant->load($gateway);
                 $this->merchant->initialize($this->gateways->settings($gateway));
 
-                $params = $this->build_params($gateway, $order);
+                $params = $this->cart_m->build_transaction($gateway, $order);
 
                 $response = $this->merchant->purchase_return($params);
 
@@ -975,31 +975,5 @@ class Cart extends Public_Controller
             // Run status function
             $this->$status($order, FALSE);
         }
-    }
-
-    protected function build_params($gateway, $order, array $override = null)
-    {
-        return array_merge(array(
-            'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
-            'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
-            'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
-        ), $override ? $override : array(), array(
-            'currency_code'  => $this->fs_cart->currency()->cur_code,
-            'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
-            'order_id'       => $this->session->userdata('order_id'),
-            'transaction_id' => $this->session->userdata('order_id'),
-            'reference'      => 'Order #' . $this->session->userdata('order_id'),
-            'description'    => 'Order #' . $this->session->userdata('order_id'),
-            'first_name'     => $order['bill_to']['firstname'],
-            'last_name'      => $order['bill_to']['lastname'],
-            'address1'       => $order['bill_to']['address1'],
-            'address2'       => $order['bill_to']['address2'],
-            'city'           => $order['bill_to']['city'],
-            'region'         => $order['bill_to']['county'],
-            'country'        => $order['bill_to']['country']['code'],
-            'postcode'       => $order['bill_to']['postcode'],
-            'phone'          => $order['bill_to']['phone'],
-            'email'          => $order['bill_to']['email'],
-        ));
     }
 }

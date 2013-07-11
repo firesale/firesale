@@ -69,10 +69,10 @@ class Cart_m extends MY_Model
         foreach ($products AS $rowid => $product) {
             if ( array_key_exists($product['id'], $qty) ) {
                 if ( (int) $qty[$product['id']] < (int) $product['qty'] ) {
-                    $changed 		  = TRUE;
-                    $data 		   	  = array();
+                    $changed          = TRUE;
+                    $data             = array();
                     $data['rowid']    = $rowid;
-                    $data['qty']   	  = $qty[$product['id']];
+                    $data['qty']      = $qty[$product['id']];
                     $data['subtotal'] = number_format(( $data['qty'] * $product['price'] ), 2);
                     $this->fs_cart->update($data);
                 }
@@ -161,16 +161,16 @@ class Cart_m extends MY_Model
 
             // Shipping
             if ( $ship AND ( !isset($input['ship_to']) OR ( isset($input['ship_to']) AND $input['ship_to'] == 'new' ) ) ) {
-                $_rule   		= $rule;
+                $_rule          = $rule;
                 $_rule['field'] = 'ship_' . $_rule['field'];
-                $rules[] 		= $_rule;
+                $rules[]        = $_rule;
             }
 
             // Billing
             if ( !isset($input['bill_to']) OR ( isset($input['bill_to']) AND $input['bill_to'] == 'new' ) ) {
-                $_rule   		= $rule;
+                $_rule          = $rule;
                 $_rule['field'] = 'bill_' . $_rule['field'];
-                $rules[] 		= $_rule;
+                $rules[]        = $_rule;
             }
 
         }
@@ -219,14 +219,40 @@ class Cart_m extends MY_Model
             $this->orders_m->update_order_cost(0, FALSE);
 
             // Add pricing
-            $response['total'] 		= $this->fs_cart->total;
-            $response['tax']   		= $this->fs_cart->tax;
-            $response['subtotal']	= $this->fs_cart->subtotal;
+            $response['total']      = $this->fs_cart->total;
+            $response['tax']        = $this->fs_cart->tax;
+            $response['subtotal']   = $this->fs_cart->subtotal;
 
         }
 
         // Return
         return json_encode($response);
+    }
+
+    public function build_transaction($gateway, $order, array $override = null)
+    {
+        return array_merge(array(
+            'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
+            'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
+            'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
+        ), $override ? $override : array(), array(
+            'currency_code'  => $this->fs_cart->currency()->cur_code,
+            'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
+            'order_id'       => $this->session->userdata('order_id'),
+            'transaction_id' => $this->session->userdata('order_id'),
+            'reference'      => 'Order #' . $this->session->userdata('order_id'),
+            'description'    => 'Order #' . $this->session->userdata('order_id'),
+            'first_name'     => $order['bill_to']['firstname'],
+            'last_name'      => $order['bill_to']['lastname'],
+            'address1'       => $order['bill_to']['address1'],
+            'address2'       => $order['bill_to']['address2'],
+            'city'           => $order['bill_to']['city'],
+            'region'         => $order['bill_to']['county'],
+            'country'        => $order['bill_to']['country']['code'],
+            'postcode'       => $order['bill_to']['postcode'],
+            'phone'          => $order['bill_to']['phone'],
+            'email'          => $order['bill_to']['email'],
+        ));
     }
 
     /**
@@ -242,16 +268,16 @@ class Cart_m extends MY_Model
     public function build_data($product, $qty, $options = false)
     {
         $data = array(
-            'id'	   => $product['id'],
-            'code'	   => $product['code'],
-            'qty'	   => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
-            'price'	   => preg_replace('/[^0-9\.]+/', '', $product['price_rounded']),
+            'id'       => $product['id'],
+            'code'     => $product['code'],
+            'qty'      => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
+            'price'    => preg_replace('/[^0-9\.]+/', '', $product['price_rounded']),
             'tax_band' => $product['tax_band']['id'],
-            'name'	   => $product['title'],
-            'slug'	   => $product['slug'],
+            'name'     => $product['title'],
+            'slug'     => $product['slug'],
             'ship'     => $product['ship_req']['key'],
             'weight'   => ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
-            'image'	   => $this->products_m->get_single_image($product['id']),
+            'image'    => $this->products_m->get_single_image($product['id']),
             'options'  => $options,
             'parent'   => $product['modifiers'][0]['parent']
         );
