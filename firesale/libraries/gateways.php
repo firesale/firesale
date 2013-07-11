@@ -139,6 +139,10 @@ class gateways
         if ($this->exists($gateway)) {
             if ($this->_CI->merchant->load($gateway)) {
                 foreach ($this->_CI->merchant->default_settings() as $setting => $value) {
+                    if (isset($value['options']) and is_array($value['options'])) {
+                        foreach ($value['options'] as $key => &$option) $option = lang($option) ? lang($option) : $key;
+                    }
+                    
                     $settings[] = array(
                         'slug'    => $setting,
                         'name'    => ucwords(str_replace('_', ' ', $setting)),
