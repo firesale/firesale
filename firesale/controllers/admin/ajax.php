@@ -192,12 +192,12 @@ class Ajax extends Admin_Controller
     public function routes_order()
     {
         // Load required items
-        $this->load->model('routes_m');
+        $this->load->model('firesale/routes_m');
 
         // Order and rebuild
         echo order_table($this->input->post('order'), 'firesale_routes', 'route_');
         $this->routes_m->clear();
-        $this->rebuild(false);
+        Modules::run('firesale/admin/routes/rebuild', false);
         exit();
     }
 
