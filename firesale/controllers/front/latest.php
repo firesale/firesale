@@ -18,7 +18,7 @@
 *
 */
 
-class New extends Public_Controller
+class Latest extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
