@@ -52,8 +52,8 @@ class gateways
 
                     if ( ! $this->is_installed($gateway_name)) {
                         $uninstalled[] = array(
-                            'slug'	=> $gateway_name,
-                            'name'	=> ucwords(str_replace('_', ' ', $gateway_name))
+                            'slug'  => $gateway_name,
+                            'name'  => ucwords(str_replace('_', ' ', $gateway_name))
                         );
                     }
                 }
@@ -85,9 +85,9 @@ class gateways
 
         foreach ($gateways->result() as $gateway) {
             $data[$gateway->id] = array(
-                'slug'	=> $gateway->slug,
-                'name'	=> $gateway->name,
-                'desc'	=> $gateway->desc
+                'slug'  => $gateway->slug,
+                'name'  => $gateway->name,
+                'desc'  => $gateway->desc
             );
         }
 
@@ -140,10 +140,12 @@ class gateways
             if ($this->_CI->merchant->load($gateway)) {
                 foreach ($this->_CI->merchant->default_settings() as $setting => $value) {
                     $settings[] = array(
-                        'slug'	=> $setting,
-                        'name'	=> ucwords(str_replace('_', ' ', $setting)),
-                        'type'	=> gettype($value),
-                        'value'	=> $this->setting($gateway, $setting)
+                        'slug'    => $setting,
+                        'name'    => ucwords(str_replace('_', ' ', $setting)),
+                        'type'    => gettype($value),
+                        'value'   => $this->setting($gateway, $setting),
+                        'options' => isset($value['options']) ? $value['options'] : false,
+                        'default' => isset($value['default']) ? $value['default'] : $value
                     );
                 }
 
