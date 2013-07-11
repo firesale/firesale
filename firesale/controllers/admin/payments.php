@@ -97,8 +97,6 @@ class Payments extends Admin_Controller
                 $field_data['options'] = $field['options'];
                 $field_data['default'] = $field['default'];
 
-                print_r($field_data);
-
                 if ($field['type'] == 'boolean') {
                     $field_data['rules'] = 'required|callback__valid_bool';
                     $field_data['type'] = 'boolean';
