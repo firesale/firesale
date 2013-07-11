@@ -792,7 +792,7 @@ class Cart extends Public_Controller
     protected function _order_processing($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 4);
-        $skip = $this->_skip($order['gateway']['id']);
+        $skip = $this->skip($order['gateway']['id']);
 
         if (! $callback) {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
@@ -804,7 +804,7 @@ class Cart extends Public_Controller
     protected function _order_failed($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 7);
-        $skip = $this->_skip($order['gateway']['id']);
+        $skip = $this->skip($order['gateway']['id']);
 
         if (! $callback) {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
