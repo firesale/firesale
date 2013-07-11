@@ -73,16 +73,16 @@ class Payments extends Admin_Controller
         $fields = $this->gateways->get_setting_fields($slug);
         $rules = array(
             array(
-                'field'	=> 'name',
-                'label'	=> lang('firesale:gateways:labels:name'),
-                'rules'	=> 'trim|htmlspecialchars|required|max_length[100]',
-                'type'	=> 'string'
+                'field' => 'name',
+                'label' => lang('firesale:gateways:labels:name'),
+                'rules' => 'trim|htmlspecialchars|required|max_length[100]',
+                'type'  => 'string'
             ),
             array(
-                'field'	=> 'desc',
-                'label'	=> lang('firesale:gateways:labels:desc'),
-                'rules'	=> 'trim|xss_clean|required',
-                'type'	=> 'text'
+                'field' => 'desc',
+                'label' => lang('firesale:gateways:labels:desc'),
+                'rules' => 'trim|xss_clean|required',
+                'type'  => 'text'
             )
         );
 
@@ -92,8 +92,12 @@ class Payments extends Admin_Controller
 
         if (is_array($fields)) {
             foreach ($fields as $field) {
-                $field_data['field'] = $field['slug'];
-                $field_data['label'] = $field['name'];
+                $field_data['field']   = $field['slug'];
+                $field_data['label']   = $field['name'];
+                $field_data['options'] = $field['options'];
+                $field_data['default'] = $field['default'];
+
+                print_r($field_data);
 
                 if ($field['type'] == 'boolean') {
                     $field_data['rules'] = 'required|callback__valid_bool';
@@ -114,11 +118,11 @@ class Payments extends Admin_Controller
 
             if ($this->form_validation->run()) {
                 $data = array(
-                    'created' 		 => date("Y-m-d H:i:s"),
+                    'created'        => date("Y-m-d H:i:s"),
                     'ordering_count' => 0,
-                    'slug'			 => $slug,
-                    'name'			 => set_value('name'),
-                    'desc'			 => set_value('desc')
+                    'slug'           => $slug,
+                    'name'           => set_value('name'),
+                    'desc'           => set_value('desc')
                 );
 
                 $this->db->trans_begin();
@@ -129,9 +133,9 @@ class Payments extends Admin_Controller
                 if(!empty($additional_fields)){
                     foreach ($additional_fields as $field) {
                         $this->db->insert('firesale_gateway_settings', array(
-                            'id'	=> $gateway_id,
-                            'key'	=> $field['field'],
-                            'value'	=> set_value($field['field'])
+                            'id'    => $gateway_id,
+                            'key'   => $field['field'],
+                            'value' => set_value($field['field'])
                         ));
                     }
                 }
@@ -293,16 +297,16 @@ class Payments extends Admin_Controller
             $fields = $this->gateways->get_setting_fields($slug);
             $rules = array(
                 array(
-                    'field'	=> 'name',
-                    'label'	=> lang('firesale:gateways:labels:name'),
-                    'rules'	=> 'trim|htmlspecialchars|required|max_length[100]',
-                    'type'	=> 'string'
+                    'field' => 'name',
+                    'label' => lang('firesale:gateways:labels:name'),
+                    'rules' => 'trim|htmlspecialchars|required|max_length[100]',
+                    'type'  => 'string'
                 ),
                 array(
-                    'field'	=> 'desc',
-                    'label'	=> lang('firesale:gateways:labels:desc'),
-                    'rules'	=> 'trim|xss_clean|required',
-                    'type'	=> 'text'
+                    'field' => 'desc',
+                    'label' => lang('firesale:gateways:labels:desc'),
+                    'rules' => 'trim|xss_clean|required',
+                    'type'  => 'text'
                 )
             );
 
@@ -313,12 +317,17 @@ class Payments extends Admin_Controller
                 foreach ($fields as $field) {
                     $values[$field['slug']] = $this->gateways->setting($slug, $field['slug']);
 
-                    $field_data['field'] = $field['slug'];
-                    $field_data['label'] = $field['name'];
+                    $field_data['field']   = $field['slug'];
+                    $field_data['label']   = $field['name'];
+                    $field_data['options'] = $field['options'];
+                    $field_data['default'] = $field['default'];
 
                     if ($field['type'] == 'boolean') {
                         $field_data['rules'] = 'required|callback__valid_bool';
                         $field_data['type'] = 'boolean';
+                    } elseif ($field['type'] == 'array') {
+                        $field_data['rules'] = 'required|callback__valid_array[' . $field['slug'] . ']';
+                        $field_data['type'] = 'array';
                     } else {
                         $field_data['rules'] = 'required|xss_clean|trim';
                         $field_data['type'] = 'string';
@@ -332,8 +341,8 @@ class Payments extends Admin_Controller
 
                 if ($this->form_validation->run()) {
                     $data = array(
-                        'name'	=> set_value('name'),
-                        'desc'	=> set_value('desc')
+                        'name'  => set_value('name'),
+                        'desc'  => set_value('desc')
                     );
 
                     $gateway_id = $this->db->get_where('firesale_gateways', array('slug' => $slug))->row()->id;
@@ -344,16 +353,16 @@ class Payments extends Admin_Controller
                     foreach ($additional_fields as $field) {
                         if ($this->db->get_where('firesale_gateway_settings', array('id' => $gateway_id, 'key' => $field['field']))->num_rows()) {
                             $this->db->update('firesale_gateway_settings', array(
-                                'value'	=> set_value($field['field'])
+                                'value' => set_value($field['field'])
                             ), array(
-                                'id'	=> $gateway_id,
-                                'key'	=> $field['field']
+                                'id'    => $gateway_id,
+                                'key'   => $field['field']
                             ));
                         } else {
                             $this->db->insert('firesale_gateway_settings', array(
-                                'id'	=> $gateway_id,
-                                'key'	=> $field['field'],
-                                'value'	=> set_value($field['field'])
+                                'id'    => $gateway_id,
+                                'key'   => $field['field'],
+                                'value' => set_value($field['field'])
                             ));
                         }
                     }
