@@ -25,6 +25,11 @@
                                     <div class="input">
                                         <textarea id="<?php echo $field['field']; ?>" name="<?php echo $field['field']; ?>" style="width:250px"><?php echo set_value($field['field'], isset($values[$field['field']]) ? $values[$field['field']] : $field['default']); ?></textarea>
                                     </div>
+                                <?php elseif ($field['type'] == 'array'): ?>
+                                    <label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
+                                    <div class="input">
+                                        <?php echo form_dropdown($field['field'], $field['options'], isset($values[$field['field']]) ? $values[$field['field']] : $field['default']); ?>
+                                    </div>
                                 <?php else: ?>
                                     <label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
                                     <div class="input">
