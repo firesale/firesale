@@ -255,6 +255,38 @@ class Cart_m extends MY_Model
         ));
     }
 
+    public function data()
+    {
+        $data = array();
+        
+        // Assign Variables
+        $data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
+        $data['tax']         = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
+        $data['total']       = $this->currency_m->format_string($this->fs_cart->total(), $this->fs_cart->currency(), false);
+        $data['currency']    = $this->fs_cart->currency();
+        $data['contents']    = $this->fs_cart->contents();
+
+        // Add item id
+        $i = 1;
+        foreach ($data['contents'] AS &$product) {
+
+            // General data
+            $product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
+            $product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
+            $product['no']       = $i;
+
+            // Images
+            if ( $product['image'] == false ) {
+                $product['images'] = $this->pyrocache->model('products_m', 'get_parent_images', array($product['id']), $this->firesale->cache_time);
+                $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
+            }
+
+            $i++;
+        }
+        
+        return $data;
+    }
+
     /**
      * Builds an array of data to be inserted into the database for an order and to
      * be added into the cart object.

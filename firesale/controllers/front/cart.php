@@ -91,7 +91,7 @@ class Cart extends Public_Controller
         $this->cart_m->check_price();
         
         // get the cart data
-        $data = $this->cart_data();
+        $data = $this->cart_m->cart_data();
 
         // Add page data
         $this->template->set_breadcrumb(lang('firesale:cart:title'))
@@ -113,43 +113,11 @@ class Cart extends Public_Controller
         $this->cart_m->check_price();
         
         // get the cart data
-        $data = $this->cart_data();
+        $data = $this->cart_m->cart_data();
         
         // output json response
         $this->output->set_content_type('application/json')
                 ->set_output(json_encode($data));
-    }
-    
-    protected function cart_data()
-    {
-        $data = array();
-        
-        // Assign Variables
-        $data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
-        $data['tax']         = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
-        $data['total']       = $this->currency_m->format_string($this->fs_cart->total(), $this->fs_cart->currency(), false);
-        $data['currency']    = $this->fs_cart->currency();
-        $data['contents']    = $this->fs_cart->contents();
-
-        // Add item id
-        $i = 1;
-        foreach ($data['contents'] AS &$product) {
-
-            // General data
-            $product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
-            $product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
-            $product['no']       = $i;
-
-            // Images
-            if ( $product['image'] == false ) {
-                $product['images'] = $this->pyrocache->model('products_m', 'get_parent_images', array($product['id']), $this->firesale->cache_time);
-                $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
-            }
-
-            $i++;
-        }
-        
-        return $data;
     }
 
     public function insert($prd_code = NULL, $qty = 1)
