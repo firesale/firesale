@@ -46,8 +46,9 @@ class Merchant_paypal_express extends Merchant_paypal_base
                 'Sole' => 'merchant_solution_type_sole',
                 'Mark' => 'merchant_solution_type_mark')),
             'landing_page' => array('type' => 'select', 'default' => 'Billing', 'options' => array(
-                'Billing'	=> 'merchant_landing_page_billing',
-                'Login'		=> 'merchant_landing_page_login'))
+                'Billing'   => 'merchant_landing_page_billing',
+                'Login'     => 'merchant_landing_page_login')),
+            'skip_checkout' => true
         );
     }
 
@@ -56,7 +57,7 @@ class Merchant_paypal_express extends Merchant_paypal_base
         $request = $this->_build_authorize_or_purchase();
         $response = $this->_post_paypal_request($request);
 
-        $this->redirect($this->_checkout_url().'?'.http_build_query(array(
+        return new Merchant_paypal_response('redirect', $this->_checkout_url().'?'.http_build_query(array(
             'cmd' => '_express-checkout',
             'useraction' => 'commit',
             'token' => $response['TOKEN'],
@@ -73,7 +74,7 @@ class Merchant_paypal_express extends Merchant_paypal_base
     public function purchase()
     {
         // authorize first then process as 'Sale' in DoExpressCheckoutPayment
-        $this->authorize();
+        return $this->authorize();
     }
 
     public function purchase_return()
@@ -120,6 +121,16 @@ class Merchant_paypal_express extends Merchant_paypal_base
         $request['PAYERID'] = $this->CI->input->get_post('PayerID');
 
         return $this->_post_paypal_request($request);
+    }
+}
+
+class Merchant_paypal_response extends Merchant_response
+{
+    public function __construct($status, $url = null)
+    {
+        parent::__construct($status);
+
+        $this->_redirect_url = $url;
     }
 }
 
