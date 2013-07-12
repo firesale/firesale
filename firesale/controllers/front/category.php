@@ -92,7 +92,7 @@ class Category extends Public_Controller
 
         // Get category details
         if ($category != NULL) {
-            $category = cache('categories_m/get_category', array($category));
+            $category = cache('categories_m/get_category', $category);
         }
 
         // Check category exists
@@ -115,7 +115,7 @@ class Category extends Public_Controller
 
             // Loop and get products
             foreach ($ids AS $id) {
-                $product                = cache('products_m/get_product', array($id['id']));
+                $product                = cache('products_m/get_product', $id['id']);
                 $product['description'] = strip_tags($product['description']);
                 $products[]             = $product;
             }
@@ -126,7 +126,7 @@ class Category extends Public_Controller
                 // Variables
                 $cat   = ( isset($category['id']) ? $category['id'] : NULL );
                 $url   = str_replace('/{{ slug }}', '', uri('category', $cat));
-                $total = cache('categories_m/total_products', array($cat));
+                $total = cache('categories_m/total_products', $cat);
 
                 // Build pagination
                 $this->data->pagination = create_pagination($url, $total, $this->perpage, ( 2 + substr_count($url, '/') ));

@@ -41,7 +41,7 @@ class Product extends Public_Controller
     public function index($product)
     {
         // Get the product
-        $product = cache('products_m/get_product', array($product));
+        $product = cache('products_m/get_product', $product);
 
         // Check it exists
         if ($product === false) {
@@ -50,8 +50,8 @@ class Product extends Public_Controller
 
         // Product information
         $this->data->product  = $product;
-        $this->data->category = cache('products_m/get_category', array($product));
-        $this->data->images   = cache('products_m/get_images', array($product['slug']));
+        $this->data->category = cache('products_m/get_category', $product);
+        $this->data->images   = cache('products_m/get_images', $product['slug']);
         $this->data->url      = uri('product', $this->data->product['id']);
         $this->data->parent   = $this->products_m->build_breadcrumbs($this->data->category, $this->template);
 
@@ -86,8 +86,8 @@ class Product extends Public_Controller
         if ( $this->input->post() ) {
 
             // Get product data
-            $data    = cache('modifier_m/cart_variation', array($this->input->post()));
-            $product = cache('products_m/get_product', array($data['prd_code'][0], null, 1));
+            $data    = cache('modifier_m/cart_variation', $this->input->post());
+            $product = cache('products_m/get_product', $data['prd_code'][0], null, 1);
 
             // Build data for return
             $data = array(

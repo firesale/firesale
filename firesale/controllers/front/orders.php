@@ -63,8 +63,8 @@ class Orders extends Public_Controller
             // Add items to order
             if ($orders['total'] > 0) {
                 foreach ($orders['entries'] AS &$order) {
-                    $order['count'] = cache('orders_m', 'product_count', array($order['id']));
-                    $currency       = cache('currency_m', 'get', array($order['currency']['id']));
+                    $order['count'] = cache('orders_m/product_count', $order['id']);
+                    $currency       = cache('currency_m/get', $order['currency']['id']);
                     $order['price_sub_formatted']   = $this->currency_m->format_string($order['price_sub'], $currency, false);
                     $order['price_ship_formatted']  = $this->currency_m->format_string($order['price_ship'], $currency, false);
                     $order['price_total_formatted'] = $this->currency_m->format_string($order['price_total'], $currency, false);
@@ -99,7 +99,7 @@ class Orders extends Public_Controller
 
         // Variables
         $user  = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
-        $order = cache('orders_m', 'get_order_by_id', array($id));
+        $order = cache('orders_m/get_order_by_id', $id);
 
         // Check user can view
         if ($user != NULL AND $order != FALSE AND $user == $order['created_by']['user_id']) {

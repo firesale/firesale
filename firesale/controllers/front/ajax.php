@@ -29,7 +29,7 @@ class Ajax extends Public_Controller
             $product = $this->modifier_m->variation_exists($options, $stream->id);
     
             if ($product !== false) {
-                $product = $this->pyrocache->model('products_m', 'get_product', array($product, null, 1), $this->firesale->cache_time);
+                $product = cache('products_m/get_product', $product, null, 1);
     
                 $data = array(
                     'code'            => $product['code'],

@@ -90,7 +90,7 @@ class Latest extends Public_Controller
         // Loop and get product data
         if ( ! empty($ids) ) {
             foreach ( $ids as $id ) {
-                $products[] = cache('products_m/get_product', array($id['id']));
+                $products[] = cache('products_m/get_product', $id['id']);
             }
         }
 
