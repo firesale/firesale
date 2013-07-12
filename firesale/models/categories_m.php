@@ -474,6 +474,8 @@ class Categories_m extends MY_Model
      */
     public function build_breadcrumbs($category, &$template)
     {
+        $template->set_breadcrumb('Store', 'store');
+
         if ( $category == null ) {
             $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
             $template->set_breadcrumb(lang('firesale:cats_all_products'));

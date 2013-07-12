@@ -204,8 +204,8 @@ class Products_m extends MY_Model
             $product = array_merge($product, $pricing);
 
             // Check images
-            if ( $product['is_variation'] == '1' and empty($product['images']) ) {
-                $product['images'] = $this->get_parent_images($product['id']);
+            if ( $product['is_variation'] == '1' ) {
+                $product['images'] = array_merge($product['images'], $this->get_parent_images($product['id']));
                 $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
             }
 
@@ -736,10 +736,12 @@ class Products_m extends MY_Model
      */
     public function build_breadcrumbs($category, &$template)
     {
-
         // Variables
         $parent     = null;
         $categories = $this->get_cat_path($category, true);
+
+        // Assign root
+        $this->template->set_breadcrumb('Store', 'store');
 
         // Loop categories
         foreach ($categories as $category) {

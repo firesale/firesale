@@ -41,7 +41,7 @@ class Product extends Public_Controller
     public function index($product)
     {
         // Get the product
-        $product = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
+        $product = cache('products_m/get_product', array($product));
 
         // Check it exists
         if ($product === false) {
@@ -50,9 +50,9 @@ class Product extends Public_Controller
 
         // Product information
         $this->data->product  = $product;
-        $this->data->category = $this->pyrocache->model('products_m', 'get_category', array($product), $this->firesale->cache_time);
-        $this->data->images   = $this->pyrocache->model('products_m', 'get_images', array($product['slug']), $this->firesale->cache_time);
-        $this->data->url      = $this->pyrocache->model('routes_m', 'build_url', array('product', $this->data->product['id']), $this->firesale->cache_time);
+        $this->data->category = cache('products_m/get_category', array($product));
+        $this->data->images   = cache('products_m/get_images', array($product['slug']));
+        $this->data->url      = uri('product', $this->data->product['id']);
         $this->data->parent   = $this->products_m->build_breadcrumbs($this->data->category, $this->template);
 
         if (rtrim($this->data->url,"/") == uri_string()) {
@@ -86,8 +86,8 @@ class Product extends Public_Controller
         if ( $this->input->post() ) {
 
             // Get product data
-            $data    = $this->pyrocache->model('modifier_m', 'cart_variation', array($this->input->post()), $this->firesale->cache_time);
-            $product = $this->pyrocache->model('products_m', 'get_product', array($data['prd_code'][0], null, 1), $this->firesale->cache_time);
+            $data    = cache('modifier_m/cart_variation', array($this->input->post()));
+            $product = cache('products_m/get_product', array($data['prd_code'][0], null, 1));
 
             // Build data for return
             $data = array(

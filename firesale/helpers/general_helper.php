@@ -18,6 +18,30 @@
 *
 */
 
+function cache($call, $values = array())
+{
+    // Get instance
+    $_CI =& get_instance();
+
+    list($m, $method) = explode('/', $call);
+
+    // Just incase
+    $_CI->load->model($m);
+
+    // Cache and return
+    return $_CI->pyrocache->model($m, $method, $values, $_CI->firesale->cache_time);
+}
+
+function uri($route, $id = null)
+{
+    return cache('routes_m/build_url', array($route, $id));
+}
+
+function url($route, $id = null)
+{
+    return site_url(cache('routes_m/build_url', array($route, $id)));
+}
+
 /**
  * Detects if a given module is currently installed
  *
