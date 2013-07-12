@@ -91,7 +91,7 @@ class Cart extends Public_Controller
         $this->cart_m->check_price();
         
         // get the cart data
-        $data = $this->cart_m->cart_data();
+        $data = $this->cart_m->data();
 
         // Add page data
         $this->template->set_breadcrumb(lang('firesale:cart:title'))
@@ -113,7 +113,7 @@ class Cart extends Public_Controller
         $this->cart_m->check_price();
         
         // get the cart data
-        $data = $this->cart_m->cart_data();
+        $data = $this->cart_m->data();
         
         // output json response
         $this->output->set_content_type('application/json')
