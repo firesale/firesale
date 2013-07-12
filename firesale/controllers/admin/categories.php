@@ -113,7 +113,7 @@ class Categories extends Admin_Controller
 
             // Format post data
             $_POST['parent']      = ( $_POST['parent'] == null ? '0' : $_POST['parent'] );
-            $input['slug_prefix'] = $this->pyrocache->model('categories_m', 'get_complete_slug', array('id' => $input['parent']), $this->firesale->cache_time);
+            $input['slug_prefix'] = cache('categories_m/get_complete_slug', array('id' => $input['parent']));
             $_POST['slug_prefix'] = $input['slug_prefix'];
             $_POST['slug']        = $_POST['slug_prefix'].$_POST['slug'];
 
@@ -129,7 +129,7 @@ class Categories extends Admin_Controller
 
         // Get row for edit
         if ( $id > 0 ) {
-            $row = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
+            $row = cache('row_m/get_row', $id, $this->stream, FALSE);
         }
 
         // Get the stream fields
@@ -141,7 +141,7 @@ class Categories extends Admin_Controller
             Events::trigger('clear_cache');
 
             // Add to search
-            $category = $this->pyrocache->model('categories_m', 'get_category', array($fields), $this->firesale->cache_time);
+            $category = cache('categories_m/get_category', $fields);
             $this->categories_m->search($category, true);
 
             // Send them back
@@ -161,7 +161,7 @@ class Categories extends Admin_Controller
 
         // Assign variables
         $this->data->controller = $this;
-        $this->data->cats       = $this->pyrocache->model('categories_m', 'generate_streams_tree', array($params), $this->firesale->cache_time);
+        $this->data->cats       = cache('categories_m/generate_streams_tree', $params);
         $this->data->fields     = fields_to_tabs($fields, $this->tabs);
         $this->data->tabs	    = array_keys($this->data->fields);
 
@@ -211,7 +211,7 @@ class Categories extends Admin_Controller
             // Rebuild slugs
             $results = $this->db->select('id, parent, slug')->get('firesale_categories')->result_array();
             foreach ( $results as $result ) {
-                $slug = $this->pyrocache->model('categories_m', 'get_complete_slug', array(array('id' => $result['id'])), $this->firesale->cache_time);
+                $slug = cache('categories_m', 'get_complete_slug', array('id' => $result['id']));
                 $this->db->where('id', $result['id'])->update('firesale_categories', array('slug' => substr($slug, 0, -1)));
             }
 
@@ -251,7 +251,7 @@ class Categories extends Admin_Controller
     {
 
         // Get product
-        $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
+        $row    = cache('row_m/get_row', $id, $this->stream, FALSE);
         $folder = get_file_folder_by_slug($row->slug, 'category-images');
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
