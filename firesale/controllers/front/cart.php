@@ -396,8 +396,10 @@ class Cart extends Public_Controller
                 }
             }
 
+            $skip_checkout = $this->session->flashdata('gateway');
+
             // Check for post data
-            if ($this->input->post('btnAction') == 'pay') {
+            if ($this->input->post('btnAction') == 'pay' or $skip_checkout) {
 
                 // Variables
                 $posted = true;
@@ -436,6 +438,11 @@ class Cart extends Public_Controller
                 $input['price_sub']    = $this->fs_cart->subtotal();
                 $input['price_ship']   = $shipping['price'];
                 $input['price_total']  = number_format($this->fs_cart->total() + $shipping['price'], 2);
+
+                if ($skip_checkout) {
+                    $input['gateway'] = $this->gateways->id_from_slug($skip_checkout);
+                }
+
                 $_POST                 = $input;
 
                 // Generate validation
@@ -443,7 +450,7 @@ class Cart extends Public_Controller
                 $this->form_validation->set_rules($rules);
 
                 // Run validation
-                if ($this->form_validation->run() === TRUE) {
+                if ($this->form_validation->run() === TRUE or $skip_checkout) {
                     // Check for addresses
                     if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
                         $input['ship_to'] = $this->address_m->add_address($input, 'ship');
@@ -605,13 +612,13 @@ class Cart extends Public_Controller
             // Get the gateway slug
             $gateway = $this->gateways->slug_from_id($order['gateway']['id']);
             $settings = $this->gateways->settings($gateway);
-                
+
             // Initialize CI-Merchant
             $this->merchant->load($gateway);
             $this->merchant->initialize($settings);
 
             // Skip confirmation
-            $skip = isset($settings['skip_confirmation_page']) and $settings['skip_confirmation_page'];
+            $skip = $this->skip($gateway);
 
             // Begin payment processing
             if ($_SERVER['REQUEST_METHOD'] == 'POST' or $skip) {
@@ -928,10 +935,15 @@ class Cart extends Public_Controller
     protected function skip($gateway)
     {
         // Get the gateway slug
-        $gateway = $this->gateways->slug_from_id($gateway);
+        if (is_numeric($gateway)) $gateway = $this->gateways->id_from_slug($gateway);
+
         $settings = $this->gateways->settings($gateway);
 
-        return ( isset($settings['skip_confirmation_page']) ? $settings['skip_confirmation_page'] : false );
+        if (isset($settings['skip_confirmation_page'])) return (bool)$settings['skip_confirmation_page'];
+
+        if (isset($settings['skip_checkout'])) return (bool)$settings['skip_checkout'];
+
+        return false;
     }
 
     protected function process_transaction($gateway, $response)
