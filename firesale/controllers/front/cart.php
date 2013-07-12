@@ -779,9 +779,14 @@ class Cart extends Public_Controller
     {
         $this->orders_m->update_status($order['id'], 4);
         $skip = $this->skip($order['gateway']['id']);
+        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
 
         if (! $callback) {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+            if ($skip_checkout) {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            } else {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+            }
         } else {
             $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
         }
@@ -791,9 +796,14 @@ class Cart extends Public_Controller
     {
         $this->orders_m->update_status($order['id'], 7);
         $skip = $this->skip($order['gateway']['id']);
+        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
 
         if (! $callback) {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+            if ($skip_checkout) {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            } else {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+            }
         } else {
             $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
         }
@@ -803,19 +813,30 @@ class Cart extends Public_Controller
     {
         $this->orders_m->update_status($order['id'], 8);
         $skip = $this->skip($order['gateway']['id']);
+        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
 
-        if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
-
+        if ( ! $callback) {
+            if ($skip_checkout) {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            } else {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+            }
+        }
     }
 
     protected function _order_mismatch($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 9);
         $skip = $this->skip($order['gateway']['id']);
+        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
 
-        if ( ! $callback)
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+        if ( ! $callback) {
+            if ($skip_checkout) {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/cart');
+            } else {
+                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+            }
+        }
     }
 
     protected function _order_authorized($order, $callback = FALSE)
