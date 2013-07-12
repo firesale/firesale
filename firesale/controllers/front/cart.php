@@ -322,7 +322,10 @@ class Cart extends Public_Controller
                     $this->session->set_userdata('shipping', $shipping);
                 }
 
-                if ($btnAction != 'checkout') $this->session->set_flashdata('gateway', $btnAction);
+                if ($btnAction != 'checkout') {
+                    $this->session->set_flashdata('gateway', $btnAction);
+                    $this->session->set_flashdata('gateway_options', $this->input->post($btnAction));
+                }
 
                 // Send to checkout
                 redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
@@ -473,6 +476,9 @@ class Cart extends Public_Controller
 
                         // Set order id
                         $this->session->set_userdata('order_id', $id);
+
+                        // Keep the gateway settings
+                        $this->session->keep_flashdata('gateway_options');
 
                         // Redirect to payment
                         redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
@@ -625,10 +631,13 @@ class Cart extends Public_Controller
                 // Load the routes model
                 $this->load->model('routes_m');
 
-                $posted_data = $this->input->post(NULL, TRUE);
+                $posted_data  = $this->input->post(NULL, TRUE);
+                $session_data = $this->session->flashdata('gateway_options');
+
+                $skip_checkout = (bool)$this->gateways->setting($gateway, 'skip_checkout');
 
                 // Run payment
-                $params = $this->cart_m->build_transaction($gateway, $order, $posted_data);
+                $params = $this->cart_m->build_transaction($gateway, $order, $skip_checkout ? $posted_data : $session_data);
 
                 $process = $this->merchant->purchase($params);
 
