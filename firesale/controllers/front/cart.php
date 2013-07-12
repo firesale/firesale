@@ -637,7 +637,7 @@ class Cart extends Public_Controller
                 $skip_checkout = (bool)$this->gateways->setting($gateway, 'skip_checkout');
 
                 // Run payment
-                $params = $this->cart_m->build_transaction($gateway, $order, $skip_checkout ? $posted_data : $session_data);
+                $params = $this->cart_m->build_transaction($gateway, $order, $skip_checkout ? $session_data : $posted_data);
 
                 $process = $this->merchant->purchase($params);
 
