@@ -312,13 +312,17 @@ class Cart extends Public_Controller
             // Fire events
             Events::trigger('cart_updated', array());
 
+            $btnAction = $this->input->post('btnAction');
+
             // Are we checking out or just updating?
-            if ($this->input->post('btnAction') == 'checkout') {
+            if ($btnAction == 'checkout' or $this->gateway->is_enabled($btnAction, true)) {
 
                 // Added so shipping can be a cart option
                 if ($shipping = $this->input->post('shipping')) {
                     $this->session->set_userdata('shipping', $shipping);
                 }
+
+                $this->session->set_flashdata('gateway', $this->input->post('gateway'));
 
                 // Send to checkout
                 redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
