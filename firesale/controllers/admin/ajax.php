@@ -52,7 +52,7 @@ class Ajax extends Admin_Controller
         $this->load->model('categories_m');
 
         // Get category
-        $category = $this->pyrocache->model('categories_m', 'get_category', array($id), $this->firesale->cache_time);
+        $category = cache('categories_m/get_category', $id);
 
         // Build output
         $this->output->set_content_type('application/json')
@@ -74,7 +74,7 @@ class Ajax extends Admin_Controller
         // Variables
         $data   = array();
         $stream = $this->streams->streams->get_stream('firesale_categories', 'firesale_categories');
-        $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $stream, false), $this->firesale->cache_time);
+        $row    = cache('row_m/get_row', $id, $stream, false);
 
         // Check for data
         if ( $row != false ) {
@@ -94,7 +94,7 @@ class Ajax extends Admin_Controller
         $this->load->model('products_m');
 
         // Get product
-        $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
+        $product = cache('products_m/get_product', $id);
 
         // Build output
         $this->output->set_content_type('application/json')
@@ -117,12 +117,12 @@ class Ajax extends Admin_Controller
         unset($_POST['start']);
 
         // Get filtered product IDs
-        $data['count'] = $this->pyrocache->model('products_m', 'get_products', array($this->input->post()), $this->firesale->cache_time);
-        $products      = $this->pyrocache->model('products_m', 'get_products', array($this->input->post(), $start, $perpage), $this->firesale->cache_time);
+        $data['count'] = cache('products_m/get_products', $this->input->post());
+        $products      = cache('products_m/get_products', $this->input->post(), $start, $perpage);
 
         // Get product data
         foreach ( $products as $product ) {
-            $data['products'][] = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
+            $data['products'][] = cache('products_m/get_product', $product['id']);
         }
 
         // Assign data
@@ -233,10 +233,10 @@ class Ajax extends Admin_Controller
         $this->load->model('products_m');
 
         // Get order
-        $order_info = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order), $this->firesale->cache_time);
+        $order_info = cache('orders_m/get_order_by_id', $order);
 
         // Get product
-        $product = $this->pyrocache->model('products_m', 'get_product', array($id, $order_info['currency']['id']), $this->firesale->cache_time);
+        $product = cache('products_m/get_product', $id, $order_info['currency']['id']);
 
         // Insert/Update item
         if ( $this->orders_m->insert_update_order_item($order, $product, $qty) ) {
@@ -258,7 +258,7 @@ class Ajax extends Admin_Controller
         $this->load->model('address_m');
 
         // Get Address
-        $address = $this->pyrocache->model('address_m', 'get_address', array($id, $user), $this->firesale->cache_time);
+        $address = cache('address_m/get_address', $id, $user);
         echo json_encode($address);
         exit();
     }
@@ -288,7 +288,7 @@ class Ajax extends Admin_Controller
 
         // Assign variables
         $this->data->orders     = $this->orders_m->format_order($orders['entries']);
-        $this->data->total      = $this->pyrocache->model('orders_m', 'order_count', array($params['where']), $this->firesale->cache_time);
+        $this->data->total      = cache('orders_m/order_count', $params['where']);
         $this->data->pagination = create_pagination('/admin/firesale/orders/', $this->data->total, $this->perpage, 5);
 
         // Build page
