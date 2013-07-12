@@ -141,8 +141,6 @@ class gateways
 
         if ($skip_checkout) {
             $this->_CI->db->having('skip_checkout', '1');
-        } else {
-            $this->_CI->db->having('skip_checkout', '0');
         }
 
         if (is_numeric($gateway)) {
