@@ -322,7 +322,7 @@ class Cart extends Public_Controller
                     $this->session->set_userdata('shipping', $shipping);
                 }
 
-                $this->session->set_flashdata('gateway', $btnAction);
+                if ($btnAction != 'checkout') $this->session->set_flashdata('gateway', $btnAction);
 
                 // Send to checkout
                 redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
