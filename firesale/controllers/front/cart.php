@@ -315,7 +315,7 @@ class Cart extends Public_Controller
             $btnAction = $this->input->post('btnAction');
 
             // Are we checking out or just updating?
-            if ($btnAction == 'checkout' or $this->gateway->is_enabled($btnAction, true)) {
+            if ($btnAction == 'checkout' or $this->gateways->is_enabled($btnAction, true)) {
 
                 // Added so shipping can be a cart option
                 if ($shipping = $this->input->post('shipping')) {
