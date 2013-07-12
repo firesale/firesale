@@ -93,9 +93,16 @@ class Cart extends Public_Controller
         // get the cart data
         $data = $this->cart_m->data();
 
+        $data['gateways'] = $this->gateways->get_enabled(true);
+
+        foreach ($data['gateways'] as &$gateway) {
+            $gateway['view'] = $this->template->set_layout(false)->build('gateways/cart/' . $gateway['slug'], $data, true);
+        }
+
         // Add page data
-        $this->template->set_breadcrumb(lang('firesale:cart:title'))
-                       ->title(lang('firesale:cart:title'));
+        $this->template->set_layout('default.html')
+            ->set_breadcrumb(lang('firesale:cart:title'))
+            ->title(lang('firesale:cart:title'));
 
         // Fire events
         Events::trigger('page_build', $this->template);

@@ -46,8 +46,9 @@ class Merchant_paypal_express extends Merchant_paypal_base
                 'Sole' => 'merchant_solution_type_sole',
                 'Mark' => 'merchant_solution_type_mark')),
             'landing_page' => array('type' => 'select', 'default' => 'Billing', 'options' => array(
-                'Billing'	=> 'merchant_landing_page_billing',
-                'Login'		=> 'merchant_landing_page_login'))
+                'Billing'   => 'merchant_landing_page_billing',
+                'Login'     => 'merchant_landing_page_login')),
+            'skip_checkout' => true
         );
     }
 
