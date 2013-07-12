@@ -95,7 +95,7 @@ class Merchant_paypal_express extends Merchant_paypal_base
         // pp express specific fields
         $request['SOLUTIONTYPE'] = $this->setting('solution_type');
         $request['LANDINGPAGE'] = $this->setting('landing_page');
-        $request['NOSHIPPING'] = 1;
+        $request['NOSHIPPING'] = $this->setting('shipping') == false;
         $request['ALLOWNOTE'] = 0;
         $request['RETURNURL'] = $this->param('return_url');
         $request['CANCELURL'] = $this->param('cancel_url');
