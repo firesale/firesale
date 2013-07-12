@@ -252,6 +252,7 @@ class Cart_m extends MY_Model
             'postcode'       => $order['bill_to']['postcode'],
             'phone'          => $order['bill_to']['phone'],
             'email'          => $order['bill_to']['email'],
+            'shipping'       => (bool) $order['shipping']
         ));
     }
 
