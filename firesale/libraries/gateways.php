@@ -77,9 +77,22 @@ class gateways
         return $gateways;
     }
 
-    public function get_enabled()
+    public function get_enabled($skip_checkout = false)
     {
         $data = array();
+
+        $gateways = $this->_CI->db->dbprefix('firesale_gateways.*');
+        $setting  = $this->_CI->db->dbprefix('firesale_gateway_settings.value');
+
+        $this->_CI->db->select("{$gateways}, IF({$setting} IS NULL, 0, {$setting}) AS skip_checkout", false);
+        $this->_CI->db->join('firesale_gateway_settings', 'firesale_gateways.id = firesale_gateway_settings.id
+            AND firesale_gateway_settings.key = "skip_checkout"', 'left');
+
+        if ($skip_checkout) {
+            $this->_CI->db->having('skip_checkout', '1');
+        } else {
+            $this->_CI->db->having('skip_checkout', '0');
+        }
 
         $gateways = $this->_CI->db->get_where('firesale_gateways', array('enabled' => 1));
 
