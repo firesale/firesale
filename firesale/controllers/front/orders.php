@@ -63,8 +63,8 @@ class Orders extends Public_Controller
             // Add items to order
             if ($orders['total'] > 0) {
                 foreach ($orders['entries'] AS &$order) {
-                    $order['count'] = $this->pyrocache->model('orders_m', 'product_count', array($order['id']), $this->firesale->cache_time);
-                    $currency       = $this->pyrocache->model('currency_m', 'get', array($order['currency']['id']), $this->firesale->cache_time);
+                    $order['count'] = cache('orders_m', 'product_count', array($order['id']));
+                    $currency       = cache('currency_m', 'get', array($order['currency']['id']));
                     $order['price_sub_formatted']   = $this->currency_m->format_string($order['price_sub'], $currency, false);
                     $order['price_ship_formatted']  = $this->currency_m->format_string($order['price_ship'], $currency, false);
                     $order['price_total_formatted'] = $this->currency_m->format_string($order['price_total'], $currency, false);
@@ -99,7 +99,7 @@ class Orders extends Public_Controller
 
         // Variables
         $user  = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
-        $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($id), $this->firesale->cache_time);
+        $order = cache('orders_m', 'get_order_by_id', array($id));
 
         // Check user can view
         if ($user != NULL AND $order != FALSE AND $user == $order['created_by']['user_id']) {
@@ -111,7 +111,7 @@ class Orders extends Public_Controller
 
             // Build page
             $this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
-                           ->set_breadcrumb(lang('firesale:orders:my_orders'), $this->pyrocache->model('routes_m', 'build_url', array('orders'), $this->firesale->cache_time))
+                           ->set_breadcrumb(lang('firesale:orders:my_orders'), uri('orders'))
                            ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id))
                            ->set($order);
 
