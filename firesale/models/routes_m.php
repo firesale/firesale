@@ -77,11 +77,19 @@ class Routes_m extends MY_Model
                         $this->db->select('t.id, t.slug, t.title');
                     }
 
+                    // Run query
+                    $query = $this->db->where('t.id', $id)->get();
+
+                    // Check for data
+                    if ( ! $query->num_rows() ) {
+                        return $this->build_url('index');
+                    }
+
                     // Get type
-                    $type = $this->db->where('t.id', $id)->get()->row();
+                    $type = $query->row();
 
                     // Check type
-                    if (  $route->table == 'firesale_products' and $type->is_variation == '1' ) {
+                    if ( $route->table == 'firesale_products' and $type->is_variation == '1' ) {
                         $type = $this->db->where('id', $type->parent)->get($route->table)->row();
                     }
 
