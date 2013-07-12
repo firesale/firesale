@@ -161,24 +161,25 @@ class gateways
     public function get_setting_fields($gateway)
     {
         if ($this->exists($gateway)) {
-            if ($this->_CI->merchant->load($gateway)) {
-                foreach ($this->_CI->merchant->default_settings() as $setting => $value) {
-                    if (isset($value['options']) and is_array($value['options'])) {
-                        foreach ($value['options'] as $key => &$option) $option = lang($option) ? lang($option) : $key;
-                    }
-                    
-                    $settings[] = array(
-                        'slug'    => $setting,
-                        'name'    => ucwords(str_replace('_', ' ', $setting)),
-                        'type'    => gettype($value),
-                        'value'   => $this->setting($gateway, $setting),
-                        'options' => isset($value['options']) ? $value['options'] : false,
-                        'default' => isset($value['default']) ? $value['default'] : $value
-                    );
-                }
+            $active = $this->_CI->merchant->active_driver();
+            if ( ! $active or $active == 'merchant') $this->_CI->merchant->load($gateway);
 
-                return isset($settings) ? $settings : array();
+            foreach ($this->_CI->merchant->default_settings() as $setting => $value) {
+                if (isset($value['options']) and is_array($value['options'])) {
+                    foreach ($value['options'] as $key => &$option) $option = lang($option) ? lang($option) : $key;
+                }
+                
+                $settings[] = array(
+                    'slug'    => $setting,
+                    'name'    => ucwords(str_replace('_', ' ', $setting)),
+                    'type'    => gettype($value),
+                    'value'   => $this->setting($gateway, $setting),
+                    'options' => isset($value['options']) ? $value['options'] : false,
+                    'default' => isset($value['default']) ? $value['default'] : $value
+                );
             }
+
+            return isset($settings) ? $settings : array();
         }
 
         return FALSE;
