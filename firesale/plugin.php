@@ -55,7 +55,7 @@ class Plugin_Firesale extends Plugin
         $url = $this->pyrocache->model('routes_m', 'build_url', array($route, $id), $this->firesale->cache_time);
 
         // Build the URL
-        return (($base == 'yes') ? BASE_URL : '').$url.$after;
+        return (($base == 'yes') ? BASE_URL.'index.php/' : '').$url.$after;
     }
 
     public function module_installed()
