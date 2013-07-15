@@ -454,13 +454,16 @@ class Cart extends Public_Controller
 
                 // Run validation
                 if ($this->form_validation->run() === TRUE or $skip_checkout) {
-                    // Check for addresses
-                    if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
-                        $input['ship_to'] = $this->address_m->add_address($input, 'ship');
-                    }
 
-                    if ( ! isset($input['bill_to']) OR $input['bill_to'] == 'new' ) {
-                        $input['bill_to'] = $this->address_m->add_address($input, 'bill');
+                    if ( ! $skip_checkout) {
+                        // Check for addresses
+                        if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
+                            $input['ship_to'] = $this->address_m->add_address($input, 'ship');
+                        }
+
+                        if ( ! isset($input['bill_to']) OR $input['bill_to'] == 'new' ) {
+                            $input['bill_to'] = $this->address_m->add_address($input, 'bill');
+                        }
                     }
 
                     // Insert order
