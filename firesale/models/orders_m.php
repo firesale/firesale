@@ -485,6 +485,13 @@ class Orders_m extends MY_Model
 
     }
 
+    public function set_address($id, $address, $type)
+    {
+        return $this->db->where('id', $id)
+            ->set("{$type}_to", $address)
+            ->update('firesale_orders');
+    }
+
     /**
      * Removes an item from the given order.
      *
