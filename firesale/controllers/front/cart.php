@@ -902,10 +902,9 @@ class Cart extends Public_Controller
 
     }
 
-    protected function _order_complete()
+    protected function _order_complete($order, $callback = false)
     {
-        $args = func_get_args();
-        call_user_func_array(array($this, '_order_authorized'), $args);
+        $this->_order_authorized($order, $callback);
     }
 
     public function success($gateway = null)
