@@ -850,7 +850,6 @@ class Cart extends Public_Controller
 
     protected function _order_authorized($order, $callback = FALSE)
     {
-
         // Sale made, run updates
         $this->cart_m->sale_complete($order);
 
@@ -988,7 +987,30 @@ class Cart extends Public_Controller
             if ($response->status() == 'authorized' or $response->status() == 'complete') {
                 if (method_exists($response, 'amount')) {
                     if ($response->amount() != $order['price_total']) {
-                        $status = '_order_mismatch';
+                        return $this->_order_mismatch($order, false);
+                    }
+                }
+
+                // Update the address if we need to
+                if (empty($order['ship_to']['postcode']) and $order['shipping'] != 0) {
+
+                    // Get the shipping
+                    if ($shipping = $response->shipping() !== false) {
+
+                        $input['ship_firstname'] = $response->shipping('firstname');
+                        $input['ship_lastname'] = $response->shipping('lastname');
+                        $input['ship_email'] = $response->shipping('email');
+                        $input['ship_address1'] = $response->shipping('address1');
+                        $input['ship_address2'] = $response->shipping('address2');
+                        $input['ship_city'] = $response->shipping('city');
+                        $input['ship_county'] = $response->shipping('county');
+                        $input['ship_postcode'] = $response->shipping('postcode');
+                        $input['ship_country'] = $response->shipping('country');
+
+                        $_POST = $input;
+                        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+                        $this->address_m->update_address($order['ship_to']['id'], $input, 'ship');
                     }
                 }
             }
