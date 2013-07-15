@@ -56,7 +56,7 @@ class Cart extends Public_Controller
             // Posted to cart
             if ( $this->uri->segment('2') == 'insert' and $code = $this->input->post('prd_code') ) {
                 $qty = $this->input->post('prd_qty');
-                $url = $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
+                $url = uri('cart').'/insert/'.$code[0].'/'.( $qty ? $qty[0] : '1' );
             } else {
                 $url = current_url();
             }
@@ -141,7 +141,7 @@ class Cart extends Public_Controller
             $_POST['qty'][0]      = $qty;
 
             // Get product
-            $product = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+            $product = cache('products_m/get_product', $prd_code, null, true);
 
             // Check and add variations
             if ( $product['modifiers'] ) {
@@ -180,7 +180,7 @@ class Cart extends Public_Controller
             foreach ($this->input->post('prd_code', TRUE) as $key => $prd_code) {
 
                 // Get product
-                $product   = $this->pyrocache->model('products_m', 'get_product', array($prd_code, null, true), $this->firesale->cache_time);
+                $product   = cache('products_m/get_product', $prd_code, null, true);
                 $modifiers = current($product['modifiers']);
 
                 // Check status
@@ -229,9 +229,9 @@ class Cart extends Public_Controller
         if ( $this->input->is_ajax_request() ) {
             exit($this->cart_m->ajax_response('ok'));
         } else if ( $this->input->post('btnAction') == 'buy' ) {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
+            redirect(uri('cart').'/checkout');
         } else {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            redirect(uri('cart'));
         }
 
     }
@@ -242,7 +242,7 @@ class Cart extends Public_Controller
         // Make sure there are items in cart
         if ( ! $this->fs_cart->total_items()) {
             $this->session->set_flashdata('message', lang('firesale:cart:empty'));
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            redirect(uri('cart'));
         } else {
 
             // Variables
@@ -268,7 +268,7 @@ class Cart extends Public_Controller
 
                     } else {
 
-                        $product = $this->pyrocache->model('products_m', 'get_product', array($cart[$row_id]['id'], null, true), $this->firesale->cache_time);
+                        $product = cache('products_m/get_product', $cart[$row_id]['id'], null, true);
 
                         if ($product) {
 
@@ -328,12 +328,12 @@ class Cart extends Public_Controller
                 }
 
                 // Send to checkout
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
+                redirect(uri('cart').'/checkout');
 
             } elseif ($this->input->is_ajax_request()) {
                 exit($this->cart_m->ajax_response('ok'));
             } else {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+                redirect(uri('cart'));
             }
 
         }
@@ -350,7 +350,7 @@ class Cart extends Public_Controller
         }
 
         // Get product details
-        $product = $this->pyrocache->model('products_m', 'get_product', array($cart[$row_id]['id'], null, true), $this->firesale->cache_time);
+        $product = cache('products_m/get_product', $cart[$row_id]['id'], null, true);
 
         // Update the cart
         $this->fs_cart->remove($row_id);
@@ -361,7 +361,7 @@ class Cart extends Public_Controller
         if ($this->input->is_ajax_request()) {
             exit('success');
         } else {
-            redirect(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            redirect(isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : uri('cart'));
         }
 
     }
@@ -372,7 +372,7 @@ class Cart extends Public_Controller
         // No checkout without items
         if ( ! $this->fs_cart->total_items()) {
             $this->session->set_flashdata('message', lang('firesale:cart:empty'));
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            redirect(uri('cart'));
         } else {
 
             // Libraries
@@ -454,13 +454,16 @@ class Cart extends Public_Controller
 
                 // Run validation
                 if ($this->form_validation->run() === TRUE or $skip_checkout) {
-                    // Check for addresses
-                    if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
-                        $input['ship_to'] = $this->address_m->add_address($input, 'ship');
-                    }
 
-                    if ( ! isset($input['bill_to']) OR $input['bill_to'] == 'new' ) {
-                        $input['bill_to'] = $this->address_m->add_address($input, 'bill');
+                    if ( ! $skip_checkout) {
+                        // Check for addresses
+                        if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
+                            $input['ship_to'] = $this->address_m->add_address($input, 'ship');
+                        }
+
+                        if ( ! isset($input['bill_to']) OR $input['bill_to'] == 'new' ) {
+                            $input['bill_to'] = $this->address_m->add_address($input, 'bill');
+                        }
                     }
 
                     // Insert order
@@ -481,7 +484,7 @@ class Cart extends Public_Controller
                         $this->session->keep_flashdata('gateway_options');
 
                         // Redirect to payment
-                        redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment');
+                        redirect(uri('cart').'/payment');
                     }
 
                 }
@@ -545,7 +548,7 @@ class Cart extends Public_Controller
             }
 
             // Build page
-            $this->template->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
+            $this->template->set_breadcrumb(lang('firesale:cart:title'), uri('cart'))
                            ->set_breadcrumb(lang('firesale:checkout:title'))
                            ->title(lang('firesale:checkout:title'))
                            ->build('checkout', $data);
@@ -611,7 +614,7 @@ class Cart extends Public_Controller
     public function payment()
     {
 
-        $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($this->session->userdata('order_id')), $this->firesale->cache_time);
+        $order = cache('orders_m/get_order_by_id', $this->session->userdata('order_id'));
 
         if ( ! empty($order) AND $this->gateways->is_enabled($order['gateway']['id'])) {
 
@@ -744,8 +747,8 @@ class Cart extends Public_Controller
 
                 // Build page
                 $this->template->title(lang('firesale:payment:title'))
-                               ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
-                               ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
+                               ->set_breadcrumb(lang('firesale:cart:title'), uri('cart').'/payment')
+                               ->set_breadcrumb(lang('firesale:checkout:title'), uri('cart').'/checkout')
                                ->set_breadcrumb(lang('firesale:payment:title'))
                                ->set('currency', $this->fs_cart->currency())
                                ->set('payment', $gateway_view)
@@ -754,7 +757,7 @@ class Cart extends Public_Controller
             }
 
         } else {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout');
+            redirect(uri('cart').'/checkout');
         }
 
     }
@@ -762,7 +765,7 @@ class Cart extends Public_Controller
     public function callback($gateway = NULL, $order_id = NULL)
     {
 
-        $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order_id), $this->firesale->cache_time);
+        $order = cache('orders_m/get_order_by_id', $order_id);
 
         if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND ! empty($order)) {
             $this->merchant->load($gateway);
@@ -774,13 +777,13 @@ class Cart extends Public_Controller
             ))->row_array();
 
             $response = $this->merchant->purchase_return(array_merge($transaction, array(
-                'failure_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
+                'failure_url' => site_url(uri('cart') . '/cancel')
             )));
 
-            $this->process_transaction($gateway, $response);
+            $this->process_transaction($gateway, $order, $response);
             
         } else {
-            redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+            redirect(uri('cart'));
         }
     }
 
@@ -792,12 +795,12 @@ class Cart extends Public_Controller
 
         if (! $callback) {
             if ($skip_checkout) {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+                redirect(uri('cart'));
             } else {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
             }
         } else {
-            $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
+            $this->merchant->confirm_return(site_url(uri('cart') . '/cancel'));
         }
     }
 
@@ -809,12 +812,12 @@ class Cart extends Public_Controller
 
         if (! $callback) {
             if ($skip_checkout) {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+                redirect(uri('cart'));
             } else {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
             }
         } else {
-            $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel'));
+            $this->merchant->confirm_return(site_url(uri('cart') . '/cancel'));
         }
     }
 
@@ -826,9 +829,9 @@ class Cart extends Public_Controller
 
         if ( ! $callback) {
             if ($skip_checkout) {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
+                redirect(uri('cart'));
             } else {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
             }
         }
     }
@@ -841,16 +844,15 @@ class Cart extends Public_Controller
 
         if ( ! $callback) {
             if ($skip_checkout) {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/cart');
+                redirect(uri('cart'));
             } else {
-                redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).( $skip ? '/checkout' : '/payment' ));
+                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
             }
         }
     }
 
     protected function _order_authorized($order, $callback = FALSE)
     {
-
         // Sale made, run updates
         $this->cart_m->sale_complete($order);
 
@@ -881,9 +883,9 @@ class Cart extends Public_Controller
 
             // Build page
             $this->template->title(lang('firesale:payment:title_success'))
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
+                           ->set_breadcrumb(lang('firesale:cart:title'), uri('cart'))
+                           ->set_breadcrumb(lang('firesale:checkout:title'), uri('cart').'/checkout')
+                           ->set_breadcrumb(lang('firesale:payment:title'), uri('cart').'/payment')
                            ->set_breadcrumb(lang('firesale:payment:title_success'))
                            ->order = $order;
 
@@ -898,15 +900,14 @@ class Cart extends Public_Controller
             // Build the page
             $this->template->build('payment_complete', $order);
         } else {
-            $this->merchant->confirm_return(site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'));
+            $this->merchant->confirm_return(url('cart').'/success');
         }
 
     }
 
-    protected function _order_complete()
+    protected function _order_complete($order, $callback = false)
     {
-        $args = func_get_args();
-        call_user_func_array(array($this, '_order_authorized'), $args);
+        $this->_order_authorized($order, $callback);
     }
 
     public function success($gateway = null)
@@ -914,7 +915,7 @@ class Cart extends Public_Controller
 
         if ( $order_id = $this->session->userdata('order_id') ) {
 
-            $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order_id), $this->firesale->cache_time);
+            $order = cache('orders_m/get_order_by_id', $order_id);
 
             if ( ! is_null($gateway)) {
                 $this->merchant->load($gateway);
@@ -924,7 +925,7 @@ class Cart extends Public_Controller
 
                 $response = $this->merchant->purchase_return($params);
 
-                $this->process_transaction($gateway, $response);
+                $this->process_transaction($gateway, $order, $response);
             }
 
             $this->fs_cart->destroy();
@@ -935,9 +936,9 @@ class Cart extends Public_Controller
             }
 
             $this->template->title(lang('firesale:payment:title_success'))
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
+                           ->set_breadcrumb(lang('firesale:cart:title'), uri('cart'))
+                           ->set_breadcrumb(lang('firesale:checkout:title'), uri('cart').'/checkout')
+                           ->set_breadcrumb(lang('firesale:payment:title'), uri('cart').'/payment')
                            ->set_breadcrumb(lang('firesale:payment:title_success'))
                            ->build('payment_complete', $order);
         } else {
@@ -954,9 +955,9 @@ class Cart extends Public_Controller
         $this->fs_cart->destroy();
 
         $this->template->title('Order Cancelled')
-            ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
-            ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
-            ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
+            ->set_breadcrumb(lang('firesale:cart:title'), uri('cart'))
+            ->set_breadcrumb(lang('firesale:checkout:title'), uri('cart').'/checkout')
+            ->set_breadcrumb(lang('firesale:payment:title'), uri('cart').'/payment')
             ->set_breadcrumb(lang('Order Cancelled'))
             ->build('payment_cancelled');
 
@@ -976,7 +977,7 @@ class Cart extends Public_Controller
         return false;
     }
 
-    protected function process_transaction($gateway, $response)
+    protected function process_transaction($gateway, $order, $response)
     {
         $status = '_order_' . $response->status();
 
@@ -988,7 +989,36 @@ class Cart extends Public_Controller
             if ($response->status() == 'authorized' or $response->status() == 'complete') {
                 if (method_exists($response, 'amount')) {
                     if ($response->amount() != $order['price_total']) {
-                        $status = '_order_mismatch';
+                        return $this->_order_mismatch($order, false);
+                    }
+                }
+
+                // Update the address if we need to
+                if (empty($order['ship_to']['postcode']) and $order['shipping'] != 0) {
+
+                    // Get the shipping
+                    if ($response->shipping() !== false) {
+
+                        $input['ship_firstname'] = $response->shipping('firstname');
+                        $input['ship_lastname'] = $response->shipping('lastname') or 'NA';
+                        $input['ship_email'] = $response->shipping('email');
+                        $input['ship_address1'] = $response->shipping('address1');
+                        $input['ship_address2'] = $response->shipping('address2');
+                        $input['ship_city'] = $response->shipping('city');
+                        $input['ship_county'] = $response->shipping('county');
+                        $input['ship_postcode'] = $response->shipping('postcode');
+                        $input['ship_country'] = $response->shipping('country');
+
+                        $_POST = $input;
+                        $_SERVER['REQUEST_METHOD'] = 'POST';
+
+                        $address = $this->address_m->add_address($input, 'ship');
+
+                        if ($address) $this->orders_m->set_address($order['id'], $address, 'ship');
+
+                        Events::trigger('clear_cache');
+
+                        $order = cache('orders_m/get_order_by_id', $order['id']);
                     }
                 }
             }

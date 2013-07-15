@@ -180,13 +180,13 @@ class Orders_m extends MY_Model
                     'input_title'  => 'lang:firesale:label_user_order',
                     'input_slug'   => 'created_by',
                     'instructions' => '',
-                    'value'		   => $id,
-                    'input'		   => '',
+                    'value'        => $id,
+                    'input'        => '',
                     'input_parts'  => '',
-                    'error_raw'	   => '',
-                    'error'		   => '',
-                    'required'	   => '<span>*</span>',
-                    'odd_even'	   => 'odd'
+                    'error_raw'    => '',
+                    'error'        => '',
+                    'required'     => '<span>*</span>',
+                    'odd_even'     => 'odd'
                 );
 
         // Build user list
@@ -347,7 +347,7 @@ class Orders_m extends MY_Model
 
         // Check shipping is set
         if ( !isset($input['shipping']) OR empty($input['shipping']) ) {
-            $input['shipping'] = 1;
+            $input['shipping'] = 0;
         }
 
         // Get currency
@@ -355,11 +355,11 @@ class Orders_m extends MY_Model
         $currency      = $this->currency_m->get($user_currency);
 
         // Append input
-        $input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
-        $input['price_ship']   	 = str_replace(',', '', $input['price_ship']);
+        $input['price_sub']      = str_replace(',', '', $input['price_sub']);
+        $input['price_ship']     = str_replace(',', '', $input['price_ship']);
         $input['price_total']    = str_replace(',', '', $input['price_total']);
-        $input['ip']			 = $_SERVER['REMOTE_ADDR'];
-        $input['created'] 		 = date("Y-m-d H:i:s");
+        $input['ip']             = $_SERVER['REMOTE_ADDR'];
+        $input['created']        = date("Y-m-d H:i:s");
         $input['ordering_count'] = 0;
         $input['currency']       = $currency->id;
         $input['exchange_rate']  = $currency->exch_rate;
@@ -475,7 +475,7 @@ class Orders_m extends MY_Model
         if ($cart == TRUE) {
             $this->fs_cart->total    = number_format($total, 2);
             $this->fs_cart->subtotal = number_format($sub, 2);
-            $this->fs_cart->tax 	 = number_format(( $total - $sub), 2);
+            $this->fs_cart->tax      = number_format(( $total - $sub), 2);
         }
 
         // Update?
@@ -483,6 +483,13 @@ class Orders_m extends MY_Model
             $this->db->where('id', $order_id)->update('firesale_orders', array('price_total' => $total, 'price_sub' => $sub));
         }
 
+    }
+
+    public function set_address($id, $address, $type)
+    {
+        return $this->db->where('id', $id)
+            ->set("{$type}_to", $address)
+            ->update('firesale_orders');
     }
 
     /**
@@ -545,11 +552,11 @@ class Orders_m extends MY_Model
     {
 
         // Set query paramaters
-        $params	 = array(
-            'stream' 	=> 'firesale_orders',
-            'namespace'	=> 'firesale_orders',
-            'where'		=> SITE_REF."_firesale_orders.id = '{$order_id}'",
-            'limit'		=> 1
+        $params  = array(
+            'stream'    => 'firesale_orders',
+            'namespace' => 'firesale_orders',
+            'where'     => SITE_REF."_firesale_orders.id = '{$order_id}'",
+            'limit'     => 1
         );
 
         // Get entries
@@ -557,7 +564,7 @@ class Orders_m extends MY_Model
 
         if ($order['total'] == 1) {
 
-            $order 			    = $order['entries'][0];
+            $order              = $order['entries'][0];
             $order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int) $order_id))->result_array();
             $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['price_ship'] ), 2);
 
@@ -633,7 +640,7 @@ class Orders_m extends MY_Model
     {
 
         // Variables
-        $low	 = $this->settings->get('firesale_low') or 10;
+        $low     = $this->settings->get('firesale_low') or 10;
         $product = cache('products_m/get_product', $id, null, true);
 
         if ($product) {
