@@ -1000,7 +1000,7 @@ class Cart extends Public_Controller
                     if ($response->shipping() !== false) {
 
                         $input['ship_firstname'] = $response->shipping('firstname');
-                        $input['ship_lastname'] = $response->shipping('lastname');
+                        $input['ship_lastname'] = $response->shipping('lastname') or 'NA';
                         $input['ship_email'] = $response->shipping('email');
                         $input['ship_address1'] = $response->shipping('address1');
                         $input['ship_address2'] = $response->shipping('address2');
