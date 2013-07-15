@@ -995,7 +995,7 @@ class Cart extends Public_Controller
                 if (empty($order['ship_to']['postcode']) and $order['shipping'] != 0) {
 
                     // Get the shipping
-                    if ($shipping = $response->shipping() !== false) {
+                    if ($response->shipping() !== false) {
 
                         $input['ship_firstname'] = $response->shipping('firstname');
                         $input['ship_lastname'] = $response->shipping('lastname');
