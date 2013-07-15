@@ -63,8 +63,8 @@ class Products extends Admin_Controller
                        ->append_js('module::products.js')
                        ->append_js('module::modifiers.js')
                        ->append_metadata('<script type="text/javascript">' .
-                                         "\n  var currency = '" . $this->pyrocache->model('currency_m', 'get_symbol', array(), $this->firesale->cache_time) . "';" .
-                                         "\n  var tax_rate = '" . $this->pyrocache->model('taxes_m', 'get_percentage', array(1, 1), $this->firesale->cache_time) . "';" .
+                                         "\n  var currency = '".cache('currency_m/get_symbol')."';" .
+                                         "\n  var tax_rate = '".cache('taxes_m/get_percentage', 1, 1)."';" .
                                          "\n</script>");
 
         // Get the stream
@@ -80,22 +80,22 @@ class Products extends Admin_Controller
         }
 
         // Get product IDs
-        $products = $this->pyrocache->model('products_m', 'get_products', array(array(), $start, $this->perpage), $this->firesale->cache_time);
+        $products = cache('products_m/get_products', array(), $start, $this->perpage);
 
         // Build product data
         foreach ($products AS &$product) {
-            $product = $this->pyrocache->model('products_m', 'get_product', array($product['id']), $this->firesale->cache_time);
+            $product = cache('products_m/get_product', $product['id']);
         }
 
         // Assign variables
         $this->data->products     = $products;
-        $this->data->count        = $this->pyrocache->model('products_m', 'get_products', array(( isset($filter) ? $filter : array() ), 0, 0), $this->firesale->cache_time);
+        $this->data->count        = cache('products_m/get_products', ( isset($filter) ? $filter : array() ), 0, 0);
         $this->data->count        = ( $this->data->count ? count($this->data->count) : 0 );
         $this->data->pagination   = create_pagination('/admin/firesale/products/', $this->data->count, $this->perpage, 4);
-        $this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + $this->pyrocache->model('categories_m', 'dropdown_values', array(), $this->firesale->cache_time);
-        $this->data->status       = $this->pyrocache->model('products_m', 'status_dropdown', array(( $type == 'status' ? $value : -1 )), $this->firesale->cache_time);
-        $this->data->stock_status = $this->pyrocache->model('products_m', 'stock_status_dropdown', array(( $type == 'stock_status' ? $value : -1 )), $this->firesale->cache_time);
-        $this->data->min_max      = $this->pyrocache->model('products_m', 'price_min_max', array(), $this->firesale->cache_time);
+        $this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + cache('categories_m/dropdown_values');
+        $this->data->status       = cache('products_m/status_dropdown', ( $type == 'status' ? $value : -1 ));
+        $this->data->stock_status = cache('products_m/stock_status_dropdown', ( $type == 'stock_status' ? $value : -1 ));
+        $this->data->min_max      = cache('products_m/price_min_max', );
         $this->data->buttons      = ( $this->template->buttons ? $this->template->buttons : '' );
 
         // Add page data
@@ -176,7 +176,7 @@ class Products extends Admin_Controller
                 Events::trigger('clear_cache');
 
                 // Add to search
-                $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
+                $product = cache('products_m/get_product', $id);
                 $this->products_m->search($product, true);
 
                 // Redirect
@@ -195,8 +195,8 @@ class Products extends Admin_Controller
             $this->data = $row;
 
             // Get modifiers and variants
-            $this->data->modifiers  = $this->pyrocache->model('modifier_m', 'get_modifiers', array($row->id), $this->firesale->cache_time);
-            $this->data->variations = $this->pyrocache->model('modifier_m', 'get_products', array($row->id), $this->firesale->cache_time);
+            $this->data->modifiers  = cache('modifier_m/get_modifiers', $row->id);
+            $this->data->variations = cache('modifier_m/get_products', $row->id);
 
             // Get images
             $folder = get_file_folder_by_slug($row->slug, 'product-images');
@@ -208,7 +208,7 @@ class Products extends Admin_Controller
         $this->data->id     = $id;
         $this->data->fields = fields_to_tabs($fields, $this->tabs);
         $this->data->tabs   = array_keys($this->data->fields);
-        $this->data->symbol = $this->pyrocache->model('currency_m', 'get_symbol', array(), $this->firesale->cache_time);
+        $this->data->symbol = cache('currency_m/get_symbol');
 
         // Add metadata
         $this->template->append_js('module::jquery.filedrop.js')
@@ -216,7 +216,7 @@ class Products extends Admin_Controller
                        ->append_metadata($this->load->view('fragments/wysiwyg', NULL, TRUE));
 
         // Grab all the taxes
-        $taxes = $this->pyrocache->model('taxes_m', 'taxes_for_currency', array(1), $this->firesale->cache_time);
+        $taxes = cache('taxes_m/taxes_for_currency', 1);
 
         $tax_string = '<script type="text/javascript">' .
                       "\n var taxes = new Array();\n";
@@ -245,7 +245,7 @@ class Products extends Admin_Controller
     {
 
         // Get row
-        if ( $row = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time) ) {
+        if ( $row = cache('row_m/get_row', $id, $this->stream, false) ) {
             // Load form
             $this->create($id, $row);
         } else {
@@ -265,7 +265,7 @@ class Products extends Admin_Controller
 
             for ( $i = 0; $i < count($products); $i++ ) {
 
-                if ( !$this->pyrocache->model('products_m', 'delete_product', array($products[$i]), $this->firesale->cache_time) ) {
+                if ( !$this->products_m->delete_product($products[$i]) ) {
                     $delete = false;
                 }
 
@@ -348,7 +348,7 @@ class Products extends Admin_Controller
         // Check for ID
         if ($id != NULL) {
             // Get current row
-            $row = $this->pyrocache->model('row_m', 'get_row', array($id, $stream, FALSE), $this->firesale->cache_time);
+            $row = cache('row_m/get_row', $id, $stream, false);
 
             // Update parent in post
             $input['parent'] = $_POST['parent'] = $row->parent;
@@ -422,7 +422,7 @@ class Products extends Admin_Controller
         } elseif ( $id != null and $this->input->post('btnAction') == 'delete' ) {
 
             // Delete
-            if ( $this->pyrocache->model('modifier_m', 'delete_variation', array($id), $this->firesale->cache_time) ) {
+            if ( $this->modifier_m->delete_variation($id) ) {
 
                 // Deleted, clear cache!
                 Events::trigger('clear_cache');
@@ -441,7 +441,7 @@ class Products extends Admin_Controller
         // Check for ID
         if ($id != NULL) {
             // Get current row
-            $row = $this->pyrocache->model('row_m', 'get_row', array($id, $stream, FALSE), $this->firesale->cache_time);
+            $row = cache('row_m/get_row', $id, $stream, false);
 
             // Update parent in post
             $input['parent'] = $_POST['parent'] = $row->parent;
@@ -504,7 +504,7 @@ class Products extends Admin_Controller
 
             for ( $i = 0; $i < count($products); $i++ ) {
 
-                if ( !$latest = $this->pyrocache->model('products_m', 'duplicate_product', array($products[$i]), $this->firesale->cache_time) ) {
+                if ( !$latest = $this->products_m->duplicate_product($products[$i]) ) {
                     $duplicate = false;
                 }
 
@@ -512,7 +512,7 @@ class Products extends Admin_Controller
 
         } elseif ($prod_id !== null) {
 
-            if ( !$latest = $this->pyrocache->model('products_m', 'duplicate_product', array($prod_id), $this->firesale->cache_time) ) {
+            if ( !$latest = $this->products_m->duplicate_product($prod_id) ) {
                 $duplicate = false;
             }
 
@@ -540,7 +540,7 @@ class Products extends Admin_Controller
     {
 
         // Get product
-        $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
+        $row    = cache('row_m/get_row', $id, $this->stream, false);
         $folder = get_file_folder_by_slug($row->slug, 'product-images');
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
