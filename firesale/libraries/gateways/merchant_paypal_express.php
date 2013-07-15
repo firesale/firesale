@@ -81,7 +81,18 @@ class Merchant_paypal_express extends Merchant_paypal_base
     {
         $response = $this->_express_checkout_return('Sale');
 
-        return new Merchant_paypal_api_response($response, Merchant_response::COMPLETE);
+        $data_request = $this->_build_express_checkout_details($response);
+        $data = $this->_post_paypal_request($data_request);
+
+        return new Merchant_paypal_express_response($response, Merchant_response::COMPLETE, $data);
+    }
+
+    protected function _build_express_checkout_details()
+    {
+        $request = $this->_new_request('GetExpressCheckoutDetails');
+        $request['TOKEN'] = $request['TOKEN'] = $this->CI->input->get_post('token');
+
+        return $request;
     }
 
     protected function _build_authorize_or_purchase()
@@ -131,6 +142,36 @@ class Merchant_paypal_response extends Merchant_response
         parent::__construct($status);
 
         $this->_redirect_url = $url;
+    }
+}
+
+class Merchant_paypal_express_response extends Merchant_paypal_api_response
+{
+    protected $shipping;
+
+    public function __construct($response, $success_status, $data)
+    {
+        parent::__construct($response, $success_status);
+
+        $this->shipping = new StdClass;
+
+        $name = explode(' ', $data['SHIPTONAME'], 2);
+
+        $this->shipping->firstname = $name[0];
+        $this->shipping->lastname = isset($name[1]) ? $name[1] : null;
+        $this->shipping->email = $data['EMAIL'];
+        $this->shipping->address1 = $data['SHIPTOSTREET'];
+        $this->shipping->city = $data['SHIPTOCITY'];
+        $this->shipping->county = $data['SHIPTOSTATE'];
+        $this->shipping->postcode = $data['SHIPTOZIP'];
+        $this->shipping->country = $data['SHIPTOCOUNTRYCODE'];
+    }
+
+    public function shipping($value)
+    {
+        if (property_exists($this->shipping, $value)) return $this->shipping->$value;
+
+        return null;
     }
 }
 

@@ -850,6 +850,11 @@ class Merchant_response
 
         return Merchant::redirect($this->redirect_url());
     }
+
+    public function shipping($value)
+    {
+        return false;
+    }
 }
 
 /* End of file ./libraries/merchant/merchant.php */
