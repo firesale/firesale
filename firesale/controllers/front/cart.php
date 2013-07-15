@@ -1015,6 +1015,10 @@ class Cart extends Public_Controller
                         $address = $this->address_m->add_address($input, 'ship');
 
                         if ($address) $this->orders_m->set_address($order['id'], $address, 'ship');
+
+                        Events::trigger('clear_cache');
+
+                        $order = cache('orders_m/get_order_by_id', $order['id']);
                     }
                 }
             }
