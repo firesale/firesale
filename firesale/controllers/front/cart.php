@@ -777,7 +777,7 @@ class Cart extends Public_Controller
                 'failure_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
             )));
 
-            $this->process_transaction($gateway, $response);
+            $this->process_transaction($gateway, $order, $response);
             
         } else {
             redirect($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time));
@@ -924,7 +924,7 @@ class Cart extends Public_Controller
 
                 $response = $this->merchant->purchase_return($params);
 
-                $this->process_transaction($gateway, $response);
+                $this->process_transaction($gateway, $order, $response);
             }
 
             $this->fs_cart->destroy();
@@ -976,7 +976,7 @@ class Cart extends Public_Controller
         return false;
     }
 
-    protected function process_transaction($gateway, $response)
+    protected function process_transaction($gateway, $order, $response)
     {
         $status = '_order_' . $response->status();
 
