@@ -95,7 +95,7 @@ class Products extends Admin_Controller
         $this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + cache('categories_m/dropdown_values');
         $this->data->status       = cache('products_m/status_dropdown', ( $type == 'status' ? $value : -1 ));
         $this->data->stock_status = cache('products_m/stock_status_dropdown', ( $type == 'stock_status' ? $value : -1 ));
-        $this->data->min_max      = cache('products_m/price_min_max', );
+        $this->data->min_max      = cache('products_m/price_min_max');
         $this->data->buttons      = ( $this->template->buttons ? $this->template->buttons : '' );
 
         // Add page data
