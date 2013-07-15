@@ -1012,7 +1012,9 @@ class Cart extends Public_Controller
                         $_POST = $input;
                         $_SERVER['REQUEST_METHOD'] = 'POST';
 
-                        $this->address_m->update_address($order['ship_to']['id'], $input, 'ship');
+                        $address = $this->address_m->add_address($input, 'ship');
+
+                        if ($address) $this->orders_m->set_address($order['id'], $address, 'ship');
                     }
                 }
             }
