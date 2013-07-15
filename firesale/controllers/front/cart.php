@@ -740,6 +740,8 @@ class Cart extends Public_Controller
 
                 $gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
+                $this->template->set_layout('default.html');
+
                 // Minimal layout
                 if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
                     $this->template->set_layout('minimal.html');
