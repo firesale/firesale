@@ -60,8 +60,7 @@ class Sitemap_m extends MY_Model
             // Loop and format
             foreach( $results as &$result ) {
                 $result['updated'] = strtotime($result['updated']);
-                $result['url']     = site_url();
-                $result['url']    .= $this->pyrocache->model('routes_m', 'build_url', array($type, $result['id']), $this->firesale->cache_time);
+                $result['url']     = url($type, $result['id']);
             }
 
             return $results;

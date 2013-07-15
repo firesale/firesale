@@ -30,14 +30,6 @@ class Categories_m extends MY_Model
     public $_table = 'firesale_categories';
 
     /**
-     * Caches all category queries by slug or id
-     *
-     * @var array
-     * @access protected
-     */
-    protected $cache = array('id' => array(), 'slug' => array());
-
-    /**
      * Gets the category via id or slug via streams
      *
      * @param  string $id_slug The Category ID or slug to query
@@ -50,69 +42,57 @@ class Categories_m extends MY_Model
         // Variables
         $type = is_numeric($id_slug) && is_int(($id_slug + 0)) ? 'id' : 'slug';
 
-        // Check cache
-        if ( array_key_exists($id_slug, $this->cache[$type]) ) {
-            // Return cached version
-            return $this->cache[$type][$id_slug];
-        } else {
+        $this->load->library('files/files');
 
-            $this->load->library('files/files');
+        // Set params
+        $params = array(
+            'stream'    => 'firesale_categories',
+            'namespace' => 'firesale_categories',
+            'where'     => SITE_REF."_firesale_categories.{$type} = '{$id_slug}'",
+            'limit'     => '1',
+            'order_by'  => 'id',
+            'sort'      => 'desc'
+        );
 
-            // Set params
-            $params = array(
-                'stream'    => 'firesale_categories',
-                'namespace' => 'firesale_categories',
-                'where'     => SITE_REF."_firesale_categories.{$type} = '{$id_slug}'",
-                'limit'     => '1',
-                'order_by'  => 'id',
-                'sort'      => 'desc'
-            );
+        // Add to params if required
+        if ( $this->uri->segment('1') != 'admin' ) {
+            $params['where'] .= ' AND '.SITE_REF.'_firesale_categories.status = 1';
+        }
 
-            // Add to params if required
-            if ( $this->uri->segment('1') != 'admin' ) {
-                $params['where'] .= ' AND '.SITE_REF.'_firesale_categories.status = 1';
+        // Get entries
+        $category = $this->streams->entries->get_entries($params);
+
+        // Check exists
+        if ($category['total'] > 0) {
+
+            // Get category
+            $category = current($category['entries']);
+
+            // Get images
+            $folder = get_file_folder_by_slug($category['slug'], 'category-images');
+            $images = Files::folder_contents($folder->id);
+            $category['images'] = $images['data']['file'];
+
+            // Get a child count
+            $category['children'] = $this->db->where('parent', $category['id'])->get('firesale_categories')->num_rows();
+
+            // Append data from other modules
+            $results = Events::trigger('category_get', $category, 'array');
+            foreach ($results as $result) {
+                $category = array_merge($category, $result);
             }
 
-            // Get entries
-            $category = $this->streams->entries->get_entries($params);
+            // Prefix
+            $segments                = explode('/', $category['slug']);
+            $category['slug']        = $category['slug'];
+            $category['slug_prefix'] = implode('/', array_pop($segments));
 
-            // Check exists
-            if ($category['total'] > 0) {
-
-                // Get category
-                $category = current($category['entries']);
-
-                // Get images
-                $folder = get_file_folder_by_slug($category['slug'], 'category-images');
-                $images = Files::folder_contents($folder->id);
-                $category['images'] = $images['data']['file'];
-
-                // Get a child count
-                $category['children'] = $this->db->where('parent', $category['id'])->get('firesale_categories')->num_rows();
-
-                // Append data from other modules
-                $results = Events::trigger('category_get', $category, 'array');
-                foreach ($results as $result) {
-                    $category = array_merge($category, $result);
-                }
-
-                // Prefix
-                $segments                = explode('/', $category['slug']);
-                $category['slug']        = $category['slug'];
-                $category['slug_prefix'] = implode('/', array_pop($segments));
-
-                // Add to cache
-                $this->cache['id'][$category['id']]     = $category;
-                $this->cache['slug'][$category['slug']] = $category;
-
-                // Return it
-                return $category;
-            }
-
+            // Return it
+            return $category;
         }
 
         // Nothing?
-        return FALSE;
+        return false;
     }
 
     public function get_complete_slug($parent)
@@ -176,7 +156,7 @@ class Categories_m extends MY_Model
     public function get_all_children($parent)
     {
 
-        $children = $this->pyrocache->model('categories_m', 'get_children', array($parent), $this->firesale->cache_time);
+        $children = cache('categories_m/get_children', $parent);
 
         foreach ($children as $child) {
             $children = array_unique(array_merge($children, $this->get_all_children($child)));
@@ -198,7 +178,7 @@ class Categories_m extends MY_Model
 
         // Get ALL THE CHILDREN!
         if ( isset($category['id']) AND $category['id'] != NULL ) {
-            $children = $this->pyrocache->model('categories_m', 'get_all_children', array($category['id']), $this->firesale->cache_time);
+            $children = cache('categories_m/get_all_children', $category['id']);
         }
 
         // Build the initial query
@@ -363,7 +343,7 @@ class Categories_m extends MY_Model
 
             foreach ($cat['children'] as $cat) {
 
-                $url   = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
+                $url   = uri('category', $cat['id']);
                 $tree .= '<li id="cat_' . $cat['id'] . '">' . "\n";
                 $tree .= '  <div'.( $cat['status']['key'] == '0' ? ' class="draft"' : '' ).'>' . "\n";
                 $tree .= '    <a href="#' . $cat['id'] . '" rel="' . $cat['id'] . '">' . $cat['title'] . '</a>' . "\n";
@@ -450,7 +430,7 @@ class Categories_m extends MY_Model
                     'firesale:category',
                     'firesale:categories',
                     $category['id'],
-                    $this->pyrocache->model('routes_m', 'build_url', array('category', $category['id']), $this->firesale->cache_time),
+                    uri('category', $category['id']),
                     $category['title'],
                     strip_tags($category['description']),
                     array(
@@ -477,12 +457,12 @@ class Categories_m extends MY_Model
         $template->set_breadcrumb('Store', 'store');
 
         if ( $category == null ) {
-            $url  = $this->pyrocache->model('routes_m', 'build_url', array('category', NULL), $this->firesale->cache_time);
+            $url  = uri('category');
             $template->set_breadcrumb(lang('firesale:cats_all_products'));
         } else {
-            $cats = $this->pyrocache->model('products_m', 'get_cat_path', array($category['id'], true), $this->firesale->cache_time);
+            $cats = cache('products_m/get_cat_path', $category['id'], true);
             foreach ($cats as $key => $cat) {
-                $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $cat['id']), $this->firesale->cache_time);
+                $url = uri('category', $cat['id']);
                 if ($category['id'] == $cat['id']) {
                     $template->set_breadcrumb($cat['title']);
                 } else {

@@ -100,7 +100,7 @@ class Routes_m extends MY_Model
                     if ( $route->table == 'firesale_products' AND ( strpos($formatted, '{{ category_slug }}') !== FALSE OR strpos($formatted, '{{ category_id }}') !== FALSE ) ) {
                         // Get category
                         $this->load->model('products_m');
-                        $category  = current($this->pyrocache->model('products_m', 'get_categories', array($type->id), $this->firesale->cache_time));
+                        $category  = current(cache('products_m/get_categories', $type->id));
                         $formatted = str_replace('{{ category_slug }}', $category['slug'], $formatted);
                         $formatted = str_replace('{{ category_id }}', $category['id'], $formatted);
                     }

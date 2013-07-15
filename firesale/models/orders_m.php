@@ -310,17 +310,17 @@ class Orders_m extends MY_Model
         foreach ($orders AS &$order) {
 
             // Get product count
-            $order['products'] = $this->pyrocache->model('orders_m', 'get_product_count', array($order['id']), $this->firesale->cache_time);
+            $order['products'] = cache('orders_m/get_product_count', $order['id']);
 
             // No currency set?
             if ($order['currency'] == NULL) {
-                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(), $this->firesale->cache_time);
+                $order['currency'] = cache('currency_m/get');
             }
 
             // Format prices
-            $order['price_sub']   = $this->pyrocache->model('currency_m', 'format_string', array($order['price_sub'],   (object) $order['currency'], FALSE), $this->firesale->cache_time);
-            $order['price_ship']  = $this->pyrocache->model('currency_m', 'format_string', array($order['price_ship'],  (object) $order['currency'], FALSE), $this->firesale->cache_time);
-            $order['price_total'] = $this->pyrocache->model('currency_m', 'format_string', array($order['price_total'], (object) $order['currency'], FALSE), $this->firesale->cache_time);
+            $order['price_sub']   = cache('currency_m/format_string', $order['price_sub'],   (object) $order['currency'], false);
+            $order['price_ship']  = cache('currency_m/format_string', $order['price_ship'],  (object) $order['currency'], false);
+            $order['price_total'] = cache('currency_m/format_string', $order['price_total'], (object) $order['currency'], false);
         }
 
         return $orders;
@@ -347,7 +347,7 @@ class Orders_m extends MY_Model
 
         // Check shipping is set
         if ( !isset($input['shipping']) OR empty($input['shipping']) ) {
-            $input['shipping'] = 0;
+            $input['shipping'] = 1;
         }
 
         // Get currency
@@ -565,7 +565,7 @@ class Orders_m extends MY_Model
             foreach ($order['items'] AS $key => &$item) {
 
                 // Get the product
-                $product = $this->pyrocache->model('products_m', 'get_product', array($item['product_id'], null, true), $this->firesale->cache_time);
+                $product = cache('products_m/get_product', $item['product_id'], null, true);
 
                 // Check it exists
                 if ($product !== FALSE) {
@@ -608,7 +608,7 @@ class Orders_m extends MY_Model
 
             // Loop and get data
             foreach ( $orders as &$order ) {
-                $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order['id']), $this->firesale->cache_time);
+                $order = cache('orders_m/get_order_by_id', $order['id']);
             }
 
             // Format orders
@@ -634,7 +634,7 @@ class Orders_m extends MY_Model
 
         // Variables
         $low	 = $this->settings->get('firesale_low') or 10;
-        $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
+        $product = cache('products_m/get_product', $id, null, true);
 
         if ($product) {
 
@@ -680,7 +680,7 @@ class Orders_m extends MY_Model
             if ($status == 3) {
 
                 // Get the order
-                $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order_id), $this->firesale->cache_time);
+                $order = cache('orders_m/get_order_by_id', $order_id);
 
                 // Email the user
                 Events::trigger('email', array_merge($order, array('slug' => 'order-dispatched', 'to' => $order['bill_to']['email'])), 'array');
