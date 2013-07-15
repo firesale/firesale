@@ -347,7 +347,7 @@ class Orders_m extends MY_Model
 
         // Check shipping is set
         if ( !isset($input['shipping']) OR empty($input['shipping']) ) {
-            $input['shipping'] = 1;
+            $input['shipping'] = 0;
         }
 
         // Get currency
