@@ -767,65 +767,29 @@ class Cart extends Public_Controller
     protected function _order_processing($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 4);
-        $skip = $this->skip($order['gateway']['id']);
-        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
 
-        if (! $callback) {
-            if ($skip_checkout) {
-                redirect(uri('cart'));
-            } else {
-                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
-            }
-        } else {
-            $this->merchant->confirm_return(site_url(uri('cart') . '/cancel'));
-        }
+        $this->process_return($order['gateway']['id']);
     }
 
     protected function _order_failed($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 7);
-        $skip = $this->skip($order['gateway']['id']);
-        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
 
-        if (! $callback) {
-            if ($skip_checkout) {
-                redirect(uri('cart'));
-            } else {
-                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
-            }
-        } else {
-            $this->merchant->confirm_return(site_url(uri('cart') . '/cancel'));
-        }
+        $this->process_return($order['gateway']['id']);
     }
 
     protected function _order_declined($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 8);
-        $skip = $this->skip($order['gateway']['id']);
-        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
 
-        if ( ! $callback) {
-            if ($skip_checkout) {
-                redirect(uri('cart'));
-            } else {
-                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
-            }
-        }
+        $this->process_return($order['gateway']['id']);
     }
 
     protected function _order_mismatch($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 9);
-        $skip = $this->skip($order['gateway']['id']);
-        $skip_checkout = $this->gateways->setting($order['gateway']['id'], 'skip_checkout');
-
-        if ( ! $callback) {
-            if ($skip_checkout) {
-                redirect(uri('cart'));
-            } else {
-                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
-            }
-        }
+        
+        $this->process_return($order['gateway']['id']);
     }
 
     protected function _order_authorized($order, $callback = FALSE)
