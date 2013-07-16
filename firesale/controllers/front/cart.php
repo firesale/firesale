@@ -193,7 +193,7 @@ class Cart extends Public_Controller
                 $product['price']         += $this->input->post('price') or 0;
 
                 // Check product, stock and modifiers
-                if ( ! $product and ($product['stock_status']['key'] == 6 OR $qty > 0) and
+                if ($product and ($product['stock_status']['key'] == 6 OR $qty > 0) and
                     ( (!is_array($modifiers['type']) or (is_array($modifiers) and ! isset($modifiers['type']['key']))) or 
                         ( is_array($modifiers['type']) and isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
                     
