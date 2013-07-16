@@ -44,9 +44,7 @@ class Cart extends Public_Controller
             'firesale/cart_m',
             'firesale/orders_m',
             'firesale/address_m',
-            'firesale/categories_m',
             'firesale/products_m',
-            'firesale/routes_m',
             'firesale/modifier_m'
         ));
 
