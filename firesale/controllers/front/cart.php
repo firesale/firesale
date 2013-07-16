@@ -591,6 +591,13 @@ class Cart extends Public_Controller
         return FALSE;
     }
 
+    public function _validate_address($value)
+    {
+        $this->form_validation->set_message('_validate_addess', lang('firesale:checkout:address_invalid'));
+
+        return $this->address_m->get_address($value, $this->current_user->id);
+    }
+
     public function _validate_gateway($value)
     {
         $this->form_validation->set_message('_validate_gateway', lang('firesale:checkout:gateway_invalid'));
