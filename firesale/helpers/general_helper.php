@@ -44,6 +44,15 @@ function url($route, $id = null)
     return site_url(cache('routes_m/build_url', $route, $id));
 }
 
+function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
+{
+    $currency = $currency or ci()->fs_cart->currency();
+
+    ci()->load->model('firesale/currency_m');
+
+    return ci()->currency_m->format_string($price, $currency, $fix, $apply_tax, $format);
+}
+
 /**
  * Detects if a given module is currently installed
  *
