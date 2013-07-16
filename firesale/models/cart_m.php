@@ -256,6 +256,19 @@ class Cart_m extends MY_Model
         ));
     }
 
+    public function insert_transaction($order, $gateway, $process)
+    {
+        return $this->db->insert('firesale_transactions', array(
+            'reference' => $process->reference(),
+            'order_id'  => $order['id'],
+            'gateway'   => $gateway,
+            'amount'    => $this->fs_cart->total() + $order['shipping']['price'],
+            'currency'  => $this->fs_cart->currency()->cur_code,
+            'status'    => $process->status(),
+            'data'      => serialize($process->data())
+        ));
+    }
+
     public function data()
     {
         $data = array();

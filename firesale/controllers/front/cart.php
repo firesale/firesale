@@ -632,15 +632,7 @@ class Cart extends Public_Controller
 
                 $process = $this->merchant->purchase($params);
 
-                $this->db->insert('firesale_transactions', array(
-                    'reference' => $process->reference(),
-                    'order_id'  => $order['id'],
-                    'gateway'   => $gateway,
-                    'amount'    => $this->fs_cart->total() + $order['shipping']['price'],
-                    'currency'  => $this->fs_cart->currency()->cur_code,
-                    'status'    => $process->status(),
-                    'data'      => serialize($process->data())
-                ));
+                $this->cart_m->insert_transaction($order, $gateway, $process);
 
                 $status = '_order_' . $process->status();
 
@@ -963,7 +955,7 @@ class Cart extends Public_Controller
         $status = '_order_' . $response->status();
 
         $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
-        $processed or $this->db->insert('firesale_transactions', array('order_id' => $order_id, 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
+        $processed or $this->db->insert('firesale_transactions', array('order_id' => $order['id'], 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
 
         if ( ! $processed) {
             // Check status
