@@ -717,11 +717,11 @@ class Cart extends Public_Controller
                 // Format currency
                 $order['price_tax']     = $order['price_total'] - $order['price_sub'] - $order['price_ship'];
                 $order['price_sub_tax'] = $order['price_sub'] + $order['price_tax'];
-                $order['price_tax']     = $this->currency_m->format_string($order['price_tax'], (object)$order['currency'], FALSE);
-                $order['price_sub_tax'] = $this->currency_m->format_string($order['price_sub_tax'], (object)$order['currency'], FALSE);
-                $order['price_sub']     = $this->currency_m->format_string($order['price_sub'], (object)$order['currency'], FALSE);
-                $order['price_ship']    = $this->currency_m->format_string($order['price_ship'], (object)$order['currency'], FALSE);
-                $order['price_total']   = $this->currency_m->format_string($order['price_total'], (object)$order['currency'], FALSE);
+                $order['price_tax']     = format_currency($order['price_tax'], (object)$order['currency'], false);
+                $order['price_sub_tax'] = format_currency($order['price_sub_tax'], (object)$order['currency'], false);
+                $order['price_sub']     = format_currency($order['price_sub'], (object)$order['currency'], false);
+                $order['price_ship']    = format_currency($order['price_ship'], (object)$order['currency'], false);
+                $order['price_total']   = format_currency($order['price_total'], (object)$order['currency'], false);
 
                 $gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 
@@ -810,14 +810,14 @@ class Cart extends Public_Controller
 
         // Format order
         foreach ($order['items'] as &$item) {
-            $item['total'] = $this->currency_m->format_string(($item['price_rounded'] * $item['qty']), $this->fs_cart->currency());
+            $item['total'] = format_currency(($item['price_rounded'] * $item['qty']));
         }
 
         // Format currency
-        $order['price_sub']     = $this->currency_m->format_string($order['price_sub'], $this->fs_cart->currency(), FALSE);
-        $order['price_ship']    = $this->currency_m->format_string($order['price_ship'], $this->fs_cart->currency(), FALSE);
-        $order['price_total']   = $this->currency_m->format_string($order['price_total'], $this->fs_cart->currency(), FALSE);
-        $order['price_tax']     = $this->currency_m->format_string($order['price_tax'], $this->fs_cart->currency(), FALSE);
+        $order['price_sub']     = format_currency($order['price_sub'], false, false, false);
+        $order['price_ship']    = format_currency($order['price_ship'], false, false, false);
+        $order['price_total']   = format_currency($order['price_total'], false, false, false);
+        $order['price_tax']     = format_currency($order['price_tax'], false, false, false);
 
         // Email (user)
         Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user', 'to' => $order['bill_to']['email'])), 'array');
