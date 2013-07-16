@@ -1,10 +1,10 @@
     <?php echo form_open("{{ firesale:url route='cart' base='no' }}/insert"); ?>
         <input type="hidden" name="prd_code[0]" value="<?php echo $product['id']; ?>" />
         <fieldset>
-            <ul>
+            <ul class="clearfix<?php if( ! empty($modifiers) ): ?> fs_has_modifiers<?php endif; ?>">
             <?php if( ! empty($modifiers) ): ?>
             <?php foreach( $modifiers as $modifier ): ?>
-                <li>
+                <li class="fs_product_modifiers">
                     <label>
                         <?php echo $modifier['title']; ?>
                         <small><?php echo $modifier['instructions']; ?></small>
@@ -32,7 +32,7 @@
                 </li>
             <?php endforeach; ?>
             <?php endif; ?>
-                <li>
+                <li class="fs_product_quantity">
                     <label for="product_quantity"><?php echo lang('firesale:product:label_qty'); ?></label>
                     <div class="input">
                         <input id="product_quantity" name="qty[0]" size="3" value="1" type="text" />

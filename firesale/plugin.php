@@ -309,6 +309,7 @@ class Plugin_Firesale extends Plugin
         $difference = $this->attribute('difference', 'difference'); // display the price difference or the actual price
         $product    = $this->attribute('product');
         $product    = $this->products_m->get_product($product);
+        $template   = $this->attribute('template', 'partials/modifier_form');
 
         // Format data
         foreach ($product['modifiers'] as &$modifier) {
@@ -328,7 +329,7 @@ class Plugin_Firesale extends Plugin
         $data->modifiers  = $product['modifiers'];
 
         // Build form
-        return $this->parser->parse('partials/modifier_form', $data, true);
+        return $this->parser->parse($template, $data, true);
     }
 
     public function cart()
