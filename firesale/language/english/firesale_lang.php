@@ -377,6 +377,7 @@
     $lang['firesale:checkout:shipping_min_weight']          = 'The total weight of your cart items does not meet the minimum for the selected shipping method';
     $lang['firesale:checkout:shipping_max_weight']          = 'The total weight of your cart items exceeds the maximum for the selected shipping method';
     $lang['firesale:checkout:shipping_invalid']             = 'The shipping method you selected is not valid';
+    $lang['firesale:checkout:address_invalid']              = 'The address you selected is not valid';
     $lang['firesale:checkout:gateway_invalid']              = 'The payment gateway you selected is not valid';
 
     // Routes
