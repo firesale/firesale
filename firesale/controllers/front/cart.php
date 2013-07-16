@@ -193,7 +193,7 @@ class Cart extends Public_Controller
                 $product['price']         += $this->input->post('price') or 0;
 
                 // Check product, stock and modifiers
-                if ( $product != FALSE and ( $product['stock_status']['key'] == 6 OR $qty > 0 ) and
+                if ( ! $product and ($product['stock_status']['key'] == 6 OR $qty > 0) and
                     ( (!is_array($modifiers['type']) or (is_array($modifiers) and ! isset($modifiers['type']['key']))) or 
                         ( is_array($modifiers['type']) and isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
                     
@@ -201,7 +201,7 @@ class Cart extends Public_Controller
                     $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
 
                     // Update stock levels
-                    if ($product['stock_status']['key'] != 6) { $tmp[$product['id']] = $product['stock']; }
+                    if ($product['stock_status']['key'] != 6) $tmp[$product['id']] = $product['stock'];
                 }
 
             }
@@ -212,7 +212,7 @@ class Cart extends Public_Controller
         $this->fs_cart->insert($data);
 
         // Force available quanity
-        if ( $this->cart_m->check_quantity($this->fs_cart->contents(), $tmp) ) {
+        if ($this->cart_m->check_quantity($this->fs_cart->contents(), $tmp)) {
             // Set flash to warn the user
             $this->session->set_flashdata('message', lang('firesale:cart:qty_too_low'));
         }
@@ -410,8 +410,8 @@ class Cart extends Public_Controller
 
                 // Shipping option
                 if ( $data['ship_req'] AND ! empty($data['shipping']) AND isset($input['shipping'])) {
-                    foreach ( $data['shipping'] as $ship ) {
-                        if ( $ship['id'] == $input['shipping'] ) {
+                    foreach ($data['shipping'] as $ship) {
+                        if ($ship['id'] == $input['shipping']) {
                             $shipping = $ship;
                             break;
                         }
@@ -433,16 +433,14 @@ class Cart extends Public_Controller
                 }
 
                 // Modify posted data
-                $input['shipping']     = ( isset($input['shipping']) ? $input['shipping'] : 0 );
-                $input['created_by']   = ( isset($this->current_user->id) ? $this->current_user->id : NULL );
+                $input['shipping']     = isset($input['shipping']) ? $input['shipping'] : 0;
+                $input['created_by']   = isset($this->current_user->id) ? $this->current_user->id : NULL;
                 $input['order_status'] = '1'; // Unpaid
                 $input['price_sub']    = $this->fs_cart->subtotal();
                 $input['price_ship']   = $shipping['price'];
                 $input['price_total']  = number_format($this->fs_cart->total() + $shipping['price'], 2);
 
-                if ($skip_checkout) {
-                    $input['gateway'] = $this->gateways->id_from_slug($skip_checkout);
-                }
+                if ($skip_checkout) $input['gateway'] = $this->gateways->id_from_slug($skip_checkout);
 
                 $_POST                 = $input;
 
@@ -504,13 +502,13 @@ class Cart extends Public_Controller
 
             }
 
-            if( isset($this->current_user->id) ) {
+            if (isset($this->current_user->id)) {
 
                 // Get available bliing and shipping options
                 $data['addresses'] = $this->address_m->get_addresses($this->current_user->id);
 
                 // Possibly first time, pre-populate some things
-                if( empty($_POST) ) {
+                if (empty($_POST)) {
 
                     $_POST = array(
                         'ship_email'     => $this->current_user->email,
@@ -536,14 +534,12 @@ class Cart extends Public_Controller
             $data['valid_gateway']  = self::$valid_gateway;
 
             // Check for shipping option set in cart
-            if ( $this->session->userdata('shipping') ) {
+            if ($this->session->userdata('shipping')) {
                 $data['shipping'] = $this->session->userdata('shipping');
             }
 
-            // Minimal layout
-            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
-                $this->template->set_layout('minimal.html');
-            }
+            // Minimal layout?
+            $this->minimal();
 
             // Build page
             $this->template->set_breadcrumb(lang('firesale:cart:title'), uri('cart'))
@@ -557,7 +553,6 @@ class Cart extends Public_Controller
 
     public function _validate_shipping($value)
     {
-
         if ($value) {
 
             $cart = $this->fs_cart->contents();
@@ -566,9 +561,7 @@ class Cart extends Public_Controller
             $weight = 0;
     
             foreach ($cart as $item) {
-                if ($item['weight']) {
-                    $weight += intval($item['weight']);
-                }
+                if ($item['weight']) $weight += intval($item['weight']);
             }
         
             $query = $this->db->get_where('firesale_shipping', array('id' => $value));
@@ -629,9 +622,6 @@ class Cart extends Public_Controller
 
             // Begin payment processing
             if ($_SERVER['REQUEST_METHOD'] == 'POST' or $skip) {
-                // Load the routes model
-                $this->load->model('routes_m');
-
                 $posted_data  = $this->input->post(NULL, TRUE);
                 $session_data = $this->session->flashdata('gateway_options');
 
@@ -668,10 +658,8 @@ class Cart extends Public_Controller
                     $this->session->set_flashdata('error', $process->message());
                 }
 
-                // Minimal layout
-                if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
-                    $this->template->set_layout('minimal.html');
-                }
+                // Minimal layout?
+                $this->minimal();
 
                 $theme_path = $this->template->get_theme_path();
                 if ($process->is_redirect()) {
@@ -740,10 +728,8 @@ class Cart extends Public_Controller
 
                 $this->template->set_layout('default.html');
 
-                // Minimal layout
-                if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
-                    $this->template->set_layout('minimal.html');
-                }
+                // Minimal layout?
+                $this->minimal();
 
                 // Build page
                 $this->template->title(lang('firesale:payment:title'))
@@ -764,7 +750,6 @@ class Cart extends Public_Controller
 
     public function callback($gateway = NULL, $order_id = NULL)
     {
-
         $order = cache('orders_m/get_order_by_id', $order_id);
 
         if ($this->gateways->is_enabled($gateway) AND $gateway != NULL AND ! empty($order)) {
@@ -892,10 +877,8 @@ class Cart extends Public_Controller
             // Fire events
             Events::trigger('page_build', $this->template);
 
-            // Minimal layout
-            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
-                $this->template->set_layout('minimal.html');
-            }
+            // Minimal layout?
+            $this->minimal();
 
             // Build the page
             $this->template->build('payment_complete', $order);
@@ -931,9 +914,7 @@ class Cart extends Public_Controller
             $this->fs_cart->destroy();
 
             // Minimal layout
-            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
-                $this->template->set_layout('minimal.html');
-            }
+            $this->minimal();
 
             $this->template->title(lang('firesale:payment:title_success'))
                            ->set_breadcrumb(lang('firesale:cart:title'), uri('cart'))
@@ -1025,6 +1006,29 @@ class Cart extends Public_Controller
 
             // Run status function
             $this->$status($order, FALSE);
+        }
+    }
+
+    protected function process_return($gateway)
+    {
+        $skip = $this->skip($gateway);
+        $skip_checkout = $this->gateways->setting($gateway, 'skip_checkout');
+
+        if ( ! $callback) {
+            if ($skip_checkout) {
+                redirect(uri('cart'));
+            } else {
+                redirect(uri('cart').( $skip ? '/checkout' : '/payment' ));
+            }
+        } else {
+            $this->merchant->confirm_return(site_url(uri('cart') . '/cancel'));
+        }
+    }
+
+    protected function minimal()
+    {
+        if ($this->settings->get('firesale_basic_checkout') == '1') {
+            $this->template->set_layout('minimal.html');
         }
     }
 }
