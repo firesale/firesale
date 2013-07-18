@@ -26,9 +26,10 @@ class Shipping_m extends MY_Model
 
         $query = $this->db->where("id = {$id}")->get('firesale_shipping');
         if ( $query->num_rows() ) {
-            $result = $query->result_array();
+            $result = $query->row_array();
+            $result = array_merge($result, $this->calculate_tax($result['id'], $result['price']));
 
-            return $result[0];
+            return $result;
         }
 
         return '0.00';
@@ -69,19 +70,7 @@ class Shipping_m extends MY_Model
         // Loop options and perform checks
         foreach ($options['entries'] AS $option) {
             if ( $this->check_methods($option, $total_weight, $total_value) ) {
-                // if tax band has been applied to this shipping method
-                if (isset($option['tax_band']['id'])) {
-                    // get tax pecentage for the selected tax band
-                    $tax  = $this->pyrocache->model('taxes_m', 'get_percentage', array($option['tax_band']['id']), $this->firesale->cache_time);
-                    $tax     = ( 100 + $tax ) / 100;
-
-                    // store pre tax price
-                    $option['price_pre_tax'] = $option['price'];
-
-                    // calculate final price
-                    $option['price'] = $tax * $option['price'];
-                    $option['price'] = format_currency($option['price'], false, true, false, false);
-                }
+                $option = array_merge($option, $this->calculate_tax($option['tax_band']['id'], $option['price']));
                 $total_options[] = $option;
             }
         }
@@ -93,16 +82,39 @@ class Shipping_m extends MY_Model
     public function check_methods($method, $weight, $price)
     {
         // Check pricing
-        if ( $price < $method['price_min'] or $price > $method['price_max'] ) {
+        if ($method['price_min'] != "" && $price < $method['price_min']) {
+            return false;
+        }
+
+        if ($method['price_max'] != "" && $price > $method['price_max']) {
             return false;
         }
 
         // Check weight
-        if ( $weight < $method['weight_min'] or $weight > $method['weight_max'] ) {
+        if ($method['weight_min'] != "" && $weight < $method['weight_min']) {
+            return false;
+        }
+
+        if ($method['weight_max'] != "" && $weight > $method['weight_max'] ) {
             return false;
         }
 
         return true;
+    }
+
+    private function calculate_tax($tax_band = null, $price = "0.00")
+    {
+        $formatted['price_pre_tax'] = $price;
+        $formatted['price'] = $price;
+        if (isset($tax_band)) {
+            // Calculate tax for this shipping method
+            $tax  = $this->pyrocache->model('taxes_m', 'get_percentage', array($tax_band), $this->firesale->cache_time);
+            $tax  = ( 100 + $tax ) / 100;
+
+            $formatted['price_pre_tax'] = $price;
+            $formatted['price'] = format_currency(($tax * $price), false, true, false, false);
+        }	
+        return $formatted;
     }
 
 }

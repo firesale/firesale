@@ -566,7 +566,8 @@ class Orders_m extends MY_Model
 
             $order              = $order['entries'][0];
             $order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int) $order_id))->result_array();
-            $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['price_ship'] ), 2);
+            $order['shipping']  = $this->shipping_m->get_option_by_id($order['shipping']['id']);
+            $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['shipping']['price_pre_tax'] ), 2);
 
             // Loop items
             foreach ($order['items'] AS $key => &$item) {
