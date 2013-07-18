@@ -18,7 +18,7 @@
 *
 */
 
-class Taxes extends Admin_Controller
+class taxes extends Admin_Controller
 {
     public $section = 'taxes';
 

@@ -18,7 +18,7 @@
 *
 */
 
-class Dashboard extends Admin_Controller
+class dashboard extends Admin_Controller
 {
     public $section = 'dashboard';
 

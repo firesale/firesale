@@ -495,8 +495,7 @@ class Modifier_m extends MY_Model
                           ->where('pvp.firesale_products_id', $product_id)
                           ->get();
 
-        if ( $query->num_rows() )
-        {
+        if ( $query->num_rows() ) {
             return $query->row()->parent;
         }
 
@@ -512,12 +511,11 @@ class Modifier_m extends MY_Model
                           ->where('pvp.firesale_products_id', $product_id)
                           ->where('pm.title', $option)
                           ->get();
-    
-        if ( $query->num_rows() )
-        {
+
+        if ( $query->num_rows() ) {
             return $query->row()->title;
         }
-    
+
         return null;
     }
 
@@ -642,15 +640,13 @@ class Modifier_m extends MY_Model
         $data       = array();
 
         // Loop possible variations
-        foreach ( $variations as $variation ) 
-        {
+        foreach ( $variations as $variation ) {
             // Find product ID
             $id  = cache('modifier_m/variation_exists', $variation, $stream->id);
             $key = implode('', $variation);
 
             // Check product
-            if ( $id !== false )
-            {
+            if ( $id !== false ) {
                 $product    = cache('products_m/get_product', $id, null, true);
                 $data[$key] = array(
                     $product['rrp_formatted'],

@@ -18,5 +18,5 @@
 *
 */
 
-	$lang['firesale:notes:title'] = 'Note di spedizione';
-	$lang['firesale:notes:print'] = 'Stampa';
+    $lang['firesale:notes:title'] = 'Note di spedizione';
+    $lang['firesale:notes:print'] = 'Stampa';

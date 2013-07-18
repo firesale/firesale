@@ -18,7 +18,7 @@
 *
 */
 
-class Category extends Public_Controller
+class category extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
@@ -122,7 +122,7 @@ class Category extends Public_Controller
 
             // Assign pagination
             if ( ! empty($products) ) {
-                
+
                 // Variables
                 $cat   = ( isset($category['id']) ? $category['id'] : NULL );
                 $url   = str_replace('/{{ slug }}', '', uri('category', $cat));

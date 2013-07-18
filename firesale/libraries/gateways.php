@@ -168,7 +168,7 @@ class gateways
                 if (isset($value['options']) and is_array($value['options'])) {
                     foreach ($value['options'] as $key => &$option) $option = lang($option) ? lang($option) : $key;
                 }
-                
+
                 $settings[] = array(
                     'slug'    => $setting,
                     'name'    => ucwords(str_replace('_', ' ', $setting)),

@@ -842,7 +842,7 @@ class Products_m extends MY_Model
 
     /**
      * Gets an array of the parent products images
-     * 
+     *
      * @param  int $id The id of the product to query
      * @return array   The array of images, boolean false on not found
      */

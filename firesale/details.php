@@ -868,7 +868,7 @@ class Module_Firesale extends Module
 
             // Add new "new" route
             $this->routes_m->create(array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}', 'route' => 'new(/[0-9]+)?', 'translation' => 'firesale/front/latest/index/$1', 'https' => '0'));
-            
+
             // Add basic checkout setting
             $this->settings('add', array('firesale_basic_checkout'));
         }

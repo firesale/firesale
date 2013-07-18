@@ -259,7 +259,7 @@
     $lang['firesale:label_table']                           = 'Table'; # Translate
     $lang['firesale:label_https']                           = 'HTTPS'; # Translate
     $lang['firesale:label_use_https']                       = 'Enable HTTPS'; # Translate
-    
+
     $lang['firesale:label_cur_code']                        = 'Currency Code'; # translate
     $lang['firesale:label_cur_code_inst']                   = 'ISO-4217 Format'; # translate
     $lang['firesale:label_cur_tax']                         = 'Tax Rate'; # translate

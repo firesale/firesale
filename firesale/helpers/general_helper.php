@@ -376,7 +376,7 @@ function nice_time($time)
 
 /**
  * Track the install, uninstall and upgrade status of a module.
- * 
+ *
  * @param  string $action      The action being performed - install, uninstall or upgrade
  * @param  string $version     The current version being installed
  * @param  string $old_version The old version being upgraded from

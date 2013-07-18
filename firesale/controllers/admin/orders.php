@@ -18,7 +18,7 @@
 *
 */
 
-class Orders extends Admin_Controller
+class orders extends Admin_Controller
 {
 
     public $perpage = 30;

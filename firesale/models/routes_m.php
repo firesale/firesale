@@ -69,7 +69,7 @@ class Routes_m extends MY_Model
                     // Build query columns
                     if ( $route->table == 'firesale_orders' ) {
                         $this->db->select('t.id');
-                    } else if ( $route->table == 'firesale_products' ) {
+                    } elseif ( $route->table == 'firesale_products' ) {
                         $this->db->select('t.id, t.slug, t.title, t.is_variation, v.parent')
                                  ->join('firesale_product_variations_firesale_products AS vp', 'vp.firesale_products_id = t.id', 'left')
                                  ->join('firesale_product_variations AS v', 'v.id = vp.row_id', 'left');

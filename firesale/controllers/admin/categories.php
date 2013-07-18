@@ -18,7 +18,7 @@
 *
 */
 
-class Categories extends Admin_Controller
+class categories extends Admin_Controller
 {
 
     /**

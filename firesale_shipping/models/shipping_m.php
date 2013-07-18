@@ -69,19 +69,19 @@ class Shipping_m extends MY_Model
         // Loop options and perform checks
         foreach ($options['entries'] AS $option) {
             if ( $this->check_methods($option, $total_weight, $total_value) ) {
-            	// if tax band has been applied to this shipping method
-            	if (isset($option['tax_band']['id'])) {
-            		// get tax pecentage for the selected tax band
-        			$tax  = $this->pyrocache->model('taxes_m', 'get_percentage', array($option['tax_band']['id']), $this->firesale->cache_time);
-					$tax     = ( 100 + $tax ) / 100;
+                // if tax band has been applied to this shipping method
+                if (isset($option['tax_band']['id'])) {
+                    // get tax pecentage for the selected tax band
+                    $tax  = $this->pyrocache->model('taxes_m', 'get_percentage', array($option['tax_band']['id']), $this->firesale->cache_time);
+                    $tax     = ( 100 + $tax ) / 100;
 
-					// store pre tax price
-					$option['price_pre_tax'] = $option['price'];
+                    // store pre tax price
+                    $option['price_pre_tax'] = $option['price'];
 
-            		// calculate final price
-					$option['price'] = $tax * $option['price'];
-					$option['price'] = format_currency($option['price'], false, true, false, false);
-            	}
+                    // calculate final price
+                    $option['price'] = $tax * $option['price'];
+                    $option['price'] = format_currency($option['price'], false, true, false, false);
+                }
                 $total_options[] = $option;
             }
         }

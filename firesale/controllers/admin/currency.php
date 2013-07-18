@@ -18,7 +18,7 @@
 *
 */
 
-class Currency extends Admin_Controller
+class currency extends Admin_Controller
 {
 
     public $section = 'currency';

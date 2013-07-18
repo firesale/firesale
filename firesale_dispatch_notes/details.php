@@ -18,9 +18,9 @@
 *
 */
 
-class Module_Firesale_dispatch_notes extends Module {
-	
-	public $version = '1.0.2-dev';
+class Module_Firesale_dispatch_notes extends Module
+{
+    public $version = '1.0.2-dev';
     public $language_file = 'firesale_dispatch_notes/firesale';
 
     public function __construct()
@@ -30,46 +30,46 @@ class Module_Firesale_dispatch_notes extends Module {
         $this->lang->load($this->language_file);
     }
 
-	public function info()
-	{
+    public function info()
+    {
 
-		$info = array(
-			'name' => array(
-				'en' => 'FireSale Dispatch Notes',
-				'it' => 'FireSale note di spedizione'
-			),
-			'description' => array(
-				'en' => 'Print dispatch notes for your orders',
-				'it' => 'Stampa le note di spedizione per gli ordini'
-			),
-			'frontend'		=> false,
-			'backend'		=> false,
-			'firesale_core'	=> false,
-			'menu'	   => 'FireSale',
-			'author'   => 'Chris Harvey'
-		);
+        $info = array(
+            'name' => array(
+                'en' => 'FireSale Dispatch Notes',
+                'it' => 'FireSale note di spedizione'
+            ),
+            'description' => array(
+                'en' => 'Print dispatch notes for your orders',
+                'it' => 'Stampa le note di spedizione per gli ordini'
+            ),
+            'frontend'		=> false,
+            'backend'		=> false,
+            'firesale_core'	=> false,
+            'menu'	   => 'FireSale',
+            'author'   => 'Chris Harvey'
+        );
 
-		return $info;
-	}
-	
-	public function install()
-	{
-		return true;
-	}
+        return $info;
+    }
 
-	public function uninstall()
-	{
+    public function install()
+    {
         return true;
-	}
+    }
 
-	public function upgrade($old_version)
-	{
-		return true;
-	}
+    public function uninstall()
+    {
+        return true;
+    }
 
-	public function help()
-	{
-		return "HELP ME!!";
-	}
+    public function upgrade($old_version)
+    {
+        return true;
+    }
+
+    public function help()
+    {
+        return "HELP ME!!";
+    }
 
 }

@@ -16,14 +16,14 @@ class Field_multiple
      * @var     string
      */
     public $field_type_name         = 'Multiple Relationship';
-    
+
     /**
      * Field Type Slug
      *
      * @var     string
      */
     public $field_type_slug         = 'multiple';
-    
+
     /**
      * Alt Process
      *
@@ -32,7 +32,7 @@ class Field_multiple
      * @var     bool
      */
     public $alt_process             = true;
-    
+
     /**
      * Database Column Type
      *
@@ -87,29 +87,27 @@ class Field_multiple
         // replace it so now sense in trying to update it
         if (isset($form_data['row_edit_id']) && is_numeric($row_id = $form_data['row_edit_id'])) {
             $this->CI->db->where('row_id', $form_data['row_edit_id'])->delete($table_name);
-        }
-        else {
+        } else {
             $row_id = $id;
         }
-        
+
         // Go through and add the values
         if ( ! is_array($input)) {
             $items = explode(',', $input);
-        }
-        else {
+        } else {
             $items = $input;
         }
-        
+
         // We'll glue / return these
         $ids = array();
-        
+
         foreach ($items as $item) {
-            
+
             if (trim($item) == '') {
                 continue;
             }
 
-            // We get numeric items from the 
+            // We get numeric items from the
             // multiselect, and it is more complex
             // from the drag/drop interface.
             if (is_numeric($item)) {
@@ -123,9 +121,9 @@ class Field_multiple
                 $stream->stream_slug.'_id'      => $stream->id,
                 $linked_stream->stream_slug.'_id'   => $item_id
                     );
-                    
+
                     $ids[] = $item_id;
-            
+
             $this->CI->db->insert($table_name, $insert_data);
         }
     }
@@ -145,10 +143,9 @@ class Field_multiple
         }
 
         $title_column = $join_stream->title_column;
-        
+
         // Default to ID for title column if not present
-        if ( ! trim($title_column) or ! $this->CI->db->field_exists($title_column, $join_stream->stream_prefix.$join_stream->stream_slug))
-        {
+        if ( ! trim($title_column) or ! $this->CI->db->field_exists($title_column, $join_stream->stream_prefix.$join_stream->stream_slug)) {
             $title_column = 'id';
         }
 
@@ -170,16 +167,16 @@ class Field_multiple
         $this->CI->db->join($join_stream->stream_prefix.$join_stream->stream_slug, 'jt.'.$join_stream->stream_slug.'_id = '.$join_stream->stream_prefix.$join_stream->stream_slug.'.id');
         $this->CI->db->where('jt.row_id', $row_id, false);
         $query = $this->CI->db->get();
-        
+
         foreach ($query->result() as $node) {
             $html .= '<li><a href="'.site_url('admin/streams/entries/view/'.$join_stream->id.'/'.$node->id).'">'.$node->$title_column.'</a></li>';
         }
 
         $html .= '</ul>';
-        
+
         return $html;
     }
-    
+
     /**
      * Plugin Override
      *
@@ -188,7 +185,7 @@ class Field_multiple
      * @return  string
      */
     public function plugin_override($field, $attributes)
-    {      
+    {
         // Get the stream
         $join_stream = $this->CI->streams_m->get_stream($field->field_data['choose_stream']);
 
@@ -212,7 +209,7 @@ class Field_multiple
         unset($params['stream_slug']);
 
         $this->CI->row_m->sql['from'][] = $this->CI->db->protect_identifiers($join_table, true);
-        
+
         // Filter by our row ID
         $this->CI->row_m->sql['where'][] = $this->CI->db->protect_identifiers($join_table.'.row_id', true)."='".$attributes['row_id']."'";
 
@@ -221,14 +218,14 @@ class Field_multiple
         $entries = $this->CI->streams->entries->get_entries($params);
 
         return $entries['entries'];
-    }   
+    }
 
     /**
      * Join multiple hook
      */
     public function join_multiple($data)
     {
-        $this->CI->db->join(    
+        $this->CI->db->join(
             $data['join_table'],
             $data['join_table'].'.'.$data['join_stream']->stream_slug.'_id = '.$stream->stream_prefix.$data['join_stream']->stream_slug.".id",
             'LEFT' );
@@ -244,7 +241,7 @@ class Field_multiple
     {
         $this->CI->type->add_css('multiple', 'multiple.css');
     }
-    
+
     /**
      * Process for when adding field assignment
      */
@@ -254,14 +251,14 @@ class Field_multiple
 
         // Get the stream we are attaching to.
         $linked_stream = $this->CI->streams_m->get_stream($field->field_data['choose_stream']);
-        
+
         // Make a table
         $table_name = $stream->stream_prefix.$stream->stream_slug.'_'.$linked_stream->stream_slug;
 
         $fields = array(
             'id' => array(
                 'type' => 'INT',
-                'constraint' => 11, 
+                'constraint' => 11,
                 'unsigned' => true,
                 'auto_increment' => true
                 ),
@@ -277,13 +274,13 @@ class Field_multiple
                 'type' => 'INT',
                 'constraint' => 11
                 )
-            );     
-        
+            );
+
         $this->CI->dbforge->add_field($fields);
         $this->CI->dbforge->add_key('id', true);
-        
+
         $this->CI->dbforge->create_table($table_name);
-        
+
         // Add a column so we can filter by values
         /*$this->CI->dbforge->add_column(
             $stream->stream_prefix.$stream->stream_slug,
@@ -307,7 +304,7 @@ class Field_multiple
     {
         // Get the stream we are attaching to.
         $linked_stream = $this->CI->streams_m->get_stream($field->field_data['choose_stream']);
-        
+
         // @todo:
         // If the linked stream was already deleted, we have a bit
         // of a problem since we can't get the stream slug.
@@ -318,8 +315,8 @@ class Field_multiple
 
         // Get the table name
         $table_name = $stream->stream_prefix.$stream->stream_slug.'_'.$linked_stream->stream_slug;
-        
-        // Remove the table     
+
+        // Remove the table
         $this->CI->dbforge->drop_table($table_name);
     }
 
@@ -337,7 +334,7 @@ class Field_multiple
 
         // Get the table name
         $table_name = $stream->stream_prefix.$stream->stream_slug.'_'.$linked_stream->stream_slug;
-        
+
         $this->CI->db->where('row_id', $entry->id)->delete($table_name);
     }
 
@@ -367,11 +364,11 @@ class Field_multiple
 
         // Our UI.
         // It's either multi or drag/drop. We defaul to dragdrop.
-        $ui = (isset($data['custom']['choose_ui']) and $data['custom']['choose_ui']) ? 
+        $ui = (isset($data['custom']['choose_ui']) and $data['custom']['choose_ui']) ?
                     $data['custom']['choose_ui'] : 'dragdrop';
 
         $title_column = $stream->title_column;
-        
+
         // Default to ID for title column
         if ( ! trim($title_column) or ! $this->CI->db->field_exists($title_column, $stream->stream_prefix.$stream->stream_slug)) {
             $title_column = 'id';
@@ -385,7 +382,7 @@ class Field_multiple
         // -------------------------------------
 
         $join_table = $field->stream_prefix.$field->stream_slug.'_'.$stream->stream_slug;
-        
+
         // -------------------------------------
         // Get current data
         // -------------------------------------
@@ -430,15 +427,14 @@ class Field_multiple
 
             // We need the imploded current string as well
             $form_data['current_string'] = $this->CI->input->post($form_data['slug']);
-        }
-        else {      
-        
+        } else {
+
             // Nope, we just need to take it from the db
             $form_data['current_string'] = implode(',', $current);
         }
 
         // -------------------------------------
-        // Get the entries      
+        // Get the entries
         // -------------------------------------
 
         foreach ($skips as $skip) {
@@ -456,10 +452,9 @@ class Field_multiple
 
         if ($ui == 'dragdrop') {
             return $this->CI->type->load_view('multiple', 'sort_table', $form_data, true);
-        }
-        else {
-            return form_multiselect($data['form_slug'].'[]', 
-                        (array) $form_data['choices']+ (array) $form_data['current'], 
+        } else {
+            return form_multiselect($data['form_slug'].'[]',
+                        (array) $form_data['choices']+ (array) $form_data['current'],
                         array_keys($form_data['current']));
         }
     }
@@ -492,12 +487,12 @@ class Field_multiple
     public function param_choose_stream($stream_id = null)
     {
         $this->CI = get_instance();
-        
+
         $this->CI->db->select('id, stream_name, stream_namespace');
         $db_obj = $this->CI->db->get('data_streams');
-        
+
         $streams = $db_obj->result();
-        
+
         foreach ($streams as $stream) {
             if ($stream->stream_namespace) {
                 $choices[$stream->stream_namespace][$stream->id] = $stream->stream_name;
@@ -511,14 +506,14 @@ class Field_multiple
         $extra = '';
 
         if ($this->CI->uri->segment(4) == 'edit') {
-            
+
             $html  = '<strong>'.$stream->stream_name.'</strong><br>';
             $html .= '<input type="hidden" name="choose_stream" value="'.$stream_id.'" />';
             return $html .= '<em>'.lang('streams:multiple.no_change').'</em>';
 
             $extra = 'readonly';
         }
-        
+
         return form_dropdown('choose_stream', $choices, $stream_id, $extra);
     }
 }

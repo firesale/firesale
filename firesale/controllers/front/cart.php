@@ -18,7 +18,7 @@
 *
 */
 
-class Cart extends Public_Controller
+class cart extends Public_Controller
 {
 
     public $validation_rules = array();
@@ -87,7 +87,7 @@ class Cart extends Public_Controller
 
         // Check for price change
         $this->cart_m->check_price();
-        
+
         // get the cart data
         $data = $this->cart_m->data();
 
@@ -108,7 +108,7 @@ class Cart extends Public_Controller
         // Build page
         $this->template->build('cart', $data);
     }
-    
+
     /**
      * Return the cart as a json object
      */
@@ -116,10 +116,10 @@ class Cart extends Public_Controller
     {
         // Check for price change
         $this->cart_m->check_price();
-        
+
         // get the cart data
         $data = $this->cart_m->data();
-        
+
         // output json response
         $this->output->set_content_type('application/json')
                 ->set_output(json_encode($data));
@@ -194,9 +194,9 @@ class Cart extends Public_Controller
 
                 // Check product, stock and modifiers
                 if ($product and ($product['stock_status']['key'] == 6 OR $qty > 0) and
-                    ( (!is_array($modifiers['type']) or (is_array($modifiers) and ! isset($modifiers['type']['key']))) or 
+                    ( (!is_array($modifiers['type']) or (is_array($modifiers) and ! isset($modifiers['type']['key']))) or
                         ( is_array($modifiers['type']) and isset($modifiers['type']['key']) and $modifiers['type']['key'] != '1' ) ) ) {
-                    
+
                     // Build cart data
                     $data[] = $this->cart_m->build_data($product, (int) $qtys[$key], $_POST['options'][$key]);
 
@@ -222,11 +222,11 @@ class Cart extends Public_Controller
         }
 
         Events::trigger('cart_updated');
-        
+
         // Return for ajax or redirect
         if ( $this->input->is_ajax_request() ) {
             exit($this->cart_m->ajax_response('ok'));
-        } else if ( $this->input->post('btnAction') == 'buy' ) {
+        } elseif ( $this->input->post('btnAction') == 'buy' ) {
             redirect(uri('cart').'/checkout');
         } else {
             redirect(uri('cart'));
@@ -427,7 +427,7 @@ class Cart extends Public_Controller
 
                         $input[str_replace("bill_", "ship_", $key)] = $field;
                     }
-                    
+
                     // Don't save this address
                     $input['ship_title'] = "";
                 }
@@ -557,15 +557,15 @@ class Cart extends Public_Controller
 
             $cart = $this->fs_cart->contents();
             $total = $this->fs_cart->total();
-    
+
             $weight = 0;
-    
+
             foreach ($cart as $item) {
                 if ($item['weight']) $weight += intval($item['weight']);
             }
-        
+
             $query = $this->db->get_where('firesale_shipping', array('id' => $value));
-    
+
             if ($query->num_rows()) {
 
                 $result = $query->row();
@@ -579,13 +579,13 @@ class Cart extends Public_Controller
                 } elseif ($result->weight_max < $weight) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_weight'));
                 } else {
-                   return TRUE;  
+                   return TRUE;
                 }
-                
+
             }
         } else {
             $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_invalid'));
-            self::$valid_shipping = false; 
+            self::$valid_shipping = false;
         }
 
         return FALSE;
@@ -765,7 +765,7 @@ class Cart extends Public_Controller
             )));
 
             $this->process_transaction($gateway, $order, $response);
-            
+
         } else {
             redirect(uri('cart'));
         }
@@ -795,7 +795,7 @@ class Cart extends Public_Controller
     protected function _order_mismatch($order, $callback = FALSE)
     {
         $this->orders_m->update_status($order['id'], 9);
-        
+
         $this->process_return($order['gateway']['id']);
     }
 

@@ -205,15 +205,15 @@ class Module_Firesale_shipping extends Module
 
         if ($old_version < '1.2.2') {
 
-        	// Add tax bands for shipping methods
-       		$taxes = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
+            // Add tax bands for shipping methods
+               $taxes = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
             $fields   = array();
             $template = array('namespace' => 'firesale_shipping', 'assign' => 'firesale_shipping', 'type' => 'text', 'title_column' => FALSE, 'required' => FALSE, 'unique' => FALSE);
             $fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id), 'required' => FALSE);
             $this->add_stream_fields($fields, $template);
 
-    	}
-    	
+        }
+
         return TRUE;
     }
 

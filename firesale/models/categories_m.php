@@ -447,7 +447,7 @@ class Categories_m extends MY_Model
 
     /**
      * Builds the breadcrumbs for the given category page
-     * 
+     *
      * @param  array  $category The current category
      * @param  object $template Template object reference
      * @return void

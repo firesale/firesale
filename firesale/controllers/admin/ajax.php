@@ -18,7 +18,7 @@
 *
 */
 
-class Ajax extends Admin_Controller
+class ajax extends Admin_Controller
 {
     public function __construct()
     {
@@ -35,7 +35,7 @@ class Ajax extends Admin_Controller
 
         // Ensure request was made
         if ( ! $this->input->is_ajax_request() ) { show_404(); }
-	}
+    }
 
     /**
      * Gets the category details and returns a JSON
@@ -57,7 +57,7 @@ class Ajax extends Admin_Controller
         // Build output
         $this->output->set_content_type('application/json')
                      ->set_output(json_encode($category));
-    
+
         return;
     }
 
@@ -99,7 +99,7 @@ class Ajax extends Admin_Controller
         // Build output
         $this->output->set_content_type('application/json')
                      ->set_output(json_encode($product));
-    
+
         return;
     }
 

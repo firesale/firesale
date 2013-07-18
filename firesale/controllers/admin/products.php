@@ -18,7 +18,7 @@
 *
 */
 
-class Products extends Admin_Controller
+class products extends Admin_Controller
 {
 
     public $stream  = NULL;

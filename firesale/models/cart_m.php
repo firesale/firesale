@@ -185,7 +185,7 @@ class Cart_m extends MY_Model
         }
 
         // Shipping
-        if ( $ship ) { 
+        if ( $ship ) {
             $rules[] = array('field' => 'shipping', 'label' => 'lang:firesale:label_shipping', 'rules' => 'callback__validate_shipping');
         }
 
@@ -272,7 +272,7 @@ class Cart_m extends MY_Model
     public function data()
     {
         $data = array();
-        
+
         // Assign Variables
         $data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
         $data['tax']         = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
@@ -297,7 +297,7 @@ class Cart_m extends MY_Model
 
             $i++;
         }
-        
+
         return $data;
     }
 

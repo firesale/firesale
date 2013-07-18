@@ -18,7 +18,7 @@
 *
 */
 
-class Address extends Public_Controller
+class address extends Public_Controller
 {
 
     public $user = FALSE;

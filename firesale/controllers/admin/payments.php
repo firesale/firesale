@@ -18,7 +18,7 @@
 *
 */
 
-class Payments extends Admin_Controller
+class payments extends Admin_Controller
 {
     public $section = 'gateways';
 

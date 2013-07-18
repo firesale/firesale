@@ -87,16 +87,16 @@ class Attributes_m extends MY_Model
 
                     // Update value
                     if ( $this->db->where($data)->get('firesale_attributes_assignments')->num_rows() ) {
-        
+
                         $this->db->where($data)->update('firesale_attributes_assignments', array(
                             'value' => $result['value']
                         ));
-        
+
                     // Create value
                     } else {
-        
+
                         $data['value'] = $result['value'];
-                        $this->db->insert('firesale_attributes_assignments', $data);    
+                        $this->db->insert('firesale_attributes_assignments', $data);
                     }
 
                 }

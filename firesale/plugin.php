@@ -85,14 +85,14 @@ class Plugin_Firesale extends Plugin
         // Variables
         $attributes = $this->attributes();
         ksort($attributes);
-        
+
         // if no ordering specified default to tree order
         if ( ! isset($attributes['order']) and ! isset($attributes['order-by']) ) {
             $attributes['order'] = 'ordering_count asc';
-        } else if ( isset($attributes['order-by']) ) {
+        } elseif ( isset($attributes['order-by']) ) {
             $attributes['order'] = $attributes['order-by'].' '.( isset($attributes['order-dir']) ? $attributes['order-dir'] : 'asc' );
         }
-        
+
         // Are we cached?
         $cache_key  = md5('categories'.BASE_URL.implode('|', $attributes));
 
@@ -277,7 +277,7 @@ class Plugin_Firesale extends Plugin
         if ( ! $results = $this->cache->get($cache_key) ) {
 
             list($order, $order_dir) = explode(' ', $order);
-    
+
             $query = $this->db
                 ->select("COUNT(oo.product_id) as count, p.id")
                 ->from('firesale_products AS p')
@@ -292,11 +292,11 @@ class Plugin_Firesale extends Plugin
             }
 
             $results = $query->result();
-    
+
             foreach ($results as &$product) {
                 $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
             }
-    
+
             // Add to cache
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
 
@@ -424,7 +424,7 @@ class Plugin_Firesale extends Plugin
 
         // Check for user
         if ( $user !== null ) {
-           
+
             $this->load->model('address_m');
 
             // Get addresses
@@ -444,7 +444,7 @@ class Plugin_Firesale extends Plugin
 
         // Check for user
         if ( $user !== null ) {
-           
+
             $this->load->model('orders_m');
 
             // Get addresses

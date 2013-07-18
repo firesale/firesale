@@ -18,7 +18,7 @@
 *
 */
 
-class Routes extends Admin_Controller
+class routes extends Admin_Controller
 {
 
     public $section = 'routes';
@@ -98,7 +98,7 @@ class Routes extends Admin_Controller
 
             // Got an ID back
             if ( is_numeric($fields) ) {
-                
+
                 // Add the route
                 $this->routes_m->write($input['title'], $input['route'], $input['translation']);
 
