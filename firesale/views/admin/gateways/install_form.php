@@ -16,19 +16,24 @@
                                     <label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
                                     <div class="input">
                                         <select name="<?php echo $field['field']; ?>">
-                                            <option value="1"<?php echo set_select($field['field'], '1', isset($values[$field['field']]) AND $values[$field['field']] == '1' ? TRUE : FALSE); ?>>Yes</option>
-                                            <option value="0"<?php echo set_select($field['field'], '0', isset($values[$field['field']]) AND $values[$field['field']] == '0' ? TRUE : FALSE); ?>>No</option>
+                                            <option value="1"<?php echo set_select($field['field'], '1', isset($values[$field['field']]) AND $values[$field['field']] == '1' ? TRUE : $field['default'] === true); ?>>Yes</option>
+                                            <option value="0"<?php echo set_select($field['field'], '0', isset($values[$field['field']]) AND $values[$field['field']] == '0' ? TRUE : $field['default'] === false); ?>>No</option>
                                         </select>
                                     </div>
                                 <?php elseif ($field['type'] == 'text'): ?>
                                     <label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
                                     <div class="input">
-                                        <textarea id="<?php echo $field['field']; ?>" name="<?php echo $field['field']; ?>" style="width:250px"><?php echo set_value($field['field'], isset($values[$field['field']]) ? $values[$field['field']] : NULL); ?></textarea>
+                                        <textarea id="<?php echo $field['field']; ?>" name="<?php echo $field['field']; ?>" style="width:250px"><?php echo set_value($field['field'], isset($values[$field['field']]) ? $values[$field['field']] : $field['default']); ?></textarea>
+                                    </div>
+                                <?php elseif ($field['type'] == 'array'): ?>
+                                    <label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
+                                    <div class="input">
+                                        <?php echo form_dropdown($field['field'], $field['options'], isset($values[$field['field']]) ? $values[$field['field']] : $field['default']); ?>
                                     </div>
                                 <?php else: ?>
                                     <label for="<?php echo $field['field']; ?>"><?php echo $field['label']; ?> <span>*</span></label>
                                     <div class="input">
-                                        <input type="text" name="<?php echo $field['field']; ?>" value="<?php echo set_value($field['field'], isset($values[$field['field']]) ? $values[$field['field']] : NULL); ?>" maxlength="100" id="<?php echo $field['field']; ?>" />
+                                        <input type="text" name="<?php echo $field['field']; ?>" value="<?php echo set_value($field['field'], isset($values[$field['field']]) ? $values[$field['field']] : $field['default']); ?>" maxlength="100" id="<?php echo $field['field']; ?>" />
                                     </div>
                                 <?php endif; ?>
                             </li>

@@ -1,4 +1,3 @@
-
     <div id="sortable">
     <?php if( isset($items) AND ! empty($items) ): ?>
     <?php foreach( $items as $item ): ?>

@@ -33,7 +33,7 @@ class Modifier_m extends MY_Model
         foreach ($options['options'] as $i => $opts ) {
 
             // Get/Set defaults
-            $modifiers     = $this->pyrocache->model('modifier_m', 'get_modifiers', array($options['prd_code'][$i]), $this->firesale->cache_time);
+            $modifiers     = cache('modifier_m/get_modifiers', $options['prd_code'][$i]);
             $post['price'] = 0;
             $ids           = array();
 
@@ -131,7 +131,7 @@ class Modifier_m extends MY_Model
         $return     = array();
         $tmp        = array();
         $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : $this->settings->get('firesale_currency') );
-        $currency   = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
+        $currency   = cache('currency_m/get', $currency);
         $variations = $this->db->select('v.*, vp.firesale_products_id AS product')
                                ->from('firesale_product_variations AS v')
                                ->join('firesale_product_variations_firesale_products AS vp', 'vp.row_id = v.id', 'left')
@@ -148,7 +148,7 @@ class Modifier_m extends MY_Model
 
             // Assign variables
             $variation['difference'] = $before.$this->currency_m->format_string($price, $currency);
-            $variation['product']    = $this->pyrocache->model('products_m', 'get_product', array($variation['product'], null, true), $this->firesale->cache_time);
+            $variation['product']    = cache('products_m/get_product', $variation['product'], null, true);
 
             // Reassign with id as key
             $tmp[$variation['id']] = $variation;
@@ -404,8 +404,8 @@ class Modifier_m extends MY_Model
 
         // Variables
         $update   = array();
-        $original = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
-        $product  = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
+        $original = cache('products_m/get_product', $product);
+        $product  = cache('products_m/get_product', $id);
         $tax      = ( 100 + $this->taxes_m->get_percentage() ) / 100;
 
         // Update title
@@ -645,13 +645,13 @@ class Modifier_m extends MY_Model
         foreach ( $variations as $variation ) 
         {
             // Find product ID
-            $id  = $this->pyrocache->model('modifier_m', 'variation_exists', array($variation, $stream->id), $this->firesale->cache_time);
+            $id  = cache('modifier_m/variation_exists', $variation, $stream->id);
             $key = implode('', $variation);
 
             // Check product
             if ( $id !== false )
             {
-                $product    = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
+                $product    = cache('products_m/get_product', $id, null, true);
                 $data[$key] = array(
                     $product['rrp_formatted'],
                     $product['price_formatted'],

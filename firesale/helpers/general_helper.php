@@ -18,6 +18,41 @@
 *
 */
 
+function cache()
+{
+    // Variables
+    $_CI =& get_instance();
+    $args = func_get_args();
+    $call = array_shift($args);
+
+    list($m, $method) = explode('/', $call);
+
+    // Just incase
+    $_CI->load->model($m);
+
+    // Cache and return
+    return $_CI->pyrocache->model($m, $method, $args, $_CI->firesale->cache_time);
+}
+
+function uri($route, $id = null)
+{
+    return cache('routes_m/build_url', $route, $id);
+}
+
+function url($route, $id = null)
+{
+    return site_url(cache('routes_m/build_url', $route, $id));
+}
+
+function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
+{
+    $currency = $currency or ci()->fs_cart->currency();
+
+    ci()->load->model('firesale/currency_m');
+
+    return ci()->currency_m->format_string($price, $currency, $fix, $apply_tax, $format);
+}
+
 /**
  * Detects if a given module is currently installed
  *

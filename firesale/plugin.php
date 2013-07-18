@@ -400,7 +400,20 @@ class Plugin_Firesale extends Plugin
 
         return array(array('total' => count($results), 'entries' => $results));
     }
+    public function format_currency()
+    {
+        $value = $this->attribute('value', 0);
 
+        // Get currency
+        $currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
+        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
+
+        // Load Currency model
+        $this->load->model('currency_m');
+
+        // Format the value, and return
+        return $this->currency_m->format_string($value, $currency, false);
+    }
     public function addresses()
     {
         // Variables

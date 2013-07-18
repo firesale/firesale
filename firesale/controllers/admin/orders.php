@@ -78,13 +78,13 @@ class Orders extends Admin_Controller
         $orders['entries'] = $this->orders_m->format_order($orders['entries']);
 
         // Get filter data
-        $users    = $this->pyrocache->model('orders_m', 'user_field', array(( $type == 'created_by' ? $query : NULL)), $this->firesale->cache_time);
-        $products = $this->pyrocache->model('orders_m', 'product_dropdown', array(null, false, false), $this->firesale->cache_time);
-        $status   = $this->pyrocache->model('orders_m', 'status_field', array(), $this->firesale->cache_time);
+        $users    = cache('orders_m/user_field', ( $type == 'created_by' ? $query : NULL));
+        $products = cache('orders_m/product_dropdown', null, false, false);
+        $status   = cache('orders_m/status_field', null);
 
         // Assign variables
         $this->data->orders        = $orders['entries'];
-        $this->data->total         = $this->pyrocache->model('orders_m', 'order_count', array(), $this->firesale->cache_time);
+        $this->data->total         = cache('orders_m/order_count', null);
         $this->data->pagination    = create_pagination('/admin/firesale/orders/', $this->data->total, $this->perpage, 4);
         $this->data->filter_users  = $users['input'];
         $this->data->filter_status = form_dropdown('order_status', $status, null);
@@ -126,7 +126,7 @@ class Orders extends Admin_Controller
                     // Update quantity
                     elseif ($id != NULL) {
                         // Get product
-                        $product = (array) $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
+                        $product = cache('products_m/get_product', $product);
 
                         // Update/add product
                         $this->orders_m->insert_update_order_item($id, $product, $item['qty']);
@@ -148,7 +148,7 @@ class Orders extends Admin_Controller
             }
 
             // Create hash
-            list($ship_hash, $bill_hash) = $this->pyrocache->model('address_m', 'input_hash', array($input), $this->firesale->cache_time);
+            list($ship_hash, $bill_hash) = cache('address_m/input_hash', $input);
 
             // Check for addresses
             $ship = $this->address_m->update_address($input['ship_to'], $input, 'ship');
@@ -177,12 +177,12 @@ class Orders extends Admin_Controller
         $this->data->id     = $id;
         $this->data->fields = array(
                                 'general' => array('details' => $fields),
-                                'ship'    => $this->address_m->get_address_form('ship', ( isset($row->ship_to) ? 'edit' : 'new' ), ( isset($row->ship_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->ship_to), $this->firesale->cache_time) : NULL )),
-                                'bill'    => $this->address_m->get_address_form('bill', ( isset($row->bill_to) ? 'edit' : 'new' ), ( isset($row->bill_to) ? $this->pyrocache->model('address_m', 'get_address', array($row->bill_to), $this->firesale->cache_time) : NULL ))
+                                'ship'    => $this->address_m->get_address_form('ship', ( isset($row->ship_to) ? 'edit' : 'new' ), ( isset($row->ship_to) ? cache('address_m/get_address', $row->ship_to) : $this->input->post() )),
+                                'bill'    => $this->address_m->get_address_form('bill', ( isset($row->bill_to) ? 'edit' : 'new' ), ( isset($row->bill_to) ? cache('address_m/get_address', $row->bill_to) : $this->input->post() ))
                               );
 
         // Add users as first general field
-        $users = $this->pyrocache->model('orders_m', 'user_field', array(( $row != NULL ? $row->created_by : NULL )), $this->firesale->cache_time);
+        $users = cache('orders_m/user_field', ( $row != NULL ? $row->created_by : NULL ));
         array_unshift($this->data->fields['general']['details'], $users);
 
         // Move/format ship_to and bill_to
@@ -192,22 +192,22 @@ class Orders extends Admin_Controller
         array_unshift($this->data->fields['bill']['details'], $bill);
 
         // Get currency
-        $this->data->currency = $this->pyrocache->model('currency_m', 'get', array(( $id != NULL && $row->currency != NULL ? $row->currency : NULL )), $this->firesale->cache_time);
+        $this->data->currency = cache('currency_m/get', ( $id != NULL && $row->currency != NULL ? $row->currency : NULL ));
 
         // Get products
         if ($id != NULL) {
 
             // Get and format products
-            $products = $this->pyrocache->model('orders_m', 'order_products', array($id), $this->firesale->cache_time);
+            $products = cache('orders_m/order_products', $id);
             foreach ($products['products'] AS &$product) {
                 $price            = $product['price'];
-                $product['price'] = $this->pyrocache->model('currency_m', 'format_string', array($price, $this->data->currency, false), $this->firesale->cache_time);
-                $product['total'] = $this->pyrocache->model('currency_m', 'format_string', array($price * $product['qty'], $this->data->currency, false), $this->firesale->cache_time);
+                $product['price'] = cache('currency_m/format_string', $price, $this->data->currency, false);
+                $product['total'] = cache('currency_m/format_string', $price * $product['qty'], $this->data->currency, false);
             }
 
             // Assign products
             $this->data->products  = $products['products'];
-            $this->data->prod_drop = $this->pyrocache->model('products_m', 'build_dropdown', array(), $this->firesale->cache_time);
+            $this->data->prod_drop = cache('products_m/build_dropdown', null);
         }
 
         // Build the page

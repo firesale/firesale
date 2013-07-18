@@ -371,6 +371,7 @@
     $lang['firesale:checkout:shipping_min_weight']    		= 'Het totale gewicht van uw winkelmand voldoet niet aan de minimum voor de gekozen verzendmethode';
     $lang['firesale:checkout:shipping_max_weight']    		= 'Het totale gewicht van uw winkelmand overschrijdt het maximum voor de gekozen verzendmethode';
     $lang['firesale:checkout:shipping_invalid']       		= 'De verzendmethode die u hebt geselecteerd is niet geldig';
+    $lang['firesale:checkout:address_invalid']              = 'The address you selected is not valid';#Translate
     $lang['firesale:checkout:gateway_invalid']        		= 'De betaalmethode die u hebt geselecteerd is niet geldig';
 
     // Routes

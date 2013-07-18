@@ -18,7 +18,7 @@
 *
 */
 
-class New extends Public_Controller
+class Latest extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
@@ -90,13 +90,13 @@ class New extends Public_Controller
         // Loop and get product data
         if ( ! empty($ids) ) {
             foreach ( $ids as $id ) {
-                $products[] = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+                $products[] = cache('products_m/get_product', $id['id']);
             }
         }
 
         // Assign pagination
         if ( ! empty($products) ) {
-            $url = $this->pyrocache->model('routes_m', 'build_url', array('new'), $this->firesale->cache_time);
+            $url = uri('new');
             $this->data->pagination = create_pagination($url.'/', $total, $this->perpage, (substr_count($url, '/') + 1 ));
             $this->data->pagination['shown'] = count($products);
         }

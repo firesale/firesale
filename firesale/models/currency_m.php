@@ -64,7 +64,7 @@ class Currency_m extends MY_Model
     {
 
         // Variables
-        $currency = $this->pyrocache->model('currency_m', 'get', array($id), $this->firesale->cache_time);
+        $currency = cache('currency_m/get', $id);
 
         return str_replace('{{ price }}', '', $currency->symbol);
     }
@@ -86,7 +86,7 @@ class Currency_m extends MY_Model
         }
 
         // Get currency data
-        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
+        $currency = cache('currency_m/get', $currency);
 
         // Check valid option
         if ( ! is_object($currency) ) {

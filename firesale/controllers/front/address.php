@@ -84,7 +84,7 @@ class Address extends Public_Controller
         // Variables
         $skip  = array('btnAction');
         $extra = array(
-            'return'          => $this->pyrocache->model('routes_m', 'build_url', array('addresses'), $this->firesale->cache_time).'/edit/-id-',
+            'return'          => uri('addresses').'/edit/-id-',
             'success_message' => lang('firesale:addresses:add_success'),
             'failure_message' => lang('firesale:addresses:add_error')
         );
@@ -114,7 +114,7 @@ class Address extends Public_Controller
         // Variables
         $skip  = array('btnAction');
         $extra = array(
-            'return'          => $this->pyrocache->model('routes_m', 'build_url', array('addresses'), $this->firesale->cache_time).'/edit/-id-',
+            'return'          => uri('addresses').'/edit/-id-',
             'success_message' => lang('firesale:addresses:edit_success'),
             'failure_message' => lang('firesale:addresses:edit_error')
         );
