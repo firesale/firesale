@@ -640,7 +640,7 @@ class Front_cart extends Public_Controller
                 // Run payment
                 $params = array_merge(array(
                     'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
-                    'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
+                    'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success' . $gateway),
                     'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
                 ), $posted_data ? $posted_data : array(), array(
                     'currency_code'  => $this->fs_cart->currency()->cur_code,
@@ -979,20 +979,21 @@ class Front_cart extends Public_Controller
                     $this->$status($order, FALSE);
                 }
             }
-
-            $this->fs_cart->destroy();
-
-            // Minimal layout
-            if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
-                $this->template->set_layout('minimal.html');
+            else {
+                $this->fs_cart->destroy();
+    
+                // Minimal layout
+                if ( $this->settings->get('firesale_basic_checkout') == '1' ) {
+                    $this->template->set_layout('minimal.html');
+                }
+    
+                $this->template->title(lang('firesale:payment:title_success'))
+                               ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
+                               ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
+                               ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
+                               ->set_breadcrumb(lang('firesale:payment:title_success'))
+                               ->build('payment_complete', $order);
             }
-
-            $this->template->title(lang('firesale:payment:title_success'))
-                           ->set_breadcrumb(lang('firesale:cart:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time))
-                           ->set_breadcrumb(lang('firesale:checkout:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/checkout')
-                           ->set_breadcrumb(lang('firesale:payment:title'), $this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time).'/payment')
-                           ->set_breadcrumb(lang('firesale:payment:title_success'))
-                           ->build('payment_complete', $order);
         } else {
             show_404();
         }
