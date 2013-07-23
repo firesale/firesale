@@ -18,7 +18,7 @@
 *
 */
 
-class Orders extends Public_Controller
+class orders extends Public_Controller
 {
 
     public function __construct()

@@ -18,7 +18,7 @@
 *
 */
 
-class Product extends Public_Controller
+class product extends Public_Controller
 {
     public function __construct()
     {

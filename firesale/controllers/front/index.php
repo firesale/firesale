@@ -18,7 +18,7 @@
 *
 */
 
-class Index extends Public_Controller
+class index extends Public_Controller
 {
 
     /**
