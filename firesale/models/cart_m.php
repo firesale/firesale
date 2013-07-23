@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -69,10 +69,10 @@ class Cart_m extends MY_Model
         foreach ($products AS $rowid => $product) {
             if ( array_key_exists($product['id'], $qty) ) {
                 if ( (int) $qty[$product['id']] < (int) $product['qty'] ) {
-                    $changed 		  = TRUE;
-                    $data 		   	  = array();
+                    $changed          = TRUE;
+                    $data             = array();
                     $data['rowid']    = $rowid;
-                    $data['qty']   	  = $qty[$product['id']];
+                    $data['qty']      = $qty[$product['id']];
                     $data['subtotal'] = number_format(( $data['qty'] * $product['price'] ), 2);
                     $this->fs_cart->update($data);
                 }
@@ -161,16 +161,16 @@ class Cart_m extends MY_Model
 
             // Shipping
             if ( $ship AND ( !isset($input['ship_to']) OR ( isset($input['ship_to']) AND $input['ship_to'] == 'new' ) ) ) {
-                $_rule   		= $rule;
+                $_rule          = $rule;
                 $_rule['field'] = 'ship_' . $_rule['field'];
-                $rules[] 		= $_rule;
+                $rules[]        = $_rule;
             }
 
             // Billing
             if ( !isset($input['bill_to']) OR ( isset($input['bill_to']) AND $input['bill_to'] == 'new' ) ) {
-                $_rule   		= $rule;
+                $_rule          = $rule;
                 $_rule['field'] = 'bill_' . $_rule['field'];
-                $rules[] 		= $_rule;
+                $rules[]        = $_rule;
             }
 
         }
@@ -185,7 +185,7 @@ class Cart_m extends MY_Model
         }
 
         // Shipping
-        if ( $ship ) { 
+        if ( $ship ) {
             $rules[] = array('field' => 'shipping', 'label' => 'lang:firesale:label_shipping', 'rules' => 'callback__validate_shipping');
         }
 
@@ -219,14 +219,86 @@ class Cart_m extends MY_Model
             $this->orders_m->update_order_cost(0, FALSE);
 
             // Add pricing
-            $response['total'] 		= $this->fs_cart->total;
-            $response['tax']   		= $this->fs_cart->tax;
-            $response['subtotal']	= $this->fs_cart->subtotal;
+            $response['total']      = $this->fs_cart->total;
+            $response['tax']        = $this->fs_cart->tax;
+            $response['subtotal']   = $this->fs_cart->subtotal;
 
         }
 
         // Return
         return json_encode($response);
+    }
+
+    public function build_transaction($gateway, $order, array $override = null)
+    {
+        return array_merge(array(
+            'notify_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/callback/' . $gateway . '/' . $order['id']),
+            'return_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/success'),
+            'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
+        ), $override ? $override : array(), array(
+            'currency_code'  => $this->fs_cart->currency()->cur_code,
+            'amount'         => $this->fs_cart->total() + $order['shipping']['price'],
+            'order_id'       => $this->session->userdata('order_id'),
+            'transaction_id' => $this->session->userdata('order_id'),
+            'reference'      => 'Order #' . $this->session->userdata('order_id'),
+            'description'    => 'Order #' . $this->session->userdata('order_id'),
+            'first_name'     => $order['bill_to']['firstname'],
+            'last_name'      => $order['bill_to']['lastname'],
+            'address1'       => $order['bill_to']['address1'],
+            'address2'       => $order['bill_to']['address2'],
+            'city'           => $order['bill_to']['city'],
+            'region'         => $order['bill_to']['county'],
+            'country'        => $order['bill_to']['country']['code'],
+            'postcode'       => $order['bill_to']['postcode'],
+            'phone'          => $order['bill_to']['phone'],
+            'email'          => $order['bill_to']['email'],
+            'shipping'       => (bool) $order['shipping']
+        ));
+    }
+
+    public function insert_transaction($order, $gateway, $process)
+    {
+        return $this->db->insert('firesale_transactions', array(
+            'reference' => $process->reference(),
+            'order_id'  => $order['id'],
+            'gateway'   => $gateway,
+            'amount'    => $this->fs_cart->total() + $order['shipping']['price'],
+            'currency'  => $this->fs_cart->currency()->cur_code,
+            'status'    => $process->status(),
+            'data'      => serialize($process->data())
+        ));
+    }
+
+    public function data()
+    {
+        $data = array();
+
+        // Assign Variables
+        $data['subtotal']    = $this->currency_m->format_string($this->fs_cart->subtotal(), $this->fs_cart->currency(), false);
+        $data['tax']         = $this->currency_m->format_string($this->fs_cart->tax(), $this->fs_cart->currency(), false);
+        $data['total']       = $this->currency_m->format_string($this->fs_cart->total(), $this->fs_cart->currency(), false);
+        $data['currency']    = $this->fs_cart->currency();
+        $data['contents']    = $this->fs_cart->contents();
+
+        // Add item id
+        $i = 1;
+        foreach ($data['contents'] AS &$product) {
+
+            // General data
+            $product['price']    = $this->currency_m->format_string($product['price'], $this->fs_cart->currency(), false);
+            $product['subtotal'] = $this->currency_m->format_string($product['subtotal'], $this->fs_cart->currency(), false);
+            $product['no']       = $i;
+
+            // Images
+            if ( $product['image'] == false ) {
+                $product['images'] = $this->pyrocache->model('products_m', 'get_parent_images', array($product['id']), $this->firesale->cache_time);
+                $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
+            }
+
+            $i++;
+        }
+
+        return $data;
     }
 
     /**
@@ -242,16 +314,16 @@ class Cart_m extends MY_Model
     public function build_data($product, $qty, $options = false)
     {
         $data = array(
-            'id'	   => $product['id'],
-            'code'	   => $product['code'],
-            'qty'	   => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
-            'price'	   => preg_replace('/[^0-9\.]+/', '', $product['price_rounded']),
+            'id'       => $product['id'],
+            'code'     => $product['code'],
+            'qty'      => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
+            'price'    => preg_replace('/[^0-9\.]+/', '', $product['price_rounded']),
             'tax_band' => $product['tax_band']['id'],
-            'name'	   => $product['title'],
-            'slug'	   => $product['slug'],
+            'name'     => $product['title'],
+            'slug'     => $product['slug'],
             'ship'     => $product['ship_req']['key'],
             'weight'   => ( isset($product['shipping_weight']) ? $product['shipping_weight'] : '0.00' ),
-            'image'	   => $this->products_m->get_single_image($product['id']),
+            'image'    => $this->products_m->get_single_image($product['id']),
             'options'  => $options,
             'parent'   => $product['modifiers'][0]['parent']
         );

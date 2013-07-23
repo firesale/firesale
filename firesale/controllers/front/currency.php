@@ -13,17 +13,16 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Front_currency extends Public_Controller
+class currency extends Public_Controller
 {
 
     public function __construct()
     {
-
         parent::__construct();
 
         // Load libraries

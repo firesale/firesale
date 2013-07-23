@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -33,7 +33,7 @@ class Modifier_m extends MY_Model
         foreach ($options['options'] as $i => $opts ) {
 
             // Get/Set defaults
-            $modifiers     = $this->pyrocache->model('modifier_m', 'get_modifiers', array($options['prd_code'][$i]), $this->firesale->cache_time);
+            $modifiers     = cache('modifier_m/get_modifiers', $options['prd_code'][$i]);
             $post['price'] = 0;
             $ids           = array();
 
@@ -131,7 +131,7 @@ class Modifier_m extends MY_Model
         $return     = array();
         $tmp        = array();
         $currency   = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : $this->settings->get('firesale_currency') );
-        $currency   = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
+        $currency   = cache('currency_m/get', $currency);
         $variations = $this->db->select('v.*, vp.firesale_products_id AS product')
                                ->from('firesale_product_variations AS v')
                                ->join('firesale_product_variations_firesale_products AS vp', 'vp.row_id = v.id', 'left')
@@ -148,7 +148,7 @@ class Modifier_m extends MY_Model
 
             // Assign variables
             $variation['difference'] = $before.$this->currency_m->format_string($price, $currency);
-            $variation['product']    = $this->pyrocache->model('products_m', 'get_product', array($variation['product'], null, true), $this->firesale->cache_time);
+            $variation['product']    = cache('products_m/get_product', $variation['product'], null, true);
 
             // Reassign with id as key
             $tmp[$variation['id']] = $variation;
@@ -404,8 +404,8 @@ class Modifier_m extends MY_Model
 
         // Variables
         $update   = array();
-        $original = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
-        $product  = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
+        $original = cache('products_m/get_product', $product);
+        $product  = cache('products_m/get_product', $id);
         $tax      = ( 100 + $this->taxes_m->get_percentage() ) / 100;
 
         // Update title
@@ -457,22 +457,23 @@ class Modifier_m extends MY_Model
         array_shift($variations);
 
         // Variables
-        $sql = "SELECT fp_0.`firesale_products_id`
-                FROM `".SITE_REF."_firesale_product_variations_firesale_products` AS `fp_0`";
+        $query = $this->db->select('`fp_0`.`firesale_products_id`')
+                          ->from('firesale_product_variations_firesale_products` AS `fp_0`');
 
         if ( ! empty($variations) ) {
             // Loop variations
             foreach ($variations as $key => $variation) {
                 $key += 1;
-                $sql .= "\nINNER JOIN `" . SITE_REF . "_firesale_product_variations_firesale_products` AS `fp_{$key}` ON ( `fp_{$key}`.`row_id` = {$variation} AND `fp_{$key}`.`firesale_products_id` = fp_0.`firesale_products_id` )";
+                $query->join("`".SITE_REF."_firesale_product_variations_firesale_products` AS `fp_{$key}`", "( `fp_{$key}`.`row_id` = '{$variation}' AND `fp_{$key}`.`firesale_products_id` = `fp_0`.`firesale_products_id` )", 'inner', false);
             }
         }
 
         // Append where
-        $sql .= "\nWHERE fp_0.`row_id` = {$id}\nAND fp_0.`firesale_product_variations_id` = {$stream_id}";
+        $query->where('`fp_0`.`row_id`', $id)
+              ->where('`fp_0`.`firesale_product_variations_id`', $stream_id);
 
         // Run query
-        $query = $this->db->query($sql);
+        $query = $query->get();
 
         // Check for results
         if ( $query->num_rows() ) {
@@ -483,6 +484,39 @@ class Modifier_m extends MY_Model
 
         // Not found
         return FALSE;
+    }
+
+    public function variation_parent($product_id)
+    {
+        $query = $this->db->select('pm.parent')
+                          ->from('firesale_product_variations_firesale_products AS pvp')
+                          ->join('firesale_product_variations AS pv', 'pv.id = pvp.row_id', 'inner')
+                          ->join('firesale_product_modifiers AS pm', 'pm.id = pv.parent', 'inner')
+                          ->where('pvp.firesale_products_id', $product_id)
+                          ->get();
+
+        if ( $query->num_rows() ) {
+            return $query->row()->parent;
+        }
+
+        return false;
+    }
+
+    public function variation_value($product_id, $option)
+    {
+        $query = $this->db->select('pv.title')
+                          ->from('firesale_product_variations_firesale_products AS pvp')
+                          ->join('firesale_product_variations AS pv', 'pv.id = pvp.row_id', 'inner')
+                          ->join('firesale_product_modifiers AS pm', 'pm.id = pv.parent', 'inner')
+                          ->where('pvp.firesale_products_id', $product_id)
+                          ->where('pm.title', $option)
+                          ->get();
+
+        if ( $query->num_rows() ) {
+            return $query->row()->title;
+        }
+
+        return null;
     }
 
     public function possible_variations($modifiers)
@@ -567,6 +601,7 @@ class Modifier_m extends MY_Model
     public function array_cartesian_product($arrays)
     {
         $result = array();
+        $keys   = array_keys($arrays);
         $arrays = array_values($arrays);
         $sizeIn = sizeof($arrays);
         $size   = $sizeIn > 0 ? 1 : 0;
@@ -580,6 +615,7 @@ class Modifier_m extends MY_Model
             $result[$i] = array();
 
             for ($j = 0; $j < $sizeIn; $j ++) {
+                // $result[$i][$keys[$j]] = current($arrays[$j]);
                 array_push($result[$i], current($arrays[$j]));
             }
 
@@ -594,6 +630,38 @@ class Modifier_m extends MY_Model
         }
 
         return $result;
+    }
+
+    public function jsdata($modifiers)
+    {
+        // Variables
+        $variations = $this->possible_variations($modifiers);
+        $stream     = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
+        $data       = array();
+
+        // Loop possible variations
+        foreach ( $variations as $variation ) {
+            // Find product ID
+            $id  = cache('modifier_m/variation_exists', $variation, $stream->id);
+            $key = implode('', $variation);
+
+            // Check product
+            if ( $id !== false ) {
+                $product    = cache('products_m/get_product', $id, null, true);
+                $data[$key] = array(
+                    $product['rrp_formatted'],
+                    $product['price_formatted'],
+                    $product['code'],
+                    (int)$product['status']['key'],
+                    (int)$product['stock'],
+                    (int)$product['stock_status']['key'],
+                    $product['stock_status']['value'],
+                    $product['image']
+                );
+            }
+        }
+
+        return json_encode($data);
     }
 
 }

@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Admin_categories extends Admin_Controller
+class categories extends Admin_Controller
 {
 
     /**
@@ -113,7 +113,7 @@ class Admin_categories extends Admin_Controller
 
             // Format post data
             $_POST['parent']      = ( $_POST['parent'] == null ? '0' : $_POST['parent'] );
-            $input['slug_prefix'] = $this->pyrocache->model('categories_m', 'get_complete_slug', array('id' => $input['parent']), $this->firesale->cache_time);
+            $input['slug_prefix'] = cache('categories_m/get_complete_slug', array('id' => $input['parent']));
             $_POST['slug_prefix'] = $input['slug_prefix'];
             $_POST['slug']        = $_POST['slug_prefix'].$_POST['slug'];
 
@@ -129,7 +129,7 @@ class Admin_categories extends Admin_Controller
 
         // Get row for edit
         if ( $id > 0 ) {
-            $row = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
+            $row = cache('row_m/get_row', $id, $this->stream, FALSE);
         }
 
         // Get the stream fields
@@ -141,7 +141,7 @@ class Admin_categories extends Admin_Controller
             Events::trigger('clear_cache');
 
             // Add to search
-            $category = $this->pyrocache->model('categories_m', 'get_category', array($fields), $this->firesale->cache_time);
+            $category = cache('categories_m/get_category', $fields);
             $this->categories_m->search($category, true);
 
             // Send them back
@@ -161,7 +161,7 @@ class Admin_categories extends Admin_Controller
 
         // Assign variables
         $this->data->controller = $this;
-        $this->data->cats       = $this->pyrocache->model('categories_m', 'generate_streams_tree', array($params), $this->firesale->cache_time);
+        $this->data->cats       = cache('categories_m/generate_streams_tree', $params);
         $this->data->fields     = fields_to_tabs($fields, $this->tabs);
         $this->data->tabs	    = array_keys($this->data->fields);
 
@@ -211,7 +211,7 @@ class Admin_categories extends Admin_Controller
             // Rebuild slugs
             $results = $this->db->select('id, parent, slug')->get('firesale_categories')->result_array();
             foreach ( $results as $result ) {
-                $slug = $this->pyrocache->model('categories_m', 'get_complete_slug', array(array('id' => $result['id'])), $this->firesale->cache_time);
+                $slug = cache('categories_m', 'get_complete_slug', array('id' => $result['id']));
                 $this->db->where('id', $result['id'])->update('firesale_categories', array('slug' => substr($slug, 0, -1)));
             }
 
@@ -251,7 +251,7 @@ class Admin_categories extends Admin_Controller
     {
 
         // Get product
-        $row    = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, FALSE), $this->firesale->cache_time);
+        $row    = cache('row_m/get_row', $id, $this->stream, FALSE);
         $folder = get_file_folder_by_slug($row->slug, 'category-images');
         $allow  = array('jpeg', 'jpg', 'png', 'gif', 'bmp');
 
@@ -292,53 +292,6 @@ class Admin_categories extends Admin_Controller
         // Seems it was unsuccessful
         echo json_encode(array('status' => FALSE, 'message' => 'Error uploading image'));
         exit();
-    }
-
-    /**
-     * Gets the category details and returns a JSON
-     * array for use in the front-end view editing.
-     *
-     * @param  integer $id The Category ID to retrieve
-     * @return string  A JSON Object containing the
-     *				  Category information.
-     * @access public
-     */
-    public function ajax_cat_details($id)
-    {
-        if ( $this->input->is_ajax_request() ) {
-            $cat = $this->pyrocache->model('categories_m', 'get_category', array($id), $this->firesale->cache_time);
-            echo json_encode($cat);
-            exit();
-        }
-    }
-
-    /**
-     * Gets the category images and returns an HTML string to be appended into the
-     * tab created for each category.
-     *
-     * @param  integer $id The Category ID to retrieve
-     * @return string  HTML for dropbox and image display
-     * @access public
-     */
-    public function ajax_cat_images($id)
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-
-            // Variables
-            $data = array();
-            $row  = $this->pyrocache->model('row_m', 'get_row', array($id, $this->stream, false), $this->firesale->cache_time);
-
-            if ($row != FALSE) {
-                $folder         = get_file_folder_by_slug($row->slug, 'category-images');
-                $images         = Files::folder_contents($folder->id);
-                $data['images'] = $images['data']['file'];
-            }
-
-            // Return to script
-            echo $this->parser->parse('admin/categories/images', $data, true);
-            exit();
-        }
     }
 
 }

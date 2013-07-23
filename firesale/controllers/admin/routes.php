@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Admin_routes extends Admin_Controller
+class routes extends Admin_Controller
 {
 
     public $section = 'routes';
@@ -98,7 +98,7 @@ class Admin_routes extends Admin_Controller
 
             // Got an ID back
             if ( is_numeric($fields) ) {
-                
+
                 // Add the route
                 $this->routes_m->write($input['title'], $input['route'], $input['translation']);
 
@@ -271,20 +271,6 @@ class Admin_routes extends Admin_Controller
         // Something went wrong
         $this->session->set_flashdata('error', lang('firesale:routes:delete_error'));
         redirect('admin/firesale/routes');
-    }
-
-    public function ajax_order()
-    {
-
-        if ( $this->input->is_ajax_request() ) {
-            echo order_table($this->input->post('order'), 'firesale_routes', 'route_');
-            $this->routes_m->clear();
-            $this->rebuild(false);
-            exit();
-        }
-
-        echo 'error';
-        exit();
     }
 
 }

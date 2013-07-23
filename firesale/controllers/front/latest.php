@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Front_new extends Public_Controller
+class latest extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
@@ -65,7 +65,7 @@ class Front_new extends Public_Controller
 
         // Add category
         if ( strlen($category) > 0 ) {
-            
+
             // Get category ID
             $category = $this->db->select('title, id, slug')->where('slug', $category)->get('firesale_categories')->row();
 
@@ -86,17 +86,17 @@ class Front_new extends Public_Controller
         $ids      = $this->products_m->get_products($filter, $start, $this->perpage);
         $total    = ( $ids ? count($this->products_m->get_products($filter)) : 0 );
         $products = array();
-        
+
         // Loop and get product data
         if ( ! empty($ids) ) {
             foreach ( $ids as $id ) {
-                $products[] = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+                $products[] = cache('products_m/get_product', $id['id']);
             }
         }
 
         // Assign pagination
         if ( ! empty($products) ) {
-            $url = $this->pyrocache->model('routes_m', 'build_url', array('new'), $this->firesale->cache_time);
+            $url = uri('new');
             $this->data->pagination = create_pagination($url.'/', $total, $this->perpage, (substr_count($url, '/') + 1 ));
             $this->data->pagination['shown'] = count($products);
         }

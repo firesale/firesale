@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -52,8 +52,8 @@ class gateways
 
                     if ( ! $this->is_installed($gateway_name)) {
                         $uninstalled[] = array(
-                            'slug'	=> $gateway_name,
-                            'name'	=> ucwords(str_replace('_', ' ', $gateway_name))
+                            'slug'  => $gateway_name,
+                            'name'  => ucwords(str_replace('_', ' ', $gateway_name))
                         );
                     }
                 }
@@ -77,17 +77,30 @@ class gateways
         return $gateways;
     }
 
-    public function get_enabled()
+    public function get_enabled($skip_checkout = false)
     {
         $data = array();
+
+        $gateways = $this->_CI->db->dbprefix('firesale_gateways.*');
+        $setting  = $this->_CI->db->dbprefix('firesale_gateway_settings.value');
+
+        $this->_CI->db->select("{$gateways}, IF({$setting} IS NULL, 0, {$setting}) AS skip_checkout", false);
+        $this->_CI->db->join('firesale_gateway_settings', 'firesale_gateways.id = firesale_gateway_settings.id
+            AND firesale_gateway_settings.key = "skip_checkout"', 'left');
+
+        if ($skip_checkout) {
+            $this->_CI->db->having('skip_checkout', '1');
+        } else {
+            $this->_CI->db->having('skip_checkout', '0');
+        }
 
         $gateways = $this->_CI->db->get_where('firesale_gateways', array('enabled' => 1));
 
         foreach ($gateways->result() as $gateway) {
             $data[$gateway->id] = array(
-                'slug'	=> $gateway->slug,
-                'name'	=> $gateway->name,
-                'desc'	=> $gateway->desc
+                'slug'  => $gateway->slug,
+                'name'  => $gateway->name,
+                'desc'  => $gateway->desc
             );
         }
 
@@ -116,13 +129,24 @@ class gateways
         return FALSE;
     }
 
-    public function is_enabled($gateway)
+    public function is_enabled($gateway, $skip_checkout = false)
     {
 
+        $gateways = $this->_CI->db->dbprefix('firesale_gateways.*');
+        $setting  = $this->_CI->db->dbprefix('firesale_gateway_settings.value');
+
+        $this->_CI->db->select("{$gateways}, IF({$setting} IS NULL, 0, {$setting}) AS skip_checkout", false);
+        $this->_CI->db->join('firesale_gateway_settings', 'firesale_gateways.id = firesale_gateway_settings.id
+            AND firesale_gateway_settings.key = "skip_checkout"', 'left');
+
+        if ($skip_checkout) {
+            $this->_CI->db->having('skip_checkout', '1');
+        }
+
         if (is_numeric($gateway)) {
-            $this->_CI->db->where('id', $gateway);
+            $this->_CI->db->where('firesale_gateways.id', $gateway);
         } elseif ( is_array($gateway)) {
-            $this->_CI->db->where('id', $gateway['id']);
+            $this->_CI->db->where('firesale_gateways.id', $gateway['id']);
         } else {
             $this->_CI->db->where('slug', $gateway);
         }
@@ -137,18 +161,25 @@ class gateways
     public function get_setting_fields($gateway)
     {
         if ($this->exists($gateway)) {
-            if ($this->_CI->merchant->load($gateway)) {
-                foreach ($this->_CI->merchant->default_settings() as $setting => $value) {
-                    $settings[] = array(
-                        'slug'	=> $setting,
-                        'name'	=> ucwords(str_replace('_', ' ', $setting)),
-                        'type'	=> gettype($value),
-                        'value'	=> $this->setting($gateway, $setting)
-                    );
+            $active = $this->_CI->merchant->active_driver();
+            if ( ! $active or $active == 'merchant') $this->_CI->merchant->load($gateway);
+
+            foreach ($this->_CI->merchant->default_settings() as $setting => $value) {
+                if (isset($value['options']) and is_array($value['options'])) {
+                    foreach ($value['options'] as $key => &$option) $option = lang($option) ? lang($option) : $key;
                 }
 
-                return isset($settings) ? $settings : array();
+                $settings[] = array(
+                    'slug'    => $setting,
+                    'name'    => ucwords(str_replace('_', ' ', $setting)),
+                    'type'    => gettype($value),
+                    'value'   => $this->setting($gateway, $setting),
+                    'options' => isset($value['options']) ? $value['options'] : false,
+                    'default' => isset($value['default']) ? $value['default'] : $value
+                );
             }
+
+            return isset($settings) ? $settings : array();
         }
 
         return FALSE;

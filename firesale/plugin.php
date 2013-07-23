@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -85,14 +85,14 @@ class Plugin_Firesale extends Plugin
         // Variables
         $attributes = $this->attributes();
         ksort($attributes);
-        
+
         // if no ordering specified default to tree order
         if ( ! isset($attributes['order']) and ! isset($attributes['order-by']) ) {
             $attributes['order'] = 'ordering_count asc';
-        } else if ( isset($attributes['order-by']) ) {
+        } elseif ( isset($attributes['order-by']) ) {
             $attributes['order'] = $attributes['order-by'].' '.( isset($attributes['order-dir']) ? $attributes['order-dir'] : 'asc' );
         }
-        
+
         // Are we cached?
         $cache_key  = md5('categories'.BASE_URL.implode('|', $attributes));
 
@@ -277,21 +277,26 @@ class Plugin_Firesale extends Plugin
         if ( ! $results = $this->cache->get($cache_key) ) {
 
             list($order, $order_dir) = explode(' ', $order);
-    
-            $results = $this->db
+
+            $query = $this->db
                 ->select("COUNT(oo.product_id) as count, p.id")
                 ->from('firesale_products AS p')
                 ->join('firesale_orders_items AS oo', 'p.id = oo.product_id', 'left')
                 ->order_by('count', 'desc')
                 ->order_by($order, $order_dir)
                 ->limit($limit)
-                ->get()
-                ->result();
-    
+                ->get();
+
+            if (! $query->num_rows()) {
+                return array(array('total' => 0, 'entries' => array()));
+            }
+
+            $results = $query->result();
+
             foreach ($results as &$product) {
                 $product = $this->pyrocache->model('products_m', 'get_product', array($product->id), $this->firesale->cache_time);
             }
-    
+
             // Add to cache
             $this->cache->save($cache_key, $results, $this->firesale->cache_time);
 
@@ -303,13 +308,11 @@ class Plugin_Firesale extends Plugin
 
     public function modifier_form()
     {
-
         // Variables
         $type       = $this->attribute('type', 'select'); // radio
         $difference = $this->attribute('difference', 'difference'); // display the price difference or the actual price
         $product    = $this->attribute('product');
-        $product    = $this->products_m->get_product($product);
-        $template   = $this->attribute('template', 'partials/modifier_form');
+        $product    = $this->pyrocache->model('products_m', 'get_product', array($product), $this->firesale->cache_time);
 
         // Format data
         foreach ($product['modifiers'] as &$modifier) {
@@ -327,9 +330,10 @@ class Plugin_Firesale extends Plugin
         $data->difference = $difference;
         $data->product    = $product;
         $data->modifiers  = $product['modifiers'];
+        $data->jsdata     = $this->pyrocache->model('modifier_m', 'jsdata', array($product['modifiers']), $this->firesale->cache_time);
 
         // Build form
-        return $this->parser->parse($template, $data, true);
+        return $this->module_view('firesale', 'partials/modifier_form', $data, true);
     }
 
     public function cart()
@@ -396,7 +400,20 @@ class Plugin_Firesale extends Plugin
 
         return array(array('total' => count($results), 'entries' => $results));
     }
+    public function format_currency()
+    {
+        $value = $this->attribute('value', 0);
 
+        // Get currency
+        $currency = ( $this->session->userdata('currency') ? $this->session->userdata('currency') : NULL );
+        $currency = $this->pyrocache->model('currency_m', 'get', array($currency), $this->firesale->cache_time);
+
+        // Load Currency model
+        $this->load->model('currency_m');
+
+        // Format the value, and return
+        return $this->currency_m->format_string($value, $currency, false);
+    }
     public function addresses()
     {
         // Variables
@@ -407,7 +424,7 @@ class Plugin_Firesale extends Plugin
 
         // Check for user
         if ( $user !== null ) {
-           
+
             $this->load->model('address_m');
 
             // Get addresses
@@ -427,7 +444,7 @@ class Plugin_Firesale extends Plugin
 
         // Check for user
         if ( $user !== null ) {
-           
+
             $this->load->model('orders_m');
 
             // Get addresses

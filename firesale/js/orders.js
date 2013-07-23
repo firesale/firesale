@@ -36,7 +36,7 @@ $(function() {
 	// Change address
 	$('#ship_to, #bill_to').change(function() {
 		var pre = $(this).attr('id').replace('_to', '');
-		$.getJSON('/admin/firesale/orders/ajax_address/' + $('select[name=created_by]').val() + '/' + $(this).val(), function(data) {
+		$.getJSON('/admin/firesale/ajax/order_address/' + $('select[name=created_by]').val() + '/' + $(this).val(), function(data) {
 			if( data != 'false' ) {
 				for( var k in data ) { $('#' + pre + '_' + k).val(data[k]); }
 			} else { notif('error', 'Error retrieving address'); }
@@ -63,11 +63,11 @@ $(function() {
 		e.preventDefault();
 		var _t = $(this), p = $('#add_product').val();
 		_t.attr('disabled', '');
-		$.getJSON(SITE_URL+'admin/firesale/products/ajax_product/' + p, function(d) {
+		$.getJSON(SITE_URL+'admin/firesale/ajax/get_product/' + p, function(d) {
 			if( d != 'false' )
 			{
 				var id = _t.parents('form').attr('action').split('/').slice(-1)[0];
-				$.getJSON(SITE_URL+'admin/firesale/orders/ajax_add_product/' + id + '/' + p + '/' + $('#add_qty').val(), function(r) {
+				$.getJSON(SITE_URL+'admin/firesale/ajax/order_add_product/' + id + '/' + p + '/' + $('#add_qty').val(), function(r) {
 					if( r != 'false' )
 					{
 						notif('success', 'Product added to order successfully - Make sure to save and update pricing');
@@ -144,7 +144,8 @@ var req;
 function update_orders(extra) {
 	if( req != null ) { req.abort(); }
 	create_overlay($('#order_table'));
-	req = $.ajax({type: "POST", url: $('#filters_form').attr('action')+'/'+extra, global: false, data: $('#filters_form').serialize(), success: function(data) {
+	var data = $('#filters').serialize()+'&csrf_hash_name='+$('input[name=csrf_hash_name]').val();
+	req = $.ajax({type: "POST", url: $('#filters_form').attr('action')+'/'+extra, global: false, data: data, success: function(data) {
 		$('.overlay').remove();
 		$('.no_data').remove();
 		if( $(data).find('#order_table').size() > 0 ) {

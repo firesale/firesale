@@ -9,7 +9,7 @@ $(function() {
 			$('#routes tbody > tr:nth-child(even)').addClass('alt');
 			$('#routes tbody > tr').each(function() { order.push(this.id); });
 			order = order.join(',');
-			$.post(SITE_URL + 'admin/firesale/routes/ajax_order', { order: order });
+			$.post(SITE_URL + 'admin/firesale/ajax/routes_order', { order: order });
 		}
 	});
 

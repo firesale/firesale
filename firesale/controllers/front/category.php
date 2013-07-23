@@ -13,12 +13,12 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
 
-class Front_category extends Public_Controller
+class category extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
@@ -92,7 +92,7 @@ class Front_category extends Public_Controller
 
         // Get category details
         if ($category != NULL) {
-            $category = $this->pyrocache->model('categories_m', 'get_category', array($category), $this->firesale->cache_time);
+            $category = cache('categories_m/get_category', $category);
         }
 
         // Check category exists
@@ -115,18 +115,18 @@ class Front_category extends Public_Controller
 
             // Loop and get products
             foreach ($ids AS $id) {
-                $product                = $this->pyrocache->model('products_m', 'get_product', array($id['id']), $this->firesale->cache_time);
+                $product                = cache('products_m/get_product', $id['id']);
                 $product['description'] = strip_tags($product['description']);
                 $products[]             = $product;
             }
 
             // Assign pagination
             if ( ! empty($products) ) {
-                
+
                 // Variables
                 $cat   = ( isset($category['id']) ? $category['id'] : NULL );
-                $url   = str_replace('/{{ slug }}', '', $this->pyrocache->model('routes_m', 'build_url', array('category', $cat), $this->firesale->cache_time));
-                $total = $this->pyrocache->model('categories_m', 'total_products', array($cat), $this->firesale->cache_time);
+                $url   = str_replace('/{{ slug }}', '', uri('category', $cat));
+                $total = cache('categories_m/total_products', $cat);
 
                 // Build pagination
                 $this->data->pagination = create_pagination($url, $total, $this->perpage, ( 2 + substr_count($url, '/') ));
@@ -160,12 +160,12 @@ class Front_category extends Public_Controller
 
             // Build page
             $this->template->build(( $overload ? $overload : 'category' ));
-
-        } else {
-            set_status_header(404);
-            echo Modules::run('pages/_remap', '404');
+            return;
         }
 
+        // Not found
+        set_status_header(404);
+        echo Modules::run('pages/_remap', '404');
     }
 
     /**

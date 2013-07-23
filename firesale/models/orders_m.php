@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -76,6 +76,7 @@ class Orders_m extends MY_Model
 
         if ( $this->db->where('id', $order_id)->delete('firesale_orders') ) {
             if ( $this->db->where('order_id', $order_id)->delete('firesale_orders_items') ) {
+                Events::trigger('order_deleted', $order_id);
                 return TRUE;
             }
         }
@@ -179,13 +180,13 @@ class Orders_m extends MY_Model
                     'input_title'  => 'lang:firesale:label_user_order',
                     'input_slug'   => 'created_by',
                     'instructions' => '',
-                    'value'		   => $id,
-                    'input'		   => '',
+                    'value'        => $id,
+                    'input'        => '',
                     'input_parts'  => '',
-                    'error_raw'	   => '',
-                    'error'		   => '',
-                    'required'	   => '<span>*</span>',
-                    'odd_even'	   => 'odd'
+                    'error_raw'    => '',
+                    'error'        => '',
+                    'required'     => '<span>*</span>',
+                    'odd_even'     => 'odd'
                 );
 
         // Build user list
@@ -309,17 +310,17 @@ class Orders_m extends MY_Model
         foreach ($orders AS &$order) {
 
             // Get product count
-            $order['products'] = $this->pyrocache->model('orders_m', 'get_product_count', array($order['id']), $this->firesale->cache_time);
+            $order['products'] = cache('orders_m/get_product_count', $order['id']);
 
             // No currency set?
             if ($order['currency'] == NULL) {
-                $order['currency'] = $this->pyrocache->model('currency_m', 'get', array(), $this->firesale->cache_time);
+                $order['currency'] = cache('currency_m/get');
             }
 
             // Format prices
-            $order['price_sub']   = $this->pyrocache->model('currency_m', 'format_string', array($order['price_sub'],   (object) $order['currency'], FALSE), $this->firesale->cache_time);
-            $order['price_ship']  = $this->pyrocache->model('currency_m', 'format_string', array($order['price_ship'],  (object) $order['currency'], FALSE), $this->firesale->cache_time);
-            $order['price_total'] = $this->pyrocache->model('currency_m', 'format_string', array($order['price_total'], (object) $order['currency'], FALSE), $this->firesale->cache_time);
+            $order['price_sub']   = cache('currency_m/format_string', $order['price_sub'],   (object) $order['currency'], false);
+            $order['price_ship']  = cache('currency_m/format_string', $order['price_ship'],  (object) $order['currency'], false);
+            $order['price_total'] = cache('currency_m/format_string', $order['price_total'], (object) $order['currency'], false);
         }
 
         return $orders;
@@ -354,11 +355,11 @@ class Orders_m extends MY_Model
         $currency      = $this->currency_m->get($user_currency);
 
         // Append input
-        $input['price_sub']    	 = str_replace(',', '', $input['price_sub']);
-        $input['price_ship']   	 = str_replace(',', '', $input['price_ship']);
+        $input['price_sub']      = str_replace(',', '', $input['price_sub']);
+        $input['price_ship']     = str_replace(',', '', $input['price_ship']);
         $input['price_total']    = str_replace(',', '', $input['price_total']);
-        $input['ip']			 = $_SERVER['REMOTE_ADDR'];
-        $input['created'] 		 = date("Y-m-d H:i:s");
+        $input['ip']             = $_SERVER['REMOTE_ADDR'];
+        $input['created']        = date("Y-m-d H:i:s");
         $input['ordering_count'] = 0;
         $input['currency']       = $currency->id;
         $input['exchange_rate']  = $currency->exch_rate;
@@ -474,7 +475,7 @@ class Orders_m extends MY_Model
         if ($cart == TRUE) {
             $this->fs_cart->total    = number_format($total, 2);
             $this->fs_cart->subtotal = number_format($sub, 2);
-            $this->fs_cart->tax 	 = number_format(( $total - $sub), 2);
+            $this->fs_cart->tax      = number_format(( $total - $sub), 2);
         }
 
         // Update?
@@ -482,6 +483,13 @@ class Orders_m extends MY_Model
             $this->db->where('id', $order_id)->update('firesale_orders', array('price_total' => $total, 'price_sub' => $sub));
         }
 
+    }
+
+    public function set_address($id, $address, $type)
+    {
+        return $this->db->where('id', $id)
+            ->set("{$type}_to", $address)
+            ->update('firesale_orders');
     }
 
     /**
@@ -544,11 +552,11 @@ class Orders_m extends MY_Model
     {
 
         // Set query paramaters
-        $params	 = array(
-            'stream' 	=> 'firesale_orders',
-            'namespace'	=> 'firesale_orders',
-            'where'		=> SITE_REF."_firesale_orders.id = '{$order_id}'",
-            'limit'		=> 1
+        $params  = array(
+            'stream'    => 'firesale_orders',
+            'namespace' => 'firesale_orders',
+            'where'     => SITE_REF."_firesale_orders.id = '{$order_id}'",
+            'limit'     => 1
         );
 
         // Get entries
@@ -556,15 +564,16 @@ class Orders_m extends MY_Model
 
         if ($order['total'] == 1) {
 
-            $order 			    = $order['entries'][0];
+            $order              = $order['entries'][0];
             $order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int) $order_id))->result_array();
-            $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['price_ship'] ), 2);
+            $order['shipping']  = cache('shipping_m/get_option_by_id', $order['shipping']['id']);
+            $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['shipping']['price_pre_tax'] ), 2);
 
             // Loop items
             foreach ($order['items'] AS $key => &$item) {
 
                 // Get the product
-                $product = $this->pyrocache->model('products_m', 'get_product', array($item['product_id'], null, true), $this->firesale->cache_time);
+                $product = cache('products_m/get_product', $item['product_id'], null, true);
 
                 // Check it exists
                 if ($product !== FALSE) {
@@ -607,7 +616,7 @@ class Orders_m extends MY_Model
 
             // Loop and get data
             foreach ( $orders as &$order ) {
-                $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order['id']), $this->firesale->cache_time);
+                $order = cache('orders_m/get_order_by_id', $order['id']);
             }
 
             // Format orders
@@ -632,8 +641,8 @@ class Orders_m extends MY_Model
     {
 
         // Variables
-        $low	 = $this->settings->get('firesale_low') or 10;
-        $product = $this->pyrocache->model('products_m', 'get_product', array($id, null, true), $this->firesale->cache_time);
+        $low     = $this->settings->get('firesale_low') or 10;
+        $product = cache('products_m/get_product', $id, null, true);
 
         if ($product) {
 
@@ -679,7 +688,7 @@ class Orders_m extends MY_Model
             if ($status == 3) {
 
                 // Get the order
-                $order = $this->pyrocache->model('orders_m', 'get_order_by_id', array($order_id), $this->firesale->cache_time);
+                $order = cache('orders_m/get_order_by_id', $order_id);
 
                 // Email the user
                 Events::trigger('email', array_merge($order, array('slug' => 'order-dispatched', 'to' => $order['bill_to']['email'])), 'array');

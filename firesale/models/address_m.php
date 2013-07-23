@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -163,7 +163,7 @@ class Address_m extends MY_Model
         if ( $this->form_validation->run() === TRUE ) {
             if ( $id > 0 AND $this->db->where('id', $id)->update('firesale_addresses', $update) ) {
                 return $id;
-            } else if ( $id <= 0 AND $address_id = $this->add_address($input, $type) ) {
+            } elseif ( $id <= 0 AND $address_id = $this->add_address($input, $type) ) {
                 return $address_id;
             }
         }
@@ -250,7 +250,7 @@ class Address_m extends MY_Model
 
         // Format fields
         foreach( $fields AS $field ) {
-            
+
             // Prefix input slugs
             $key = ( in_array($field['input_slug'], $address) ? 'address' : 'details' );
             if( $type != NULL ) {
@@ -276,7 +276,7 @@ class Address_m extends MY_Model
     /**
      * Fixes the language strings for an address form to better display if an error
      * has occured with billing or shipping fields.
-     * 
+     *
      * @param  int $stream_id The stream ID for the address form
      * @param  string $type   The type to deal with bill or ship
      * @return void

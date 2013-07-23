@@ -198,12 +198,37 @@ class Module_Firesale_shipping extends Module
 
     public function upgrade($old_version)
     {
+        // Load required items
+        $this->load->driver('Streams');
+        $this->lang->load($this->language_file);
+        $this->lang->load('firesale/firesale');
+
+        if ($old_version < '1.2.2') {
+
+            // Add tax bands for shipping methods
+               $taxes = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
+            $fields   = array();
+            $template = array('namespace' => 'firesale_shipping', 'assign' => 'firesale_shipping', 'type' => 'text', 'title_column' => FALSE, 'required' => FALSE, 'unique' => FALSE);
+            $fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id), 'required' => FALSE);
+            $this->add_stream_fields($fields, $template);
+
+        }
+
         return TRUE;
     }
 
     public function help()
     {
         return "Some Help Stuff";
+    }
+
+    public function add_stream_fields($fields, $template)
+    {
+        // Combine
+        foreach ($fields AS &$field) { $field = array_merge($template, $field); }
+
+        // Add fields to stream
+        $this->streams->fields->add_fields($fields);
     }
 
 }

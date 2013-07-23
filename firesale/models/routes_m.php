@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -69,7 +69,7 @@ class Routes_m extends MY_Model
                     // Build query columns
                     if ( $route->table == 'firesale_orders' ) {
                         $this->db->select('t.id');
-                    } else if ( $route->table == 'firesale_products' ) {
+                    } elseif ( $route->table == 'firesale_products' ) {
                         $this->db->select('t.id, t.slug, t.title, t.is_variation, v.parent')
                                  ->join('firesale_product_variations_firesale_products AS vp', 'vp.firesale_products_id = t.id', 'left')
                                  ->join('firesale_product_variations AS v', 'v.id = vp.row_id', 'left');
@@ -77,11 +77,19 @@ class Routes_m extends MY_Model
                         $this->db->select('t.id, t.slug, t.title');
                     }
 
+                    // Run query
+                    $query = $this->db->where('t.id', $id)->get();
+
+                    // Check for data
+                    if ( ! $query->num_rows() ) {
+                        return $this->build_url('index');
+                    }
+
                     // Get type
-                    $type = $this->db->where('t.id', $id)->get()->row();
+                    $type = $query->row();
 
                     // Check type
-                    if (  $route->table == 'firesale_products' and $type->is_variation == '1' ) {
+                    if ( $route->table == 'firesale_products' and $type->is_variation == '1' ) {
                         $type = $this->db->where('id', $type->parent)->get($route->table)->row();
                     }
 
@@ -92,7 +100,7 @@ class Routes_m extends MY_Model
                     if ( $route->table == 'firesale_products' AND ( strpos($formatted, '{{ category_slug }}') !== FALSE OR strpos($formatted, '{{ category_id }}') !== FALSE ) ) {
                         // Get category
                         $this->load->model('products_m');
-                        $category  = current($this->pyrocache->model('products_m', 'get_categories', array($type->id), $this->firesale->cache_time));
+                        $category  = current(cache('products_m/get_categories', $type->id));
                         $formatted = str_replace('{{ category_slug }}', $category['slug'], $formatted);
                         $formatted = str_replace('{{ category_id }}', $category['id'], $formatted);
                     }
@@ -240,11 +248,8 @@ class Routes_m extends MY_Model
 
     public function write($title, $route, $map, $old_title = false)
     {
-        // CH: Are we in the PyroCMS installer?
-        $path = defined('PYROPATH') ? PYROPATH : APPPATH;
-
         // Variables
-        $file    = $path.'config/routes.php';
+        $file    = $this->_path().'config/routes.php';
         $content = file_get_contents($file);
         $before  = "\n/* End of file routes.php */";
         $title   = ( substr($title, 0, 5) == 'lang:' ? lang(substr($title, 5)) : $title );
@@ -276,9 +281,8 @@ class Routes_m extends MY_Model
 
     public function remove($title)
     {
-
         // Variables
-        $file    = APPPATH.'config/routes.php';
+        $file    = $this->_path().'config/routes.php';
         $content = file_get_contents($file);
         $title   = ( substr($title, 0, 5) == 'lang:' ? lang(substr($title, 5)) : $title );
         $regex   = "%(\n/\* FireSale - {$title} \*/\n.+?\n)%si";
@@ -301,6 +305,11 @@ class Routes_m extends MY_Model
         foreach ( $routes as $route ) {
             $this->remove($route['title']);
         }
+    }
+
+    public function _path()
+    {
+        return defined('PYROPATH') ? PYROPATH : APPPATH;
     }
 
 }

@@ -13,11 +13,11 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
-    
+
     // General Titles
     $lang['firesale:title']                                 = 'FireSale';
     $lang['firesale:store']                                 = 'Store'; # Translate
@@ -26,7 +26,7 @@
     $lang['firesale:title:address']                         = 'Votre adresse';
     $lang['firesale:title:bill']                            = 'Informations de facturation';
     $lang['firesale:title:ship']                            = 'Information d\'expédition';
-    
+
     // Sections
     $lang['firesale:sections:dashboard']                    = 'Tableau de bord';
     $lang['firesale:sections:categories']                   = 'Catégories';
@@ -39,13 +39,13 @@
     $lang['firesale:sections:routes']                       = 'Routes';
     $lang['firesale:sections:currency']                     = 'Monnaie';
     $lang['firesale:sections:taxes']                        = 'Taxes';
-    
+
     // Global Search
     $lang['firesale:product']                               = 'Product'; # Translate
     $lang['firesale:products']                              = 'Products'; # Translate
     $lang['firesale:category']                              = 'Category'; # Translate
     $lang['firesale:categories']                            = 'Categories'; # Translate
-    
+
     // Tabs
     $lang['firesale:tabs:general']                          = 'Options générales';
     $lang['firesale:tabs:description']                      = 'Description';
@@ -56,7 +56,7 @@
     $lang['firesale:tabs:modifiers']                        = 'Modifiers'; # translate
     $lang['firesale:tabs:images']                           = 'Images';
     $lang['firesale:tabs:assignments']                      = 'Assignements';
-    
+
     // Shortcuts
     $lang['firesale:shortcuts:prod_create']                 = 'Créer un produit';
     $lang['firesale:shortcuts:cat_create']                  = 'Créer une catégorie';
@@ -66,7 +66,7 @@
     $lang['firesale:shortcuts:build_routes']                = 'Reconstruire les routes';
     $lang['firesale:shortcuts:add_tax_band']                = 'Add Tax Band';
     $lang['firesale:shortcuts:assign_taxes']                = 'Assign Taxes';
-    
+
     // Dashboard
     $lang['firesale:dash_overview']                         = 'Vue d\'ensemble';
     $lang['firesale:dash_categorytrack']                    = 'Suivi de catégorie';
@@ -85,7 +85,7 @@
     $lang['firesale:dashboard:week']                        = 'Week'; # Translate
     $lang['firesale:dashboard:today']                       = 'Today'; # Translate
     $lang['firesale:dashboard:sales_in']                    = 'in %s sales'; # Translate
-    
+
     // Categories
     $lang['firesale:cats_title']                            = 'Gèrer les catégories';
     $lang['firesale:cats_none']                             = 'Aucune catégorie trouvée';
@@ -106,7 +106,7 @@
     $lang['firesale:category:uncategorised']                = 'Uncategorised'; #Translate
     $lang['firesale:category:uncategorised_slug']           = 'uncategorised'; #Translate
     $lang['firesale:category:uncategorised_description']    = 'This is your initial product category, which can\'t be deleted; however you can rename it if you wish.';# Translate
-    
+
     // Products
     $lang['firesale:prod_none']                             = 'Aucun produit trouvé';
     $lang['firesale:prod_create']                           = 'Créer un produit';
@@ -126,7 +126,7 @@
     $lang['firesale:prod_delimg_success']                   = 'Image supprimée';
     $lang['firesale:prod_delimg_error']                     = 'Impossible de supprimer l\'image';
     $lang['firesale:prod_button_quick_edit']                = 'Modification rapide';
-    
+
     // Product Modifiers & Variations
     $lang['firesale:mods:title']                            = 'Modifiers'; # translate
     $lang['firesale:mods:create_success']                   = 'New modifier created successfully'; # translate
@@ -152,15 +152,15 @@
     $lang['firesale:vars:create']                           = 'Add a Variation'; # translate
     $lang['firesale:vars:stock_low']                        = 'Not enough stock of %s to buy this item'; # translate
     $lang['firesale:vars:category']                         = 'Build from Category'; # translate
-    
+
     // New Products
     $lang['firesale:new:title']                             = 'New Products'; # translate
     $lang['firesale:new:in:title']                          = 'New Products in %s'; # translate
-    
+
     // Instructions
     $lang['firesale:inst_rrp']                              = 'Prix de vente conseillé avant et après taxation';
     $lang['firesale:inst_price']                            = 'Prix de vente avant et après taxation';
-    
+
     // Labels
     $lang['firesale:label_draft']                           = 'Brouillon';
     $lang['firesale:label_live']                            = 'En ligne';
@@ -194,7 +194,7 @@
     $lang['firesale:label_mod_single']                      = 'Single Product'; # translate
     $lang['firesale:label_mod_price']                       = 'Price Modifier'; # translate
     $lang['firesale:label_mod_price_inst']                  = 'Some instructions'; # translate
-    
+
     $lang['firesale:label_stock_short']                     = 'Niveau des stocks';
     $lang['firesale:label_stock_status']                    = 'Stocks';
     $lang['firesale:label_stock_in']                        = 'En stock';
@@ -203,7 +203,7 @@
     $lang['firesale:label_stock_order']                     = 'Stock en attente';
     $lang['firesale:label_stock_ended']                     = 'Série terminée';
     $lang['firesale:label_stock_unlimited']                 = 'Illimité';
-    
+
     $lang['firesale:label_remove']                          = 'Supprimer';
     $lang['firesale:label_image']                           = 'Image';
     $lang['firesale:label_images']                          = 'Images';
@@ -235,7 +235,7 @@
     $lang['firesale:label_ip']                              = 'Adresse IP';
     $lang['firesale:label_ship_req']                        = 'Livraison obligatoire';
     $lang['firesale:label_address_title']                   = 'Save Address as'; # Translate
-    
+
     $lang['firesale:label_nameaz']                          = 'Nom A - Z';
     $lang['firesale:label_nameza']                          = 'Nom Z - A';
     $lang['firesale:label_pricelow']                        = 'Prix Bas &gt; Haut';
@@ -244,7 +244,7 @@
     $lang['firesale:label_modelza']                         = 'Modèle Z - A';
     $lang['firesale:label_creatednew']                      = 'Newest - Oldest'; # translate
     $lang['firesale:label_createdold']                      = 'Oldest - Newest'; # translate
-    
+
     $lang['firesale:label_time_now']                        = 'il y a moins d\'une minute.';
     $lang['firesale:label_time_min']                        = 'il y a une minute.';
     $lang['firesale:label_time_mins']                       = 'il y a %s minutes.';
@@ -252,14 +252,14 @@
     $lang['firesale:label_time_hours']                      = 'il y a %s heures.';
     $lang['firesale:label_time_day']                        = 'il y a un jour.';
     $lang['firesale:label_time_days']                       = 'il y a %s jours.';
-    
+
     $lang['firesale:label_map']                             = 'Carte';
     $lang['firesale:label_route']                           = 'Route';
     $lang['firesale:label_translation']                     = 'Traduction';
     $lang['firesale:label_table']                           = 'Table';
     $lang['firesale:label_https']                           = 'HTTPS'; # translate
     $lang['firesale:label_use_https']                       = 'Enable HTTPS'; # translate
-    
+
     $lang['firesale:label_cur_code']                        = 'Code monnaie';
     $lang['firesale:label_cur_code_inst']                   = 'Format ISO-4217';
     $lang['firesale:label_cur_tax']                         = 'Taux de taxe';
@@ -275,9 +275,9 @@
     $lang['firesale:label_cur_format_dec']                  = 'Symbole décimal';
     $lang['firesale:label_cur_format_sep']                  = 'Séparateur des milliers';
     $lang['firesale:label_cur_format_num']                  = 'Formatage des nombres';
-    
+
     $lang['firesale:label_tax_band']                        = 'Tax Band';  # translate
-    
+
     // Orders
     $lang['firesale:orders:title']                          = 'Commandes';
     $lang['firesale:orders:no_orders']                      = 'Il n\'y a actuellement aucune commande en cours';
@@ -314,7 +314,7 @@
     $lang['firesale:orders:labe_payment_address']           = 'Adresse de facturation';
     $lang['firesale:orders:label_order_status']             = 'Statut de la commande';
     $lang['firesale:orders:label_message']                  = 'Message';
-    
+
     // Gateways
     $lang['firesale:gateways:admin_title']                  = 'Plateformes de paiement';
     $lang['firesale:gateways:install_title']                = 'Installer une plateforme';
@@ -325,28 +325,28 @@
     $lang['firesale:gateways:errors:invalid_bool']          = 'Le champs %s doit contenir une valeur booléenne.';
     $lang['firesale:gateways:warning']                      = 'Tous les paramètres de la plateforme seront perdus et votre système ne pourra plus recevoir de paiement ! Etes vous sûr de vouloir supprimer cette plateforme ?';
     $lang['firesale:gateways:multiple_warning']             = 'Tous les paramètres de la plateforme seront perdus et votre système ne pourra plus recevoir de paiement ! Etes vous sûr de vouloir supprimer les plateformes sélectionnées ?';
-    
+
     $lang['firesale:gateways:installed_success']            = 'Plateforme installée';
     $lang['firesale:gateways:installed_fail']               = 'Impossible d\'installer la plateforme';
-    
+
     $lang['firesale:gateways:uninstalled_success']          = 'Plateforme désinstallée';
     $lang['firesale:gateways:uninstalled_fail']             = 'Impossible de désinstaller la plateforme';
     $lang['firesale:gateways:multiple_uninstalled_success'] = 'Les plateformes sélectionnées ont été désinstallées';
     $lang['firesale:gateways:multiple_uninstalled_fail']    = 'Impossible de désinstaller les plateformes sélectionnées';
-    
+
     $lang['firesale:gateways:multiple_enabled_success']     = 'Les plateformes sélectionnées ont été activées';
     $lang['firesale:gateways:multiple_enabled_fail']        = 'Impossible d\'activer les plateformes sélectionnées';
     $lang['firesale:gateways:enabled_success']              = 'La plateforme a été activée';
     $lang['firesale:gateways:enabled_fail']                 = 'Impossible d\'activer la plateforme';
-    
+
     $lang['firesale:gateways:disabled_success']             = 'La plateforme a été désactivée';
     $lang['firesale:gateways:disabled_fail']                = 'Impossible de désactiver la plateforme';
     $lang['firesale:gateways:multiple_disabled_success']    = 'Les plateformes sélectionnées ont été désactivées';
     $lang['firesale:gateways:multiple_disabled_fail']       = 'Impossible de désactiver les plateformes sélectionnées';
-    
+
     $lang['firesale:gateways:updated_success']              = 'Plateforme mise à jour';
     $lang['firesale:gateways:updated_fail']                 = 'Impossible de mettre à jour la plateforme';
-    
+
     // Checkout
     $lang['firesale:gateways:labels:name']                  = 'Nom';
     $lang['firesale:gateways:labels:desc']                  = 'Description';
@@ -371,8 +371,9 @@
     $lang['firesale:checkout:shipping_min_weight']          = 'The total weight of your cart items does not meet the minimum for the selected shipping method';#Translate
     $lang['firesale:checkout:shipping_max_weight']          = 'The total weight of your cart items exceeds the maximum for the selected shipping method';#Translate
     $lang['firesale:checkout:shipping_invalid']             = 'The shipping method you selected is not valid';#Translate
+    $lang['firesale:checkout:address_invalid']              = 'The address you selected is not valid';#Translate
     $lang['firesale:checkout:gateway_invalid']              = 'The payment gateway you selected is not valid';#Translate
-    
+
     // Routes
     $lang['firesale:routes:title']                          = 'Routes';
     $lang['firesale:routes:new']                            = 'Ajouter une nouvelle route';
@@ -388,7 +389,7 @@
     $lang['firesale:routes:build_success']                  = 'Routes reconstruites';
     $lang['firesale:routes:build_error']                    = 'Impossible de reconstruire les routes';
     $lang['firesale:routes:write_error']                    = 'Access Denied: Please ensure config/routes.php is writable and try again'; # Translate
-    
+
     // Route Labels
     $lang['firesale:routes:category_custom']                = 'Category Customisation'; # translate
     $lang['firesale:routes:category']                       = 'Category'; # translate
@@ -399,7 +400,7 @@
     $lang['firesale:routes:addresses']                      = 'User Addresses'; # translate
     $lang['firesale:routes:currency']                       = 'Currency Switcher'; # translate
     $lang['firesale:routes:new_products']                   = 'New Products'; # translate
-    
+
     // Currency
     $lang['firesale:shortcuts:install_currency']            = 'Installer une monnaie';
     $lang['firesale:currency:enable']                       = 'Activer';
@@ -420,7 +421,7 @@
     $lang['firesale:currency:format_00']                    = 'Arrondir à l\'entier supérieur';
     $lang['firesale:currency:format_50']                    = 'Arrondir au format .50 le plus proche';
     $lang['firesale:currency:format_99']                    = 'Arrondir au format .99 le plus proche';
-    
+
     // Taxes
     $lang['firesale:taxes:none']                            = 'There are currently no tax bands setup'; # Translate
     $lang['firesale:taxes:new']                             = 'Add tax band'; # Translate
@@ -431,7 +432,7 @@
     $lang['firesale:taxes:edit_error']                      = 'There was an error whilst editing the tax band'; # Translate
     $lang['firesale:taxes:assignments_updated']             = 'Tax band assignments were updated successfully'; # Translate
     $lang['firesale:taxes:add_tax_band']                    = 'Create Tax Band'; # Translate
-    
+
     // Addresses
     $lang['firesale:addresses:title']                       = 'Mes adresses';
     $lang['firesale:addresses:edit_address']                = 'Modifier adresse';
@@ -443,14 +444,14 @@
     $lang['firesale:addresses:add_error']                   = 'Impossible de créer l\'adresse';
     $lang['firesale:addresses:edit_success']                = 'Adresse modifiée avec succès';
     $lang['firesale:addresses:edit_error']                  = 'Impossible de modifier l\'adresse';
-    
+
     // Products Frontend
     $lang['firesale:product:label_availability']            = "Disponibilité";
     $lang['firesale:product:label_model']                   = "Modèle";
     $lang['firesale:product:label_product_code']            = "Code produit";
     $lang['firesale:product:label_qty']                     = "Quantité";
     $lang['firesale:product:label_add_to_cart']             = "Ajouter au panier";
-    
+
     // Cart Frontend
     $lang['firesale:cart:label_remove']                     = "Supprimer";
     $lang['firesale:cart:label_image']                      = "Image";
@@ -465,17 +466,17 @@
     $lang['firesale:cart:label_sub_total']                  = "Sous-Total";
     $lang['firesale:cart:label_tax']                        = "Taxe";
     $lang['firesale:cart:label_total']                      = "Total";
-    
+
     //Categories Frontend
     $lang['firesale:categories:grid']                       = 'Grille';
     $lang['firesale:categories:list']                       = 'Liste';
     $lang['firesale:categories:add_to_basket']              = 'Ajouter au panier';
-    
+
     //Payment Frontend
     $lang['firesale:payment:cancelled']                     = 'Paiement annulé';
     $lang['firesale:payment:wait_redirect']                 = 'Merci de patienter le temps que nous vous redirigions vers la plateforme de paiement...';
     $lang['firesale:payment:btn_continue']                  = 'Continuer';
-    
+
     // Settings
     $lang['firesale:settings_tax']                          = 'Valeur de la taxe';
     $lang['firesale:settings_tax_inst']                     = 'Le pourcentage de taxe à appliquer à chaque produit';
@@ -507,7 +508,7 @@
     $lang['firesale:settings_disabled_inst']                = 'Everything looks normal but nothing can be added to cart or paid for'; # translate
     $lang['firesale:settings_disabled_msg']                 = 'Disabled Message'; # translate
     $lang['firesale:settings_disabled_msg_inst']            = 'A flashdata error shown to users after they attempt to add an item to their cart'; # translate
-    
+
     // Install errors
     $lang['firesale:install:wrong_version']                 = 'Impossible d\'installer le module, FireSale requiert la version 2.1.4 (ou supérieur) du CMS';
     $lang['firesale:install:missing_multiple']              = 'FireSale requiert le type de champs "Relation multiple" pour fonctionner. Vous pouvez le télécharger <a target="_blank" href="https://github.com/adamfairholm/PyroStreams-Multiple-Relationships/zipball/2.0/develop">ici</a>';

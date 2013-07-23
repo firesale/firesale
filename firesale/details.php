@@ -20,8 +20,7 @@
 
 class Module_Firesale extends Module
 {
-
-    public $version       = '1.2.2-dev';
+    public $version       = '1.2.3-dev';
     public $language_file = 'firesale/firesale';
 
     public function __construct()
@@ -868,16 +867,18 @@ class Module_Firesale extends Module
             $this->settings('add', array('firesale_new'));
 
             // Add new "new" route
-            $this->routes_m->create(array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}', 'route' => 'new(/[0-9]+)?', 'translation' => 'firesale/front_new/index/$1', 'https' => '0'));
-            
+            $this->routes_m->create(array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}', 'route' => 'new(/[0-9]+)?', 'translation' => 'firesale/front/latest/index/$1', 'https' => '0'));
+
             // Add basic checkout setting
             $this->settings('add', array('firesale_basic_checkout'));
+        }
 
-            // Add disabled options
-            $this->settings('add', array('firesale_disabled', 'firesale_disabled_msg'));
+        // Pre 1.2.2
+        if ($old_version < '1.2.2') {
 
-            // Update currency settings
-            $this->db->where('slug', 'firesale_currency')->update('settings', array('options' => 'func:get_currencies'));
+            // Changed new controller to latest
+            $this->db->where('slug', 'new')->update('firesale_routes', array('translation' => 'firesale/front/latest/index/$1'));
+
         }
 
         // Tracking
@@ -899,8 +900,17 @@ class Module_Firesale extends Module
         $settings   = array();
         $current    = array();
 
+        // Make list of currencies (if any) for default currency setting
+        $default_currency_options = array();
+        if($currencies = $this->db->get('firesale_currency')->result_array()) {
+            foreach($currencies as $k => $currency) {
+                $default_currency_options[] = $currency['id'].'='.$currency['cur_code'];
+            }
+        }
+        $default_currency_options = implode('|', $default_currency_options);
+
         // Settings
-        $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => '1', 'value' => '1', 'type' => 'select', 'options' => 'func:get_currencies', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_currency', 'title' => lang('firesale:settings_currency'), 'description' => lang('firesale:settings_currency_inst'), 'default' => '1', 'value' => '1', 'type' => 'select', 'options' => $default_currency_options, 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_currency_key', 'title' => lang('firesale:settings_currency_key'), 'description' => lang('firesale:settings_currency_key_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 1, 'module' => 'firesale' );
         $settings[] = array('slug' => 'firesale_current_currency', 'title' => lang('firesale:settings_current_currency'), 'description' => lang('firesale:settings_current_currency_inst'), 'default' => 'GBP', 'value' => 'GBP', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale' );
         $settings[] = array('slug' => 'firesale_currency_updated', 'title' => lang('firesale:settings_currency_updated'), 'description' => lang('firesale:settings_currency_updated_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 0, 'module' => 'firesale');
@@ -913,8 +923,6 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'firesale_low', 'title' => lang('firesale:settings_low'), 'description' => lang('firesale:settings_low_inst'), 'default' => '10', 'value' => '10', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_new', 'title' => lang('firesale:settings_new'), 'description' => lang('firesale:settings_new_inst'), 'default' => '86400', 'value' => '86400', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_basic_checkout', 'title' => lang('firesale:settings_basic'), 'description' => lang('firesale:settings_basic_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
-        $settings[] = array('slug' => 'firesale_disabled', 'title' => lang('firesale:settings_disabled'), 'description' => lang('firesale:settings_disabled_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
-        $settings[] = array('slug' => 'firesale_disabled_msg', 'title' => lang('firesale:settings_disabled_msg'), 'description' => lang('firesale:settings_disabled_msg_inst'), 'default' => '', 'value' => '', 'type' => 'textarea', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
 
         // Get existing settings
         foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }
@@ -982,15 +990,15 @@ class Module_Firesale extends Module
 
         // Routes
         $routes   = array();
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category_custom', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front_category/$1/$2', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-_/]+)?(/[0-9]+)?', 'translation' => 'firesale/front_category/index$1$2', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-_]+)', 'translation' => 'firesale/front_product/index/$1', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front_cart$1', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:order_single', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front_orders/view_order/$1', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front_orders/index', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front_address$1', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front_currency/change/$1', 'https' => '0');
-        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}/{{ pagination }}', 'route' => 'new(/:any)?(/[0-9]+)?', 'translation' => 'firesale/front_new/index$1$2', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category_custom', 'slug' => 'category-custom', 'table' => '', 'map' => 'category/{{ type }}/{{ slug }}', 'route' => 'category/(order|style)/([a-z0-9]+)', 'translation' => 'firesale/front/category/$1/$2', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:category', 'slug' => 'category', 'table' => 'firesale_categories', 'map' => 'category/{{ slug }}{{ any }}', 'route' => 'category(/[a-z0-9-_/]+)?(/[0-9]+)?', 'translation' => 'firesale/front/category/index$1$2', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:product', 'slug' => 'product', 'table' => 'firesale_products', 'map' => 'product/{{ slug }}', 'route' => 'product/([a-z0-9-_]+)', 'translation' => 'firesale/front/product/index/$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:cart', 'slug' => 'cart', 'table' => '', 'map' => 'cart{{ any }}', 'route' => 'cart(/:any)?', 'translation' => 'firesale/front/cart$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:order_single', 'slug' => 'orders-single', 'table' => 'firesale_orders', 'map' => 'users/orders/{{ id }}', 'route' => 'users/orders/([0-9]+)', 'translation' => 'firesale/front/orders/view_order/$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:orders', 'slug' => 'orders', 'table' => '', 'map' => 'users/orders', 'route' => 'users/orders', 'translation' => 'firesale/front/orders/index', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:addresses', 'slug' => 'addresses', 'table' => 'firesale_addresses', 'map' => 'users/addresses{{ any }}', 'route' => 'users/addresses(/:any)?', 'translation' => 'firesale/front/address$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:currency', 'slug' => 'currency', 'table' => 'firesale_currency', 'map' => 'currency/{{ id }}', 'route' => 'currency/([0-9]+)?', 'translation' => 'firesale/front/currency/change/$1', 'https' => '0');
+        $routes[] = array('is_core' => 1, 'title' => 'lang:firesale:routes:new_products', 'slug' => 'new', 'table' => '', 'map' => 'new{{ any }}/{{ pagination }}', 'route' => 'new(/:any)?(/[0-9]+)?', 'translation' => 'firesale/front/latest/index$1$2', 'https' => '0');
 
         // Perform
         foreach ($routes AS $route) {

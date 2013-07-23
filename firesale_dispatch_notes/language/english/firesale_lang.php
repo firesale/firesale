@@ -18,5 +18,5 @@
 *
 */
 
-	$lang['firesale:notes:title'] = 'Dispatch Notes';
-	$lang['firesale:notes:print'] = 'Print';
+    $lang['firesale:notes:title'] = 'Dispatch Notes';
+    $lang['firesale:notes:print'] = 'Print';

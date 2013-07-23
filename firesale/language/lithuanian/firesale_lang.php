@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -371,6 +371,7 @@
     $lang['firesale:checkout:shipping_min_weight']    = 'The total weight of your cart items does not meet the minimum for the selected shipping method';#Translate
     $lang['firesale:checkout:shipping_max_weight']    = 'The total weight of your cart items exceeds the maximum for the selected shipping method';#Translate
     $lang['firesale:checkout:shipping_invalid']       = 'The shipping method you selected is not valid';#Translate
+    $lang['firesale:checkout:address_invalid']        = 'The address you selected is not valid';#Translate
     $lang['firesale:checkout:gateway_invalid']        = 'The payment gateway you selected is not valid';#Translate
 
     // Routes

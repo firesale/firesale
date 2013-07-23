@@ -60,7 +60,7 @@ function sorting() {
 			var order = [];
 			$('.modifiers tbody > tr').each(function() { order.push(this.id); });
 			order = order.join(',');
-			$.post(SITE_URL + 'admin/firesale/products/ajax_order_modifiers', { order: order });
+			$.post(SITE_URL + 'admin/firesale/ajax/modifiers_order', { order: order });
 		}
 	});
 
@@ -72,7 +72,7 @@ function sorting() {
 			var order = [];
 			$('.modifiers table tbody > tr').each(function() { order.push(this.id); });
 			order = order.join(',');
-			$.post(SITE_URL + 'admin/firesale/products/ajax_order_variations', { order: order });
+			$.post(SITE_URL + 'admin/firesale/ajax/variations_order', { order: order });
 		}
 	});
 

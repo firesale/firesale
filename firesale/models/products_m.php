@@ -13,7 +13,7 @@
 * @package firesale/core
 * @author FireSale <support@getfiresale.org>
 * @copyright 2013 Moltin Ltd.
-* @version master
+* @version dev
 * @link http://github.com/firesale/firesale
 *
 */
@@ -197,15 +197,15 @@ class Products_m extends MY_Model
 
             // Get variation and modifer data
             $product['is_variation'] = $this->db->select('is_variation')->where('id', $product['id'])->get('firesale_products')->row()->is_variation;
-            $product['modifiers']    = $this->pyrocache->model('modifier_m', 'product_variations', array($product['id'], $product['is_variation']), $this->firesale->cache_time);
+            $product['modifiers']    = cache('modifier_m/product_variations', $product['id'], $product['is_variation']);
 
             // Format product pricing
-            $pricing = $this->pyrocache->model('currency_m', 'format_price', array($product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency), $this->firesale->cache_time);
+            $pricing = cache('currency_m/format_price', $product['price_tax'], $product['rrp_tax'], $product['tax_band']['id'], $currency);
             $product = array_merge($product, $pricing);
 
             // Check images
-            if ( $product['is_variation'] == '1' and empty($product['images']) ) {
-                $product['images'] = $this->get_parent_images($product['id']);
+            if ( $product['is_variation'] == '1' ) {
+                $product['images'] = array_merge($product['images'], $this->get_parent_images($product['id']));
                 $product['image']  = ( isset($product['images'][0]) ? $product['images'][0]->id : false );
             }
 
@@ -338,8 +338,8 @@ class Products_m extends MY_Model
     {
 
         // Variables
-        $product = $this->pyrocache->model('products_m', 'get_product', array($id), $this->firesale->cache_time);
-        $tax     = $this->pyrocache->model('taxes_m', 'get_percentage', array($product['tax_band']['id']), $this->firesale->cache_time);
+        $product = cache('products_m/get_product', $id);
+        $tax     = cache('taxes_m/get_percentage', $product['tax_band']['id']);
         $tax     = ( 100 + $tax ) / 100;
         $data    = array(
             'code'      => $input['id'],
@@ -535,7 +535,7 @@ class Products_m extends MY_Model
                     'firesale:product',
                     'firesale:products',
                     $product['id'],
-                    $this->pyrocache->model('routes_m', 'build_url', array('product', $product['id']), $this->firesale->cache_time),
+                    uri('product', $product['id']),
                     $product['title'],
                     strip_tags($product['description']),
                     array(
@@ -577,7 +577,7 @@ class Products_m extends MY_Model
             list($ignore, $id) = explode('_', $categories[$i]);
 
             // Check for valid category
-            if ( ( 0 + $id ) > 0 AND $this->pyrocache->model('categories_m', 'get_category', array($id), $this->firesale->cache_time) !== FALSE ) {
+            if ( ( 0 + $id ) > 0 AND cache('categories_m/get_category', $id) !== false ) {
 
                 // Build data
                 $data = array('row_id' => $product_id, 'firesale_products_id' => $stream_id, 'firesale_categories_id' => trim($id));
@@ -622,7 +622,7 @@ class Products_m extends MY_Model
 
             // Get categories
             foreach ($results AS $category) {
-                $categories[] = $this->pyrocache->model('categories_m', 'get_category', array($category['id']), $this->firesale->cache_time);
+                $categories[] = cache('categories_m/get_category', $category['id']);
             }
 
             // Return
@@ -736,10 +736,12 @@ class Products_m extends MY_Model
      */
     public function build_breadcrumbs($category, &$template)
     {
-
         // Variables
         $parent     = null;
         $categories = $this->get_cat_path($category, true);
+
+        // Assign root
+        $this->template->set_breadcrumb('Store', 'store');
 
         // Loop categories
         foreach ($categories as $category) {
@@ -748,7 +750,7 @@ class Products_m extends MY_Model
                 $parent = $category['id'];
             }
 
-            $url = $this->pyrocache->model('routes_m', 'build_url', array('category', $category['id']), $this->firesale->cache_time);
+            $url = uri('category', $category['id']);
             $template->set_breadcrumb($category['title'], $url);
         }
 
@@ -840,7 +842,7 @@ class Products_m extends MY_Model
 
     /**
      * Gets an array of the parent products images
-     * 
+     *
      * @param  int $id The id of the product to query
      * @return array   The array of images, boolean false on not found
      */
