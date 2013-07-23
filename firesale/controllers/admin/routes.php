@@ -62,8 +62,8 @@ class routes extends Admin_Controller
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:routes'))
-                       ->append_js('module::routes.js')
-                       ->append_css('module::routes.css')
+                       ->append_js('module::admin/routes.js')
+                       ->append_css('module::admin/routes.css')
                        ->set($this->data);
 
         // Fire events
@@ -120,9 +120,9 @@ class routes extends Admin_Controller
         // Build the page
         $this->template->title(lang('firesale:title').' '.lang('firesale:routes:new'))
                        ->set($this->data)
-                       ->append_css('module::routes.css')
-                       ->append_js('module::jquery.caret.js')
-                       ->append_js('module::routes.js')
+                       ->append_css('module::admin/routes.css')
+                       ->append_js('module::admin/jquery.caret.js')
+                       ->append_js('module::admin/routes.js')
                        ->build('admin/routes/create');
     }
 
@@ -199,9 +199,9 @@ class routes extends Admin_Controller
         // Build the page
         $this->template->title(lang('firesale:title').' '.$title)
                        ->set($this->data)
-                       ->append_css('module::routes.css')
-                       ->append_js('module::jquery.caret.js')
-                       ->append_js('module::routes.js')
+                       ->append_css('module::admin/routes.css')
+                       ->append_js('module::admin/jquery.caret.js')
+                       ->append_js('module::admin/routes.js')
                        ->build('admin/routes/edit');
     }
 

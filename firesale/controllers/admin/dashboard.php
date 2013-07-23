@@ -34,9 +34,9 @@ class dashboard extends Admin_Controller
         $this->data = new stdClass;
 
         // Add metadata
-        $this->template->append_css('module::dashboard.css')
-                       ->append_js('module::flot.js')
-                       ->append_js('module::dashboard.js');
+        $this->template->append_css('module::admin/dashboard.css')
+                       ->append_js('module::admin/flot.js')
+                       ->append_js('module::admin/dashboard.js');
     }
 
     public function index()

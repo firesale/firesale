@@ -82,8 +82,8 @@ class taxes extends Admin_Controller
 
         $data = $this->taxes_m->get_assignments();
 
-        $this->template->append_js('module::taxes.js')
-                       ->append_css('module::taxes.css')
+        $this->template->append_js('module::admin/taxes.js')
+                       ->append_css('module::admin/taxes.css')
                        ->build('admin/taxes/index', $data);
     }
 

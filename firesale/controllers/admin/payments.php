@@ -33,7 +33,7 @@ class payments extends Admin_Controller
         $this->load->library('gateways');
 
         // Add metadata
-        $this->template->append_css('module::gateways.css');
+        $this->template->append_css('module::admin/gateways.css');
     }
 
     // Show installed

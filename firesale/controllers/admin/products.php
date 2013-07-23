@@ -55,13 +55,13 @@ class products extends Admin_Controller
         $this->load->helper('general');
 
         // Add metadata
-        $this->template->append_css('module::products.css')
-                       ->append_js('module::jquery.tablesort.js')
-                       ->append_js('module::jquery.metadata.js')
-                       ->append_js('module::jquery.tablesort.plugins.js')
-                       ->append_js('module::upload.js')
-                       ->append_js('module::products.js')
-                       ->append_js('module::modifiers.js')
+        $this->template->append_css('module::admin/products.css')
+                       ->append_js('module::admin/jquery.tablesort.js')
+                       ->append_js('module::admin/jquery.metadata.js')
+                       ->append_js('module::admin/jquery.tablesort.plugins.js')
+                       ->append_js('module::admin/upload.js')
+                       ->append_js('module::admin/products.js')
+                       ->append_js('module::admin/modifiers.js')
                        ->append_metadata('<script type="text/javascript">' .
                                          "\n  var currency = '".cache('currency_m/get_symbol')."';" .
                                          "\n  var tax_rate = '".cache('taxes_m/get_percentage', 1, 1)."';" .
@@ -211,8 +211,8 @@ class products extends Admin_Controller
         $this->data->symbol = cache('currency_m/get_symbol');
 
         // Add metadata
-        $this->template->append_js('module::jquery.filedrop.js')
-                       ->append_js('module::upload.js')
+        $this->template->append_js('module::admin/jquery.filedrop.js')
+                       ->append_js('module::admin/upload.js')
                        ->append_metadata($this->load->view('fragments/wysiwyg', NULL, TRUE));
 
         // Grab all the taxes

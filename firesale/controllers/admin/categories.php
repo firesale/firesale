@@ -71,11 +71,11 @@ class categories extends Admin_Controller
         $this->data = new stdClass;
 
         // Add metadata
-        $this->template->append_css('module::categories.css')
-                       ->append_js('module::jquery.ui.nestedSortable.js')
-                       ->append_js('module::jquery.filedrop.js')
-                       ->append_js('module::upload.js')
-                       ->append_js('module::categories.js');
+        $this->template->append_css('module::admin/categories.css')
+                       ->append_js('module::admin/jquery.ui.nestedSortable.js')
+                       ->append_js('module::admin/jquery.filedrop.js')
+                       ->append_js('module::admin/upload.js')
+                       ->append_js('module::admin/categories.js');
 
         // Get the stream
         $this->stream = $this->streams->streams->get_stream('firesale_categories', 'firesale_categories');

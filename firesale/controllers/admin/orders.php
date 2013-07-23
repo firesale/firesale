@@ -48,11 +48,11 @@ class orders extends Admin_Controller
         $this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
 
         // Add metadata
-        $this->template->append_css('module::orders.css')
-                       ->append_js('module::jquery.tablesort.js')
-                       ->append_js('module::jquery.metadata.js')
-                       ->append_js('module::jquery.tablesort.plugins.js')
-                       ->append_js('module::orders.js')
+        $this->template->append_css('module::admin/orders.css')
+                       ->append_js('module::admin/jquery.tablesort.js')
+                       ->append_js('module::admin/jquery.metadata.js')
+                       ->append_js('module::admin/jquery.tablesort.plugins.js')
+                       ->append_js('module::admin/orders.js')
                        ->append_metadata('<script type="text/javascript">' .
                                          "\n  var currency = '" . $this->settings->get('currency') . "';" .
                                          "\n</script>");

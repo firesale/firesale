@@ -84,7 +84,7 @@ class currency extends Admin_Controller
 
         // Add page data
         $this->template->title(lang('firesale:title') . ' ' . lang('firesale:sections:currency'))
-                       ->append_css('module::currency.css')
+                       ->append_css('module::admin/currency.css')
                        ->set($this->data);
 
         // Fire events
@@ -156,8 +156,8 @@ class currency extends Admin_Controller
         // Build the page
         $this->template->title(lang('firesale:title').' '.lang('firesale:currency:'.$this->data->type))
                        ->set($this->data)
-                       ->append_css('module::currency.css')
-                       ->append_js('module::currency.js')
+                       ->append_css('module::admin/currency.css')
+                       ->append_js('module::admin/currency.js')
                        ->build('admin/currency/create');
 
     }
