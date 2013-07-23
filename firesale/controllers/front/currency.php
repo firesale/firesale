@@ -18,7 +18,7 @@
 *
 */
 
-class currency extends Public_Controller
+class Currency extends Public_Controller
 {
 
     public function __construct()

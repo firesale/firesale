@@ -18,7 +18,7 @@
 *
 */
 
-class category extends Public_Controller
+class Category extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
@@ -122,7 +122,7 @@ class category extends Public_Controller
 
             // Assign pagination
             if ( ! empty($products) ) {
-
+                
                 // Variables
                 $cat   = ( isset($category['id']) ? $category['id'] : NULL );
                 $url   = str_replace('/{{ slug }}', '', uri('category', $cat));
@@ -147,8 +147,6 @@ class category extends Public_Controller
 
             // Build Page
             $this->template->title(( $category != NULL ? $this->data->category['title'] : lang('firesale:cats_all_products') ))
-                           ->append_css('module::firesale.css')
-                           ->append_js('module::firesale.js')
                            ->set($this->data);
 
             // Assign accessible information

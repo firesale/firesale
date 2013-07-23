@@ -1,6 +1,6 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed');
 
-class ajax extends Public_Controller
+class Ajax extends Public_Controller
 {
     public function __construct()
     {
@@ -15,7 +15,7 @@ class ajax extends Public_Controller
 
         // Ensure request was made
         if ( ! $this->input->is_ajax_request() ) { show_404(); }
-    }
+	}
 
     // check the variation exists based on options
     public function variation_check()
@@ -24,13 +24,13 @@ class ajax extends Public_Controller
             $input   = $this->input->post();
             $options = $input['options'][0];
             sort($options);
-
+    
             $stream = $this->streams->streams->get_stream('firesale_product_variations', 'firesale_product_variations');
             $product = $this->modifier_m->variation_exists($options, $stream->id);
-
+    
             if ($product !== false) {
                 $product = cache('products_m/get_product', $product, null, 1);
-
+    
                 $data = array(
                     'code'            => $product['code'],
                     'stock'           => $product['stock'],
@@ -42,12 +42,12 @@ class ajax extends Public_Controller
                     'diff_rounded'    => $product['diff_rounded'],
                     'diff_formatted'  => $product['diff_formatted']
                 );
-
+    
                 echo json_encode($data);
                 exit;
-
+    
             }
         }
-    }
+    }   
 
 }

@@ -18,7 +18,7 @@
 *
 */
 
-class product extends Public_Controller
+class Product extends Public_Controller
 {
     public function __construct()
     {
@@ -62,9 +62,7 @@ class product extends Public_Controller
         }
 
         // Add page data
-        $this->template->append_css('module::firesale.css')
-                       ->append_js('module::firesale.js')
-                       ->title($this->data->product['title'])
+        $this->template->title($this->data->product['title'])
                        ->set($this->data);
 
         // Assign accessible information

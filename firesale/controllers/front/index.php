@@ -18,7 +18,7 @@
 *
 */
 
-class index extends Public_Controller
+class Index extends Public_Controller
 {
 
     /**
@@ -63,8 +63,6 @@ class index extends Public_Controller
 
         // Build page
         $this->template->title('Store')
-                       ->append_css('module::firesale.css')
-                       ->append_js('module::firesale.js')
                        ->set_breadcrumb('Store')
                        ->build('index', $this->data);
     }

@@ -18,7 +18,7 @@
 *
 */
 
-class orders extends Public_Controller
+class Orders extends Public_Controller
 {
 
     public function __construct()
@@ -34,10 +34,6 @@ class orders extends Public_Controller
         $this->load->model('categories_m');
         $this->load->model('products_m');
         $this->load->model('currency_m');
-
-        // Load css/js
-        $this->template->append_css('module::firesale.css')
-                       ->append_js('module::firesale.js');
     }
 
     public function index()

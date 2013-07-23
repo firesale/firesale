@@ -18,7 +18,7 @@
 *
 */
 
-class latest extends Public_Controller
+class Latest extends Public_Controller
 {
     /**
      * Contains the maximum number of products to show in the
@@ -65,7 +65,7 @@ class latest extends Public_Controller
 
         // Add category
         if ( strlen($category) > 0 ) {
-
+            
             // Get category ID
             $category = $this->db->select('title, id, slug')->where('slug', $category)->get('firesale_categories')->row();
 
@@ -86,7 +86,7 @@ class latest extends Public_Controller
         $ids      = $this->products_m->get_products($filter, $start, $this->perpage);
         $total    = ( $ids ? count($this->products_m->get_products($filter)) : 0 );
         $products = array();
-
+        
         // Loop and get product data
         if ( ! empty($ids) ) {
             foreach ( $ids as $id ) {
@@ -107,8 +107,6 @@ class latest extends Public_Controller
 
         // Build Page
         $this->template->title($title)
-                       ->append_css('module::firesale.css')
-                       ->append_js('module::firesale.js')
                        ->set($this->data)
                        ->design = 'new';
 

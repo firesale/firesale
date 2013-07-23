@@ -58,6 +58,13 @@ class Events_Firesale
                 redirect(str_replace('http://', 'https://', current_url()));
             }
         }
+
+        // Check for FireSale module
+        if ( substr($this->ci->module, 0, 8) == 'firesale' && $this->ci->settings->firesale_use_assets == '1' ) {
+            $namespace = 'module';
+            if ( $this->ci->module != 'firesale' ) { asset_namespace('firesale'); $namespace = 'firesale'; }
+            $this->ci->template->append_css($namespace.'::firesale.css')->append_js($namespace.'::firesale.js');
+        }
     }
 
     public function settings_updated($settings)

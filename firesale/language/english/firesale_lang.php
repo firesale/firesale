@@ -514,6 +514,8 @@
     $lang['firesale:settings_disabled_inst']                = 'Everything looks normal but nothing can be added to cart or paid for';
     $lang['firesale:settings_disabled_msg']                 = 'Disabled Message';
     $lang['firesale:settings_disabled_msg_inst']            = 'A flashdata error shown to users after they attempt to add an item to their cart';
+    $lang['firesale:settings_assets']                       = 'Use FireSale Assets';
+    $lang['firesale:settings_assets_inst']                  = 'Include the FireSale CSS & JS on the front-end theme';
 
     // Install errors
     $lang['firesale:install:wrong_version']                 = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.5 or above';

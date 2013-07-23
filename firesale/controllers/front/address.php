@@ -18,7 +18,7 @@
 *
 */
 
-class address extends Public_Controller
+class Address extends Public_Controller
 {
 
     public $user = FALSE;
@@ -44,10 +44,6 @@ class address extends Public_Controller
             $this->session->set_flashdata('error', lang('firesale:addresses:no_user'));
             redirect('users/login');
         }
-
-        // Load css/js
-        $this->template->append_css('module::firesale.css')
-                       ->append_js('module::firesale.js');
     }
 
     public function index()
