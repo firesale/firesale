@@ -34,14 +34,14 @@ function cache()
     return $_CI->pyrocache->model($m, $method, $args, $_CI->firesale->cache_time);
 }
 
-function uri($route, $id = null)
+function uri($route, $id = null, $after = null)
 {
-    return cache('routes_m/build_url', $route, $id);
+    return cache('routes_m/build_url', $route, $id).( $after !== null ? '/'.$after : '' );
 }
 
-function url($route, $id = null)
+function url($route, $id = null, $after = null)
 {
-    return site_url(cache('routes_m/build_url', $route, $id));
+    return site_url(cache('routes_m/build_url', $route, $id).( $after !== null ? '/'.$after : '' ));
 }
 
 function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
