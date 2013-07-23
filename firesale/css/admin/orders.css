@@ -8,7 +8,7 @@ tbody tr:last-child { border: none; }
 #filters > ul > li > center .chzn-single li span { text-align: left !important; }
 .chzn-container .chzn-single span, .chzn-container li { text-align: left !important; }
 .pagination { margin: 0 !important; }
-.overlay { background: rgba(255,255,255,.6) url('img/loading.gif') no-repeat 50% 50%; }
+.overlay { background: rgba(255,255,255,.6) url('../../img/loading.gif') no-repeat 50% 50%; }
 
 /* Form */
 ul.width-half { width: 50% !important; display: block; float: left; }
@@ -25,13 +25,13 @@ ul.width-half > li { min-height: 44px; }
 .items .chzn-container { margin: 0; }
 .items input { margin: 0 10px; }
 .items button { margin: -1px 0 0 0; }
-img.image { width: 64px; height: 64px; display: block; background: url('img/none.jpg') no-repeat; background-size: 64px 64px; overflow: hidden; text-indent: -1000px; }
+img.image { width: 64px; height: 64px; display: block; background: url('../../img/none.jpg') no-repeat; background-size: 64px 64px; overflow: hidden; text-indent: -1000px; }
 
 /* Table */
-a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-repeat; float: right; cursor: pointer; margin: 0 15px 0 0; }
-table.tablesorter thead tr .tablesorter-header{background-image:url(img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer;}
-table.tablesorter thead tr .tablesorter-headerSortUp{background-image:url(img/asc.gif);}
-table.tablesorter thead tr .tablesorter-headerSortDown{background-image:url(img/desc.gif);}
+a.show-filter { width: 21px; height: 22px; background: url(../../img/filter.png) no-repeat; float: right; cursor: pointer; margin: 0 15px 0 0; }
+table.tablesorter thead tr .tablesorter-header{background-image:url(../../img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer;}
+table.tablesorter thead tr .tablesorter-headerSortUp{background-image:url(../../img/asc.gif);}
+table.tablesorter thead tr .tablesorter-headerSortDown{background-image:url(../../img/desc.gif);}
 table.tablesorter thead tr .tablesorter-headerSortDown, table.tablesorter thead tr .tablesorter-headerSortUp{background-color:#f3f3f3;color:#000;}
 table.tablesorter input[type=search] { width: 100% !important; min-width: 100% !important; }
 table.tablesorter tbody tr.status-2, table.tablesorter tbody tr.status-2 td { background: #F0FBEA; }

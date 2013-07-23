@@ -9,21 +9,21 @@ button.delete { margin-left: 6px; }
 /* Sortable CSS */
 #category-sort ol { background:none; margin-left:1em !important; }
 #category-sort > ol { margin-left: 0 !important; }
-#category-sort a { text-decoration: none; font-size: 13px; color:#5c5b5b; padding: 1px 1px 1px 15px; background: url('img/off.png') no-repeat left; }
+#category-sort a { text-decoration: none; font-size: 13px; color:#5c5b5b; padding: 1px 1px 1px 15px; background: url('../../img/off.png') no-repeat left; }
 #category-sort a:hover { text-decoration: underline; }
-#category-sort a.selected { color: black; background: url('img/on.png') no-repeat left; }
+#category-sort a.selected { color: black; background: url('../../img/on.png') no-repeat left; }
 .ui-nestedSortable-error { background:#fbe3e4; color:#8a1f11; }
 ol { margin: 0; padding: 0; }
 ol.sortable, ol.sortable ol { margin: 0; padding: 0; list-style-type: none; cursor: default; }
 ol.sortable { margin: 20px; }
 .sortable li { margin: 5px 0; padding-left: 20px; }
-.sortable li div  { padding: 5px 1px 5px 10px; margin: 0; cursor: move; background: #eee url('img/drag_handle_dark.gif') no-repeat 99% 50%; -webkit-border-radius: 4px; -moz-border-radius: 4px; -o-border-radius: 4px; border-radius: 4px; }
+.sortable li div  { padding: 5px 1px 5px 10px; margin: 0; cursor: move; background: #eee url('../../img/drag_handle_dark.gif') no-repeat 99% 50%; -webkit-border-radius: 4px; -moz-border-radius: 4px; -o-border-radius: 4px; border-radius: 4px; }
 .sortable li div:hover { background-color: #dbdbdb; -webkit-border-radius: 4px; -moz-border-radius: 4px; -o-border-radius: 4px; border-radius: 4px; }
 .sortable li div.draft { background-color: #D8E9FA; }
 .sortable li div.draft:hover { background-color: #BCD9F5; }
 .sortable li.placeholder { background-color: #c2c0c0; -webkit-border-radius: 4px; -moz-border-radius: 4px; -o-border-radius: 4px; border-radius: 4px; margin-left: 20px; }
-.plus { background: url('img/more.png') no-repeat 0 4px; }
-.minus { background: url('img/less.png') no-repeat 0 4px; }
+.plus { background: url('../../img/more.png') no-repeat 0 4px; }
+.minus { background: url('../../img/less.png') no-repeat 0 4px; }
 
 /* Image Dropbox */
 #dropbox{position:relative;min-height:290px;border-radius:15px;padding:4px 4px 44px;}
@@ -34,11 +34,11 @@ ol.sortable { margin: 20px; }
 #dropbox .preview img{max-width:240px;max-height:180px;border:3px solid #fff;display:block;box-shadow:0 0 2px #000;}
 #dropbox .imageHolder{display:inline-block;position:relative;}
 #dropbox .imageTitle{display:block;width:100%;text-align:center;position:relative;margin-top:20px;text-transform:uppercase;}
-#dropbox .uploaded{position:absolute;top:0;left:0;height:100%;width:100%;background:url(img/done.png) no-repeat center center rgba(255,255,255,0.5);display:none;}
+#dropbox .uploaded{position:absolute;top:0;left:0;height:100%;width:100%;background:url(../../img/done.png) no-repeat center center rgba(255,255,255,0.5);display:none;}
 #dropbox .preview.done .uploaded{display:block;}
-#dropbox .preview.error .uploaded{display:block;background-image:url(img/error.png);}
+#dropbox .preview.error .uploaded{display:block;background-image:url(../../img/error.png);}
 #dropbox .progressHolder{position:absolute;background-color:#E0DBDB;height:12px;width:100%;left:0;bottom:0;box-shadow:0 0 2px #000;}
 #dropbox .progress{background-color:#EAA54F;position:absolute;height:100%;left:0;width:0;box-shadow:0 0 1px rgba(255,255,255,0.4) inset;-moz-transition:.25s;-webkit-transition:.25s;-o-transition:.25s;transition:.25s;}
 #dropbox .preview.done .progress{width:100%!important;}
 #dropbox .imageHolder:hover{cursor:move;}
-#dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(img/delete.png) no-repeat;}
+#dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(../../img/delete.png) no-repeat;}

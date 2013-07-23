@@ -1,14 +1,14 @@
 
 /* Gneral */
 .chzn-container .chzn-single span,.chzn-container li{color:#666;font-weight:400;}
-.loading{min-height:22px;background:url(img/loading.gif) no-repeat 50% 50%!important;}
-a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-repeat; float: right; cursor: pointer; margin: 0 15px 0 0; }
+.loading{min-height:22px;background:url(../../img/loading.gif) no-repeat 50% 50%!important;}
+a.show-filter { width: 21px; height: 22px; background: url(../../img/filter.png) no-repeat; float: right; cursor: pointer; margin: 0 15px 0 0; }
 #filters > ul { width: 100%; display: block; }
 #filters > ul > li:first-child { margin-top: 0 !important; }
 #filters > ul > li > center > input[type="text"] { width: 220px !important; }
 #filters > ul > li > center .chzn-single li span { text-align: left !important; }
 .chzn-container .chzn-single span, .chzn-container li { text-align: left !important; }
-.overlay { background: rgba(255,255,255,.6) url('img/loading.gif') no-repeat 50% 50%; }
+.overlay { background: rgba(255,255,255,.6) url('../../img/loading.gif') no-repeat 50% 50%; }
 .clear { clear: both; height: 0; line-height: 0; }
 
 /* Product Table */
@@ -18,16 +18,16 @@ a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-re
 #product_table .chzn-container .chzn-drop{width:168px!important;}
 #product_table .actions{width:85px!important;}
 #product_table .item-img{width:40px!important;}
-#product_table img{width:32px;height:32px;display:block;background:url(img/none.jpg) no-repeat;background-size:32px 32px;overflow:hidden;text-indent:-1000px;}
+#product_table img{width:32px;height:32px;display:block;background:url(../../img/none.jpg) no-repeat;background-size:32px 32px;overflow:hidden;text-indent:-1000px;}
 #product_table .chzn-container .chzn-search,#product_table .chzn-container .chzn-search input{width:133px!important;}
-#product_table thead tr .tablesorter-header{background-image:url(img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer;}
-#product_table thead tr .tablesorter-headerAsc{background-image:url(img/asc.gif);}
-#product_table thead tr .tablesorter-headerDesc{background-image:url(img/desc.gif);}
+#product_table thead tr .tablesorter-header{background-image:url(../../img/bg.gif);background-repeat:no-repeat;background-position:center right;cursor:pointer;}
+#product_table thead tr .tablesorter-headerAsc{background-image:url(../../img/asc.gif);}
+#product_table thead tr .tablesorter-headerDesc{background-image:url(../../img/desc.gif);}
 #product_table thead tr .tablesorter-headerDesc, table.tablesorter thead tr .tablesorter-headerAsc{background-color:#f3f3f3;color:#000;}
 #product_table .sorter-false { background-image: none !important; }
 #product_table input[type=search] { width: 100% !important; min-width: 100% !important; }
 #product_table tbody tr td { position: relative; }
-#product_table tbody tr.loading td { width: 100%; height: 200px; background:url(img/loading.gif) no-repeat 50% 50%; }
+#product_table tbody tr.loading td { width: 100%; height: 200px; background:url(../../img/loading.gif) no-repeat 50% 50%; }
 #product_table tr.selected td { background: #E1EFFB; }
 #product_table tr td:first-child, #product_table tr th:first-child { width: 10px !important; text-align: center; }
 #product_table tr td:nth-child(3), #product_table tr th:nth-child(3) { width: 32px !important; text-align: center; }
@@ -41,14 +41,14 @@ a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-re
 #dropbox .preview img{max-width:240px;max-height:180px;border:3px solid #fff;display:block;box-shadow:0 0 2px #000;}
 #dropbox .imageHolder{display:inline-block;position:relative;}
 #dropbox .imageTitle{display:block;width:100%;text-align:center;position:relative;margin-top:20px;text-transform:uppercase;}
-#dropbox .uploaded{position:absolute;top:0;left:0;height:100%;width:100%;background:url(img/done.png) no-repeat center center rgba(255,255,255,0.5);display:none;}
+#dropbox .uploaded{position:absolute;top:0;left:0;height:100%;width:100%;background:url(../../img/done.png) no-repeat center center rgba(255,255,255,0.5);display:none;}
 #dropbox .preview.done .uploaded{display:block;}
-#dropbox .preview.error .uploaded{display:block;background-image:url(img/error.png);}
+#dropbox .preview.error .uploaded{display:block;background-image:url(../../img/error.png);}
 #dropbox .progressHolder{position:absolute;background-color:#E0DBDB;height:12px;width:100%;left:0;bottom:0;box-shadow:0 0 2px #000;}
 #dropbox .progress{background-color:#EAA54F;position:absolute;height:100%;left:0;width:0;box-shadow:0 0 1px rgba(255,255,255,0.4) inset;-moz-transition:.25s;-webkit-transition:.25s;-o-transition:.25s;transition:.25s;}
 #dropbox .preview.done .progress{width:100%!important;}
 #dropbox .imageHolder:hover{cursor:move;}
-#dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(img/delete.png) no-repeat;}
+#dropbox .imageHolder .delete{width:28px;height:28px;display:inline-block;overflow:hidden;text-indent:-1000px;top:-12px;right:-14px;position:absolute;background:url(../../img/delete.png) no-repeat;}
 
 /* Form */
 #title,#slug{width:350px!important;}
@@ -56,7 +56,7 @@ a.show-filter { width: 21px; height: 22px; background: url(img/filter.png) no-re
 #tabs textarea{width:100%;}
 span.discount strong{color:#0C3;}
 .clear{clear:both;height:0;line-height:0;}
-button.link{width:40px;height:40px;background:url(img/link.png) no-repeat 0 0;overflow:hidden;text-indent:-1000px;border:0;}
+button.link{width:40px;height:40px;background:url(../../img/link.png) no-repeat 0 0;overflow:hidden;text-indent:-1000px;border:0;}
 button.link.unlinked{background-position:-40px 0;}
 .mult_lists tr.alt{border-bottom:none;}
 .mult_lists tbody{border:1px solid #eee;}
@@ -82,8 +82,8 @@ button.link.unlinked{background-position:-40px 0;}
 .ui-slider-horizontal .ui-slider-range-max { right: 0; }
 
 /* Modifiers */
-table.modifiers span.mod-mover, table.modifiers span.var-mover { width: 24px; height: 16px; display: block; cursor: move; background: url('img/drag_handle_dark.gif') no-repeat 0 0; }
-table.modifiers a.mod-min { background: url('img/showhide.png') no-repeat 0 100%; width: 24px; height: 24px; display: block; overflow: hidden; text-indent: -1000px; }
+table.modifiers span.mod-mover, table.modifiers span.var-mover { width: 24px; height: 16px; display: block; cursor: move; background: url('../../img/drag_handle_dark.gif') no-repeat 0 0; }
+table.modifiers a.mod-min { background: url('../../img/showhide.png') no-repeat 0 100%; width: 24px; height: 24px; display: block; overflow: hidden; text-indent: -1000px; }
 table.modifiers a.mod-min.show { background-position: 0 0; }
 table.modifiers .btn.right { float: right; }
 
