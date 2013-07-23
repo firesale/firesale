@@ -23,12 +23,10 @@ class Shipping_m extends MY_Model
 
     public function get_option_by_id($id)
     {
-
-        $query = $this->db->where("id = {$id}")->get('firesale_shipping');
+        $query = $this->db->where('id', $id)->get('firesale_shipping');
         if ( $query->num_rows() ) {
             $result = $query->row_array();
             $result = array_merge($result, $this->calculate_tax($result['id'], $result['price']));
-
             return $result;
         }
 
