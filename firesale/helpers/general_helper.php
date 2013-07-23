@@ -46,9 +46,12 @@ function url($route, $id = null)
 
 function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
 {
-    $currency = $currency or ci()->fs_cart->currency();
+	if(is_object(ci()->fs_cart))
+	{
+		$currency = $currency or ci()->fs_cart->currency();
 
-    ci()->load->model('firesale/currency_m');
+		ci()->load->model('firesale/currency_m');
+	}
 
     return ci()->currency_m->format_string($price, $currency, $fix, $apply_tax, $format);
 }
