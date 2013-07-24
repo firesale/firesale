@@ -299,7 +299,7 @@ class Routes_m extends MY_Model
         file_put_contents($file, $content);
     }
 
-    public function rebuild()
+    public function rebuild($skip_formatting = false)
     {
         // Variables
         $params = array(
@@ -310,6 +310,10 @@ class Routes_m extends MY_Model
             'paginate'     => 'yes',
             'page_segment' => 4
         );
+
+        if ($skip_formatting) {
+        	$params['disable'] = "title|slug|table|map|route|translation|https|is_core";
+        }
 
         // Get routes
         $routes = $this->streams->entries->get_entries($params);
