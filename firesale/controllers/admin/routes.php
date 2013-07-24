@@ -208,7 +208,7 @@ class routes extends Admin_Controller
     public function rebuild($redirect = true)
     {
 
-    	Events:trigger('rebuild_routes');
+    	Events::trigger('rebuild_routes');
 
         // Flash and redirect
         if ( $redirect ) {
