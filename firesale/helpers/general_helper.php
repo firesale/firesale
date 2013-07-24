@@ -81,10 +81,9 @@ function format_currency($price, $currency = false, $fix = true, $apply_tax = fa
 		$currency = $currency or ci()->fs_cart->currency(); 
 	} else {
 		ci()->load->model('settings_m');
-		$currency = ci()->currency_m->get(Settings::get('firesale_currency'));
+		$currency = cache('currency_m/get', Settings::get('firesale_currency'));
 	}
-    $formatted = cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
-    return $formatted;
+    return cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
 }
 
 /**
