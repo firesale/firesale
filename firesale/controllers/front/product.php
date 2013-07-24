@@ -41,6 +41,7 @@ class product extends Public_Controller
     public function index($product)
     {
         // Get the product
+        $product = str_replace(array('.json', '.xml'), '', $product);
         $product = cache('products_m/get_product', $product);
 
         // Check it exists
@@ -54,6 +55,9 @@ class product extends Public_Controller
         $this->data->images   = cache('products_m/get_images', $product['slug']);
         $this->data->url      = uri('product', $this->data->product['id']);
         $this->data->parent   = $this->products_m->build_breadcrumbs($this->data->category, $this->template);
+
+        // Api request
+        if ( api($this->data) ) { return; }
 
         if (rtrim($this->data->url,"/") == uri_string()) {
             $this->template->set_breadcrumb($this->data->product['title']);

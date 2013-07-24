@@ -73,9 +73,9 @@ class category extends Public_Controller
      */
     public function index()
     {
-
         // Variables
         $args     = func_get_args();
+        $args     = explode('/', str_replace(array('.json', '.xml'), '', implode('/', $args)));
         $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
         $category = implode('/', $args);
 
@@ -141,6 +141,9 @@ class category extends Public_Controller
             $this->data->products = reassign_helper_vars($products);
             $this->data->ordering = get_order();
             $this->data->parent   = ( isset($category['parent']['id']) && $category['parent']['id'] > 0 ? $category['parent']['id'] : $category['id'] );
+
+            // Api request
+            if ( api($this->data) ) { return; }
 
             // Set category in session
             $this->session->set_userdata('category', $this->data->category['id']);

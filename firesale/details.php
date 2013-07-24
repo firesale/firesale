@@ -881,6 +881,9 @@ class Module_Firesale extends Module
 
             // Add assets setting
             $this->settings('add', array('firesale_use_assets'));
+
+            // Add api settings
+            $this->settings('add', array('firesale_api', 'firesale_api_key'));
         }
 
         // Tracking
@@ -926,6 +929,8 @@ class Module_Firesale extends Module
         $settings[] = array('slug' => 'firesale_new', 'title' => lang('firesale:settings_new'), 'description' => lang('firesale:settings_new_inst'), 'default' => '86400', 'value' => '86400', 'type' => 'text', 'options' => '', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_basic_checkout', 'title' => lang('firesale:settings_basic'), 'description' => lang('firesale:settings_basic_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
         $settings[] = array('slug' => 'firesale_use_assets', 'title' => lang('firesale:settings_assets'), 'description' => lang('firesale:settings_assets_inst'), 'default' => '1', 'value' => '1', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_api', 'title' => lang('firesale:settings_api'), 'description' => lang('firesale:settings_api_inst'), 'default' => '0', 'value' => '0', 'type' => 'select', 'options' => '1=Yes|0=No', 'is_required' => 1, 'is_gui' => 1, 'module' => 'firesale');
+        $settings[] = array('slug' => 'firesale_api_key', 'title' => lang('firesale:settings_api_key'), 'description' => lang('firesale:settings_api_key_inst'), 'default' => '', 'value' => '', 'type' => 'text', 'options' => '', 'is_required' => 0, 'is_gui' => 1, 'module' => 'firesale');
 
         // Get existing settings
         foreach ( $this->db->get('settings')->result_array() as $result ) { $current[] = $result['slug']; }

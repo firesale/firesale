@@ -511,6 +511,10 @@
     $lang['firesale:settings_disabled_msg_inst']     = 'A flashdata error shown to users after they attempt to add an item to their cart'; # translate
     $lang['firesale:settings_assets']                = 'Use FireSale Assets'; # translate
     $lang['firesale:settings_assets_inst']           = 'Include the FireSale CSS & JS on the front-end theme'; # translate
+    $lang['firesale:settings_api']                          = 'Enable FireSale API'; # translate
+    $lang['firesale:settings_api_inst']                     = 'Our API is available on most core pages, simply append .json or .xml'; # translate
+    $lang['firesale:settings_api_key']                      = 'FireSale API Key'; # translate
+    $lang['firesale:settings_api_key_inst']                 = 'The API is public if this isleft blank, once set add ?key=<YOUR KEY> to access it privately'; # translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Unable to install the FireSale module, FireSale requires PyroCMS v2.1.4 or above'; #Translate
