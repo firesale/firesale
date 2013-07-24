@@ -81,6 +81,13 @@ function format_currency($price, $currency = false, $fix = true, $apply_tax = fa
     return $formatted;
 }
 
+/**
+ * Outputs a data array as either json or xml as well as handles the "security"
+ * and correct page management.
+ * 
+ * @param  array $data The data to be output
+ * @return boolean     true/false on success or failure of message
+ */
 function api($data)
 {
     // Check
