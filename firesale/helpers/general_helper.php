@@ -18,42 +18,67 @@
 *
 */
 
+/**
+ * A simplified version of the pyrocache model functions. Accepts a model/function
+ * String followed by as many arguments as you require.
+ * 
+ * @return various your cached results
+ */
 function cache()
 {
     // Variables
-    $_CI =& get_instance();
     $args = func_get_args();
     $call = array_shift($args);
-
     list($m, $method) = explode('/', $call);
 
     // Just incase
-    $_CI->load->model($m);
+    ci()->load->model($m);
 
     // Cache and return
-    return $_CI->pyrocache->model($m, $method, $args, $_CI->firesale->cache_time);
+    return ci()->pyrocache->model($m, $method, $args, ci()->firesale->cache_time);
 }
 
+/**
+ * Builds a URI string for a given FireSale route
+ * 
+ * @param  string  $route The route slug
+ * @param  integer $id    [The ID of the element to link to]
+ * @param  string  $after [Anything that goes after your route]
+ * @return string         The route URI
+ */
 function uri($route, $id = null, $after = null)
 {
     return cache('routes_m/build_url', $route, $id).( $after !== null ? '/'.$after : '' );
 }
 
+/**
+ * Builds a URL string for a given FireSale route
+ * 
+ * @param  string  $route The route slug
+ * @param  integer $id    [The ID of the element to link to]
+ * @param  string  $after [Anything that goes after your route]
+ * @return string         The route URL
+ */
 function url($route, $id = null, $after = null)
 {
     return site_url(cache('routes_m/build_url', $route, $id).( $after !== null ? '/'.$after : '' ));
 }
 
+/**
+ * A simplified way to format a currency.
+ * 
+ * @param  string  $price     The price to be formatted
+ * @param  object  $currency  [The currency to format to]
+ * @param  boolean $fix       [Should the price have fixes applied?]
+ * @param  boolean $apply_tax [Should the price have taxes applied?]
+ * @param  boolean $format    [Should the string be formatted?]
+ * @return string             The formatted currency
+ */
 function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
 {
-	if(is_object(ci()->fs_cart))
-	{
-		$currency = $currency or ci()->fs_cart->currency();
-
-		ci()->load->model('firesale/currency_m');
-	}
-
-    return ci()->currency_m->format_string($price, $currency, $fix, $apply_tax, $format);
+    $currency  = $currency or ci()->fs_cart->currency();
+    $formatted = cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
+    return $formatted;
 }
 
 /**

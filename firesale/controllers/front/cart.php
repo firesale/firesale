@@ -800,23 +800,23 @@ class cart extends Public_Controller
 
     protected function _order_authorized($order, $callback = FALSE)
     {
+        // Format order
+        foreach ($order['items'] as &$item) {
+            $item['total'] = format_currency(($item['price_rounded'] * $item['qty']), $order['currency'], false, false);
+        }
+
+        // Format currency
+        $order['price_sub']   = format_currency($order['price_sub'], $order['currency'], false, false);
+        $order['price_ship']  = format_currency($order['price_ship'], $order['currency'], false, false);
+        $order['price_total'] = format_currency($order['price_total'], $order['currency'], false, false);
+        $order['price_tax']   = format_currency($order['price_tax'], $order['currency'], false, false);
+
         // Sale made, run updates
         $this->cart_m->sale_complete($order);
 
         // Fire events
         Events::trigger('order_complete', $order);
         Events::trigger('clear_cache');
-
-        // Format order
-        foreach ($order['items'] as &$item) {
-            $item['total'] = format_currency(($item['price_rounded'] * $item['qty']));
-        }
-
-        // Format currency
-        $order['price_sub']     = format_currency($order['price_sub'], false, false, false);
-        $order['price_ship']    = format_currency($order['price_ship'], false, false, false);
-        $order['price_total']   = format_currency($order['price_total'], false, false, false);
-        $order['price_tax']     = format_currency($order['price_tax'], false, false, false);
 
         // Email (user)
         Events::trigger('email', array_merge($order, array('slug' => 'order-complete-user', 'to' => $order['bill_to']['email'])), 'array');
