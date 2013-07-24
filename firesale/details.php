@@ -311,7 +311,7 @@ class Module_Firesale extends Module
         $this->add_stream_fields($fields, $template);
 
         // Change default parent value
-        $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_categories` CHANGE `parent` `parent` INT( 11 ) NULL DEFAULT '0';");
+        $this->db->query("ALTER TABLE `" . $this->db->dbprefix("firesale_categories") . "` CHANGE `parent` `parent` INT( 11 ) NULL DEFAULT '0';");
 
         // Add an initial category
         $cat = array('id' => 1, 'created' => date("Y-m-d H:i:s"), 'created_by' => $this->current_user->id, 'ordering_count' => 0, 'parent' => 0, 'status' => 1, 'title' => lang('firesale:category:uncategorised'), 'slug' => lang('firesale:category:uncategorised_slug'), 'description' => lang('firesale:category:uncategorised_description'));
@@ -351,7 +351,7 @@ class Module_Firesale extends Module
         $this->add_stream_fields($fields, $template);
 
         // Change engine and add fulltext
-        $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_products` ENGINE = MyISAM,
+        $this->db->query("ALTER TABLE `" . $this->db->dbprefix("firesale_products") . "` ENGINE = MyISAM,
                           ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0',
                           ADD FULLTEXT (`title`, `description`)");
 
@@ -389,7 +389,7 @@ class Module_Firesale extends Module
         $this->add_stream_fields($fields, $template);
 
         // Create lookup table
-        $this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
+        $this->db->query("CREATE TABLE `" . $this->db->dbprefix("_firesale_product_variations_firesale_products") . "` (
                             `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                             `row_id` int(11) NOT NULL,
                             `firesale_product_variations_id` int(11) NOT NULL,
@@ -424,7 +424,7 @@ class Module_Firesale extends Module
 
         // Add the gateway settings table
         $this->db->query("
-            CREATE TABLE IF NOT EXISTS `".SITE_REF."_firesale_gateway_settings` (
+            CREATE TABLE IF NOT EXISTS `".$this->db->dbprefix("_firesale_gateway_settings")."` (
               `id` int(11) NOT NULL,
               `key` varchar(64) NOT NULL,
               `value` text NOT NULL
@@ -530,7 +530,7 @@ class Module_Firesale extends Module
         $this->add_stream_fields($fields, $template);
 
         // Update Orders Items
-        $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` LONGTEXT NULL");
+        $this->db->query("ALTER TABLE `" . $this->db->dbprefix("firesale_orders_items") . "` ADD `options` LONGTEXT NULL");
 
         ############
         ## ROUTES ##
@@ -543,7 +543,7 @@ class Module_Firesale extends Module
         ##################
 
         $this->db->query("
-            CREATE TABLE IF NOT EXISTS `" . SITE_REF . "_firesale_transactions` (
+            CREATE TABLE IF NOT EXISTS `" . $this->db->dbprefix("_firesale_transactions") . "` (
               `reference` longtext,
               `order_id` int(11) DEFAULT NULL,
               `gateway` varchar(100) DEFAULT NULL,
@@ -710,7 +710,7 @@ class Module_Firesale extends Module
             $this->dbforge->drop_table('firesale_transactions');
 
             $this->db->query("
-                CREATE TABLE IF NOT EXISTS `" . SITE_REF . "_firesale_transactions` (
+                CREATE TABLE IF NOT EXISTS `" . $this->db->dbprefix("_firesale_transactions") . "` (
                   `reference` longtext,
                   `order_id` int(11) DEFAULT NULL,
                   `gateway` varchar(100) DEFAULT NULL,
@@ -727,17 +727,17 @@ class Module_Firesale extends Module
         if ($old_version < '1.2.0') {
 
             // Change engine and add fulltext
-            $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_products` ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0';");
+            $this->db->query("ALTER TABLE `" . $this->db->dbprefix("firesale_products") . "` ADD `is_variation` BOOLEAN NOT NULL DEFAULT '0';");
 
             // Update currency fields
-            $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_currency` CHANGE `cur_format_dec` `cur_format_dec` VARCHAR( 12 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ,
+            $this->db->query("ALTER TABLE `" . $this->db->dbprefix("firesale_currency") . "` CHANGE `cur_format_dec` `cur_format_dec` VARCHAR( 12 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL ,
                               CHANGE `cur_format_sep` `cur_format_sep` VARCHAR( 12 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL;");
 
             // Update Orders Items
-            $this->db->query("ALTER TABLE `" . SITE_REF . "_firesale_orders_items` ADD `options` TEXT NOT NULL");
+            $this->db->query("ALTER TABLE `" . $this->db->dbprefix("firesale_orders_items") . "` ADD `options` TEXT NOT NULL");
 
             // Finally update the bloody address title bollocks
-            $this->db->query("UPDATE `" . SITE_REF . "_data_fields` SET `field_name` = 'lang:firesale:label_address_title' WHERE `field_namespace` = 'firesale_addresses' AND `field_slug` = 'title'");
+            $this->db->query("UPDATE `" . $this->db->dbprefix("_data_fields") . "` SET `field_name` = 'lang:firesale:label_address_title' WHERE `field_namespace` = 'firesale_addresses' AND `field_slug` = 'title'");
 
             // Add a partially refunded option
             $result  = current($this->db->select('id, field_data')->where('field_slug', 'order_status')->where('field_namespace', 'firesale_orders')->get('data_fields')->result_array());
@@ -783,7 +783,7 @@ class Module_Firesale extends Module
             $this->add_stream_fields($fields, $template);
 
             // Create lookup table
-            $this->db->query("CREATE TABLE `" . SITE_REF . "_firesale_product_variations_firesale_products` (
+            $this->db->query("CREATE TABLE `" . $this->db->dbprefix("_firesale_product_variations_firesale_products") . "` (
                               `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                               `row_id` int(11) NOT NULL,
                               `firesale_product_variations_id` int(11) NOT NULL,
@@ -817,7 +817,7 @@ class Module_Firesale extends Module
                     $this->db->where('field_slug', $column)->where('field_namespace', $namespace)->update('data_fields', $update);
 
                     // Update column
-                    $this->db->query("ALTER TABLE `" . SITE_REF . "_{$namespace}` CHANGE `{$column}` `{$column}` FLOAT NULL DEFAULT NULL");
+                    $this->db->query("ALTER TABLE `" . $this->db->dbprefix($namespace) . "` CHANGE `{$column}` `{$column}` FLOAT NULL DEFAULT NULL");
                 }
             }
 
@@ -993,7 +993,7 @@ class Module_Firesale extends Module
             $this->add_stream_fields($fields, $template);
 
             // Add is_core
-            $this->db->query("ALTER TABLE `".SITE_REF."_firesale_routes` ADD `is_core` BOOLEAN NOT NULL DEFAULT '0'");
+            $this->db->query("ALTER TABLE `".$this->db->dbprefix("firesale_routes")."` ADD `is_core` BOOLEAN NOT NULL DEFAULT '0'");
         }
 
         // Routes
@@ -1198,7 +1198,7 @@ class Module_Firesale extends Module
 
         // Define our templates
         $templates = array('order-complete-admin', 'order-complete-user', 'order-dispatched');
-        $sql = "INSERT INTO `" . SITE_REF . "_email_templates` (`slug`, `name`, `description`, `subject`, `body`, `lang`, `is_default`, `module`) VALUES
+        $sql = "INSERT INTO `" . $this->db->dbprefix("email_templates") . "` (`slug`, `name`, `description`, `subject`, `body`, `lang`, `is_default`, `module`) VALUES
                 ('order-complete-admin', 'Order Complete (Admin)', 'Sent to the site admin once an order has been completed', '{{ settings:site_name }} :: An order has been complete', '<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" style=\"width: 500px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td>\r\n				<p>\r\n					<strong>Add Your Logo Here</strong></p>\r\n				<p>\r\n					&nbsp;</p>\r\n			</td>\r\n			<td style=\"text-align: right;\">\r\n				<p>\r\n					<strong>Order ID: #{{ id }}</strong></p>\r\n				<p>\r\n					&nbsp;</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<p>\r\n					Dear Admin,</p>\r\n				<p>\r\n					You have just recieved a new order on {{ settings:site_name }}.<br />\r\n					<br />\r\n					&nbsp;</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<p>\r\n					<strong>Postage Information:</strong></p>\r\n				<p>\r\n					{{ if ship_to.firstname }}{{ ship_to.firstname }}<br />\r\n					{{ endif }} {{ if ship_to.address1 }}{{ ship_to.address1 }}<br />\r\n					{{ endif }} {{ if ship_to.address2 }}{{ ship_to.address2 }}<br />\r\n					{{ endif }} {{ if ship_to.city }}{{ ship_to.city }}<br />\r\n					{{ endif }} {{ if ship_to.county }}{{ ship_to.county }}<br />\r\n					{{ endif }} {{ if ship_to.postcode }}{{ ship_to.postcode }}<br />\r\n					{{ endif }} {{ ship_to.country.name }}</p>\r\n			</td>\r\n			<td>\r\n				<p>\r\n					<strong>Billing Information:</strong></p>\r\n				<p>\r\n					{{ if bill_to.firstname }}{{ bill_to.firstname }}<br />\r\n					{{ endif }} {{ if bill_to.address1 }}{{ bill_to.address1 }}<br />\r\n					{{ endif }} {{ if bill_to.address2 }}{{ bill_to.address2 }}<br />\r\n					{{ endif }} {{ if bill_to.city }}{{ bill_to.city }}<br />\r\n					{{ endif }} {{ if bill_to.county }}{{ bill_to.county }}<br />\r\n					{{ endif }} {{ if bill_to.postcode }}{{ bill_to.postcode }}<br />\r\n					{{ endif }} {{ bill_to.country.name }}</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<br />\r\n				<br />\r\n				<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" style=\"width: 100%\">\r\n					<thead>\r\n						<tr style=\"border-top: 1px solid #ccc\">\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Product</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Unit Price</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Quantity</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Total</th>\r\n						</tr>\r\n					</thead>\r\n					<tfoot>\r\n						<tr style=\"border-top: 1px solid #ccc\">\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Sub-total:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_sub }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Postage:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_ship }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Tax ({{ settings:firesale_tax }}%):</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_tax }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Total:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_total }}</td>\r\n						</tr>\r\n					</tfoot>\r\n					<tbody>\r\n{{ items }}\r\n                      <tr style=\"border-top: 1px solid #ccc\">\r\n                           <td>\r\n                                <a href=\"{{ firesale:url route=\"product\" id=id }}\">{{ name }}<br />\r\n                             Item No: {{ code }}</a></td>\r\n                            <td>\r\n                                {{ price_formatted }}</td>\r\n                          <td>\r\n                                {{ qty }}</td>\r\n                          <td>\r\n                                {{ settings:currency }} {{ total }}</td>\r\n                        </tr>\r\n{{ /items }}\r\n					</tbody>\r\n				</table>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n<p>\r\n	&nbsp;</p>', 'en', 0, ''),
                 ('order-complete-user', 'Order Complete (User)', 'Sent to the user once an order has been completed', '{{ settings:site_name }} :: Your Order Confirmation', '<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" style=\"width: 500px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td>\r\n				<p>\r\n					<strong>Add Your Logo Here</strong></p>\r\n				<p>\r\n					&nbsp;</p>\r\n			</td>\r\n			<td style=\"text-align: right;\">\r\n				<p>\r\n					<strong>Order ID: #{{ id }}</strong></p>\r\n				<p>\r\n					&nbsp;</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<p>\r\n					Dear {{ bill_to.firstname }},</p>\r\n				<p>\r\n					Thank you for your recent order on {{ settings:site_name }}, below you will find the details of your order and these should be kept for your own records.<br />\r\n					<br />\r\n					&nbsp;</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<p>\r\n					<strong>Postage Information:</strong></p>\r\n				<p>\r\n					{{ if ship_to.firstname }}{{ ship_to.firstname }}<br />\r\n					{{ endif }} {{ if ship_to.address1 }}{{ ship_to.address1 }}<br />\r\n					{{ endif }} {{ if ship_to.address2 }}{{ ship_to.address2 }}<br />\r\n					{{ endif }} {{ if ship_to.city }}{{ ship_to.city }}<br />\r\n					{{ endif }} {{ if ship_to.county }}{{ ship_to.county }}<br />\r\n					{{ endif }} {{ if ship_to.postcode }}{{ ship_to.postcode }}<br />\r\n					{{ endif }} {{ ship_to.country.name }}</p>\r\n			</td>\r\n			<td>\r\n				<p>\r\n					<strong>Billing Information:</strong></p>\r\n				<p>\r\n					{{ if bill_to.firstname }}{{ bill_to.firstname }}<br />\r\n					{{ endif }} {{ if bill_to.address1 }}{{ bill_to.address1 }}<br />\r\n					{{ endif }} {{ if bill_to.address2 }}{{ bill_to.address2 }}<br />\r\n					{{ endif }} {{ if bill_to.city }}{{ bill_to.city }}<br />\r\n					{{ endif }} {{ if bill_to.county }}{{ bill_to.county }}<br />\r\n					{{ endif }} {{ if bill_to.postcode }}{{ bill_to.postcode }}<br />\r\n					{{ endif }} {{ bill_to.country.name }}</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<br />\r\n				<br />\r\n				<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" style=\"width: 100%\">\r\n					<thead>\r\n						<tr style=\"border-top: 1px solid #ccc\">\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Product</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Unit Price</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Quantity</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Total</th>\r\n						</tr>\r\n					</thead>\r\n					<tfoot>\r\n						<tr style=\"border-top: 1px solid #ccc\">\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Sub-total:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_sub }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Postage:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_ship }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Tax ({{ settings:firesale_tax }}%):</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_tax }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Total:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_total }}</td>\r\n						</tr>\r\n					</tfoot>\r\n					<tbody>\r\n{{ items }}\r\n                     <tr style=\"border-top: 1px solid #ccc\">\r\n                           <td>\r\n                                <a href=\"{{ firesale:url route=\"product\" id=id }}\">{{ name }}<br />\r\n                             Item No: {{ code }}</a></td>\r\n                            <td>\r\n                                {{ price_formatted }}</td>\r\n                          <td>\r\n                                {{ qty }}</td>\r\n                          <td>\r\n                                {{ settings:currency }} {{ total }}</td>\r\n                        </tr>\r\n{{ /items }}\r\n					</tbody>\r\n				</table>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<br />\r\n				<br />\r\n				<p>\r\n					Please note this is just a confirmation of your order, once payment has been processed and your items have been dispatched we will contact you again to let you know.</p>\r\n				<p>\r\n					Thank you very much for your custom, and we hope to see you back on {{ settings:site_name }} again soon!</p>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n<p>\r\n	&nbsp;</p>', 'en', 0, ''),
                 ('order-dispatched', 'Order Dispatched (user)', 'Sent to the user when their order has been dispatched', '{{ settings:site_name }} :: Your Order Has Been Dispatched', '<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" style=\"width: 500px;\">\r\n	<tbody>\r\n		<tr>\r\n			<td>\r\n				<p>\r\n					<strong>Add Your Logo Here</strong></p>\r\n				<p>\r\n					&nbsp;</p>\r\n			</td>\r\n			<td style=\"text-align: right;\">\r\n				<p>\r\n					<strong>Order ID: #{{ id }}</strong></p>\r\n				<p>\r\n					Expected delivery date: <strong>???</strong></p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<p>\r\n					Dear {{ bill_to.firstname }},</p>\r\n				<p>\r\n					Thank you for your recent order on {{ settings:site_name }}, we''re just letting you know that your order has been dispatched as well as confirm the details once again.<br />\r\n					<br />\r\n					&nbsp;</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td>\r\n				<p>\r\n					<strong>Postage Information:</strong></p>\r\n				<p>\r\n					{{ if ship_to.firstname }}{{ ship_to.firstname }}<br />\r\n					{{ endif }} {{ if ship_to.address1 }}{{ ship_to.address1 }}<br />\r\n					{{ endif }} {{ if ship_to.address2 }}{{ ship_to.address2 }}<br />\r\n					{{ endif }} {{ if ship_to.city }}{{ ship_to.city }}<br />\r\n					{{ endif }} {{ if ship_to.county }}{{ ship_to.county }}<br />\r\n					{{ endif }} {{ if ship_to.postcode }}{{ ship_to.postcode }}<br />\r\n					{{ endif }} {{ ship_to.country.name }}</p>\r\n			</td>\r\n			<td>\r\n				<p>\r\n					<strong>Billing Information:</strong></p>\r\n				<p>\r\n					{{ if bill_to.firstname }}{{ bill_to.firstname }}<br />\r\n					{{ endif }} {{ if bill_to.address1 }}{{ bill_to.address1 }}<br />\r\n					{{ endif }} {{ if bill_to.address2 }}{{ bill_to.address2 }}<br />\r\n					{{ endif }} {{ if bill_to.city }}{{ bill_to.city }}<br />\r\n					{{ endif }} {{ if bill_to.county }}{{ bill_to.county }}<br />\r\n					{{ endif }} {{ if bill_to.postcode }}{{ bill_to.postcode }}<br />\r\n					{{ endif }} {{ bill_to.country.name }}</p>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<br />\r\n				<br />\r\n				<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" style=\"width: 100%\">\r\n					<thead>\r\n						<tr style=\"border-top: 1px solid #ccc\">\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Product</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Unit Price</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Quantity</th>\r\n							<th style=\"font-weight:bold;text-align:left\">\r\n								Total</th>\r\n						</tr>\r\n					</thead>\r\n					<tfoot>\r\n						<tr style=\"border-top: 1px solid #ccc\">\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Sub-total:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_sub }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Postage:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_ship }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Tax ({{ settings:firesale_tax }}%):</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_tax }}</td>\r\n						</tr>\r\n						<tr>\r\n							<td colspan=\"2\">\r\n								&nbsp;</td>\r\n							<td>\r\n								<strong>Total:</strong></td>\r\n							<td>\r\n								{{ settings:currency }} {{ price_total }}</td>\r\n						</tr>\r\n					</tfoot>\r\n					<tbody>\r\n{{ items }}\r\n                      <tr style=\"border-top: 1px solid #ccc\">\r\n                           <td>\r\n                                <a href=\"{{ firesale:url route=\"product\" id=id }}\">{{ name }}<br />\r\n                             Item No: {{ code }}</a></td>\r\n                            <td>\r\n                                {{ price_formatted }}</td>\r\n                          <td>\r\n                                {{ qty }}</td>\r\n                          <td>\r\n                                {{ settings:currency }} {{ total }}</td>\r\n                        </tr>\r\n{{ /items }}\r\n					</tbody>\r\n				</table>\r\n			</td>\r\n		</tr>\r\n		<tr>\r\n			<td colspan=\"2\">\r\n				<br /><br />\r\n				<p>\r\n					Once again, thank you very much for your custom, and we hope to see you back on {{ settings:site_name }} again soon!</p>\r\n			</td>\r\n		</tr>\r\n	</tbody>\r\n</table>\r\n<p>\r\n	&nbsp;</p>', 'en', 0, '');";
