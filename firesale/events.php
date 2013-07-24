@@ -32,6 +32,7 @@ class Events_Firesale
         Events::register('settings_updated',   array($this, 'settings_updated'));
         Events::register('clear_cache',        array($this, 'clear_cache'));
         Events::register('cart_item_added',    array($this, 'cart_item_added'));
+        Events::register('rebuild_routes',     array($this, 'rebuild_routes'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_sales'));
         Events::register('firesale_dashboard', array($this, 'firesale_dashboard_stock'));
     }
@@ -114,6 +115,35 @@ class Events_Firesale
             $this->ci->fs_cart->destroy();
             $this->ci->session->set_flashdata('error', $this->ci->settings->get('firesale_disabled_msg'));
             redirect($this->ci->input->server('HTTP_REFERER'));
+        }
+    }
+
+    public function rebuild_routes()
+    {
+    	$this->ci->load->model('firesale/routes_m');
+
+        // Variables
+        $params = array(
+            'stream'       => 'firesale_routes',
+            'namespace'    => 'firesale_routes',
+            'order_by'     => 'ordering_count',
+            'sort'         => 'asc',
+            'paginate'     => 'yes',
+            'page_segment' => 4
+        );
+
+        // Get routes
+        $routes = $this->ci->streams->entries->get_entries($params);
+
+        // Loop routes
+        foreach ($routes['entries'] AS $route) {
+
+            // Format data
+            $route['route']       = html_entity_decode($route['route']);
+            $route['translation'] = html_entity_decode($route['translation']);
+
+            // Rebuild
+            $this->ci->routes_m->write($route['title'], $route['route'], $route['translation']);
         }
     }
 
