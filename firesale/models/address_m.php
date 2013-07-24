@@ -246,16 +246,26 @@ class Address_m extends MY_Model
         }
 
         // Get fields
-        $fields = $this->fields->build_form($stream, $mode, $data, FALSE, FALSE, array(), array());
+        $fields = $this->fields->build_form($stream, $mode, $data, FALSE, FALSE, array(), array('return' => false));
+
+        // Get fields again
+        if ( is_int($fields) ) {
+            $_POST = array();
+            $fields = $this->fields->build_form($stream, $mode, $data, FALSE, FALSE, array(), array('return' => false));
+        }
 
         // Format fields
-        foreach( $fields AS $field ) {
+        foreach( $fields AS &$field ) {
 
             // Prefix input slugs
             $key = ( in_array($field['input_slug'], $address) ? 'address' : 'details' );
             if( $type != NULL ) {
                 $field['input'] = str_replace(array('id="', 'name="'), array('id="' . $type . '_', 'name="' . $type . '_'), $field['input']);
             }
+
+            // Set values
+            if ( substr($field['input'], 0, 7) == '<select' ) { $field['input'] = str_replace('value="'.$data[$field['input_slug']].'"', 'value="'.$data[$field['input_slug']].'" selected="selected"', $field['input']); }
+            else { $field['input'] = str_replace('value=""', 'value="'.$data[$field['input_slug']].'"', $field['input']); }
 
             // Correct titles
             if ( substr($field['input_title'], 0, 5) == 'lang:' ) {
