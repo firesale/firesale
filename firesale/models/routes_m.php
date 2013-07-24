@@ -299,6 +299,33 @@ class Routes_m extends MY_Model
         file_put_contents($file, $content);
     }
 
+    public function rebuild()
+    {
+        // Variables
+        $params = array(
+            'stream'       => 'firesale_routes',
+            'namespace'    => 'firesale_routes',
+            'order_by'     => 'ordering_count',
+            'sort'         => 'asc',
+            'paginate'     => 'yes',
+            'page_segment' => 4
+        );
+
+        // Get routes
+        $routes = $this->ci->streams->entries->get_entries($params);
+
+        // Loop routes
+        foreach ($routes['entries'] AS $route) {
+
+            // Format data
+            $route['route']       = html_entity_decode($route['route']);
+            $route['translation'] = html_entity_decode($route['translation']);
+
+            // Rebuild
+            $this->ci->routes_m->write($route['title'], $route['route'], $route['translation']);
+        }
+    }
+
     public function clear()
     {
         $routes = $this->db->select('title')->get('firesale_routes')->result_array();
