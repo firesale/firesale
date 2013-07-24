@@ -63,7 +63,7 @@
                                 <tr class="prod-<?php echo $product['id']; ?>">
                                         <td class="remove"><input type="checkbox" name="item[<?php echo $product['id']; ?>][remove]" value="1" /></td>
                                         <td class="image"><img src="<?php echo site_url('files/thumb/'.$product['image'].'/64/64'); ?>" class="image" alt="Product Image" /></td>
-                                        <td class="name"><a href="/product/<?php echo $product['slug']; ?>"><?php echo $product['title']; ?></a></td>
+                                        <td class="name"><?php echo ( ( ! isset($product['custom']) || ! $product['custom'] ) ? '<a href="'.url('product', $product['id']).'">'.$product['title'].'</a>' : $product['title'] ); ?></td>
                                         <td class="model"><?php echo $product['code']; ?></td>
                                         <td class="model">
                                             <?php foreach ($product['options'] as $option): ?>
