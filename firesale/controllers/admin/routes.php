@@ -208,29 +208,7 @@ class routes extends Admin_Controller
     public function rebuild($redirect = true)
     {
 
-        // Variables
-        $params = array(
-            'stream'       => 'firesale_routes',
-            'namespace'    => 'firesale_routes',
-            'order_by'     => 'ordering_count',
-            'sort'         => 'asc',
-            'paginate'     => 'yes',
-            'page_segment' => 4
-        );
-
-        // Get routes
-        $routes = $this->streams->entries->get_entries($params);
-
-        // Loop routes
-        foreach ($routes['entries'] AS $route) {
-
-            // Format data
-            $route['route']       = html_entity_decode($route['route']);
-            $route['translation'] = html_entity_decode($route['translation']);
-
-            // Rebuild
-            $this->routes_m->write($route['title'], $route['route'], $route['translation']);
-        }
+    	Events:trigger('rebuild_routes');
 
         // Flash and redirect
         if ( $redirect ) {
