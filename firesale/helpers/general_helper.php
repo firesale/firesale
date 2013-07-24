@@ -80,8 +80,8 @@ function format_currency($price, $currency = false, $fix = true, $apply_tax = fa
     if ( is_object(ci()->fs_cart) ) { 
 		$currency = $currency or ci()->fs_cart->currency(); 
 	} else {
-		$cur = ci()->settings->get('firesale_currency');
-		$currency = ci()->pyrocache->model('currency_m', 'get', array($cur ? $cur : NULL), ci()->firesale->cache_time);
+		ci()->load->model('settings_m');
+		$currency = ci()->currency_m->get(Settings::get('firesale_currency'));
 	}
     $formatted = cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
     return $formatted;
