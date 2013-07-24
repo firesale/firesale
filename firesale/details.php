@@ -389,7 +389,7 @@ class Module_Firesale extends Module
         $this->add_stream_fields($fields, $template);
 
         // Create lookup table
-        $this->db->query("CREATE TABLE `" . $this->db->dbprefix("_firesale_product_variations_firesale_products") . "` (
+        $this->db->query("CREATE TABLE `" . $this->db->dbprefix("firesale_product_variations_firesale_products") . "` (
                             `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                             `row_id` int(11) NOT NULL,
                             `firesale_product_variations_id` int(11) NOT NULL,
@@ -424,7 +424,7 @@ class Module_Firesale extends Module
 
         // Add the gateway settings table
         $this->db->query("
-            CREATE TABLE IF NOT EXISTS `".$this->db->dbprefix("_firesale_gateway_settings")."` (
+            CREATE TABLE IF NOT EXISTS `".$this->db->dbprefix("firesale_gateway_settings")."` (
               `id` int(11) NOT NULL,
               `key` varchar(64) NOT NULL,
               `value` text NOT NULL
@@ -543,7 +543,7 @@ class Module_Firesale extends Module
         ##################
 
         $this->db->query("
-            CREATE TABLE IF NOT EXISTS `" . $this->db->dbprefix("_firesale_transactions") . "` (
+            CREATE TABLE IF NOT EXISTS `" . $this->db->dbprefix("firesale_transactions") . "` (
               `reference` longtext,
               `order_id` int(11) DEFAULT NULL,
               `gateway` varchar(100) DEFAULT NULL,
@@ -710,7 +710,7 @@ class Module_Firesale extends Module
             $this->dbforge->drop_table('firesale_transactions');
 
             $this->db->query("
-                CREATE TABLE IF NOT EXISTS `" . $this->db->dbprefix("_firesale_transactions") . "` (
+                CREATE TABLE IF NOT EXISTS `" . $this->db->dbprefix("firesale_transactions") . "` (
                   `reference` longtext,
                   `order_id` int(11) DEFAULT NULL,
                   `gateway` varchar(100) DEFAULT NULL,
@@ -737,7 +737,7 @@ class Module_Firesale extends Module
             $this->db->query("ALTER TABLE `" . $this->db->dbprefix("firesale_orders_items") . "` ADD `options` TEXT NOT NULL");
 
             // Finally update the bloody address title bollocks
-            $this->db->query("UPDATE `" . $this->db->dbprefix("_data_fields") . "` SET `field_name` = 'lang:firesale:label_address_title' WHERE `field_namespace` = 'firesale_addresses' AND `field_slug` = 'title'");
+            $this->db->query("UPDATE `" . $this->db->dbprefix("data_fields") . "` SET `field_name` = 'lang:firesale:label_address_title' WHERE `field_namespace` = 'firesale_addresses' AND `field_slug` = 'title'");
 
             // Add a partially refunded option
             $result  = current($this->db->select('id, field_data')->where('field_slug', 'order_status')->where('field_namespace', 'firesale_orders')->get('data_fields')->result_array());
@@ -783,7 +783,7 @@ class Module_Firesale extends Module
             $this->add_stream_fields($fields, $template);
 
             // Create lookup table
-            $this->db->query("CREATE TABLE `" . $this->db->dbprefix("_firesale_product_variations_firesale_products") . "` (
+            $this->db->query("CREATE TABLE `" . $this->db->dbprefix("firesale_product_variations_firesale_products") . "` (
                               `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
                               `row_id` int(11) NOT NULL,
                               `firesale_product_variations_id` int(11) NOT NULL,
