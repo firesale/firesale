@@ -546,7 +546,6 @@ class cart extends Public_Controller
                            ->set_breadcrumb(lang('firesale:checkout:title'))
                            ->title(lang('firesale:checkout:title'))
                            ->build('checkout', $data);
-
         }
 
     }
@@ -574,9 +573,9 @@ class cart extends Public_Controller
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_price'));
                 } elseif ($result->price_max < $total) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_price'));
-                } elseif ($result->weight_min > $weight) {
+                } elseif ($result->weight_min != "" && $weight != "" && $result->weight_min > $weight) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_weight'));
-                } elseif ($result->weight_max < $weight) {
+                } elseif ($result->weight_max != "" && $weight != "" && $result->weight_max < $weight) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_weight'));
                 } else {
                    return TRUE;

@@ -89,11 +89,11 @@ class Shipping_m extends MY_Model
         }
 
         // Check weight
-        if ($method['weight_min'] != "" && $weight < $method['weight_min']) {
+        if ($method['weight_min'] != "" && $weight != "" && $weight < $method['weight_min']) {
             return false;
         }
 
-        if ($method['weight_max'] != "" && $weight > $method['weight_max'] ) {
+        if ($method['weight_max'] != "" && $weight != "" && $weight > $method['weight_max'] ) {
             return false;
         }
 
