@@ -94,17 +94,15 @@ function api($data)
         if ( substr(ci()->uri->uri_string(), -5) == '.json' ) {
 
             ci()->output->set_content_type('application/json')->set_output(json_encode($data));
+            return true;
 
         // Output XML
         } else if ( substr(ci()->uri->uri_string(), -4) == '.xml' ) {
 
             ci()->load->library('format');
             ci()->output->set_content_type('application/xml')->set_output(ci()->format->to_xml($data));
-
+            return true;
         }
-
-        // Success
-        return true;
     }
 
     // Something went wrong
