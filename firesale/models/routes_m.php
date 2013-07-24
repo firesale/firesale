@@ -324,6 +324,7 @@ class Routes_m extends MY_Model
             // Rebuild
             $this->write($route['title'], $route['route'], $route['translation']);
         }
+        
     }
 
     public function clear()
