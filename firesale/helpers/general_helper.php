@@ -76,7 +76,13 @@ function url($route, $id = null, $after = null)
  */
 function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
 {
-    if ( is_object(ci()->fs_cart) ) { $currency = $currency or ci()->fs_cart->currency(); ci()->load->model('firesale/currency_m'); }
+	ci()->load->model('firesale/currency_m'); 
+    if ( is_object(ci()->fs_cart) ) { 
+		$currency = $currency or ci()->fs_cart->currency(); 
+	} else {
+		$cur = ci()->settings->get('firesale_currency');
+		$currency = ci()->pyrocache->model('currency_m', 'get', array($cur ? $cur : NULL), ci()->firesale->cache_time);
+	}
     $formatted = cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
     return $formatted;
 }
