@@ -86,6 +86,36 @@ function format_currency($price, $currency = false, $fix = true, $apply_tax = fa
     return cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
 }
 
+function api($data)
+{
+    // Check
+    if ( ci()->settings->firesale_api == '1' && ( ci()->settings->firesale_api_key == '' or ci()->settings->firesale_api_key == ci()->input->get('key') ) ) {
+
+        // Format
+        $data = (object)$data;
+        unset($data->pagination);
+
+        // Output JSON
+        if ( substr(ci()->uri->uri_string(), -5) == '.json' ) {
+
+            ci()->output->set_content_type('application/json')->set_output(json_encode($data));
+
+        // Output XML
+        } else if ( substr(ci()->uri->uri_string(), -4) == '.xml' ) {
+
+            ci()->load->library('format');
+            ci()->output->set_content_type('application/xml')->set_output(ci()->format->to_xml($data));
+
+        }
+
+        // Success
+        return true;
+    }
+
+    // Something went wrong
+    return false;
+}
+
 /**
  * Detects if a given module is currently installed
  *

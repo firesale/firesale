@@ -60,6 +60,9 @@ class index extends Public_Controller
 
         // Assign data
         $this->data->categories = $categories;
+        
+        // Api request
+        if ( api($this->data) ) { return; }
 
         // Build page
         $this->template->title('Store')

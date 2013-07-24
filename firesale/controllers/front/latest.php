@@ -105,6 +105,9 @@ class latest extends Public_Controller
         $this->data->products = reassign_helper_vars($products);
         $this->data->ordering = get_order();
 
+        // Api request
+        if ( api($this->data) ) { return; }
+
         // Build Page
         $this->template->title($title)
                        ->set($this->data)
