@@ -120,7 +120,6 @@ class Events_Firesale
 
     public function rebuild_routes()
     {
-
     	$this->ci->load->model('firesale/routes_m');
 
         // Variables
