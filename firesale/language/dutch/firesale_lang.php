@@ -310,8 +310,8 @@
     $lang['firesale:orders:label_customer']                 = 'Klant';
     $lang['firesale:orders:label_date_placed']              = 'Datum Geplaatst';
     $lang['firesale:orders:label_order_id']                 = "Bestellings ID";
-    $lang['firesale:orders:labe_shipping_address']          = 'Verzend Adres';
-    $lang['firesale:orders:labe_payment_address']           = 'Factuur Adres';
+    $lang['firesale:orders:label_shipping_address']         = 'Verzend Adres';
+    $lang['firesale:orders:label_payment_address']          = 'Factuur Adres';
     $lang['firesale:orders:label_order_status']             = 'Bestelling Status';
     $lang['firesale:orders:label_message']                  = 'Bericht';
 

@@ -310,8 +310,8 @@
     $lang['firesale:orders:label_customer']                 = 'Pelanggan';
     $lang['firesale:orders:label_date_placed']              = 'Tanggal Ditempatkan';
     $lang['firesale:orders:label_order_id']                 = 'ID Pesanan';
-    $lang['firesale:orders:labe_shipping_address']          = 'Alamat Kirim';
-    $lang['firesale:orders:labe_payment_address']           = 'Alamat Tagihan';
+    $lang['firesale:orders:label_shipping_address']         = 'Alamat Kirim';
+    $lang['firesale:orders:label_payment_address']          = 'Alamat Tagihan';
     $lang['firesale:orders:label_order_status']             = 'Status Pengiriman';
     $lang['firesale:orders:label_message']                  = 'Pesan';
 

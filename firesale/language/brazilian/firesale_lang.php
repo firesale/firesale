@@ -310,8 +310,8 @@
     $lang['firesale:orders:label_customer']                 = 'Cliente';
     $lang['firesale:orders:label_date_placed']              = 'Data da compra';
     $lang['firesale:orders:label_order_id']                 = 'Pedido ID';
-    $lang['firesale:orders:labe_shipping_address']          = 'Endereço de Entrega';
-    $lang['firesale:orders:labe_payment_address']           = 'Endereço de Pagamento';
+    $lang['firesale:orders:label_shipping_address']         = 'Endereço de Entrega';
+    $lang['firesale:orders:label_payment_address']          = 'Endereço de Pagamento';
     $lang['firesale:orders:label_order_status']             = 'Status do Pedido';
     $lang['firesale:orders:label_message']                  = 'Mensage';
 
