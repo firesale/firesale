@@ -312,7 +312,7 @@ class Routes_m extends MY_Model
         );
 
         // Get routes
-        $routes = $this->ci->streams->entries->get_entries($params);
+        $routes = $this->streams->entries->get_entries($params);
 
         // Loop routes
         foreach ($routes['entries'] AS $route) {
@@ -322,7 +322,7 @@ class Routes_m extends MY_Model
             $route['translation'] = html_entity_decode($route['translation']);
 
             // Rebuild
-            $this->ci->routes_m->write($route['title'], $route['route'], $route['translation']);
+            $this->write($route['title'], $route['route'], $route['translation']);
         }
     }
 
