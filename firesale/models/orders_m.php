@@ -63,12 +63,6 @@ class Orders_m extends MY_Model
                 $item['custom'] = true;
                 $item['slug']   = '';
                 unset($item['options']['custom']);
-
-                // Options
-                foreach ( $item['options'] as $key => $value ) {
-                    unset($item['options'][$key]);
-                    $item['options'][] = array('title' => ucwords($key), 'value' => $value);
-                }
             }
         }
 
@@ -605,11 +599,6 @@ class Orders_m extends MY_Model
                     $product['price_formatted'] = $this->currency_m->format_string($item['price'], (object)$order['currency'], FALSE, FALSE);
                     $product['custom'] = true;
                     unset($item['options']['custom']);
-                    foreach ( $item['options'] as $key => $value ) {
-                        unset($item['options'][$key]);
-                        $item['options'][] = array('title' => ucwords($key), 'value' => $value);
-                    }
-
                 } else {
                     $product = cache('products_m/get_product', $item['product_id'], null, true);
                 }
