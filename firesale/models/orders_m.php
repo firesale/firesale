@@ -39,18 +39,37 @@ class Orders_m extends MY_Model
     {
 
         $total = 0;
-        $items = $this->db->query('SELECT SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`, i.`options`
+        $items = $this->db->query('SELECT i.*, i.`code` AS `icode`, SUM(qty) AS `count`, p.`id`, p.`code`, p.`title`, i.`price`, p.`slug`, i.`qty`, i.`tax_band`, i.`options`
                                    FROM `' . SITE_REF . '_firesale_orders_items` AS i
-                                     INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
-                                    WHERE i.`order_id` = ' . $order_id . '
+                                   INNER JOIN `' . SITE_REF . '_firesale_products` AS p ON p.`id` = i.`product_id`
+                                   WHERE i.`order_id` = ' . $order_id . '
                                    GROUP BY i.`product_id`
                                    ORDER BY `count` DESC')->result_array();
 
         // Build overall count and add image
         foreach ($items AS &$item) {
+
+            // General
             $total          += $item['count'];
             $item['image']   = $this->products_m->get_single_image($item['id']);
             $item['options'] = ! empty($item['options']) ? unserialize($item['options']) : NULL;
+
+            // Custom
+            if ( isset($item['options']['custom']) and $item['options']['custom'] == '1' ) {
+                
+                // Basics
+                $item['title']  = $item['name'];
+                $item['code']   = $item['icode'];
+                $item['custom'] = true;
+                $item['slug']   = '';
+                unset($item['options']['custom']);
+
+                // Options
+                foreach ( $item['options'] as $key => $value ) {
+                    unset($item['options'][$key]);
+                    $item['options'][] = array('title' => ucwords($key), 'value' => $value);
+                }
+            }
         }
 
         // Return
@@ -402,6 +421,11 @@ class Orders_m extends MY_Model
             $qty = $product['stock'];
         }
 
+        // Custom?
+        if ( isset($product['custom']) and $product['custom'] ) {
+            $product['options'] = array_merge($product['options'], array('custom' => '1'));
+        }
+
         if ( $this->db->count_all_results() == 0 ) {
             $data = array(
                 'created'        => date("Y-m-d H:i:s"),
@@ -572,11 +596,26 @@ class Orders_m extends MY_Model
             // Loop items
             foreach ($order['items'] AS $key => &$item) {
 
+                // Get the options
+                $item['options'] = unserialize($item['options']);
+
                 // Get the product
-                $product = cache('products_m/get_product', $item['product_id'], null, true);
+                if ( isset($item['options']['custom']) and $item['options']['custom'] == '1' ) {
+                    $product = $item;
+                    $product['price_formatted'] = $this->currency_m->format_string($item['price'], (object)$order['currency'], FALSE, FALSE);
+                    $product['custom'] = true;
+                    unset($item['options']['custom']);
+                    foreach ( $item['options'] as $key => $value ) {
+                        unset($item['options'][$key]);
+                        $item['options'][] = array('title' => ucwords($key), 'value' => $value);
+                    }
+
+                } else {
+                    $product = cache('products_m/get_product', $item['product_id'], null, true);
+                }
 
                 // Check it exists
-                if ($product !== FALSE) {
+                if ($product !== false) {
 
                     // Build initial item
                     $item['id']    = $product['id'];
@@ -586,7 +625,6 @@ class Orders_m extends MY_Model
                     // Format and assign data
                     $item['total']   = $this->currency_m->format_string(($item['price']*$item['qty']), (object)$order['currency'], FALSE, FALSE);
                     $item['price']   = $this->currency_m->format_string($item['price'], (object)$order['currency'], FALSE, FALSE);
-                    $item['options'] = unserialize($item['options']);
                     $item['image']   = $this->products_m->get_single_image($item['product_id']);
                     $item['no']      = ( $key + 1 );
                 }
