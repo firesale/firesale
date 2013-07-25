@@ -76,14 +76,9 @@ function url($route, $id = null, $after = null)
  */
 function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
 {
-	ci()->load->model('firesale/currency_m'); 
-    if ( is_object(ci()->fs_cart) ) { 
-		$currency = $currency or ci()->fs_cart->currency(); 
-	} else {
-		ci()->load->model('settings_m');
-		$currency = cache('currency_m/get', Settings::get('firesale_currency'));
-	}
-    return cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
+    if ( is_object(ci()->fs_cart) ) { $currency = $currency or ci()->fs_cart->currency(); ci()->load->model('firesale/currency_m'); }
+    $formatted = cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
+    return $formatted;
 }
 
 /**
@@ -100,17 +95,24 @@ function api($data)
 
         // Format
         $data = (object)$data;
-        unset($data->pagination);
 
         // Output JSON
         if ( substr(ci()->uri->uri_string(), -5) == '.json' ) {
 
+            // Remove unwanted items
+            unset($data->pagination);
+
+            // Return data
             ci()->output->set_content_type('application/json')->set_output(json_encode($data));
             return true;
 
         // Output XML
         } else if ( substr(ci()->uri->uri_string(), -4) == '.xml' ) {
 
+            // Remove unwanted items
+            unset($data->pagination);
+
+            // Return data
             ci()->load->library('format');
             ci()->output->set_content_type('application/xml')->set_output(ci()->format->to_xml($data));
             return true;
