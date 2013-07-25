@@ -454,6 +454,38 @@ class Plugin_Firesale extends Plugin
         return array(array('total' => count($results), 'entries' => $results));
     }
 
+    public function buy_now()
+    {   
+        // Variables
+        $data    = array();
+        $product = $this->attribute('product');
+
+        // Assign data
+        $data['product'] = cache('products_m/get_product', $product);
+
+        // Check for product
+        if ( ! $data['product'] ) { return; }
+
+        // Check for POST
+        if ( $this->input->post('btnAction') == 'buy_now' && $product == $this->input->post('product') ) {
+
+            // Load required items
+            $this->load->model('cart_m');
+            $this->load->library('fs_cart');
+            
+            // Add to cart
+            $tmp   = array();
+            $tmp[] = $this->cart_m->build_data($data['product'], '1');
+            $this->fs_cart->insert($tmp);
+
+            // Send to checkout
+            redirect(uri('cart', null, 'checkout'));
+        }
+
+        // Build view
+        return $this->module_view('firesale', 'partials/buy_now', $data, true);
+    }
+
     /**
      * Returns a PluginDoc array that PyroCMS uses
      * to build the reference in the admin panel

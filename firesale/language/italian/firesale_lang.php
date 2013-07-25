@@ -194,6 +194,7 @@
     $lang['firesale:label_mod_single']                      = 'Singolo Prodotto';
     $lang['firesale:label_mod_price']                       = 'Incremento prezzo di';
     $lang['firesale:label_mod_price_inst']                  = 'Alcune istruzioni';
+    $lang['firesale:label_buy_now_for']                     = 'Buy Now for %s'; # translate
 
     $lang['firesale:label_stock_short']                     = 'Livello scorte';
     $lang['firesale:label_stock_status']                    = 'Stato delle scorte';

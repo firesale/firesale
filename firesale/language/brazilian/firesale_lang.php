@@ -194,7 +194,8 @@
     $lang['firesale:label_mod_single']                      = 'Single Product'; # translate
     $lang['firesale:label_mod_price']                       = 'Price Modifier'; # translate
     $lang['firesale:label_mod_price_inst']                  = 'Some instructions'; # translate
-
+    $lang['firesale:label_buy_now_for']                     = 'Buy Now for %s'; # translate
+    
     $lang['firesale:label_stock_short']                     = 'Estoque';
     $lang['firesale:label_stock_status']                    = 'Situaçao do Estoque';
     $lang['firesale:label_stock_in']                        = 'Em estoque';

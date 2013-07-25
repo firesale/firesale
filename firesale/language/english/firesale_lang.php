@@ -200,6 +200,7 @@
     $lang['firesale:label_mod_single']                      = 'Single Product';
     $lang['firesale:label_mod_price']                       = 'Price Modifier';
     $lang['firesale:label_mod_price_inst']                  = 'Some instructions';
+    $lang['firesale:label_buy_now_for']                     = 'Buy Now for %s';
 
     $lang['firesale:label_stock_short']                     = 'Stock Level';
     $lang['firesale:label_stock_status']                    = 'Stock Status';

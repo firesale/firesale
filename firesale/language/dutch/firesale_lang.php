@@ -194,6 +194,7 @@
     $lang['firesale:label_mod_single']                      = 'Enkel Product';
     $lang['firesale:label_mod_price']                       = 'Prijs Variatie';
     $lang['firesale:label_mod_price_inst']                  = 'Enkele instructies';
+    $lang['firesale:label_buy_now_for']                     = 'Buy Now for %s'; # translate
 
     $lang['firesale:label_stock_short']                     = 'Voorraad';
     $lang['firesale:label_stock_status']                    = 'Voorraad Status';
