@@ -67,6 +67,9 @@ class orders extends Public_Controller
                 }
             }
 
+            // Apply fixes
+            $orders['entries'] = reassign_helper_vars($orders['entries']);
+
             // Variables
             $this->data->total  	= $orders['total'];
             $this->data->orders 	= $orders['entries'];
