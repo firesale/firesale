@@ -120,7 +120,7 @@ class Merchant_payu_response extends Merchant_response
 
     public function __construct($response)
     {
-        $ci = &get_instance();
+        $ci =& get_instance();
         $this->_response = $response;
         $this->_status = $response;
         $this->_reference = (string) $ci->input->post('txnid');
