@@ -454,7 +454,7 @@ class Categories_m extends MY_Model
      */
     public function build_breadcrumbs($category, &$template)
     {
-        $template->set_breadcrumb(lang('firesale:store'), uri('index'));
+		$template->set_breadcrumb(lang('firesale:store'), $this->uri->segment(1));
 
         if ( $category == null ) {
             $url  = uri('category');

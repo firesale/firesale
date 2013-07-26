@@ -741,7 +741,7 @@ class Products_m extends MY_Model
         $categories = $this->get_cat_path($category, true);
 
         // Assign root
-        $this->template->set_breadcrumb('Store', 'store');
+		$template->set_breadcrumb(lang('firesale:store'), $this->uri->segment(1));
 
         // Loop categories
         foreach ($categories as $category) {
