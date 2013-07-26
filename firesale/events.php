@@ -156,8 +156,8 @@ class Events_Firesale
             'title'   => lang('firesale:elements:product_sales'),
             'content' => $this->ci->parser->parse('firesale/admin/dashboard/productsales', $data, true),
             'assets'  => array(
-                array('type' => 'js',  'file' => 'module::dashboard_productsales.js'),
-                array('type' => 'css', 'file' => 'module::dashboard_productsales.css')
+                array('type' => 'js',  'file' => 'module::dashboard_product/sales.js'),
+                array('type' => 'css', 'file' => 'module::dashboard_product/sales.css')
             )
         );
     }
