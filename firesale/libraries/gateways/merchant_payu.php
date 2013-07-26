@@ -89,7 +89,6 @@ class Merchant_payu extends Merchant_Driver
           $hash_string .= '|';
         }
         $hash_string .= $this->settings['salt'];
-        //exit($hash_string);
         $hash = strtolower(hash('sha512', $hash_string));
         return $hash;
     }
