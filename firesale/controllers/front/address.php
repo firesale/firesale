@@ -93,6 +93,7 @@ class address extends Public_Controller
 
         // Add page content
         $this->template->title(lang('firesale:addresses:new_address'))
+                       ->set_breadcrumb($this->current_user->display_name, 'users')
                        ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
                        ->set_breadcrumb(lang('firesale:addresses:new_address'))
                        ->set($this->data);
@@ -129,6 +130,7 @@ class address extends Public_Controller
 
             // Build page
             $this->template->title(lang('firesale:addresses:edit_address'))
+                           ->set_breadcrumb($this->current_user->display_name, 'users')
                            ->set_breadcrumb(lang('firesale:addresses:title'), $this->routes_m->build_url('addresses'))
                            ->set_breadcrumb(lang('firesale:addresses:edit_address'))
                            ->build('address_create', $this->data);

@@ -77,6 +77,7 @@ class orders extends Public_Controller
 
             // Build page
             $this->template->title(lang('firesale:orders:my_orders'))
+                           ->set_breadcrumb($this->current_user->display_name, 'users')
                            ->set_breadcrumb(lang('firesale:orders:my_orders'))
                            ->set($this->data);
 
@@ -110,6 +111,7 @@ class orders extends Public_Controller
 
             // Build page
             $this->template->title(sprintf(lang('firesale:orders:view_order'), $id))
+                           ->set_breadcrumb($this->current_user->display_name, 'users')
                            ->set_breadcrumb(lang('firesale:orders:my_orders'), uri('orders'))
                            ->set_breadcrumb(sprintf(lang('firesale:orders:view_order'), $id))
                            ->set($order);
