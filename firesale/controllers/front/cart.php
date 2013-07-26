@@ -523,6 +523,23 @@ class cart extends Public_Controller
                         'bill_phone'     => $this->current_user->phone
                     );
 
+                    // Check for saved addresses
+                    if ( ! empty($data['addresses']) ) {
+                        $address = end($data['addresses']);
+                        $_POST['ship_address1'] = $address['address1'];
+                        $_POST['ship_address2'] = $address['address2'];
+                        $_POST['ship_county']   = $address['county'];
+                        $_POST['ship_city']     = $address['city'];
+                        $_POST['ship_postcode'] = $address['postcode'];
+                        $_POST['ship_country']  = $address['country']['code'];
+                        $_POST['bill_address1'] = $address['address1'];
+                        $_POST['bill_address2'] = $address['address2'];
+                        $_POST['bill_county']   = $address['county'];
+                        $_POST['bill_city']     = $address['city'];
+                        $_POST['bill_postcode'] = $address['postcode'];
+                        $_POST['bill_country']  = $address['country']['code'];
+                    }
+
                     $input = $_POST;
                 }
             }
