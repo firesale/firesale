@@ -586,13 +586,13 @@ class cart extends Public_Controller
 
                 $result = $query->row();
 
-                if ($result->price_min > $total) {
+                if (isset ($result->price_min) && $result->price_min > $total) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_price'));
-                } elseif ($result->price_max < $total) {
+                } elseif (isset ($result->price_max) && $result->price_max < $total) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_price'));
-                } elseif ($result->weight_min != "" && $weight != "" && $result->weight_min > $weight) {
+                } elseif (isset ($result->weight_min) && $result->weight_min != "" && $weight != "" && $result->weight_min > $weight) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_min_weight'));
-                } elseif ($result->weight_max != "" && $weight != "" && $result->weight_max < $weight) {
+                } elseif (isset ($result->weight_max) && $result->weight_max != "" && $weight != "" && $result->weight_max < $weight) {
                     $this->form_validation->set_message('_validate_shipping', lang('firesale:checkout:shipping_max_weight'));
                 } else {
                    return TRUE;
