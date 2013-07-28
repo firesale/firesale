@@ -609,6 +609,10 @@ class cart extends Public_Controller
 
     public function _validate_address($value)
     {
+        if ($value == "new" || $value == "same_as_billing") {
+            return true;
+        }
+        
         $this->form_validation->set_message('_validate_address', lang('firesale:checkout:address_invalid'));
 
         return $this->address_m->get_address($value, $this->current_user->id);
