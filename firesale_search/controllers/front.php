@@ -92,8 +92,7 @@ class front extends Public_Controller
 
                 // Get images
                 foreach ($this->data->products AS $key => $product) {
-                    $product['image']           = $this->products_m->get_single_image($product['id']);
-                    $product['description']     = strip_tags($product['description']);
+                	$product = cache('products_m/get_product', $product['id']);
                     $this->data->products[$key] = $product;
                 }
 
