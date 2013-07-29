@@ -65,7 +65,7 @@ class Search_m extends MY_Model
 
     public function perform_search($category, $term, $start = 0, $count, $order, $getcount = FALSE)
     {
-
+       	$show_variations = (bool) $this->settings->get('firesale_show_variations');
         $category = urldecode(trim($category));
         $term     = urldecode(trim($term));
 
@@ -75,6 +75,11 @@ class Search_m extends MY_Model
                 INNER JOIN `" . SITE_REF . "_firesale_products_firesale_categories` AS pc ON pc.`row_id` = p.`id`
                 INNER JOIN `" . SITE_REF . "_firesale_categories` AS c ON c.`id` = pc.`firesale_categories_id`
                 WHERE p.`status` = 1";
+
+        if (! $show_variations) {
+        	$sql .= "
+        		AND p.`is_variation` = 0";
+        }
 
         if ($category !== 'all') {
             $sql .= "
