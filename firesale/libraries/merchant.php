@@ -323,7 +323,7 @@ class merchant
     {
         $_CI =& get_instance();
 
-        $template = $_CI->template->append_js('module::payment_redirection.js')
+        $template = $_CI->template->append_js('module::admin/payment_redirection.js')
                                   ->set('data', $data)
                                   ->set('post_url', $url)
                                   ->set('message', $message)
