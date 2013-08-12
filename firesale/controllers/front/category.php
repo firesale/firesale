@@ -77,6 +77,7 @@ class category extends Public_Controller
         $args     = func_get_args();
         $args     = explode('/', str_replace(array('.json', '.xml'), '', implode('/', $args)));
         $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
+        $start = $start != 0 ? (($start * $this->perpage) - $this->perpage) : 0;
         $category = implode('/', $args);
 
         // Check category
