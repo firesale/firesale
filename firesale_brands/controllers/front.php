@@ -53,7 +53,7 @@ class front extends Public_Controller
         $args     = func_get_args();
         $args     = array_filter($args);
         $start    = ( is_numeric(end($args)) ? array_pop($args) : 0 );
-        $start = $start != 0 ? (($start * $this->perpage) - $this->perpage) : 0;        
+        $start    = $start != 0 ? (($start * $this->perpage) - $this->perpage) : 0;        
         $segments = count($args);
         $brand    = array_shift($args);
         $category = ( count($args) > 0 ? implode('/', $args) : null );
