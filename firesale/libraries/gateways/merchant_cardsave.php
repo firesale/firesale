@@ -151,7 +151,7 @@ class Merchant_cardsave extends Merchant_driver
                 // redirect for 3d authentication
                 $data = array(
                     'PaReq' => (string) $response->TransactionOutputData->ThreeDSecureOutputData->PaREQ,
-                    'TermUrl' => $this->param('return_url'),
+                    'TermUrl' => $this->param('return_url') . '/cardsave',
                     'MD' => (string) $response->TransactionOutputData['CrossReference'],
                 );
 
