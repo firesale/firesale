@@ -141,6 +141,8 @@ class cart extends Public_Controller
             // Get product
             $product = cache('products_m/get_product', $prd_code, null, true);
 
+            $_POST['price_tax'] = $product['price_tax'];
+
             // Check and add variations
             if ( $product['modifiers'] ) {
 
@@ -436,7 +438,7 @@ class cart extends Public_Controller
                 $input['shipping']     = isset($input['shipping']) ? $input['shipping'] : 0;
                 $input['created_by']   = isset($this->current_user->id) ? $this->current_user->id : NULL;
                 $input['order_status'] = '1'; // Unpaid
-                $input['price_sub']    = $this->fs_cart->subtotal();
+                $input['price_sub']    = $this->fs_cart->total();
                 $input['price_ship']   = $shipping['price'];
                 $input['price_total']  = number_format($this->fs_cart->total() + $shipping['price'], 2);
 
@@ -731,17 +733,20 @@ class cart extends Public_Controller
                     'visa'       => 'Visa',
                     'maestro'    => 'Maestro',
                     'mastercard' => 'MasterCard',
-                    //'discover'   => 'Discover'
+                    'discover'   => 'Discover'
                 );
 
                 // Format currency
-                $order['price_tax']     = $order['price_total'] - $order['price_sub'] - $order['price_ship'];
-                $order['price_sub_tax'] = $order['price_sub'] + $order['price_tax'];
-                $order['price_tax']     = format_currency($order['price_tax'], (object)$order['currency'], false);
-                $order['price_sub_tax'] = format_currency($order['price_sub_tax'], (object)$order['currency'], false);
-                $order['price_sub']     = format_currency($order['price_sub'], (object)$order['currency'], false);
-                $order['price_ship']    = format_currency($order['price_ship'], (object)$order['currency'], false);
-                $order['price_total']   = format_currency($order['price_total'], (object)$order['currency'], false);
+                $order['price_tax']             = format_currency($order['price_tax'], (object)$order['currency'], false);
+                $order['price_sub_tax']         = format_currency($order['price_items_pre'], (object)$order['currency'], false);
+                $order['price_sub']             = format_currency($order['price_sub'], (object)$order['currency'], false);
+                $order['price_ship']            = format_currency($order['price_ship'], (object)$order['currency'], false);
+                $order['price_total']           = format_currency($order['price_total'], (object)$order['currency'], false);
+                $order['price_items_tax']       = format_currency($order['price_items_tax'], (object)$order['currency'], false);
+                $order['price_ship_pre']        = format_currency($order['price_ship_pre'], (object)$order['currency'], false);
+                $order['price_ship_tax']        = format_currency($order['price_ship_tax'], (object)$order['currency'], false);
+                $order['price_pre_tax_total']   = format_currency($order['price_pre_tax_total'], (object)$order['currency'], false);
+                unset($order['price_items_pre']);
 
                 $gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
 

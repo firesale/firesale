@@ -318,6 +318,7 @@ class Cart_m extends MY_Model
             'code'     => $product['code'],
             'qty'      => ( $qty > $product['stock'] && $product['stock_status']['key'] != 6 ? $product['stock'] : $qty ),
             'price'    => preg_replace('/[^0-9\.]+/', '', $product['price_rounded']),
+            'price_tax'=> preg_replace('/[^0-9\.]+/', '', $product['price_tax']),
             'tax_band' => $product['tax_band']['id'],
             'name'     => $product['title'],
             'slug'     => $product['slug'],

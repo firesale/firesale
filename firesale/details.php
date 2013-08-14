@@ -20,7 +20,7 @@
 
 class Module_Firesale extends Module
 {
-    public $version       = '1.2.3-dev';
+    public $version       = '1.2.4-dev';
     public $language_file = 'firesale/firesale';
 
     public function __construct()
@@ -524,6 +524,7 @@ class Module_Firesale extends Module
         $fields[] = array('name' => 'lang:firesale:label_id', 'slug' => 'code', 'extra' => array('max_length' => 64), 'unique' => TRUE);
         $fields[] = array('name' => 'lang:firesale:label_title', 'slug' => 'name', 'type' => 'text', 'title_column' => TRUE, 'extra' => array('max_length' => 255), 'unique' => TRUE);
         $fields[] = array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'decimal', 'extra' => array('decimal_places' => '2', 'min_price' => '0.00'));
+        $fields[] = array('name' => 'lang:firesale:label_price_old_tax', 'slug' => 'price_tax', 'type' => 'decimal', 'extra' => array('decimal_places' => '3', 'min_price' => '0.00'));        
         $fields[] = array('name' => 'lang:firesale:label_quantity', 'slug' => 'qty', 'type' => 'integer', 'required' => FALSE);
         $fields[] = array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id));
 
@@ -884,6 +885,28 @@ class Module_Firesale extends Module
 
             // Add api settings
             $this->settings('add', array('firesale_api', 'firesale_api_key'));
+        }
+
+		// Pre 1.2.3
+        if ($old_version < '1.2.4') {
+            // Store order item pre tax prices
+            $fields   = array();
+            $template = array('namespace' => 'firesale_orders_items', 'assign' => 'firesale_orders_items', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
+            $fields[] = array('name' => 'lang:firesale:label_price_old_tax', 'slug' => 'price_tax', 'type' => 'decimal', 'extra' => array('decimal_places' => '3', 'min_price' => '0.00'));
+            $this->add_stream_fields($fields, $template);
+
+            // Update all existing order items pre tax prices
+            $query = $this->db->select('product_id')->group_by('product_id')->get('firesale_orders_items');
+
+            if ($query->num_rows()) {
+                $tmp = $query->result_array();
+                foreach ($tmp as $row) {
+                    $price_tax = $this->db->select('price_tax')->where('id', $row['product_id'])->get('firesale_products')->row()->price_tax;
+                    $this->db->where('product_id', $row['product_id']);
+                    $this->db->update('firesale_orders_items', array('price_tax' => $price_tax)); 
+                }
+            }
+
         }
 
         // Tracking

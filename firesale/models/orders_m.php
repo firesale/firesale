@@ -430,6 +430,7 @@ class Orders_m extends MY_Model
                 'code'           => $product['code'],
                 'name'           => ( isset($product['title']) ? $product['title'] : $product['name'] ),
                 'price'          => $product['price'],
+                'price_tax'      => $product['price_tax'],
                 'qty'            => $qty,
                 'tax_band'       => $product['tax_band']['id'],
                 'options'        => isset($product['options']) ? serialize($product['options']) : ''
@@ -586,6 +587,21 @@ class Orders_m extends MY_Model
             $order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int) $order_id))->result_array();
             $order['shipping']  = cache('shipping_m/get_option_by_id', $order['shipping']['id']);
             $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['shipping']['price_pre_tax'] ), 2);
+
+            // Create and format a few more pricing variables
+            $item_tax_amount = 0;
+            // get tax amount
+            foreach ($order['items'] as $item) {
+            	$item['price_tax'] = number_format($item['price_tax'], 2);
+            	$item_tax_amount += ($item['price'] - $item['price_tax']);
+            }
+            $order['price_items_pre']       = number_format(($order['price_sub'] -$item_tax_amount), 2);
+            $order['price_items_tax']       = number_format($item_tax_amount, 2);     
+            $order['price_ship_pre']        = number_format($order['shipping']['price_pre_tax'], 2);
+            $order['price_ship_tax']        = number_format($order['shipping']['price'] - $order['shipping']['price_pre_tax'], 2);
+            $order['price_tax']             = number_format(($order['shipping']['price'] - $order['shipping']['price_pre_tax'])+$item_tax_amount, 2);
+            $order['price_pre_tax_total']   = number_format(($order['price_sub'] - $item_tax_amount) + $order['shipping']['price_pre_tax'], 2);
+            $order['price_sub']             = number_format($order['price_sub'] + ($order['price_total'] - $order['price_sub'] - $order['price_ship']), 2);    
 
             // Loop items
             foreach ($order['items'] AS $key => &$item) {
