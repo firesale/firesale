@@ -237,7 +237,7 @@ class Cart_m extends MY_Model
             'cancel_url' => site_url($this->pyrocache->model('routes_m', 'build_url', array('cart'), $this->firesale->cache_time) . '/cancel')
         ), $override ? $override : array(), array(
             'currency_code'  => $this->fs_cart->currency()->cur_code,
-            'amount'         => $this->fs_cart->total() + ($order['shipping']['price'] / 1.2),
+            'amount'         => $this->fs_cart->total() + ($order['shipping']['price']),
             'order_id'       => $this->session->userdata('order_id'),
             'transaction_id' => $this->session->userdata('order_id'),
             'reference'      => 'Order #' . $this->session->userdata('order_id'),
