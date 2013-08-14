@@ -77,7 +77,7 @@ function url($route, $id = null, $after = null)
 function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
 {
     ci()->load->model('firesale/currency_m'); 
-    if ( is_object(ci()->fs_cart) ) { $currency = $currency or ci()->fs_cart->currency(); }
+	if ( is_object(ci()->fs_cart) ) { if(!$currency) { $currency = ci()->fs_cart->currency(); } }
     else { ci()->load->model('settings_m'); $currency = cache('currency_m/get', Settings::get('firesale_currency')); }
     $formatted = cache('currency_m/format_string', $price, $currency, $fix, $apply_tax, $format);
     return $formatted;

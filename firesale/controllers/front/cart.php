@@ -731,7 +731,7 @@ class cart extends Public_Controller
                     'visa'       => 'Visa',
                     'maestro'    => 'Maestro',
                     'mastercard' => 'MasterCard',
-                    'discover'   => 'Discover'
+                    //'discover'   => 'Discover'
                 );
 
                 // Format currency
