@@ -148,10 +148,7 @@ class Currency_m extends MY_Model
     public function format_string($price, $currency, $fix = TRUE, $apply_tax = FALSE, $format = TRUE)
     {
         if (empty($currency)) {
-            $currency = new stdClass();
-            $currency->cur_format = "";
-            $currency->cur_format_dec = "";
-            $currency->cur_format_sep = "";
+            $currency = $this->get();
         } else {
             $currency = (object)$currency;
         }
