@@ -62,6 +62,8 @@ class Merchant_cardsave extends Merchant_driver
     private function _build_authorize_or_purchase($method)
     {
         $this->require_params('card_no', 'name', 'exp_month', 'exp_year', 'csc');
+		
+		var_dump($this->param('amount'));
 
         $request = $this->_new_request('CardDetailsTransaction');
         $request->PaymentMessage->MerchantAuthentication['MerchantID'] = $this->setting('merchant_id');
@@ -123,6 +125,8 @@ class Merchant_cardsave extends Merchant_driver
 
     private function _post_cardsave_request($request)
     {
+		var_dump($request);
+		die;
         // the PHP SOAP library sucks, and SimpleXML can't append element trees
         $document = new DOMDocument('1.0', 'utf-8');
         $envelope = $document->appendChild($document->createElementNS('http://schemas.xmlsoap.org/soap/envelope/', 'soap:Envelope'));
