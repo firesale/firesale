@@ -108,7 +108,7 @@ class Module_Firesale_shipping extends Module
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_courier', 'slug' => 'company', 'type' => 'text', 'extra' => array('max_length' => 255)));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0)));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10)));
-            $fields[] = array_merge($template, array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id), 'required' => FALSE);
+            $fields[] = array_merge($template, array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id), 'required' => FALSE));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_price_min', 'slug' => 'price_min', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_price_max', 'slug' => 'price_max', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_weight_min', 'slug' => 'weight_min', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
