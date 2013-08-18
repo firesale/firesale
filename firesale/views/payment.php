@@ -49,7 +49,7 @@
           <tfoot>
             <tr>
               <td colspan="4"><strong>Sub-Total:</strong></td>
-              <td>{{ price_sub }}</td>
+              <td>{{ price_items_pre }}</td>
             </tr>
             <tr>
               <td colspan="4"><strong>Shipping:</strong></td>
