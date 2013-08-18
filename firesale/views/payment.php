@@ -55,6 +55,10 @@
               <td colspan="4"><strong>Shipping:</strong></td>
               <td>{{ price_ship }}</td>
             </tr>
+            <tr>
+              <td colspan="4"><strong>Tax:</strong></td>
+              <td>{{ price_tax }}</td>
+            </tr>
             <tr class="last">
               <td class="large" colspan="4"><strong>Total:</strong></td>
               <td class="large price">{{ price_total }}</td>
