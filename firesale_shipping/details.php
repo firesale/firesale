@@ -97,6 +97,9 @@ class Module_Firesale_shipping extends Module
             // Create stream
             if( !$this->streams->streams->add_stream(lang('firesale:sections:shipping'), 'firesale_shipping', 'firesale_shipping', NULL, NULL) ) return FALSE;
 
+            // Get taxes stream
+            $taxes = $this->streams->streams->get_stream('firesale_taxes', 'firesale_taxes');
+
             // Add fields
             $fields   = array();
             $template = array('namespace' => 'firesale_shipping', 'assign' => 'firesale_shipping', 'type' => 'text', 'title_column' => FALSE, 'required' => TRUE, 'unique' => FALSE);
@@ -105,6 +108,7 @@ class Module_Firesale_shipping extends Module
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_courier', 'slug' => 'company', 'type' => 'text', 'extra' => array('max_length' => 255)));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_status', 'slug' => 'status', 'type' => 'choice', 'extra' => array('choice_data' => "0 : lang:firesale:label_draft\n1 : lang:firesale:label_live", 'choice_type' => 'dropdown', 'default_value' => 0)));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_price', 'slug' => 'price', 'type' => 'text', 'extra' => array('max_length' => 10)));
+            $fields[] = array_merge($template, array('name' => 'lang:firesale:label_tax_band', 'slug' => 'tax_band', 'type' => 'relationship', 'extra' => array('max_length' => 5, 'choose_stream' => $taxes->id), 'required' => FALSE);
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_price_min', 'slug' => 'price_min', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_price_max', 'slug' => 'price_max', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
             $fields[] = array_merge($template, array('name' => 'lang:firesale:label_weight_min', 'slug' => 'weight_min', 'type' => 'text', 'extra' => array('max_length' => 10), 'required' => FALSE));
