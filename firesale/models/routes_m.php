@@ -70,9 +70,10 @@ class Routes_m extends MY_Model
                     if ( $route->table == 'firesale_orders' ) {
                         $this->db->select('t.id');
                     } elseif ( $route->table == 'firesale_products' ) {
-                        $this->db->select('t.id, t.slug, t.title, t.is_variation, v.parent')
+                        $this->db->select('t.id, t.slug, t.title, t.is_variation, m.parent')
                                  ->join('firesale_product_variations_firesale_products AS vp', 'vp.firesale_products_id = t.id', 'left')
-                                 ->join('firesale_product_variations AS v', 'v.id = vp.row_id', 'left');
+                                 ->join('firesale_product_variations AS v', 'v.id = vp.row_id', 'left')
+                                 ->join('firesale_product_modifiers AS m', 'v.parent = m.id', 'left');
                     } else {
                         $this->db->select('t.id, t.slug, t.title');
                     }
