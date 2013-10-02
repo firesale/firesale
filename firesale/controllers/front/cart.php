@@ -120,6 +120,10 @@ class cart extends Public_Controller
         // get the cart data
         $data = $this->cart_m->data();
 
+        foreach($data['contents'] as &$product) {
+            $product['url'] = url('product', $product['id']);
+        }
+
         // output json response
         $this->output->set_content_type('application/json')
                 ->set_output(json_encode($data));
