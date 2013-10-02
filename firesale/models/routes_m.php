@@ -88,8 +88,10 @@ class Routes_m extends MY_Model
                     // Get type
                     $type = $query->row();
 
+                    $show_variations = (bool) $this->settings->get('firesale_show_variations');
+
                     // Check type
-                    if ( $route->table == 'firesale_products' and $type->is_variation == '1' ) {
+                    if ( $route->table == 'firesale_products' and $type->is_variation == '1' and $show_variations == false) {
                         $type = $this->db->where('id', $type->parent)->get($route->table)->row();
                     }
 
