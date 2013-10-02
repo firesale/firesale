@@ -154,11 +154,18 @@ class Brands_m extends MY_Model
     public function get_count($brand, $category = null)
     {
 
+        $show_variations = (bool) $this->settings->get('firesale_show_variations');
+
         // Build query
         $query = $this->db->select('p.id')
                           ->from('firesale_products AS p')
                           ->where('p.brand', $brand)
                           ->where('p.status', '1');
+
+        // Hide variations
+        if ( ! $show_variations ) {
+            $query->where('is_variation', '0');
+        }
 
         // Add category
         if ( $category !== null ) {
