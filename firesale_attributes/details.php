@@ -58,7 +58,7 @@ class Module_Firesale_Attributes extends Module
         ## ATTRIBUTES ##
         ################
 
-        $this->db->query('CREATE TABLE `'.$this->db->dbprefix('_firesale_attributes').'` (
+        $this->db->query('CREATE TABLE `'.$this->db->dbprefix('firesale_attributes').'` (
                           `id` INT( 6 ) NOT NULL AUTO_INCREMENT,
                           `title` VARCHAR( 255 ) NOT NULL,
                           PRIMARY KEY ( `id` ))
@@ -68,7 +68,7 @@ class Module_Firesale_Attributes extends Module
         ## ATTRIBUTE ASSIGNMENTS ##
         ###########################
 
-        $this->db->query('CREATE TABLE `'.$this->db->dbprefix('_firesale_attributes_assignments').'` (
+        $this->db->query('CREATE TABLE `'.$this->db->dbprefix('firesale_attributes_assignments').'` (
                           `ordering_count` INT( 3 ) NOT NULL DEFAULT 0,
                           `stream_id` INT( 6 ) NOT NULL,
                           `row_id` INT( 6 ) NOT NULL,
@@ -86,8 +86,8 @@ class Module_Firesale_Attributes extends Module
     {
 
         // Drop tables
-        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes')."`");
-        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes_assignments')."`");
+        $this->db->query("DROP TABLE `".$this->db->dbprefix('firesale_attributes')."`");
+        $this->db->query("DROP TABLE `".$this->db->dbprefix('firesale_attributes_assignments')."`");
 
         // Return
         return TRUE;
