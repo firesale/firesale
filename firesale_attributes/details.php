@@ -58,17 +58,17 @@ class Module_Firesale_Attributes extends Module
         ## ATTRIBUTES ##
         ################
 
-        $this->db->query("CREATE TABLE `".SITE_REF."_firesale_attributes` (
+        $this->db->query('CREATE TABLE `'.$this->db->dbprefix('_firesale_attributes').'` (
                           `id` INT( 6 ) NOT NULL AUTO_INCREMENT,
                           `title` VARCHAR( 255 ) NOT NULL,
                           PRIMARY KEY ( `id` ))
-                          ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+                          ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci');
 
         ###########################
         ## ATTRIBUTE ASSIGNMENTS ##
         ###########################
 
-        $this->db->query("CREATE TABLE `".SITE_REF."_firesale_attributes_assignments` (
+        $this->db->query('CREATE TABLE `'.$this->db->dbprefix('_firesale_attributes_assignments').'` (
                           `ordering_count` INT( 3 ) NOT NULL DEFAULT 0,
                           `stream_id` INT( 6 ) NOT NULL,
                           `row_id` INT( 6 ) NOT NULL,
@@ -76,7 +76,7 @@ class Module_Firesale_Attributes extends Module
                           `value` TEXT NOT NULL,
                           INDEX (`stream_id`, `row_id`, `attribute_id`),
                           FULLTEXT (`value`))
-                          ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci");
+                          ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci');
 
         // Return
         return TRUE;
@@ -86,8 +86,8 @@ class Module_Firesale_Attributes extends Module
     {
 
         // Drop tables
-        $this->db->query("DROP TABLE `".SITE_REF."_firesale_attributes`");
-        $this->db->query("DROP TABLE `".SITE_REF."_firesale_attributes_assignments`");
+        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes')."`";
+        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes_assignments')."`";
 
         // Return
         return TRUE;
