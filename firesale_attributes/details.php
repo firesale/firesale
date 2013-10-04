@@ -86,8 +86,8 @@ class Module_Firesale_Attributes extends Module
     {
 
         // Drop tables
-        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes')."`";
-        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes_assignments')."`";
+        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes')."`");
+        $this->db->query("DROP TABLE `".$this->db->dbprefix('_firesale_attributes_assignments')."`");
 
         // Return
         return TRUE;
