@@ -78,8 +78,10 @@ class cart extends Public_Controller
         $this->stream = $this->streams->streams->get_stream('firesale_orders', 'firesale_orders');
 
         // Load css/js
-        $this->template->append_css('module::firesale.css')
-                       ->append_js('module::firesale.js');
+        if ( $this->settings->get('firesale_css_js') == 1 ) {
+            $this->template->append_css('module::firesale.css')
+                           ->append_js('module::firesale.js');
+        }
     }
 
     public function index()

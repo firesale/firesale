@@ -515,6 +515,8 @@
     $lang['firesale:settings_api_inst']                     = 'Our API is available on most core pages, simply append .json or .xml'; # translate
     $lang['firesale:settings_api_key']                      = 'FireSale API Key'; # translate
     $lang['firesale:settings_api_key_inst']                 = 'The API is public if this isleft blank, once set add ?key=<YOUR KEY> to access it privately'; # translate
+    $lang['firesale:settings_css_js']                       = 'CSS & JS'; #translate
+    $lang['firesale:settings_css_js_inst']                  = 'Use FireSale CSS & JS files'; #translate
 
     // Install errors
     $lang['firesale:install:wrong_version']    = 'Nie można zainstalować modułu FireSale; FireSale wymaga PyroCMS v2.1.5 lub wyżej';
