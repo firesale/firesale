@@ -64,7 +64,9 @@ class Events_Firesale
         if ( substr($this->ci->module, 0, 8) == 'firesale' && $this->ci->settings->firesale_use_assets == '1' ) {
             $namespace = 'module';
             if ( $this->ci->module != 'firesale' ) { asset_namespace('firesale'); $namespace = 'firesale'; }
-            $this->ci->template->append_css($namespace.'::firesale.css')->append_js($namespace.'::firesale.js');
+                if ( $this->ci->settings->get('firesale_css_js') == 1 ) {
+                    $this->ci->template->append_css($namespace.'::firesale.css')->append_js($namespace.'::firesale.js');
+                }
         }
     }
 
