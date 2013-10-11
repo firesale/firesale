@@ -8,7 +8,7 @@
     <div class="content">
 <?php if( !empty($orders)): ?>
 
-       <?php echo form_open(site_url('admin/firesale/orders/ajax_filter'), 'class="crud" id="filters_form"'); ?>
+       <?php echo form_open(site_url('admin/firesale/ajax/order_filter'), 'class="crud" id="filters_form"'); ?>
             <fieldset id="filters" style="display: none">
                 <legend><?php echo lang('global:filters'); ?></legend>
                 <ul>
