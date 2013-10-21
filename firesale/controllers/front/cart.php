@@ -196,6 +196,9 @@ class cart extends Public_Controller
                     redirect($_SERVER['HTTP_REFERER']);
                 }
 
+                // fix values with commas
+                $product['price_rounded'] = number_format((float)str_replace(",", "", $product['price_rounded']), 2, ".", "");
+
                 // Increase price based on options
                 $product['price_rounded'] += $this->input->post('price') or 0;
                 $product['price']         += $this->input->post('price') or 0;
