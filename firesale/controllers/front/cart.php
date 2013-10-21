@@ -842,6 +842,12 @@ class cart extends Public_Controller
             $item['total'] = format_currency(($item['price_rounded'] * $item['qty']), $order['currency'], false, false);
         }
 
+        // correct prices
+        $order['price_sub'] = number_format((float)str_replace(",", "", $order['price_sub']), 2, ".", "");
+        $order['price_ship'] = number_format((float)str_replace(",", "", $order['price_ship']), 2, ".", "");
+        $order['price_total'] = number_format((float)str_replace(",", "", $order['price_total']), 2, ".", "");
+        $order['price_tax'] = number_format((float)str_replace(",", "", $order['price_tax']), 2, ".", "");
+
         // Format currency
         $order['price_sub']   = format_currency($order['price_sub'], $order['currency'], false, false);
         $order['price_ship']  = format_currency($order['price_ship'], $order['currency'], false, false);
