@@ -624,7 +624,7 @@ class Orders_m extends MY_Model
 
                     // Build initial item
                     $item['id']    = $product['id'];
-                    $item['price'] = (float)number_format($item['price'], 2);
+                    $item['price'] = (float)number_format($item['price'], 2, ".", "");
                     $item          = array_merge($product, $item);
 
                     // Format and assign data
