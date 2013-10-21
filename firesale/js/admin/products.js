@@ -49,6 +49,7 @@ $(function() {
 		}
 
 		if ( parseInt(window.location.hash.replace('#', '')) > 0 ) {
+			stock_status(window.location.hash.replace('#', ''));
 			update_products(window.location.hash.replace('#', ''));
 		}
 
@@ -299,4 +300,12 @@ $(function() {
 		var match, urlParams = {}, pl = /\+/g, search = /([^&=]+)=?([^&]*)/g, decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); };
 		if ( str != null ) { while ( match = search.exec(str)) { urlParams[decode(match[1])] = decode(match[2]); } }
 		return urlParams;
+	}
+
+	function stock_status(str)
+	{
+		var s = str.split("/");
+		if (s[0] == "stock_status") {
+			$('#stock_status').val(s[1]).trigger('liszt:updated');
+		}
 	}

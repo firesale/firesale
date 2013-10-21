@@ -28,7 +28,7 @@
             </tbody>
           </table>
           <br />
-          <a href="{{ url:base }}admin/firesale/products/stock_status/2" class="btn blue"><span><?php echo lang('firesale:dashboard:view_more'); ?></span></a>
+          <a href="{{ url:base }}admin/firesale/products#stock_status/2" class="btn blue"><span><?php echo lang('firesale:dashboard:view_more'); ?></span></a>
 <?php else: ?>
           <div class="no_data"><?php echo lang('firesale:dashboard:no_stock_low'); ?></div>
 <?php endif; ?>
@@ -57,7 +57,7 @@
             </tbody>
           </table>
           <br />
-          <a href="{{ url:base }}admin/firesale/products/stock_status/3" class="btn blue"><span><?php echo lang('firesale:dashboard:view_more'); ?></span></a>
+          <a href="{{ url:base }}admin/firesale/products#stock_status/3" class="btn blue"><span><?php echo lang('firesale:dashboard:view_more'); ?></span></a>
 <?php else: ?>
           <div class="no_data"><?php echo lang('firesale:dashboard:no_stock_out'); ?></div>
 <?php endif; ?>
