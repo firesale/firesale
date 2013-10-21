@@ -117,6 +117,9 @@ class products extends Admin_Controller
         $skip  = array();
         $extra = array();
 
+        // Variations
+        $show_variations = (bool) $this->settings->get('firesale_show_variations');
+
         // Check for post data
         if ( substr($this->input->post('btnAction'), 0, 4) == 'save' ) {
 
@@ -177,8 +180,20 @@ class products extends Admin_Controller
 
                 // Add to search
                 $product = cache('products_m/get_product', $id);
-                $this->products_m->search($product, true);
-
+                
+                if($show_variations and $product['is_variation'] == '1')
+                {
+                    $this->products_m->search($product, true);
+                }
+                elseif (!$show_variations and $product['is_variation'] == '0')
+                {
+                    $this->products_m->search($product, true);
+                }
+                else
+                {
+                    $this->products_m->search($product, false);
+                }
+                
                 // Redirect
                 redirect('admin/firesale/products'.( $input['btnAction'] != 'save_exit' ? '/edit/'.$id : '' ));
             }
