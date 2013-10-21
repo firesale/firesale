@@ -837,6 +837,8 @@ class cart extends Public_Controller
     {
         // Format order
         foreach ($order['items'] as &$item) {
+            // fix values with commas
+            $item['price_rounded'] = number_format((float)str_replace(",", "", $item['price_rounded']), 2, ".", "");
             $item['total'] = format_currency(($item['price_rounded'] * $item['qty']), $order['currency'], false, false);
         }
 
