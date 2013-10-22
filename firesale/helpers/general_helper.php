@@ -77,7 +77,7 @@ function url($route, $id = null, $after = null)
 function format_currency($price, $currency = false, $fix = true, $apply_tax = false, $format = true)
 {
     // clean the price
-    $price = number_format((float)str_replace(",", "", $price));
+    $price = (float)str_replace(',', '', $price);
 
     ci()->load->model('firesale/currency_m');
     ci()->load->library('firesale/fs_cart');

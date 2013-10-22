@@ -838,15 +838,15 @@ class cart extends Public_Controller
         // Format order
         foreach ($order['items'] as &$item) {
             // fix values with commas
-            $item['price_rounded'] = number_format((float)str_replace(",", "", $item['price_rounded']), 2, ".", "");
+            $item['price_rounded'] = (float)str_replace(',', '', $item['price_rounded']);
             $item['total'] = format_currency(($item['price_rounded'] * $item['qty']), $order['currency'], false, false);
         }
 
         // correct prices
-        $order['price_sub'] = number_format((float)str_replace(",", "", $order['price_sub']), 2, ".", "");
-        $order['price_ship'] = number_format((float)str_replace(",", "", $order['price_ship']), 2, ".", "");
-        $order['price_total'] = number_format((float)str_replace(",", "", $order['price_total']), 2, ".", "");
-        $order['price_tax'] = number_format((float)str_replace(",", "", $order['price_tax']), 2, ".", "");
+        $order['price_sub']   = (float)str_replace(',', '', $order['price_sub']);
+        $order['price_ship']  = (float)str_replace(',', '', $order['price_ship']);
+        $order['price_total'] = (float)str_replace(',', '', $order['price_total']);
+        $order['price_tax']   = (float)str_replace(',', '', $order['price_tax']);
 
         // Format currency
         $order['price_sub']   = format_currency($order['price_sub'], $order['currency'], false, false);

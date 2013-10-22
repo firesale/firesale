@@ -492,9 +492,9 @@ class Orders_m extends MY_Model
 
         // Update cart
         if ($cart == TRUE) {
-            $this->fs_cart->total    = number_format($total, 2);
-            $this->fs_cart->subtotal = number_format($sub, 2);
-            $this->fs_cart->tax      = number_format(( $total - $sub), 2);
+            $this->fs_cart->total    = (float)$total;
+            $this->fs_cart->subtotal = (float)$sub;
+            $this->fs_cart->tax      = (float)($total - $sub);
         }
 
         // Update?
@@ -587,21 +587,21 @@ class Orders_m extends MY_Model
             $order              = $order['entries'][0];
             $order['items']     = $this->db->get_where('firesale_orders_items', array('order_id' => (int) $order_id))->result_array();
             $order['shipping']  = cache('shipping_m/get_option_by_id', $order['shipping']['id']);
-            $order['price_tax'] = number_format(( $order['price_total'] - $order['price_sub'] - $order['shipping']['price_pre_tax'] ), 2);
+            $order['price_tax'] = (float)( $order['price_total'] - $order['price_sub'] - $order['shipping']['price_pre_tax'] );
 
             // get tax amount
             foreach ($order['items'] as &$item) {
-            	$item['price_tax'] = number_format($item['price_tax'], 2);
+            	$item['price_tax'] = (float)$item['price_tax'];
             	$item_tax_amount += ( $item['price'] - $item['price_tax'] ) * $item['qty'];
             }
 
-            $order['price_items_pre']       = number_format(($order['price_sub'] - $item_tax_amount), 2);
-            $order['price_items_tax']       = number_format($item_tax_amount, 2);     
-            $order['price_ship_pre']        = number_format($order['shipping']['price_pre_tax'], 2);
-            $order['price_ship_tax']        = number_format($order['shipping']['price'] - $order['shipping']['price_pre_tax'], 2);
-            $order['price_tax']             = number_format(($order['shipping']['price'] - $order['shipping']['price_pre_tax']) + $item_tax_amount, 2);
-            $order['price_pre_tax_total']   = number_format(($order['price_sub'] - $item_tax_amount) + $order['shipping']['price_pre_tax'], 2);
-            $order['price_sub']             = number_format($order['price_sub'] + ($order['price_total'] - $order['price_sub'] - $order['price_ship']), 2);    
+            $order['price_items_pre']       = (float)($order['price_sub'] - $item_tax_amount);
+            $order['price_items_tax']       = (float)$item_tax_amount;     
+            $order['price_ship_pre']        = (float)$order['shipping']['price_pre_tax'];
+            $order['price_ship_tax']        = (float)$order['shipping']['price'] - $order['shipping']['price_pre_tax'];
+            $order['price_tax']             = (float)($order['shipping']['price'] - $order['shipping']['price_pre_tax']) + $item_tax_amount;
+            $order['price_pre_tax_total']   = (float)($order['price_sub'] - $item_tax_amount) + $order['shipping']['price_pre_tax'];
+            $order['price_sub']             = (float)$order['price_sub'] + ($order['price_total'] - $order['price_sub'] - $order['price_ship']);    
 
             // Loop items
             foreach ($order['items'] AS $key => &$item) {
@@ -624,7 +624,7 @@ class Orders_m extends MY_Model
 
                     // Build initial item
                     $item['id']    = $product['id'];
-                    $item['price'] = (float)number_format($item['price'], 2, ".", "");
+                    $item['price'] = (float)round($item['price'], 2);
                     $item          = array_merge($product, $item);
 
                     // Format and assign data
