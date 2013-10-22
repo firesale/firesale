@@ -227,8 +227,16 @@ $(function() {
 			$('.overlay').remove();
 			$('.table_action_buttons').html(buttons);
 			if( $(data).find('#product_table').size() > 0 ) {
+				// replace table contents
 				$('#product_table tbody').html($(data).find('#product_table tbody').html());
 				$('#product_table tfoot').html($(data).find('#product_table tfoot').html());
+				// update pagination
+				var previous_page = $('#product_table tfoot .pagination ul li span').html();
+				$('#product_table tfoot .pagination ul li').find("span").parent().html('<a href="admin/firesale/products/'+previous_page+'?">'+previous_page+'</a>');
+				$('#product_table tfoot .pagination ul li').removeClass('active');
+				var active_page = window.location.hash.split('#')[1].replace('?','');
+				$('#product_table tfoot .pagination ul li a:contains("'+active_page+'")').parent().addClass('active').html("<span>"+active_page+"</span>");				
+				// show update
 				$('#product_table').show();
 				$('#product_table').trigger("update"); 
 			} else if( $(data).find('.no_data').size() > 0 ) {
