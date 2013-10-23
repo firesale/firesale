@@ -106,11 +106,11 @@ class Shipping_m extends MY_Model
         $formatted['price'] = $price;
         if (isset($tax_band)) {
             // Calculate tax for this shipping method
-            $tax  = $this->pyrocache->model('taxes_m', 'get_percentage', array($tax_band), $this->firesale->cache_time);
-            $tax  = ( 100 + $tax ) / 100;
+            $tax = $this->pyrocache->model('taxes_m', 'get_percentage', array($tax_band), $this->firesale->cache_time);
+            $tax = 1 + ( $tax / 100 );
 
-            $formatted['price_pre_tax'] = $price;
-            $formatted['price'] = format_currency(($tax * $price), false, true, false, false);
+            $formatted['price_pre_tax'] = format_currency(($price / $tax), false, true, false, false);
+            $formatted['price'] = $price;
         }	
         return $formatted;
     }
