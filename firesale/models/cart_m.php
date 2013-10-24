@@ -215,6 +215,12 @@ class Cart_m extends MY_Model
             // Cart contents
             $response['products'] = $this->fs_cart->contents();
 
+            // fix urls
+            foreach($response['products'] as  &$product)
+            {
+                $product['url'] = url('product', $product['id']);
+            }
+
             // Update cart pricing
             $this->orders_m->update_order_cost(0, FALSE);
 
