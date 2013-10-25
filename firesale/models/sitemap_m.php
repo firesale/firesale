@@ -43,29 +43,41 @@ class Sitemap_m extends MY_Model
 
     public function retrieve($type, $table)
     {
-
-        // Get data
-        $query = $this->db->select('id, updated')
-                          ->from($table)
-                          ->where('status', '1')
-                          ->order_by('ordering_count')
-                          ->get();
-
+        // Get data, don't get product variations if they are not required
+        $show_variations = (bool) $this->settings->get('firesale_show_variations');
+    
+        if($table == 'firesale_products' and ! $show_variations)
+        {
+            $query = $this->db->select('id, updated')
+                            ->from($table)
+                            ->where(array('status' => '1', 'is_variation' => '0'))
+                            ->order_by('ordering_count')
+                            ->get();
+        }
+        else
+        {
+            $query = $this->db->select('id, updated')
+                            ->from($table)
+                            ->where('status', '1')
+                            ->order_by('ordering_count')
+                            ->get();
+        }
+    
         // Check for data
         if( $query->num_rows() ) {
-
+    
             // Get results
             $results = $query->result_array();
-
+    
             // Loop and format
             foreach( $results as &$result ) {
                 $result['updated'] = strtotime($result['updated']);
                 $result['url']     = url($type, $result['id']);
             }
-
+    
             return $results;
         }
-
+    
         // Nothing found
         return false;
     }
