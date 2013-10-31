@@ -196,6 +196,12 @@ class cart extends Public_Controller
                     redirect($_SERVER['HTTP_REFERER']);
                 }
 
+                // Check Live/Draft
+                if ($product['status']['key'] == 0) {
+                    $this->session->set_flashdata('error', sprintf(lang('firesale:prod_not_found'), $status));
+                    redirect($_SERVER['HTTP_REFERER']);
+                }
+
                 // fix values with commas
                 $product['price_rounded'] = number_format((float)str_replace(",", "", $product['price_rounded']), 2, ".", "");
 

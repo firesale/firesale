@@ -45,7 +45,7 @@ class product extends Public_Controller
         $product = cache('products_m/get_product', $product);
 
         // Check it exists
-        if ($product === false) {
+        if ($product === false || $product['status']['key'] == 0) {
             show_404();
         }
 
