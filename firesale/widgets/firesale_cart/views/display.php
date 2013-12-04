@@ -11,7 +11,7 @@
             <td><a href="{{ firesale:url route='product' id=id }}">{{ name }}</a></td>
             <td>{{ quantity }} x</td>
             <td>{{ price }}</td>
-            <td><a href="{{ firesale:url route='cart' }}/remove/{{ id }}">x</a></td>
+            <td><a href="{{ firesale:url route='cart' }}/remove/{{ rowid }}">x</a></td>
         </tr>
     {{ /products }}
     {{ else }}
