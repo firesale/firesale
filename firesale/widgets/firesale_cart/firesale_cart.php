@@ -62,12 +62,12 @@ class Widget_FireSale_Cart extends Widgets
         // Loop products in cart
         foreach( $contents as $id => $item ) {
 
-            $product = $this->pyrocache->model('products_m', 'get', array($item['rowid']), $this->firesale->cache_time);
+            $product = $this->pyrocache->model('products_m', 'get', array($item['id']), $this->firesale->cache_time);
 
             if( $product !== FALSE ) {
 
                 $data->products[] = array(
-                    'id'     => $item['id'],
+                    'id'        => $item['id'],
                     'rowid'     => $item['rowid'],
                     'code'      => $product->code,
                     'slug'      => $product->slug,
