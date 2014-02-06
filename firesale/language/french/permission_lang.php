@@ -21,8 +21,8 @@
 # 2.2.0
 $lang['firesale:role_edit_orders']                = 'Modifier les commandes';
 $lang['firesale:role_access_gateways']            = 'Accéder aux plateformes de paiement';
-$lang['firesale:role_access_taxes']               = 'Access Taxes'; # Translate
-$lang['firesale:role_add_edit_taxes']             = 'Create/Edit Taxes'; # Translate
+$lang['firesale:role_access_taxes']               = 'Accéder aux taxes';
+$lang['firesale:role_add_edit_taxes']             = 'Créer / Supprimer des taxes';
 $lang['firesale:role_install_uninstall_gateways'] = 'Ajouter / Supprimer des plateformes de paiement';
 $lang['firesale:role_enable_disable_gateways']    = 'Activer / Désactiver les plateformes de paiement';
 $lang['firesale:role_edit_gateways']              = 'Modifier les paramètres des plateformes de paiement';
