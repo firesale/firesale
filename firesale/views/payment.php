@@ -49,10 +49,10 @@
           <tfoot>
             <tr>
               <td colspan="4"><strong>Sub-Total:</strong></td>
-              <td>{{ price_items_pre }}</td>
+              <td>{{ price_sub }}</td>
             </tr>
             <tr>
-              <td colspan="4"><strong>Shipping:</strong></td>
+              <td colspan="4"><strong>{{ helper:lang line="firesale:tabs:shipping" }}:</strong></td>
               <td>{{ price_ship }}</td>
             </tr>
             <tr>
@@ -60,7 +60,7 @@
               <td>{{ price_tax }}</td>
             </tr>
             <tr class="last">
-              <td class="large" colspan="4"><strong>Total:</strong></td>
+              <td class="large" colspan="4"><strong>{{ helper:lang line="firesale:label_price_total" }}:</strong></td>
               <td class="large price">{{ price_total }}</td>
             </tr>
           </tfoot>

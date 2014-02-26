@@ -122,7 +122,7 @@ class cart extends Public_Controller
         // get the cart data
         $data = $this->cart_m->data();
 
-        foreach($data['contents'] as &$product) {
+        foreach ($data['contents'] as &$product) {
             $product['url'] = url('product', $product['id']);
         }
 
@@ -150,13 +150,13 @@ class cart extends Public_Controller
             $_POST['price_tax'] = $product['price_tax'];
 
             // Check and add variations
-            if ( $product['modifiers'] ) {
+            if ($product['modifiers']) {
 
                 // Loop modifiers
-                foreach ( $product['modifiers'] as $variation ) {
+                foreach ($product['modifiers'] as $variation) {
 
                     // Update ID
-                    if ( $product['is_variation'] == '1' ) {
+                    if ($product['is_variation'] == '1') {
                         $_POST['prd_code'][0] = $modifier['parent'];
                     }
 
@@ -190,8 +190,8 @@ class cart extends Public_Controller
                 $modifiers = current($product['modifiers']);
 
                 // Check status
-                $status = $this->modifier_m->single_product_stock($product['id'], $_POST['options'][$key], (int)$qtys[$key]);
-                if ( $status !== true ) {
+                $status = $this->modifier_m->single_product_stock($product['id'], $_POST['options'][$key], (int) $qtys[$key]);
+                if ($status !== true) {
                     $this->session->set_flashdata('error', sprintf(lang('firesale:vars:stock_low'), $status));
                     redirect($_SERVER['HTTP_REFERER']);
                 }
@@ -203,7 +203,7 @@ class cart extends Public_Controller
                 }
 
                 // fix values with commas
-                $product['price_rounded'] = number_format((float)str_replace(",", "", $product['price_rounded']), 2, ".", "");
+                $product['price_rounded'] = number_format((float) str_replace(",", "", $product['price_rounded']), 2, ".", "");
 
                 // Increase price based on options
                 $product['price_rounded'] += $this->input->post('price') or 0;
@@ -407,7 +407,7 @@ class cart extends Public_Controller
             }
 
             // Get available shipping methods
-            if ( $data['ship_req'] === true ) {
+            if ($data['ship_req'] === true) {
                 $results = Events::trigger('shipping_methods', $this->fs_cart->contents(), 'array');
                 foreach ($results as $result) {
                     $data['shipping'] = array_merge($data['shipping'], $result);
@@ -468,7 +468,7 @@ class cart extends Public_Controller
                 // Run validation
                 if ($this->form_validation->run() === TRUE or $skip_checkout) {
 
-                    if ( ! $skip_checkout) {
+                    if (! $skip_checkout) {
                         // Check for addresses
                         if ( $data['ship_req'] AND ( ! isset($input['ship_to']) OR $input['ship_to'] == 'new' OR $input['ship_to'] == "same_as_billing" ) ) {
                             $input['ship_to'] = $this->address_m->add_address($input, 'ship');
@@ -629,7 +629,7 @@ class cart extends Public_Controller
         if ($value == "new" || $value == "same_as_billing") {
             return true;
         }
-        
+
         $this->form_validation->set_message('_validate_address', lang('firesale:checkout:address_invalid'));
 
         return $this->address_m->get_address($value, $this->current_user->id);
@@ -669,7 +669,7 @@ class cart extends Public_Controller
                 $posted_data  = $this->input->post(NULL, TRUE);
                 $session_data = $this->session->flashdata('gateway_options');
 
-                $skip_checkout = (bool)$this->gateways->setting($gateway, 'skip_checkout');
+                $skip_checkout = (bool) $this->gateways->setting($gateway, 'skip_checkout');
 
                 // Run payment
                 $params = $this->cart_m->build_transaction($gateway, $order, $skip_checkout ? $session_data : $posted_data);
@@ -752,15 +752,15 @@ class cart extends Public_Controller
                 );
 
                 // Format currency
-                $order['price_tax']             = format_currency($order['price_tax'], (object)$order['currency'], false);
-                $order['price_sub_tax']         = format_currency($order['price_items_pre'], (object)$order['currency'], false);
-                $order['price_sub']             = format_currency($order['price_sub'], (object)$order['currency'], false);
-                $order['price_ship']            = format_currency($order['price_ship'], (object)$order['currency'], false);
-                $order['price_total']           = format_currency($order['price_total'], (object)$order['currency'], false);
-                $order['price_items_tax']       = format_currency($order['price_items_tax'], (object)$order['currency'], false);
-                $order['price_ship_pre']        = format_currency($order['price_ship_pre'], (object)$order['currency'], false);
-                $order['price_ship_tax']        = format_currency($order['price_ship_tax'], (object)$order['currency'], false);
-                $order['price_pre_tax_total']   = format_currency($order['price_pre_tax_total'], (object)$order['currency'], false);
+                $order['price_tax']             = format_currency($order['price_tax'], (object) $order['currency'], false);
+                $order['price_sub_tax']         = format_currency($order['price_items_pre'], (object) $order['currency'], false);
+                $order['price_sub']             = format_currency($order['price_sub'], (object) $order['currency'], false);
+                $order['price_ship']            = format_currency($order['price_ship'], (object) $order['currency'], false);
+                $order['price_total']           = format_currency($order['price_total'], (object) $order['currency'], false);
+                $order['price_items_tax']       = format_currency($order['price_items_tax'], (object) $order['currency'], false);
+                $order['price_ship_pre']        = format_currency($order['price_ship_pre'], (object) $order['currency'], false);
+                $order['price_ship_tax']        = format_currency($order['price_ship_tax'], (object) $order['currency'], false);
+                $order['price_pre_tax_total']   = format_currency($order['price_pre_tax_total'], (object) $order['currency'], false);
                 unset($order['price_items_pre']);
 
                 $gateway_view = $this->template->set_layout(FALSE)->build('gateways/' . $gateway, $var, TRUE);
@@ -842,17 +842,23 @@ class cart extends Public_Controller
     protected function _order_authorized($order, $callback = FALSE)
     {
         // Format order
+
+        $fmt = numfmt_create( 'de_DE', NumberFormatter::DECIMAL );
+
         foreach ($order['items'] as &$item) {
-            // fix values with commas
-            $item['price_rounded'] = (float)str_replace(',', '', $item['price_rounded']);
-            $item['total'] = format_currency(($item['price_rounded'] * $item['qty']), $order['currency'], false, false);
+
+            // removes currency localization to obtain a float
+            $price = numfmt_parse($fmt, preg_replace('/[^0-9.,]+/', '', $item['price']));  //strips everything but numbers dots and commas then applies the standard format
+
+            $item['item_total'] = format_currency(($price * $item['qty']), $order['currency'], false, false);
+
         }
 
         // correct prices
-        $order['price_sub']   = (float)str_replace(',', '', $order['price_sub']);
-        $order['price_ship']  = (float)str_replace(',', '', $order['price_ship']);
-        $order['price_total'] = (float)str_replace(',', '', $order['price_total']);
-        $order['price_tax']   = (float)str_replace(',', '', $order['price_tax']);
+        $order['price_sub']   = (float) str_replace(',', '', $order['price_sub']);
+        $order['price_ship']  = (float) str_replace(',', '', $order['price_ship']);
+        $order['price_total'] = (float) str_replace(',', '', $order['price_total']);
+        $order['price_tax']   = (float) str_replace(',', '', $order['price_tax']);
 
         // Format currency
         $order['price_sub']   = format_currency($order['price_sub'], $order['currency'], false, false);
@@ -893,8 +899,11 @@ class cart extends Public_Controller
 
             // Build the page
             $this->template->build('payment_complete', $order);
+
         } else {
+
             $this->merchant->confirm_return(url('cart').'/success');
+
         }
 
     }
@@ -952,7 +961,6 @@ class cart extends Public_Controller
             ->set_breadcrumb(lang('firesale:payment:title'), uri('cart').'/payment')
             ->set_breadcrumb(lang('Order Cancelled'))
             ->build('payment_cancelled');
-
     }
 
     protected function skip($gateway)
@@ -962,10 +970,9 @@ class cart extends Public_Controller
 
         $settings = $this->gateways->settings($gateway);
 
-        if (isset($settings['skip_confirmation_page'])) return (bool)$settings['skip_confirmation_page'];
+        if (isset($settings['skip_confirmation_page'])) return (bool) $settings['skip_confirmation_page'];
 
-        if (isset($settings['skip_checkout'])) return (bool)$settings['skip_checkout'];
-
+        if (isset($settings['skip_checkout'])) return (bool) $settings['skip_checkout'];
         return false;
     }
 
@@ -976,7 +983,7 @@ class cart extends Public_Controller
         $processed = $this->db->get_where('firesale_transactions', array('reference' => $response->reference(), 'status' => $response->status()))->num_rows();
         $processed or $this->db->insert('firesale_transactions', array('order_id' => $order['id'], 'reference' => $response->reference(), 'status' => $response->status(), 'gateway' => $gateway, 'data' => serialize($response->data())));
 
-        if ( ! $processed) {
+        if (! $processed) {
             // Check status
             if ($response->status() == 'authorized' or $response->status() == 'complete') {
                 if (method_exists($response, 'amount')) {
@@ -1025,7 +1032,7 @@ class cart extends Public_Controller
         $skip = $this->skip($gateway);
         $skip_checkout = $this->gateways->setting($gateway, 'skip_checkout');
 
-        if ( ! $callback) {
+        if (! $callback) {
             if ($skip_checkout) {
                 redirect(uri('cart'));
             } else {

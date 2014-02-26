@@ -50,13 +50,13 @@ $lang['firesale:gateways:eway_shared:desc']       = 'Shared Payments permette ai
 $lang['firesale:gateways:eway:name']              = 'eWAY';
 $lang['firesale:gateways:eway:desc']              = 'Accetta carte di credito sul tuo sito web con il principale gateway di pagamento in UK per collegare il sito web direttamente alla tua banca per elaborare le carte di credito dei clienti.';
 
-// PayPal Express Checkout
-$lang['firesale:gateways:paypal_express:name']    = 'PayPal Express Checkout';
-$lang['firesale:gateways:paypal_express:desc']    = 'Veloce. I clienti non hanno bisogno di inserire le loro informazioni di pagamento quando fanno un acquisto. PayPal ha già tutte le informazioni che servono.';
-
 // PayPal Pro
 $lang['firesale:gateways:paypal_pro:name']        = 'PayPal Pagamenti Pro';
 $lang['firesale:gateways:paypal_pro:desc']        = 'PayPal Pagamenti Pro è un affidabile servizio per negozi che hanno 100+ ordini/mese.';
+
+// PayPal Express Checkout
+$lang['firesale:gateways:paypal_express:name']    = 'PayPal Express Checkout';
+$lang['firesale:gateways:paypal_express:desc']    = 'Veloce. I clienti non hanno bisogno di inserire le loro informazioni di pagamento quando fanno un acquisto. PayPal ha già tutte le informazioni che servono.';
 
 // PayPal
 $lang['firesale:gateways:paypal:name']            = 'PayPal Payments Standard';

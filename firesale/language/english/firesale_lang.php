@@ -42,6 +42,7 @@
     $lang['firesale:sections:customers']                    = 'Customers';
 
     // Global Search
+    $lang['firesale:search']                                = 'Search';
     $lang['firesale:product']                               = 'Product';
     $lang['firesale:products']                              = 'Products';
     $lang['firesale:category']                              = 'Category';
@@ -221,6 +222,7 @@
     $lang['firesale:label_price_total']                     = 'Total Price';
     $lang['firesale:label_price_ship']                      = 'Shipping Cost';
     $lang['firesale:label_price_sub']                       = 'Sub-total';
+    $lang['firesale:label_products_total']                  = 'Products total';
     $lang['firesale:label_ship_to']                         = 'Shipped to';
     $lang['firesale:label_bill_to']                         = 'Billed to';
     $lang['firesale:label_date']                            = 'Date';
@@ -316,11 +318,12 @@
     $lang['firesale:orders:label_view_order']               = 'View Order';
     $lang['firesale:orders:label_customer']                 = 'Customer';
     $lang['firesale:orders:label_date_placed']              = 'Date Placed';
-    $lang['firesale:orders:label_order_id']                 = "Order ID";
+    $lang['firesale:orders:label_order_id']                 = 'Order ID';
     $lang['firesale:orders:label_shipping_address']         = 'Shipping Address';
     $lang['firesale:orders:label_payment_address']          = 'Payment Address';
     $lang['firesale:orders:label_order_status']             = 'Order Status';
     $lang['firesale:orders:label_message']                  = 'Message';
+    $lang['firesale:orders:confirm_title']                  = 'Confirm Order Details';
 
     // Gateways
     $lang['firesale:gateways:admin_title']                  = 'Payment Gateways';
@@ -380,6 +383,10 @@
     $lang['firesale:checkout:shipping_invalid']             = 'The shipping method you selected is not valid';
     $lang['firesale:checkout:address_invalid']              = 'The address you selected is not valid';
     $lang['firesale:checkout:gateway_invalid']              = 'The payment gateway you selected is not valid';
+    $lang['firesale:checkout:paypal_expr:before_checkout']  = 'Payment processing is done on the PayPal website, so if you\'re happy with everything please click below to finalise your order';
+    $lang['firelase:checkout:paypal_expr:checkout']         = 'Pay with Paypal Express';
+    $lang['firesale:checkout:paypal:before_checkout']       = 'Payment processing is done on the PayPal website, so if you\'re happy with everything please click below to finalise your order';
+    $lang['firelase:checkout:paypal:checkout']              = 'Pay with Paypal';
 
     // Routes
     $lang['firesale:routes:title']                          = 'Routes';
@@ -453,26 +460,51 @@
     $lang['firesale:addresses:edit_error']                  = 'Error editing address';
 
     // Products Frontend
-    $lang['firesale:product:label_availability']            = "Availability";
-    $lang['firesale:product:label_model']                   = "Model";
-    $lang['firesale:product:label_product_code']            = "Product Code";
-    $lang['firesale:product:label_qty']                     = "Qty";
-    $lang['firesale:product:label_add_to_cart']             = "Add to Cart";
+    $lang['firesale:product:label_availability']            = 'Availability';
+    $lang['firesale:product:label_model']                   = 'Model';
+    $lang['firesale:product:label_product_code']            = 'Product Code';
+    $lang['firesale:product:label_qty']                     = 'Qty';
+    $lang['firesale:product:label_add_to_cart']             = 'Add to Cart';
+    $lang['firesale:product:our_price']                     = 'Our price';
+    $lang['firesale:product:related_products']              = 'Related Products';
+    $lang['firesale:product:share_on']                      = 'Share this on';
+    $lang['firesale:product:latest_products']               = 'Latest products';
 
     // Cart Frontend
-    $lang['firesale:cart:label_remove']                     = "Remove";
-    $lang['firesale:cart:label_image']                      = "Image";
-    $lang['firesale:cart:label_name']                       = "Name";
-    $lang['firesale:cart:label_model']                      = "Model";
-    $lang['firesale:cart:label_quantity']                   = "Quantity";
-    $lang['firesale:cart:label_unit_price']                 = "Unit Price";
-    $lang['firesale:cart:label_total']                      = "Total";
-    $lang['firesale:cart:label_no_items_in_cart']           = "No items in your cart";
-    $lang['firesale:cart:button_update']                    = "Update cart";
-    $lang['firesale:cart:button_goto_checkout']             = "Goto Checkout";
-    $lang['firesale:cart:label_sub_total']                  = "Sub-Total";
-    $lang['firesale:cart:label_tax']                        = "Tax";
-    $lang['firesale:cart:label_total']                      = "Total";
+    $lang['firesale:cart:label_remove']                     = 'Remove';
+    $lang['firesale:cart:label_image']                      = 'Image';
+    $lang['firesale:cart:label_name']                       = 'Name';
+    $lang['firesale:cart:label_model']                      = 'Model';
+    $lang['firesale:cart:label_quantity']                   = 'Quantity';
+    $lang['firesale:cart:label_unit_price']                 = 'Unit Price';
+    $lang['firesale:cart:label_total']                      = 'Total';
+    $lang['firesale:cart:label_no_items_in_cart']           = 'No items in your cart';
+    $lang['firesale:cart:button_update']                    = 'Update cart';
+    $lang['firesale:cart:button_goto_checkout']             = 'Goto Checkout';
+    $lang['firesale:cart:label_sub_total']                  = 'Sub-Total';
+    $lang['firesale:cart:label_tax']                        = 'Tax';
+    $lang['firesale:cart:label_total']                      = 'Total';
+    $lang['firesale:cart:your_chart']                       = 'Your chart';
+    $lang['firesale:cart:items_in_your_chart']              = 'Items in your chart';
+    $lang['firesale:cart:label_original_price']             = 'Original price';
+    $lang['firesale:cart:label_discounted_price']           = 'Discounted price';
+    $lang['firesale:cart:continue_shopping']                = 'Continue shopping';
+    $lang['firesale:cart:checkout']                         = 'Checkout';
+    $lang['firesale:cart:discount_code']                    = 'Discount code';
+    $lang['firesale:cart:enter_discount_code']              = 'Enter discount code';
+    $lang['firesale:cart:remove_discount_code']             = 'Remove discount code';
+    $lang['firesale:cart:add2wishlist']                     = 'Add to wishlist';
+    $lang['firesale:cart:returning_customers']              = 'Returning customer';
+    $lang['firesale:cart:fields_marked']                    = 'Fields marked with a';
+    $lang['firesale:cart:are_required']                     = 'are required';
+    $lang['firesale:cart:same_as_billing']                  = 'Same as billing addreess';
+    $lang['firesale:cart:new_address']                      = 'New address';
+    $lang['firesale:cart:remember_password']                = 'Remember password';
+    $lang['firesale:cart:Apply']                            = 'Apply';
+    $lang['firesale:cart:empty_chart']                      = 'It appears you don\'t have any items in your cart yet';
+    $lang['firesale:cart:payment_details']                  = 'Payment Details';
+    $lang['firesale:cart:my_cart']                          = 'My Cart';
+    $lang['firesale:cart:review']                           = 'Review Cart';
 
     // Categories Frontend
     $lang['firesale:categories:grid']                       = 'Grid';
@@ -530,3 +562,61 @@
     $lang['firesale:install:not_installed']                 = 'Please install the FireSale module before installing additional FireSale add-ons';
     $lang['firesale:install:no_route_access']               = 'FireSale requires access to the system/cms/config/routes.php file. Please set the appropriate permissions and try again';
     $lang['firesale:install:old_multiple']                  = 'Your currently installed version of the Multiple field type is out of date, please delete or upgrade it before attempting to use FireSale';
+
+    // Registration
+    $lang['firesale:register:register_label']               = 'Register';
+    $lang['firesale:register:register_new_label']           = 'Register New Account';
+    $lang['firesale:register:account_registration']         = 'Account Registration';
+    $lang['firesale:register:text1']                        = 'Register to receive the following benefits immediately';
+    $lang['firesale:register:li1']                          = 'View your order history';
+    $lang['firesale:register:li2']                          = 'Save and manage addresses';
+    $lang['firesale:register:li3']                          = 'Manage your wishlist';
+    $lang['firesale:register:li4']                          = 'Receive discount codes just for you';
+    $lang['firesale:register:li5']                          = 'Saved carts and viewing history';
+    $lang['firesale:register:text2']                        = 'So what are you waiting for?';
+    $lang['firesale:register:text3']                        = 'Fill out the form to the right and get started today!';
+    $lang['firesale:register:text4']                        = 'Already have an account with us?';
+    $lang['firesale:register:text5']                        = 'Then head over to our <a href="{{ url:site uri="users/login" }}">login page</a>';
+    $lang['firesale:register:label_email_sent']             = 'An activation code has been sent to the email address you provided during registration';
+
+    // Login
+    $lang['firesale:login:click_here']                       = 'Click here to login';
+    $lang['firesale:login:login2account']                    = 'Login to Your Account';
+    $lang['firesale:login:welcome_back']                     = 'Welcome Back';
+    $lang['firesale:login:great2see']                        = 'It\'s great to see you again!';
+    $lang['firesale:login:text1']                            = 'You\'re only one step away from signing in to your existing account';
+    $lang['firesale:login:text2']                            = 'If you don\'t have an account with us already then head over to our';
+    $lang['firesale:login:text3']                            = '<a href="{{ url:site uri="users/register" }}">registration page</a>';
+    $lang['firesale:login:text4']                            = 'and create your new account';
+    $lang['firesale:login:text5']                            = 'If you have any problem registering or any question please';
+    $lang['firesale:login:text6']                            = '<a href="{{ url:site uri="contact" }}">contact us</a>!';
+
+    // Account navigation
+    $lang['firesale:nav:your_account']                       = 'Your account';
+    $lang['firesale:nav:edit_profile']                       = 'Edit profile';
+    $lang['firesale:nav:saved_addresses']                    = 'Saved addresses';
+    $lang['firesale:nav:wishlists']                          = 'Wishlists';
+    $lang['firesale:nav:order_history']                      = 'Order history';
+
+    // Edit profile
+    $lang['firesale:profile:login_details']                  = 'Login details';
+    $lang['firesale:profile:account_details']                = 'Account details';
+    $lang['firesale:profile:my_saved_addresses']             = 'My Saved Addresses';
+    $lang['firesale:profile:no_address_found']               = 'No Addresses Found';
+    $lang['firesale:profile:no_orders_found']                = 'No Orders Found';
+    $lang['firesale:profile:profile_of']                     = 'Profile of';
+
+    // Footer
+    $lang['firesale:footer:rights']                          = 'all rights reserved';
+
+    // Orders
+    $lang['firesale:orders:billing_address']                 = 'Billing address';
+    $lang['firesale:orders:summary']                         = 'Order Summary';
+
+    // Dummy payment
+    $lang['firesale:dummy:card_name']                        = 'Name on Card';
+    $lang['firesale:dummy:card_type']                        = 'Card Type';
+    $lang['firesale:dummy:card_no']                          = 'Card Number';
+    $lang['firesale:dummy:card_expiration']                  = 'Expiry Date';
+    $lang['firesale:dummy:csc']                              = 'CSC';
+    $lang['firesale:dummy:submit']                           = 'Process Dummy Payment';
