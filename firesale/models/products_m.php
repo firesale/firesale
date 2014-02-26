@@ -261,8 +261,8 @@ class Products_m extends MY_Model
                 $query->order_by('p.'.$key, $value);
             } elseif ($key == 'price') {
                 list($from, $to) = explode('-', $value);
-                $query->where('p.price >=', $from)
-                      ->where('p.price <=', $to);
+                $query->where('cast(p.price as decimal(6, 2)) >=', $from)
+                      ->where('cast(p.price as decimal(6, 2)) <=', $to);
             } elseif ($key == 'new' ) {
                 $new = (int)$this->settings->get('firesale_new');
                 $query->where('p.created >=', date('Y-m-d H:i:s', ( time() - $new )));

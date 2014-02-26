@@ -65,19 +65,19 @@ class Sitemap_m extends MY_Model
     
         // Check for data
         if( $query->num_rows() ) {
-    
+
             // Get results
             $results = $query->result_array();
-    
+
             // Loop and format
             foreach( $results as &$result ) {
                 $result['updated'] = strtotime($result['updated']);
                 $result['url']     = url($type, $result['id']);
             }
-    
+
             return $results;
         }
-    
+
         // Nothing found
         return false;
     }

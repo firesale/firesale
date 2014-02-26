@@ -68,6 +68,7 @@ class Widget_FireSale_Cart extends Widgets
 
                 $data->products[] = array(
                     'id'        => $item['id'],
+                    'rowid'     => $item['rowid'],
                     'code'      => $product->code,
                     'slug'      => $product->slug,
                     'quantity'  => $item['qty'],

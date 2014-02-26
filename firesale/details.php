@@ -20,7 +20,7 @@
 
 class Module_Firesale extends Module
 {
-    public $version       = '1.2.5-dev';
+    public $version       = '1.2.6-dev';
     public $language_file = 'firesale/firesale';
 
     public function __construct()
@@ -909,7 +909,7 @@ class Module_Firesale extends Module
 
         }
 
-        // Pre 1.2.3
+        // Pre 1.2.4
         if ($old_version < '1.2.5') {
 
             // Add css/js setting
