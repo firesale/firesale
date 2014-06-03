@@ -19,16 +19,16 @@
 */
 
 # 2.2.0
-$lang['firesale:role_edit_orders']                = 'Editar Pedidos';
-$lang['firesale:role_access_gateways']            = 'Acceso Proveedor de pago';
-$lang['firesale:role_access_taxes']               = 'Acceso Impuestos';
-$lang['firesale:role_add_edit_taxes']             = 'Crear/Editar Impuestos';
-$lang['firesale:role_install_uninstall_gateways'] = 'Instalar/desinstalar Proveedor de pago';
-$lang['firesale:role_enable_disable_gateways']    = 'Activar/Desactivar Proveedor de pago';
-$lang['firesale:role_edit_gateways']              = 'Editar Proveedor de pago';
-$lang['firesale:role_access_routes']              = 'Acceso a Rutas';
-$lang['firesale:role_create_edit_routes']         = 'Crear/Editar Rutas';
-$lang['firesale:role_access_currency']            = 'Acceso de divisas';
+$lang['firesale:role_edit_orders']                = 'Editar pedidos';
+$lang['firesale:role_access_gateways']            = 'Acceso proveedor de pago';
+$lang['firesale:role_access_taxes']               = 'Acceso impuestos';
+$lang['firesale:role_add_edit_taxes']             = 'Crear/editar impuestos';
+$lang['firesale:role_install_uninstall_gateways'] = 'Instalar/desinstalar proveedor de pago';
+$lang['firesale:role_enable_disable_gateways']    = 'Activar/desactivar proveedor de pago';
+$lang['firesale:role_edit_gateways']              = 'Editar proveedor de pago';
+$lang['firesale:role_access_routes']              = 'Acceso a rutas';
+$lang['firesale:role_create_edit_routes']         = 'Crear/editar rutas';
+$lang['firesale:role_access_currency']            = 'Acceso a monedas';
 $lang['firesale:role_install_uninstall_currency'] = 'Instalar/desinstalar divisas';
 
 # 2.1.5
