@@ -1,7 +1,7 @@
 # FireSale
 
 * [Website](http://www.getfiresale.org)
-* [Documentation](http://www.getfiresale.org/documentation)
+* [Documentation](https://github.com/firesale/docs)
 * [License](https://github.com/firesale/firesale/blob/1.2/develop/LICENSE)
 * Version: 1.2.3-dev
 
