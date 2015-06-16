@@ -87,6 +87,8 @@ class products extends Admin_Controller
             $product = cache('products_m/get_product', $product['id']);
         }
 
+        $stock_status_filter = isset($_COOKIE['stock_status'])? $_COOKIE['stock_status'] : -1;
+
         // Assign variables
         $this->data->products     = $products;
         $this->data->count        = cache('products_m/get_products', ( isset($filter) ? $filter : array() ), 0, 0);
@@ -94,7 +96,7 @@ class products extends Admin_Controller
         $this->data->pagination   = create_pagination('/admin/firesale/products/', $this->data->count, $this->perpage, 4);
         $this->data->categories   = array('-1' => lang('firesale:label_filtersel')) + cache('categories_m/dropdown_values');
         $this->data->status       = cache('products_m/status_dropdown', ( $type == 'status' ? $value : -1 ));
-        $this->data->stock_status = cache('products_m/stock_status_dropdown', ( $type == 'stock_status' ? $value : -1 ));
+        $this->data->stock_status = cache('products_m/stock_status_dropdown', ( $type == 'stock_status' ? $value : $stock_status_filter ));
         $this->data->min_max      = cache('products_m/price_min_max');
         $this->data->buttons      = ( $this->template->buttons ? $this->template->buttons : '' );
 

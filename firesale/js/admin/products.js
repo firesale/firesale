@@ -4,6 +4,9 @@ $(function() {
 	** DASHBOARD **
 	**************/
 
+    //update product list when requested from dashbord
+    update_products();
+
 	if( $('#product_table').size() > 0 ) {
 
 		$("button[type=submit]").live('click', function() {
